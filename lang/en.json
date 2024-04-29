@@ -1,0 +1,52 @@
+{
+  "MEGS": {
+    "Attribute": {
+      "Dex": { "long": "Dexterity", "abbr": "dex" },
+      "Str": { "long": "Strength", "abbr": "str" },
+      "Body": { "long": "Body", "abbr": "body" },
+      "Int": { "long": "Intelligence", "abbr": "int" },
+      "Will": { "long": "Will", "abbr": "will" },
+      "Mind": { "long": "Mind", "abbr": "mind" },
+      "Infl": { "long": "Influence", "abbr": "infl" },
+      "Aura": { "long": "Aura", "abbr": "aura" },
+      "Spirit": { "long": "Spirit", "abbr": "spirit" }
+    },
+    "SheetLabels": {
+      "Actor": "DC Heroes Actor Sheet",
+      "Item": "DC Heroes Item Sheet"
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Toggle Effect",
+      "Temporary": "Temporary Effects",
+      "Passive": "Passive Effects",
+      "Inactive": "Inactive Effects"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "hero": "Hero",
+      "npc": "NPC",
+      "villain": "Villain",
+      "pet": "Pet"
+    },
+    "Item": {
+      "gadget": "Gadget",
+      "skill": "Skill",
+      "power": "Power",
+      "advantage": "Advantage",
+      "subskill": "Subskill",
+      "drawback": "Drawback",
+      "bonus": "Bonus",
+      "limitation": "Limitation"
+    }
+  },
+
+  "SETTINGS": {
+    "showHeroPointCosts": {
+      "name": "Show character calculator",
+      "label": "Check to show calculator and item costs"
+    }
+  }
+}

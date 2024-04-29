@@ -1,0 +1,10 @@
+      <section class="initiative-and-hp grid grid-2col">
+        <div class="initiative flex-group-center">
+          <label for="system.initiativeBonus.value" class="resource-label flexlarge align-left" data-label="{{system.initiativeBonus.label}}">{{system.initiativeBonus.label}}</label>
+          <div>{{system.initiativeBonus.value}}</div>
+        </div>
+        <div class="hero-points flex-group-center">
+          <label for="system.heroPoints.value" class="resource-label flexlarge align-left" data-label="{{system.heroPoints.label}}">{{system.heroPoints.label}}</label>
+          {{> plusMinusInput id='heroPoints' classes='attribute-input' min=0 value=system.heroPoints.value hasValue=true}}
+        </div>
+      </section>

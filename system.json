@@ -1,0 +1,47 @@
+{
+  "id": "megs",
+  "title": "DC Heroes",
+  "description": "A totally unofficial, fan-made implementation of the DC Heroes RPG system for FoundryVTT!",
+  "authors": [
+    {
+      "name": "Jeff Barnes",
+      "discord": "murderhobo6226"
+    }
+  ],
+  "url": "https://github.com/codemonkey1972/megs",
+  "license": "LICENSE.txt",
+  "readme": "README.md",
+  "bugs": "https://github.com/codemonkey1972/megs/issues",
+  "changelog": "CHANGELOG.md",
+  "media": [
+    {
+      "type": "setup",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
+      "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
+    }
+  ],
+  "version": "0.2.2",
+  "compatibility": {
+    "minimum": 11,
+    "verified": "11.315"
+  },
+  "esmodules": ["module/megs.mjs"],
+  "styles": ["css/megs.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [],
+  "packFolders": [],
+  "socket": false,
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/master/",
+  "background": "systems/megs/assets/images/megs-logo-multiversal.jpg",
+  "gridDistance": 5,
+  "gridUnits": "ft",
+  "primaryTokenAttribute": "",
+  "secondaryTokenAttribute": ""
+}

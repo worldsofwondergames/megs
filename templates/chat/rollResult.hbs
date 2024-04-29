@@ -1,0 +1,63 @@
+{{#if title}}
+<div class="megs-chat-title">
+    {{title}}
+</div>
+{{/if}}
+<details class="grid-span-2 megs-chat-roll">
+    <div class="grid grid-2col megs-chat">
+        <div class="flex-group-center chat-value">
+            <label class="flexlarge align-left">{{localize 'Action Value'}}</label>
+            <div>{{actionValue}}</div>        
+        </div>
+        <div class="flex-group-center chat-value">
+            <label class="flexlarge align-left">{{localize 'Opposing Value'}}</label>
+            <div>{{opposingValue}}</div>        
+        </div>
+        <div class="flex-group-center grid-span-2 chat-result">
+            {{localize 'Difficulty'}}: {{difficulty}}
+        </div>
+        <div class="flex-group-center grid-span-2 chat-result inverse">
+            {{#each dice}}
+                <div class="d10">{{this}}</div>
+            {{/each}}
+        </div>
+        {{#if avRollSuccess}}
+        <div class="flex-group-center grid-span-2 chat-result">
+            {{columnShifts}} 
+            {{#if isOneColumnShift}}
+            {{localize 'Column Shift'}}
+            {{/if}}
+            {{#unless isOneColumnShift}}
+            {{localize 'Column Shifts'}}
+            {{/unless}}
+        </div>
+        <div class="flex-group-center chat-value">
+            <label class="flexlarge align-left">{{localize 'Effect Value'}}</label>
+            <div>{{effectValue}}</div>        
+        </div>
+        <div class="flex-group-center chat-value">
+            <label class="flexlarge align-left">{{localize 'Resistance Value'}}</label>
+            <div>{{resistanceValue}}</div>        
+        </div>
+        <div class="flex-group-center grid-span-2 chat-result inverse">
+            {{localize 'Effect table result'}}: {{evResult}}
+        </div>
+        {{/if}}
+    </div>
+    <summary class="grid-span-2 no-arrow">
+        <div class="grid grid-2col megs-chat">
+            <div class="flex-group-center grid-span-2 chat-result 
+            {{#if success}}
+                {{#if (compare evResult '===' 'N')}}
+                failure
+                {{/if}}
+                {{#unless (compare evResult '===' 'N')}}
+                success
+                {{/unless}}
+            {{/if}} 
+            {{#unless success}}failure{{/unless}}">
+                {{result}}
+            </div>
+        </div>
+    </summary>
+</details>

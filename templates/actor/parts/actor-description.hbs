@@ -1,0 +1,31 @@
+      <section class="grid-1col description-item">
+        <div class="flex-group-left">
+          <label for="system.alterEgo" class="resource-label flexlarge align-left" data-label="{{system.alterEgo}}">{{localize 'Alter Ego'}}</label>
+          <input type="text" name="system.alterEgo" value="{{system.alterEgo}}" data-dtype="string"/>
+        </div>
+      </section>
+
+      <section class="grid-1col description-item">
+        <div class="flex-group-left">
+          <label for="system.motivation" class="resource-label flexlarge align-left" data-label="{{system.motivation}}">{{localize 'Motivation'}}</label>
+          <input type="text" name="system.motivation" value="{{system.motivation}}" data-dtype="string"/>
+        </div>
+      </section>
+
+      <section class="grid-1col description-item">
+        <div class="flex-group-left">
+          <label for="system.occupation" class="resource-label flexlarge align-left" data-label="{{system.occupation}}">{{localize 'Occupation'}}</label>
+          <input type="text" name="system.occupation" value="{{system.occupation}}" data-dtype="string"/>
+        </div>
+      </section>
+
+      <section class="grid-1col description-item">
+        <div class="flex-group-left">
+          <label for="system.wealth" class="resource-label flexlarge align-left" data-label="{{system.wealth}}">{{localize 'Wealth'}}</label>
+          <input type="text" name="system.wealth" value="{{system.wealth}}" data-dtype="number"/>
+        </div>
+      </section>
+
+
+      {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
+      {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}

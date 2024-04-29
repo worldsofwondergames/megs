@@ -12,8 +12,8 @@
       "Spirit": { "long": "Spirit", "abbr": "spirit" }
     },
     "SheetLabels": {
-      "Actor": "DC Heroes Actor Sheet",
-      "Item": "DC Heroes Item Sheet"
+      "Actor": "MEGS Actor Sheet",
+      "Item": "MEGS Item Sheet"
     },
     "Effect": {
       "Source": "Source",

@@ -1,7 +1,7 @@
 {
   "id": "megs",
-  "title": "DC Heroes",
-  "description": "A totally unofficial, fan-made implementation of the DC Heroes RPG system for FoundryVTT!",
+  "title": "MEGS (Multiversal Exponential Gaming System)",
+  "description": "A totally unofficial, fan-made implementation of the MEGS RPG system for FoundryVTT!",
   "authors": [
     {
       "name": "Jeff Barnes",

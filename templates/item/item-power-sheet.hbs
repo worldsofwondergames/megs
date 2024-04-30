@@ -17,7 +17,12 @@
       {{/if}}
       </div>
  
+      {{#if showHeroPointCosts}}
       <div class="resources grid grid-4col">
+      {{/if}}
+      {{#unless showHeroPointCosts}}
+      <div class="resources grid grid-3col">
+      {{/unless}}
 
         <div class="resource flex-group-center">
           <label for="system.baseCost" class="resource-label">{{localize 'Base'}}</label>
@@ -41,6 +46,7 @@
           {{/unless}}
         </div>
 
+      {{#if showHeroPointCosts}}
         <div class="resource flex-group-center">
           <label for="system.totalCost" class="resource-label">{{localize 'Total'}}</label>
           <div class="resource-content flexrow flex-center flex-between">
@@ -52,6 +58,7 @@
           {{/unless}}
           </div>
         </div>
+      {{/if}}
 
       </div>
  

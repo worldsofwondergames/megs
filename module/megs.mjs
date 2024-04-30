@@ -366,6 +366,6 @@ function registerSystemSettings() {
     name: "SETTINGS.showHeroPointCosts.name",
     hint: "SETTINGS.showHeroPointCosts.label",
     type: Boolean,
-    default: true
+    default: false
   });
 }

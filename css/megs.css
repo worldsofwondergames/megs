@@ -624,7 +624,7 @@ li.chat-message .megs-chat-roll {
   margin: 0 3px 0 3px;
 }
 
-li.directory-item img[src*="systems/megs/assets/images/icons/"] {
+li.directory-item img[src*="assets/images/icons"] {
   filter: invert(100%);
 }
 

@@ -5,15 +5,15 @@
 
 ## What is DC Heroes?
 
-[DC Heroes](https://en.wikipedia.org/wiki/DC_Heroes) is an out-of-print superhero role-playing game set in the superhero DC Universe and published by Mayfair Games. Depending on who you talk to, 3.5 or 4 editions were published between 1985 and 1993.
+[DC Heroes](https://en.wikipedia.org/wiki/DC_Heroes) is an out-of-print superhero role-playing game set in the superhero DC Universe and published by Mayfair Games that a lot of people consider the best superhero RPG ever created. Depending on who you talk to, 3.5 or 4 editions were published between 1985 and 1993.
 
 ### Wait: 3.5 or 4 editions?
 
-The Batman Role-Playing Game was a simplified DC Heroes rules set with a few new rules put out in 1989, between the 2nd and 3rd editions of DC Heroes.
+The Batman Role-Playing Game was a simplified DC Heroes rules set with a few new rules put out in 1989, between the 2nd and 3rd editions of DC Heroes and coincidentally at the same time as the first Tim Burton Batman movie came out.
 
 ### What does it have to do with West End Games' DC Universe RPG or Green Ronin's DC Adventures?
 
-Nothing aside from using the same characters. Those are two completely distinct rules sets (though DC Adventures and 3rd Edition Mutants and Masterminds do borrow some mechanics).
+Nothing aside from using the same characters. Those are two completely distinct rule sets (though DC Adventures and 3rd Edition Mutants and Masterminds do borrow some mechanics).64w
 
 ### What about Blood of Heroes?
 
@@ -105,3 +105,9 @@ And then I rest for a very, very long time. At least until...
 Well... that would be telling. Until it gets more definite, I'd prefer to say [nothing](https://en.wikipedia.org/wiki/Dungeons_%26_Dragons_retro-clones).
 
 Nothing at all...
+
+## Wow, this is the greatest thing ever and thanks to you I can now realize my childhood dream of playing Superman in the MEGS system! How can I ever repay you?
+
+I have a [KoFi](https://ko-fi.com/worldsofwonder) if you really want to kick me a few bucks. 
+
+Alternately, Legacy of Heroes will be a thing eventually...

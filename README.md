@@ -82,7 +82,7 @@ Do I ever! MEGS for Foundry is currently sitting at **version 0.2.2**.
 I'm also trying to come up with a way of adding skills, if not powers, to the system without stepping on other people's IP. No promises, but if I can find a way that won't get me sued, it will go in here.
 
 **Version 0.4.0** (hopefully by July 2024, parallel with 0.3.0) is going to tackle some of the thorny rules bits I skipped to get the rest of the system out. Among these are: 
-- Tracking all 3 Current attribute fields (Foundry forces you to a max of 2; there's a module called [Bar Brawl]() that can be installed as a workaround until then)
+- Tracking all 3 Current attribute fields (Foundry forces you to a max of 2; there's a module called [Bar Brawl](https://foundryvtt.com/packages/barbrawl) that can be installed as a workaround until then)
 - Making Ritual Magic work
 - Making Mystic Link work
 - Adding Omni-Gadgets

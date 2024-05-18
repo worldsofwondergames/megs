@@ -19,7 +19,7 @@ Nothing aside from using the same characters. Those are two completely distinct 
 
 Mayfair licensed the DC Heroes game mechanics and text to Pulsar Games, who produced two editions of an RPG called [Blood of Heroes](https://en.wikipedia.org/wiki/Blood_of_Heroes_(role-playing_game)) in 1998 and 2000 using the DC Heroes text with original characters replacing the DC characters and a few minor rules changes. 
 
-However, it was discovered that Mayfair had no rights to the DC Heroes game or text; the rights remained with DC Comics and their parent corporation Warner Brothers. Further publication was suspended, and Pulsar Games went under a few years later.
+However, it was discovered that Mayfair had no rights to the DC Heroes game or text in the first place; the rights remained with DC Comics and their parent corporation Warner Brothers. Further publication was suspended, and Pulsar Games went under a few years later.
 
 ### And Underground?
 
@@ -37,7 +37,7 @@ Yeah. While MEGS is not anyone's intellectual property, "Mayfair" is. And since 
 
 ### Is that likely to happen?
 
-Probably not. I could be paranoid from being married to a prospective lawyer, and I'll be delighted if three dozen people are even aware this exists. But there's nothing like a cease-and-desist letter from a multimillion dollar legal firm contracted by a multibillion dollar international corporation to ruin your blood pressure, so, why chance it?
+Probably not. I could be paranoid from being married to a prospective lawyer, and I'll be delighted if three dozen people not related to me are even aware this exists. But there's nothing like a cease-and-desist letter from a multimillion dollar legal firm contracted by a multibillion dollar international corporation to ruin your blood pressure, so, why chance it?
 
 Which bring us to...
 
@@ -67,13 +67,13 @@ You got it. Let's move on.
 
 It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
-The current version of MEGS for Foundry has basic character sheets, some die rolling, and outcome resolution. It allows you to create heroes, villains, NPCs, powers, skills, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
+The current version (0.2.2) of MEGS for Foundry has basic character sheets, some die rolling, and outcome resolution. It allows you to create heroes, villains, NPCs, powers, skills, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get out of beta.
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at version 0.2.2.
+Do I ever! MEGS for Foundry is currently sitting at **version 0.2.2**.
 
 (Note that everything below is subject to change.)
 

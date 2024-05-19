@@ -398,7 +398,7 @@ export class MEGSItemSheet extends ItemSheet {
    */
   _prepareSubskills(context) {
     if (context.item.type === MEGS.itemTypes.skill) {
-      context.subskills = [];
+      let subskills = []
 
       if (this.object.parent) {
         for (let i of this.object.parent.items) {
@@ -426,15 +426,21 @@ export class MEGSItemSheet extends ItemSheet {
                 i.isRollable = false;
                 i.effectiveAPs = 0;
               }
-              context.subskills.push(i);
+              subskills.push(i);
             }
           }
         }
       } else {
-        context.subskills = game.items.filter(obj => {
+        subskills = game.items.filter(obj => {
           return obj.type === MEGS.itemTypes.subskill && obj.system.linkedSkill === context.document.name
         });
       }
+
+      subskills.sort(function(a, b) {
+        return a.name.localeCompare(b.name);
+      });
+      
+      context.subskills = subskills;
     }
   }
 

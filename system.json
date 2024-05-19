@@ -16,7 +16,7 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/1-alphabetize-subskills-in-skill-list/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
     }
   ],
@@ -37,8 +37,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/master/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/1-alphabetize-subskills-in-skill-list/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/1-alphabetize-subskills-in-skill-list/",
   "background": "systems/megs/assets/images/megs-logo-multiversal.jpg",
   "gridDistance": 5,
   "gridUnits": "ft",

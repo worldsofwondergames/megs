@@ -45,14 +45,12 @@ test("_getAbilityAPs", () => {
 });
 
 test('_getEffectValueForAttribute returns the correct effect attribute for an an acting/opposing attribute', () => {
-     actorSheet.context = {
-        actor: {
-            system: {
-                attributes: {
-                    str: { value: "str" },
-                    will: { value: "will" },
-                    aura: { value: "aura" },
-                }
+    actorSheet.actor = {
+        system: {
+            attributes: {
+                str: { value: "str" },
+                will: { value: "will" },
+                aura: { value: "aura" },
             }
         }
      };

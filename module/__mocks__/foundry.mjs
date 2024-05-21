@@ -153,7 +153,7 @@ class Actor {
         }
       });
     }
-    this.items = new Collection()
+    this.items = []
     this.prepareData()
     Object.defineProperty(this, 'itemTypes', {
       get: global.itemTypesMock

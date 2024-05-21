@@ -424,11 +424,11 @@ export class MEGSActorSheet extends ActorSheet {
    */
   _getEffectValueForAttribute(key) {
     let effectValue;
-    if (key === "dex") {
+    if (key === MEGS.attributeAbbreviations.dex) {
       effectValue = this.actor.system.attributes.str.value;
-    } else if (key === "int") {
+    } else if (key === MEGS.attributeAbbreviations.int) {
       effectValue = this.actor.system.attributes.will.value;
-    } else if (key === "infl") {
+    } else if (key === MEGS.attributeAbbreviations.infl) {
       effectValue = this.actor.system.attributes.aura.value;
     } else {
       ui.notifications.error("Invalid attribute selection");

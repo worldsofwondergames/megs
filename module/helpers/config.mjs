@@ -17,15 +17,15 @@ MEGS.attributes = {
 };
 
 MEGS.attributeAbbreviations = {
-  dex: 'MEGS.Attribute.Dex.abbr',
-  str: 'MEGS.Attribute.Str.abbr',
-  body: 'MEGS.Attribute.Body.abbr',
-  int: 'MEGS.Attribute.Int.abbr',
-  will: 'MEGS.Attribute.Will.abbr',
-  mind: 'MEGS.Attribute.Mind.abbr',
-  infl: 'MEGS.Attribute.Infl.abbr',
-  aura: 'MEGS.Attribute.Aura.abbr',
-  spirit: 'MEGS.Attribute.Spirit.abSbr',
+  dex: 'dex',
+  str: 'str',
+  body: 'body',
+  int: 'int',
+  will: 'will',
+  mind: 'mind',
+  infl: 'infl',
+  aura: 'aura',
+  spirit: 'spirit',
 };
 
 MEGS.characterTypes = {

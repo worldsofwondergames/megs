@@ -3,6 +3,7 @@ import { MEGSActor } from './documents/actor.mjs';
 import { MEGSItem } from './documents/item.mjs';
 // Import sheet classes.
 import { MEGSActorSheet } from './sheets/actor-sheet.mjs';
+import { MEGSCharacterBuilderSheet } from './sheets/character-creator-sheet.mjs';
 import { MEGSItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';

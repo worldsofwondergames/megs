@@ -390,7 +390,7 @@
 }
 
 .megs .sheet-body section.border-bottom {
-  margin-bottom: 4px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--color-border-light-primary);
 }
 

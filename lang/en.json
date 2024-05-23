@@ -13,6 +13,7 @@
     },
     "SheetLabels": {
       "Actor": "MEGS Actor Sheet",
+      "CharacterBuilder": "MEGS Character Builder",
       "Item": "MEGS Item Sheet"
     },
     "Effect": {

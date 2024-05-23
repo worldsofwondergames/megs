@@ -373,4 +373,12 @@ function registerSystemSettings() {
     type: Boolean,
     default: false
   });
+  game.settings.register("megs", "showActiveEffects", {
+    config: true,
+    scope: "client",
+    name: "SETTINGS.showActiveEffects.name",
+    hint: "SETTINGS.showActiveEffects.label",
+    type: Boolean,
+    default: false
+  });
 }

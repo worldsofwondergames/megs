@@ -47,6 +47,10 @@
     "showHeroPointCosts": {
       "name": "Show character calculator",
       "label": "Check to show calculator and item costs"
+    },
+    "showActiveEffects": {
+      "name": "Show active effects",
+      "label": "Check to show active effects"
     }
   }
 }

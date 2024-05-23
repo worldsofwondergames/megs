@@ -72,6 +72,10 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'MEGS.SheetLabels.Actor',
   });
+  Actors.registerSheet('megs', MEGSCharacterBuilderSheet, {
+    makeDefault: true,
+    label: 'MEGS.SheetLabels.CharacterBuilder',
+  })
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('megs', MEGSItemSheet, {
     makeDefault: true,

@@ -389,6 +389,11 @@
   text-align: center;  
 }
 
+.megs .sheet-body .gadget-properties.border-bottom {
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--color-border-light-primary);
+}
+
 .megs .sheet-body .attributeRow:hover {
   box-shadow:0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
 }

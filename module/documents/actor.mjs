@@ -71,11 +71,15 @@ export class MEGSActor extends Actor {
     // prepareDerivedData().
     super.prepareData();
 
-    this.items.forEach(item => {
-      if (item.type === MEGS.itemTypes.subskill) {
-        item.system.actorId = this._id;
-      }
-    });
+    if (this.items) {
+      this.items.forEach(item => {
+        if (item.type === MEGS.itemTypes.subskill) {
+          item.system.actorId = this._id;
+        }
+      });
+    } else {
+      // TODO log warning
+    }
 
   }
 

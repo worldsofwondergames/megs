@@ -48,8 +48,11 @@ export class MEGSActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
+    console.error("TEST1");
+
     // Prepare actor data and items.
     if (actorData.type === MEGS.characterTypes.hero) {
+    console.error("TEST2");
       this._prepareItems(context);
       this._prepareCharacterData(context);
       this._prepareInitiative(context);
@@ -92,6 +95,8 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _prepareCharacterData (context) {
+    console.error("TEST3");
+
     // Handle attribute scores.
     for (let [k, v] of Object.entries(context.system.attributes)) {
       console.error(k);

@@ -100,7 +100,6 @@ export class MEGSActor extends Actor {
   prepareDerivedData() {
     super.prepareDerivedData();
     
-    console.error("TEST9");
     this.system.currentBody.max = this.system.attributes.body.value;
     this.system.currentMind.max = this.system.attributes.mind.value;
     this.system.currentSpirit.max = this.system.attributes.spirit.value;

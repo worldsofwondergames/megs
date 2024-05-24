@@ -96,10 +96,9 @@ export class MEGSActorSheet extends ActorSheet {
       v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
     }
 
-    // TODO
-    console.error(context.system.currentBody);
-    console.error(context.system.attributes.body);
-//    context.system.currentBody.max = context.system.attributes.body.value;
+    context.system.currentBody.max = context.system.attributes.body.value;
+    context.system.currentMind.max = context.system.attributes.mind.value;
+    context.system.currentSpirit.max = context.system.attributes.spirit.value;
 
     // The exception is player characters and sheets that have "link actor data" enabled (PCs do by default). 
     // For these actors there's a single actor sheet shared by all copies of the actor.

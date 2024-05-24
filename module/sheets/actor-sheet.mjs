@@ -34,8 +34,6 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override */
   getData () {
-    console.error("TEST0");
-
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for
     // sheets are the actor object, the data object, whether or not it's
@@ -49,11 +47,8 @@ export class MEGSActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    console.error("TEST1");
-
     // Prepare actor data and items.
     if (actorData.type === MEGS.characterTypes.hero) {
-    console.error("TEST2");
       this._prepareItems(context);
       this._prepareCharacterData(context);
       this._prepareInitiative(context);
@@ -96,14 +91,15 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _prepareCharacterData (context) {
-    console.error("TEST3");
-
     // Handle attribute scores.
     for (let [k, v] of Object.entries(context.system.attributes)) {
-      console.error(k);
-      console.error(v);
       v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
     }
+
+    // TODO
+    console.error(context.system.currentBody);
+    console.error(context.system.attributes.body);
+//    context.system.currentBody.max = context.system.attributes.body.value;
 
     // The exception is player characters and sheets that have "link actor data" enabled (PCs do by default). 
     // For these actors there's a single actor sheet shared by all copies of the actor.

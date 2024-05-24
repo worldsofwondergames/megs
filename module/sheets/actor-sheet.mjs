@@ -94,6 +94,8 @@ export class MEGSActorSheet extends ActorSheet {
   _prepareCharacterData (context) {
     // Handle attribute scores.
     for (let [k, v] of Object.entries(context.system.attributes)) {
+      console.error(k);
+      console.error(v);
       v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
     }
 

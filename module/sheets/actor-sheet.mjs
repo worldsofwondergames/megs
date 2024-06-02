@@ -382,7 +382,8 @@ export class MEGSActorSheet extends ActorSheet {
     }
     if (dataset.type === MEGS.itemTypes.attribute) {
       effectValue = this._getEffectValueForAttribute(dataset.key);
-    } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill || dataset.type === MEGS.itemTypes.subskill) {
+    } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill 
+        || dataset.type === MEGS.itemTypes.subskill || dataset.type === MEGS.itemTypes.gadget) {
       effectValue = parseInt(dataset.value);
     }
 

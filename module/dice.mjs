@@ -212,6 +212,7 @@ export class MegsTableRolls {
     });
     resultData.dice = dice;
 
+
     let avRollTotal = 0;
     dice.forEach(die => {
       avRollTotal = avRollTotal + parseInt(die);
@@ -223,7 +224,7 @@ export class MegsTableRolls {
     // if fails, output message
     if (!resultData.avRollSuccess) {
       resultData.result = "Action failed!";
-      await this._showRollResultInChat(resultData);
+      await this._showRollResultInChat(resultData, avRoll);
       return dice;
     }
 
@@ -363,12 +364,15 @@ export class MegsTableRolls {
    * @returns {Promise<void>}
    * @private
    */
-  async _showRollResultInChat(data) {
+  async _showRollResultInChat(data, roll) {
     const rollChatTemplate = "systems/megs/templates/chat/rollResult.hbs";
     
     // what's being rolled (used for display)
     data.title = this.label ? `${this.label}` : '';
 
+    // TODO
+    roll.toMessage();
+    
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
     await ChatMessage.create(
       {

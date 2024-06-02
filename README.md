@@ -92,7 +92,7 @@ I'm also trying to come up with a way of adding skills, if not powers, to the sy
 - Tracking all 3 Current attribute fields (Foundry forces you to a max of 2; there's a module called [Bar Brawl](https://foundryvtt.com/packages/barbrawl) that can be installed as a workaround until then)
 
 
-Also, Foundry will probably release version 12 somewhere around here, so upgrading MEGS to work for that will probably be put in this release.
+Also, Foundry has released version 12, so upgrading MEGS to work for that will probably be put in this release.
 
 Then... **version 1.0.0**, probably around November 2024. Incorporating any feedback I've gotten and:
 - Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)

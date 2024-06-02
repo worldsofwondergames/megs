@@ -275,7 +275,7 @@ export class MegsTableRolls {
         resultData.evResult = resultData.evResult + " + " + Math.abs(shiftedRvIndex);
       }
 
-      await this._showRollResultInChat(resultData);
+      await this._showRollResultInChat(resultData, avRoll);
       return resultAPs;
     }
 
@@ -288,7 +288,7 @@ export class MegsTableRolls {
       resultData.success = false;
       resultData.evResult = "N";
 
-      await this._showRollResultInChat(resultData);
+      await this._showRollResultInChat(resultData, avRoll);
       return dice;
     }
 
@@ -334,7 +334,7 @@ export class MegsTableRolls {
         // dice are both 1s
         data.result = "Double 1s: Automatic failure!"
         data.dice = dice;
-        await this._showRollResultInChat(data);
+        await this._showRollResultInChat(data, avRoll);
         stopRolling = true;
       } else  if (rolledDice[0] === rolledDice[1]) {
         // dice match but are not 1s

@@ -392,11 +392,13 @@ export class MEGSActorSheet extends ActorSheet {
 
     } else if (dataset.type === MEGS.itemTypes.gadget) {
 
+      console.error("TEST0A"); // TODO
       // TODO clean all this up; waaaay too complex
       actionValue = parseInt(dataset.actionvalue);
       effectValue = parseInt(dataset.effectvalue);
       
       if (effectValue === 0) {
+        console.error("TEST0B"); // TODO
         // no EV specified; check attributes
         const gadget = this._getOwnedItemById(dataset.gadgetid);
 
@@ -462,6 +464,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     let ownedItem;
     const items = this.object.collections.items;
+    console.error(items);
     for (let i of items) {
       console.error(i);
       if (i._id === id) {

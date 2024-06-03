@@ -390,10 +390,10 @@ export class MEGSActorSheet extends ActorSheet {
       // TODO gadget type - physical, mental, spiritual?
       // TODO get owner data?
       console.error(dataset);
-      const gadget = game.items.get(dataset.gadgetId);
+      const gadget = game.items.get(dataset.gadgetid);
       console.error(gadget); // TODO
-      actionValue = parseInt(dataset.actionValue);
-      effectValue = parseInt(dataset.effectValue);
+      actionValue = parseInt(dataset.actionvalue);
+      effectValue = parseInt(dataset.effectvalue);
   }
 
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,

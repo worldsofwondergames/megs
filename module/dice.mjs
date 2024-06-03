@@ -11,7 +11,7 @@ export class MegsRoll extends Roll {
     );
 
     // Either create or return the data
-    if ( create ) return cls.create(msg.toObject(), { rollMode });
+    if ( create ) return ChatMessage.create(msg.toObject(), { rollMode });
     else {
       if ( rollMode ) msg.applyRollMode(rollMode);
       return msg.toObject();

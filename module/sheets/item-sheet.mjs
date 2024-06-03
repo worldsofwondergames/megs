@@ -142,6 +142,7 @@ export class MEGSItemSheet extends ItemSheet {
 
     context.hasActor = this.object.parent ? true : false;
 
+    // TODO locked
     // if (context.hasActor == null) { // == is correct here; want null and undefined
     //   if (context.hasActor) { 
     //     this.isLocked = true;
@@ -574,13 +575,15 @@ export class MEGSItemSheet extends ItemSheet {
     // Create drag data
     let dragData;
 
+    console.error("TEST: dragging: "+li.dataset.itemId); // TODO
+
     // Owned Items
     if ( li.dataset.itemId ) {
       const item = this.object.parent.items.get(li.dataset.itemId);
       dragData = item.toDragData();
     }
 
-    // Active Effect
+    // Active Effect TODO
     if ( li.dataset.effectId ) {
       const effect = this.object.parent.effects.get(li.dataset.effectId);
       dragData = effect.toDragData();

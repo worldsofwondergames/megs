@@ -304,8 +304,8 @@
     },
     "gadget": {
       "templates": ["baseItem", "attributes", "trackOriginal"],
-      "actionValue": 0,
       "quantity": 1,
+      "actionValue": 0,
       "effectValue": 0,
       "reliability": 0,
       "isBroken": false,

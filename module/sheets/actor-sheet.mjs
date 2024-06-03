@@ -382,20 +382,67 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     if (dataset.type === MEGS.itemTypes.attribute) {
+
       effectValue = this._getEffectValueForAttribute(dataset.key);
+
     } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill 
         || dataset.type === MEGS.itemTypes.subskill) {
+
       effectValue = parseInt(dataset.value);
+
     } else if (dataset.type === MEGS.itemTypes.gadget) {
-      // TODO gadget type - physical, mental, spiritual?
-      // TODO get owner data?
-      console.error(this);
-      console.error(dataset);
-      const gadget = this._getOwnedItemById(dataset.gadgetid);
-      console.error(dataset.gadgetid); // TODO
-      console.error(gadget); // TODO
+
+      // TODO clean all this up; waaaay too complex
       actionValue = parseInt(dataset.actionvalue);
       effectValue = parseInt(dataset.effectvalue);
+      
+      if (effectValue === 0) {
+        // no EV specified; check attributes
+        const gadget = this._getOwnedItemById(dataset.gadgetid);
+        
+        if (gadget) {
+          if (gadget.system.attributes.str > 0) {
+
+            effectValue = gadget.system.attributes.str;
+
+            if (actionValue === 0) {
+              if (gadget.system.attributes.dex > 0) {
+                actionValue = gadget.system.attributes.dex;
+              } else {
+                actionValue = this.object.system.attributes.dex;
+              }
+            }
+
+          } else if (gadget.system.attributes.will > 0) {
+
+            effectValue = gadget.system.attributes.will;
+
+            if (actionValue === 0) {
+              if (gadget.system.attributes.int > 0) {
+                actionValue = gadget.system.attributes.int;
+              } else {
+                actionValue = this.object.system.attributes.int;
+              }
+            }
+
+          } else if (gadget.system.attributes.aura > 0) {
+
+            effectValue = gadget.system.attributes.aura;
+
+            if (actionValue === 0) {
+              if (gadget.system.attributes.infl > 0) {
+                actionValue = gadget.system.attributes.infl;
+              } else {
+                actionValue = this.object.system.attributes.infl;
+              }
+            }
+
+          } 
+          
+        }
+      } else {
+        console.error("No gadget with ID "+dataset.gadgetid+" found");
+      }
   }
 
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
@@ -405,9 +452,13 @@ export class MEGSActorSheet extends ActorSheet {
     })
   }
 
+  /**
+   * 
+   * @param {*} id 
+   * @returns 
+   */
   _getOwnedItemById(id) {
     let ownedItem;
-
     const items = this.object.collections.items;
     for (let i of items) {
       if (i._id === id) {
@@ -415,7 +466,6 @@ export class MEGSActorSheet extends ActorSheet {
         break;
       }
     }
-
     return ownedItem;
   }
 

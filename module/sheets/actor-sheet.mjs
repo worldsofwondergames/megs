@@ -441,9 +441,11 @@ export class MEGSActorSheet extends ActorSheet {
 
           } 
           
+        } else {
+          console.error("No gadget with ID "+dataset.gadgetid+" found");
         }
       } else {
-        console.error("No gadget with ID "+dataset.gadgetid+" found");
+        // TODO
       }
   }
 

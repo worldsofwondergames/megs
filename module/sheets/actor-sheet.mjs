@@ -213,7 +213,7 @@ export class MEGSActorSheet extends ActorSheet {
    * @return {undefined}
    * @private
    */
-  _prepareItems (context) {
+  _prepareItems(context) {
     // Initialize containers.
     const powers = [];
     const skills = [];
@@ -391,7 +391,7 @@ export class MEGSActorSheet extends ActorSheet {
       // TODO get owner data?
       console.error(this);
       console.error(dataset);
-      const gadget = game.items.get(dataset.gadgetid);
+      const gadget = _getOwnedItemById(dataset.gadgetid);
       console.error(dataset.gadgetid); // TODO
       console.error(gadget); // TODO
       actionValue = parseInt(dataset.actionvalue);
@@ -406,7 +406,17 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   _getOwnedItemById(id) {
+    let ownedItem;
 
+    const items = this.collections.items;
+    console.error(items);
+    for (let i of items) {
+      console.error(i);
+      console.error(Object.keys(i)[0]);
+      console.error(i[Object.keys(i)[0]]);
+    }
+
+    return ownedItem;
   }
 
   /**

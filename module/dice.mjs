@@ -1,4 +1,11 @@
-import { MegsRoll } from "./dice/MEGSRoll.mjs";
+export class MegsRoll extends Roll {
+  async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
+    await ChatMessage.create(
+    {
+      content: dialogHtml
+    });
+  }
+}
 
 export class RollValues {
   constructor(label, type, valueOrAps, actionValue, opposingValue, effectValue, resistanceValue, rollFormula, unskilled) {

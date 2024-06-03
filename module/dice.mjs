@@ -1,13 +1,15 @@
 export class MegsRoll extends Roll {
-  async toMessage(messageData={}, {rollMode, create=true}={}) {
+  async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
 
     // Prepare chat data
-    messageData = foundry.utils.mergeObject({
+
+    const messageData = 
+    {
       user: game.user.id,
       type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-      content: String(messageData),
+      content: dialogHtml,
       sound: CONFIG.sounds.dice
-    }, messageData);
+    };
     messageData.rolls = [this];
 
     // Either create the message or just return the chat data

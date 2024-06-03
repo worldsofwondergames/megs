@@ -389,7 +389,7 @@ export class MEGSActorSheet extends ActorSheet {
     } else if (dataset.type === MEGS.itemTypes.gadget) {
       // TODO gadget type - physical, mental, spiritual?
       // TODO get owner data?
-      console.error(this.object.system);
+      console.error(this);
       console.error(dataset);
       const gadget = game.items.get(dataset.gadgetid);
       console.error(dataset.gadgetid); // TODO
@@ -406,7 +406,7 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   _getOwnedItemById(id) {
-    
+
   }
 
   /**

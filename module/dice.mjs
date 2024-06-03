@@ -1,9 +1,26 @@
 export class MegsRoll extends Roll {
   async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
-    await ChatMessage.create(
-    {
-      content: dialogHtml
-    });
+
+    // Prepare chat data
+    messageData = foundry.utils.mergeObject({
+      user: game.user.id,
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      content: String(dialogHtml),
+      sound: CONFIG.sounds.dice
+    }, messageData);
+    messageData.rolls = [this];
+
+    // Either create the message or just return the chat data
+    const cls = getDocumentClass("ChatMessage");
+    const msg = new cls(messageData);
+
+    // Either create or return the data
+    if ( create ) return cls.create(msg.toObject(), { rollMode });
+    else {
+      if ( rollMode ) msg.applyRollMode(rollMode);
+      return msg.toObject();
+    }
+
   }
 }
 
@@ -197,7 +214,7 @@ export class MegsTableRolls {
     const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
 
     // determine whether happens
-    const avRoll = new MegsRoll(this.rollFormula, {});
+    const avRoll = new Roll(this.rollFormula, {});
 
     // Execute the roll
     await avRoll.evaluate();
@@ -381,11 +398,6 @@ export class MegsTableRolls {
 
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
     await roll.toMessage(dialogHtml);
-    // await ChatMessage.create(
-    //   {
-    //     content: dialogHtml
-    //   }
-    // );
   }
 
   /**

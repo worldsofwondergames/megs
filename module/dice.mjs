@@ -214,7 +214,7 @@ export class MegsTableRolls {
     const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
 
     // determine whether happens
-    const avRoll = new Roll(this.rollFormula, {});
+    const avRoll = new MegsRoll(this.rollFormula, {});
 
     // Execute the roll
     await avRoll.evaluate();

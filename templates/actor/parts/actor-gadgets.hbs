@@ -44,7 +44,7 @@
         {{getGadgetDescription item}}
       </div>
       <div class='item-controls'>
-        {{#if (item.system.effectValue)}}
+        {{#if (compare item.system.effectValue ">" 0)}}
         <a class="item-control d10 rollable" 
             title="Roll {{item.name}} " 
             data-label="{{item.name}}" data-roll="1d10 + 1d10" 

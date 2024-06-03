@@ -255,6 +255,7 @@ export class MEGSActorSheet extends ActorSheet {
       // Append to gadgets
       else if (i.type === MEGS.itemTypes.gadget) {
         i.ownerId = this.object._id;
+        console.error(i); // TODO
         gadgets.push(i);
       }
       // TODO handle omni-gadgets

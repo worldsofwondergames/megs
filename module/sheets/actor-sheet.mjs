@@ -399,7 +399,7 @@ export class MEGSActorSheet extends ActorSheet {
       if (effectValue === 0) {
         // no EV specified; check attributes
         const gadget = this._getOwnedItemById(dataset.gadgetid);
-        
+
         if (gadget) {
           if (gadget.system.attributes.str > 0) {
 
@@ -458,9 +458,12 @@ export class MEGSActorSheet extends ActorSheet {
    * @returns 
    */
   _getOwnedItemById(id) {
+    console.error("TEST1: "+id);
+
     let ownedItem;
     const items = this.object.collections.items;
     for (let i of items) {
+      console.error(i);
       if (i._id === id) {
         ownedItem = i;
         break;

@@ -1,6 +1,6 @@
 export class MegsRoll extends Roll {
     
-    async toMessage(messageData={}, {rollMode, create=true}={}) {
+    async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
 
         await ChatMessage.create(
             {

@@ -392,10 +392,10 @@ export class MEGSActorSheet extends ActorSheet {
 
     } else if (dataset.type === MEGS.itemTypes.gadget) {
 
-      console.error("TEST0A"); // TODO
       // TODO clean all this up; waaaay too complex
       actionValue = parseInt(dataset.actionvalue);
       effectValue = parseInt(dataset.effectvalue);
+      console.error("TEST0A: "+actionValue+" : "+effectValue); // TODO
       
       if (effectValue === 0) {
         console.error("TEST0B"); // TODO

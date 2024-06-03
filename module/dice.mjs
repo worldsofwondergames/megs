@@ -1,3 +1,5 @@
+import { MegsRoll } from "./dice/MEGSRoll.mjs";
+
 export class RollValues {
   constructor(label, type, valueOrAps, actionValue, opposingValue, effectValue, resistanceValue, rollFormula, unskilled) {
     this.label = label;
@@ -188,7 +190,7 @@ export class MegsTableRolls {
     const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
 
     // determine whether happens
-    const avRoll = new Roll(this.rollFormula, {});
+    const avRoll = new MegsRoll(this.rollFormula, {});
 
     // Execute the roll
     await avRoll.evaluate();
@@ -370,15 +372,13 @@ export class MegsTableRolls {
     // what's being rolled (used for display)
     data.title = this.label ? `${this.label}` : '';
 
-    // TODO
-    roll.toMessage();
-    
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-    await ChatMessage.create(
-      {
-        content: dialogHtml
-      }
-    );
+    await roll.toMessage(dialogHtml);
+    // await ChatMessage.create(
+    //   {
+    //     content: dialogHtml
+    //   }
+    // );
   }
 
   /**

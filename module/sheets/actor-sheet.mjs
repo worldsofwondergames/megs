@@ -409,11 +409,11 @@ export class MEGSActorSheet extends ActorSheet {
     let ownedItem;
 
     const items = this.object.collections.items;
-    console.error(items);
     for (let i of items) {
-      console.error(i);
-      console.error(Object.keys(i)[0]);
-      console.error(i[Object.keys(i)[0]]);
+      if (i._id === id) {
+        ownedItem = i;
+        break;
+      }
     }
 
     return ownedItem;

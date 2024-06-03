@@ -408,7 +408,7 @@ export class MEGSActorSheet extends ActorSheet {
   _getOwnedItemById(id) {
     let ownedItem;
 
-    const items = this.collections.items;
+    const items = this.object.collections.items;
     console.error(items);
     for (let i of items) {
       console.error(i);

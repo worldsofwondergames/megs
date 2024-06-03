@@ -405,6 +405,10 @@ export class MEGSActorSheet extends ActorSheet {
     })
   }
 
+  _getOwnedItemById(id) {
+    
+  }
+
   /**
    *
    * @param key

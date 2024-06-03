@@ -255,7 +255,6 @@ export class MEGSActorSheet extends ActorSheet {
       // Append to gadgets
       else if (i.type === MEGS.itemTypes.gadget) {
         i.ownerId = this.object._id;
-        console.error(i); // TODO
         gadgets.push(i);
       }
       // TODO handle omni-gadgets
@@ -362,7 +361,7 @@ export class MEGSActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
 
-    const actionValue = parseInt(dataset.value);
+    let actionValue = parseInt(dataset.value);
     let opposingValue = 0;
     let effectValue = 0;
     let resistanceValue = 0;
@@ -381,12 +380,20 @@ export class MEGSActorSheet extends ActorSheet {
         }
       }
     }
+
     if (dataset.type === MEGS.itemTypes.attribute) {
       effectValue = this._getEffectValueForAttribute(dataset.key);
     } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill 
-        || dataset.type === MEGS.itemTypes.subskill || dataset.type === MEGS.itemTypes.gadget) {
+        || dataset.type === MEGS.itemTypes.subskill) {
       effectValue = parseInt(dataset.value);
-    }
+    } else if (dataset.type === MEGS.itemTypes.gadget) {
+      // TODO gadget type - physical, mental, spiritual?
+      // TODO get owner data?
+      const gadget = game.items.get(gadgetId);
+      console.error(gadget); // TODO
+      actionValue = parseInt(dataset.actionValue);
+      effectValue = parseInt(dataset.effectValue);
+  }
 
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
         effectValue, resistanceValue, dataset.roll, dataset.unskilled);

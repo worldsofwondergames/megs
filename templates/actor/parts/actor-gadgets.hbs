@@ -46,11 +46,13 @@
       <div class='item-controls'>
         {{#if (compare item.system.effectValue ">" 0)}}
         <a class="item-control d10 rollable" 
-            title="Roll {{item.name}} " 
+            title="Roll {{item.name}}" 
             data-label="{{item.name}}" data-roll="1d10 + 1d10" 
-            data-value="{{item.system.effectValue}}" 
+            data-gadgetId="{{item._id}}" 
+            data-actionValue="{{item.system.actionValue}}" 
+            data-effectValue="{{item.system.effectValue}}" 
             data-type="gadget">
-          <img src="/systems/megs/assets/images/icons/d10blue.svg" class="svg-icon" alt="Roll">
+          <img src="/systems/megs/assets/images/icons/d10blue.svg" class="svg-icon" alt="Roll {{item.name}}">
         </a>
         {{/if}}
 

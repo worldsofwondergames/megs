@@ -391,6 +391,7 @@ export class MEGSActorSheet extends ActorSheet {
       // TODO get owner data?
       console.error(dataset);
       const gadget = game.items.get(dataset.gadgetid);
+      console.error(dataset.gadgetid); // TODO
       console.error(gadget); // TODO
       actionValue = parseInt(dataset.actionvalue);
       effectValue = parseInt(dataset.effectvalue);

@@ -395,10 +395,8 @@ export class MEGSActorSheet extends ActorSheet {
       // TODO clean all this up; waaaay too complex
       actionValue = parseInt(dataset.actionvalue);
       effectValue = parseInt(dataset.effectvalue);
-      console.error("TEST0A: "+actionValue+" : "+effectValue); // TODO
       
       if (effectValue === 0) {
-        console.error("TEST0B"); // TODO
         // no EV specified; check attributes
         const gadget = this._getOwnedItemById(dataset.gadgetid);
 

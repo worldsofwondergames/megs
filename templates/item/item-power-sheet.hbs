@@ -181,6 +181,7 @@
 
     {{!-- Modifiers Tab --}}
     <div class="tab modifiers" data-group="primary" data-tab="modifiers">
+      {{#if hasActor}}
       <div class="resources grid grid-2col">
 
           <div class="resource flex-group-center">
@@ -295,6 +296,11 @@
 
         </div>
       </div>
+      {{/if}}
+      {{#unless hasActor}}
+        <div class="message-panel">Due to technical limitations, Modifiers cannot be added to an unowned Power. Please add this Power to a character in order to add Powers.</div>
+      {{/unless}}
+
     </div>
   </section>
 </form>

@@ -299,16 +299,14 @@ export class MEGSItemSheet extends ItemSheet {
       })
     });
 
-    // TODO
-    console.error(this.object); // TODO
-//    if (this.object.parent && this.object.parent.isOwner) {
+    if (this.object.parent && this.object.parent.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
       html.find('li.item').each((i, li) => {
         if (li.classList.contains('inventory-header')) return;
         li.setAttribute('draggable', true);
         li.addEventListener('dragstart', handler, false);
       });
-//    }
+    }
   }
   
   /**
@@ -466,6 +464,7 @@ export class MEGSItemSheet extends ItemSheet {
     const subskills = [];
 
     let items = [];
+    // TODO this is sort of ugly
     if (context.document.parent) {
       const parentActorSheet = context.document.parent._sheet;
       const parentActorItems = parentActorSheet.getData().data.items;

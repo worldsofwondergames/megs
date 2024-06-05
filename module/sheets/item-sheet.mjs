@@ -573,8 +573,6 @@ export class MEGSItemSheet extends ItemSheet {
   _onDragStart(event) {
     const li = event.currentTarget;
 
-    console.error("TEST: dragging: "+li.dataset.itemId); // TODO
-    console.error(event.target.classList);
     if ( event.target.classList.contains("content-link") ) return;
 
     // Create drag data

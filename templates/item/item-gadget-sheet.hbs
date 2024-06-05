@@ -140,8 +140,12 @@
     {{!-- Owned Powers Tab --}}
 
     <div class="tab powers" data-group="primary" data-tab="powers">
-      <div>{{system.parent}}</div>
+      {{#if (system.parent)}}
+        <div>Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
+      {{/if}}
+      {{#unless (system.parent)}}
       {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+      {{/unless}}
     </div>
 
     {{!-- Owned Skills Tab --}}

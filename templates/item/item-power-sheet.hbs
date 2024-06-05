@@ -98,12 +98,17 @@
         <div class="attribute flex-group-center">
           <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'Is Linked?'}}">{{localize 'Is Linked?'}}</label>
           <div>
+          {{#if hasActor}}
           <select  class="resource-select"  name="system.isLinked" data-type="String">
             {{#select system.isLinked}}
                 <option  value="false">{{localize 'No'}}</option>
                 <option  value="true">{{localize 'Yes'}}</option>
             {{/select}}
           </select>
+          {{/if}}
+          {{#unless hasActor}}
+          {{localize 'No'}}
+          {{/unless}}
           </div>
         </div>
 

@@ -138,10 +138,9 @@
     </div>
 
     {{!-- Owned Powers Tab --}}
-
     <div class="tab powers" data-group="primary" data-tab="powers">
       {{#unless hasActor}}
-        <div>Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
+        <div class="message-panel">Due to technical limitations, Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
       {{/unless}}
       {{#if hasActor}}
       {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
@@ -151,7 +150,7 @@
     {{!-- Owned Skills Tab --}}
     <div class="tab skills" data-group="primary" data-tab="skills">
       {{#unless hasActor}}
-        <div>Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
+        <div class="message-panel"Due to technical limitations, >Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
       {{/unless}}
       {{#if hasActor}}
       {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
@@ -161,7 +160,7 @@
     {{!-- Traits Tab --}}
      <div class="tab traits" data-group="primary" data-tab="traits">
       {{#unless hasActor}}
-        <div>Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
+        <div class="message-panel">Due to technical limitations, Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
       {{/unless}}
       {{#if hasActor}}
       {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}

@@ -54,6 +54,13 @@
   color: #1f5079;
 }
 
+.megs .message-panel {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  color: #1f5079;  
+  padding: 10px 5px 0 5px;
+}
+
 .megs .editor-content {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 14px;

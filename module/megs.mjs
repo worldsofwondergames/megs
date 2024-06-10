@@ -193,30 +193,37 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     }
   }
 
-  // powers
   const owner = game.actors.get(gadget.ownerId);
-  for (let i of owner.items) {
-    if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
-      if (description) {
-        description += ", ";
-      }
-      description += i.name + " " + i.system.aps;
-    }
+  if (!owner) {
+    console.error("Owner actor not returned for ID " + gadget.ownerId);
+    // TODO this is probably related to compendium; research storing items as well?
   }
 
-  // skills
-  for (let i of owner.items) {
-    if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
-      if (description) {
-        description += ", ";
+  if (owner && owner.items) {
+    // powers
+    for (let i of owner.items) {
+      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
+        if (description) {
+          description += ", ";
+        }
+        description += i.name + " " + i.system.aps;
       }
-      description += i.name + " " + i.system.aps;
-    } else if (i.type === MEGS.itemTypes.subskill && i.system.parent === gadget._id && i.system.aps > 0) {
-      if (description) {
-        description += ", ";
+    }
+
+    // skills
+    for (let i of owner.items) {
+      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
+        if (description) {
+          description += ", ";
+        }
+        description += i.name + " " + i.system.aps;
+      } else if (i.type === MEGS.itemTypes.subskill && i.system.parent === gadget._id && i.system.aps > 0) {
+        if (description) {
+          description += ", ";
+        }
+        // TODO multiple subskills: Skill (subskill) #
+        description += i.linkedSkill + " (" + i.name + ") " + i.system.aps
       }
-      // TODO multiple subskills: Skill (subskill) #
-      description += i.linkedSkill + " (" + i.name + ") " + i.system.aps
     }
   }
 

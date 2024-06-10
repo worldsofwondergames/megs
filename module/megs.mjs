@@ -197,6 +197,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   if (!owner) {
     console.error("Owner actor not returned for ID " + gadget.ownerId);
     // TODO this is probably related to compendium; research storing items as well?
+    // https://foundryvtt.com/api/classes/client.CompendiumCollection.html
   }
 
   if (owner && owner.items) {

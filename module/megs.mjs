@@ -162,13 +162,18 @@ Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
 });
 
 Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
-  for (let i of game.items) {
-    if (i.type === 'skill') {
-      if (i.name === skillName) {
-        return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
+  if (game.items) {
+    for (let i of game.items) {
+      if (i.type === 'skill') {
+        if (i.name === skillName) {
+          return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
+        }
       }
     }
+  } else {
+    console.error(`Returned undefined for game.items!`);
   }
+
   return "N/A";
 });
 

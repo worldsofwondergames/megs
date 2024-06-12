@@ -394,8 +394,10 @@ console.error("TEST1");
     // what's being rolled (used for display)
     data.title = this.label ? `${this.label}` : '';
 
+    console.error("TESTA");
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-    await roll.toMessage(dialogHtml);
+    console.error("TESTB");
+//TODO    await roll.toMessage(dialogHtml);
   }
 
   /**

@@ -10,13 +10,14 @@ export class MegsRoll extends Roll {
       }
     );
 
-    // Either create or return the data
-    if ( create ) return ChatMessage.create(msg.toObject(), { rollMode });
-    else {
-      if ( rollMode ) msg.applyRollMode(rollMode);
-      return msg.toObject();
-    }
-
+    // TODO
+    // // Either create or return the data
+    // if ( create ) {
+    //   return ChatMessage.create(msg.toObject(), { rollMode });
+    // } else {
+    //   if ( rollMode ) msg.applyRollMode(rollMode);
+    //   return msg.toObject();
+    // }
   }
 }
 
@@ -296,7 +297,7 @@ export class MegsTableRolls {
       if (shiftedRvIndex !== 0) {
         resultData.evResult = resultData.evResult + " + " + Math.abs(shiftedRvIndex);
       }
-console.error("TEST1");
+
       await this._showRollResultInChat(resultData, avRoll);
       return resultAPs;
     }
@@ -309,7 +310,6 @@ console.error("TEST1");
       resultData.result = "No effect!";
       resultData.success = false;
       resultData.evResult = "N";
-      console.error("TEST3");
 
       await this._showRollResultInChat(resultData, avRoll);
       return dice;
@@ -319,7 +319,6 @@ console.error("TEST1");
     resultData.result = "Success: " + resultAPs + " RAPs!";
     resultData.success = true;
     resultData.evResult = resultAPs;
-    console.error("TEST4");
     await this._showRollResultInChat(resultData);
 
     return resultAPs;
@@ -394,10 +393,8 @@ console.error("TEST1");
     // what's being rolled (used for display)
     data.title = this.label ? `${this.label}` : '';
 
-    console.error("TESTA");
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-    console.error("TESTB");
-//TODO    await roll.toMessage(dialogHtml);
+    await roll.toMessage(dialogHtml);
   }
 
   /**

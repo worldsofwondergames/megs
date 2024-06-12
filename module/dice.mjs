@@ -9,15 +9,8 @@ export class MegsRoll extends Roll {
         sound: CONFIG.sounds.dice
       }
     );
-
-    // TODO
-    // // Either create or return the data
-    // if ( create ) {
-    //   return ChatMessage.create(msg.toObject(), { rollMode });
-    // } else {
-    //   if ( rollMode ) msg.applyRollMode(rollMode);
-    //   return msg.toObject();
-    // }
+    
+    return msg;
   }
 }
 

@@ -296,7 +296,7 @@ export class MegsTableRolls {
       if (shiftedRvIndex !== 0) {
         resultData.evResult = resultData.evResult + " + " + Math.abs(shiftedRvIndex);
       }
-
+console.error("TEST1");
       await this._showRollResultInChat(resultData, avRoll);
       return resultAPs;
     }
@@ -309,6 +309,7 @@ export class MegsTableRolls {
       resultData.result = "No effect!";
       resultData.success = false;
       resultData.evResult = "N";
+      console.error("TEST3");
 
       await this._showRollResultInChat(resultData, avRoll);
       return dice;
@@ -318,6 +319,7 @@ export class MegsTableRolls {
     resultData.result = "Success: " + resultAPs + " RAPs!";
     resultData.success = true;
     resultData.evResult = resultAPs;
+    console.error("TEST4");
     await this._showRollResultInChat(resultData);
 
     return resultAPs;

@@ -304,6 +304,7 @@
     },
     "gadget": {
       "templates": ["baseItem", "attributes", "trackOriginal"],
+      "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
       "actionValue": 0,
       "effectValue": 0,

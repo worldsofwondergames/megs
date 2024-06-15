@@ -260,6 +260,10 @@
       },
       "trackOriginal": {
         "originalId": ""
+      },
+      "omniGadget": {
+        "aps": 0,
+        "classes": []
       }
     },
     "power": {
@@ -303,7 +307,7 @@
       "img": "icons/svg/degen.svg"
     },
     "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal"],
+      "templates": ["baseItem", "attributes", "trackOriginal", "omniGadget"],
       "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
       "actionValue": 0,
@@ -335,10 +339,6 @@
         "max": 60,
         "label": "Current Spirit"
       }
-    },
-    "omni-gadget": {
-      "aps": 0,
-      "classes": []
     }
   }
 }

@@ -138,10 +138,13 @@
     },
     "pet": {
       "templates": ["baseCharacter", "attributes", "owned"]
+    },
+    "vehicle": {
+      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"]
     }
  },
   "Item": {
-    "types": ["advantage", "bonus", "drawback", "gadget", "limitation", "omni-gadget", "power", "skill", "subskill"],
+    "types": ["advantage", "bonus", "drawback", "gadget", "limitation", "power", "skill", "subskill"],
     "templates": {
       "baseItem": {
         "name": "",

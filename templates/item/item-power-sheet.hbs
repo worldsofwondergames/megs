@@ -117,7 +117,7 @@
           <div>
             {{#if (compare system.range "eq" "numeric")}}
             <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
-            <select class="resource-select" name="system.range" data-type="string" class="numericSelected">
+            <select class="resource-select numericSelected" name="system.range" data-type="string">
             {{/if}}
             {{#unless (compare system.range "eq" "numeric")}}
             <select class="resource-select" name="system.range" data-type="string">

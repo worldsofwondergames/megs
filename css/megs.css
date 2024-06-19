@@ -656,13 +656,6 @@ details summary.no-arrow {
   background: #a9a7a7;
 }
 
-.system-megs details summary.roll-dialog-summary {
-  margin: 9px 0 3px 0;
-  padding: 3px 0 3px 0;
-  background: #a9a7a7;
-}
-
-
 
 .padding-bottom-10px {
   padding-bottom: 10px;
@@ -769,3 +762,15 @@ details summary.no-arrow {
   padding: 4px 15px 0 15px;
   box-shadow: none;
 }
+
+.system-megs details summary.item-summary {
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  background-color: #1f5079;
+  color: #fff;
+  margin: 9px 0 3px 0;
+  padding: 3px 0 3px 0;
+  background: #a9a7a7;
+}
+

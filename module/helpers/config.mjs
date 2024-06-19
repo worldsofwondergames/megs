@@ -63,7 +63,8 @@ MEGS.ranges = {
   normal: "Normal",
   self: "Self",
   special: "Special",
-  touch: "Touch"
+  touch: "Touch",
+  numeric: "APs"
 }
 
 MEGS.powers = {

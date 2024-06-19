@@ -243,6 +243,7 @@
         "link": "",
         "isLinked": false,
         "range": "",
+        "rangeAPs": 0,
         "formula": "1d10 + 1d10"
       }, 
       "purchasable": {

@@ -115,7 +115,7 @@
        <div class="attribute flex-group-center">
           <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'Range'}}</label>
           <div>
-            <select  class="resource-select"  name="system.range" data-type="String">
+            <select class="resource-select"  name="system.range" data-type="String">
               {{#select system.range}}
                   {{#each system.ranges as |range key|}}
                   <option  value="{{key}}">{{range}}</option>
@@ -123,6 +123,9 @@
                   <option  value="varies">Varies</option>
               {{/select}}
             </select>
+            {{#if (compare system.range "eq" MEGS.ranges.numeric)}}
+            TEST
+            {{/if}}
           </div>
         </div>
 

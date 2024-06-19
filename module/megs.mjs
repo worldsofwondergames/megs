@@ -141,7 +141,7 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
 
 Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
   for (let i of game.items) {
-    if (i.type === 'skill') {
+    if (i.type === MEGS.itemTypes.skill) { 
       if (i.name === skillName) {
         return i.system.range;
       }
@@ -152,7 +152,7 @@ Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
 
 Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
   for (let i of game.items) {
-    if (i.type === 'skill') {
+    if (i.type === MEGS.itemTypes.skill) { 
       if (i.name === skillName) {
         return i.system.type;
       }
@@ -164,7 +164,7 @@ Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
 Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
   if (game.items) {
     for (let i of game.items) {
-      if (i.type === 'skill') {
+      if (i.type === MEGS.itemTypes.skill) { 
         if (i.name === skillName) {
           return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
         }

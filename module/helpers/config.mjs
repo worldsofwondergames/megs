@@ -43,8 +43,7 @@ MEGS.itemTypes = {
   power: "power", 
   skill: "skill", 
   subskill: "subskill",
-  gadget: "gadget", 
-  omnigadget: "omni-gadget"
+  gadget: "gadget"
 }
 
 MEGS.powerTypes = {
@@ -80,7 +79,7 @@ MEGS.advantages = {
   LIGHTNING_REFLEXES: "Lightning Reflexes"
 }
 
-MEGS.omnigadgets = {
+MEGS.omniRanges = {
   A: "Physical Attributes",
   B: "Mental Attributes",
   C: "Physical and Mental Powers",

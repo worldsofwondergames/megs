@@ -774,3 +774,6 @@ details summary.no-arrow {
   background-color: #1f5079;
 }
 
+.megs details[open] summary.item-summary {
+  background-color: #5fa2d9;
+}

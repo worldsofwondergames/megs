@@ -1,3 +1,12 @@
+export const ShowResultCall = Object.freeze({
+  FAILURE: 0,
+  ALL_RESULT: 1,
+  NO_EFFECT: 2,
+  SUCCESS: 3,
+  DOUBLE_1S: 4
+});
+
+
 export class MegsRoll extends Roll {
   async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
 
@@ -240,7 +249,7 @@ export class MegsTableRolls {
     // if fails, output message
     if (!resultData.avRollSuccess) {
       resultData.result = "Action failed!";
-      await this._showRollResultInChat(resultData, avRoll);
+      await this._showRollResultInChat(resultData, avRoll, ShowResultCall.FAILURE);
       return dice;
     }
 
@@ -291,7 +300,7 @@ export class MegsTableRolls {
         resultData.evResult = resultData.evResult + " + " + Math.abs(shiftedRvIndex);
       }
 
-      await this._showRollResultInChat(resultData, avRoll);
+      await this._showRollResultInChat(resultData, avRoll, ShowResultCall.ALL_RESULT);
       return resultAPs;
     }
 
@@ -304,7 +313,7 @@ export class MegsTableRolls {
       resultData.success = false;
       resultData.evResult = "N";
 
-      await this._showRollResultInChat(resultData, avRoll);
+      await this._showRollResultInChat(resultData, avRoll, ShowResultCall.NO_EFFECT);
       return dice;
     }
 
@@ -312,7 +321,7 @@ export class MegsTableRolls {
     resultData.result = "Success: " + resultAPs + " RAPs!";
     resultData.success = true;
     resultData.evResult = resultAPs;
-    await this._showRollResultInChat(resultData);
+    await this._showRollResultInChat(resultData, avRoll, ShowResultCall.SUCCESS);
 
     return resultAPs;
   }
@@ -350,7 +359,7 @@ export class MegsTableRolls {
         // dice are both 1s
         data.result = "Double 1s: Automatic failure!"
         data.dice = dice;
-        await this._showRollResultInChat(data, avRoll);
+        await this._showRollResultInChat(data, avRoll, ShowResultCall.DOUBLE_1S);
         stopRolling = true;
       } else  if (rolledDice[0] === rolledDice[1]) {
         // dice match but are not 1s
@@ -380,12 +389,14 @@ export class MegsTableRolls {
    * @returns {Promise<void>}
    * @private
    */
-  async _showRollResultInChat(data, roll) {
+  async _showRollResultInChat(data, roll, callingPoint) {
     const rollChatTemplate = "systems/megs/templates/chat/rollResult.hbs";
     
     // what's being rolled (used for display)
     data.title = this.label ? `${this.label}` : '';
 
+    console.log("Calling show result from point: " + callingPoint);
+    
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
     await roll.toMessage(dialogHtml);
   }

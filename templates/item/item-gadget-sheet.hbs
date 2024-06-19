@@ -52,9 +52,8 @@
     {{!-- Abilities Tab --}}
     <div class="tab abilities" data-group="primary" data-tab="abilities">
 
-    <section class="gadget-properties grid grid-2col border-bottom">
-      
     {{!-- Gadget values --}}
+    <section class="gadget-properties grid grid-2col border-bottom">
       <div class="gadget-property flex-group-center">
         <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'Action Value'}}">{{localize 'Action Value'}}</label>
         {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
@@ -63,10 +62,12 @@
         <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'Effect Value'}}">{{localize 'Effect Value'}}</label>
         {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
       </div>
+    </section>
 
-      {{!-- Gadget reliability --}}
+    {{!-- Gadget reliability --}}
+    <section class="gadget-properties grid grid-2col border-bottom"></section>  
       <details>
-        <summary class="item-summary">Reliability</summary>
+        <summary class="roll-dialog-summary">Hero Point options</summary>
         <div class="gadget-property flex-group-center">
           <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Reliability'}}">{{localize 'Reliability'}}</label>
           {{> plusMinusInput id='reliability' classes='attribute-input' min=0 value=system.reliability}}
@@ -82,7 +83,7 @@
           </select>
           </div>
         </div>
-      </details>
+       </details>
     </section>
 
     {{!-- Gadget misc properties --}}

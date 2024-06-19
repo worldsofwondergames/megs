@@ -6,6 +6,9 @@ export const ShowResultCall = Object.freeze({
   DOUBLE_1S: 4
 });
 
+/* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
+    Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
+const COLUMN_SHIFT_THRESHOLD = 11; 
 
 export class MegsRoll extends Roll {
   async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
@@ -396,7 +399,7 @@ export class MegsTableRolls {
     data.title = this.label ? `${this.label}` : '';
 
     console.log("Calling show result from point: " + callingPoint);
-    
+
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
     await roll.toMessage(dialogHtml);
   }
@@ -425,12 +428,12 @@ export class MegsTableRolls {
       // TODO handle totals greater than 60 on table
 
       // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
-      if (avRollTotal > 11) {
+      if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
 
         /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
             Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
         for (let i = 0; i < actionTable[avIndex].length; i++) {
-          if (actionTable[avIndex][i] > 11) {
+          if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
             // The roll must be greater than the Success Number
             if (avRollTotal > actionTable[avIndex][i]) {
               columnShifts++;

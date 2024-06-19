@@ -267,7 +267,8 @@
       "trackOriginal": {
         "originalId": ""
       },
-      "omniGadget": {
+      "omni": {
+        "isOmni": false,
         "aps": 0,
         "classes": []
       }
@@ -313,20 +314,32 @@
       "img": "icons/svg/degen.svg"
     },
     "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omniGadget"],
+      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni"],
       "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
       "actionValue": 0,
       "effectValue": 0,
       "reliability": 0,
       "isBroken": false,
+      "isCarried": true,
       "canBeTakenAway": true,
       "hasHardenedDefenses": false,
-      "range": 0,
       "hasAttributes": {
         "physical": true,
         "mental": false,
         "mystical": false
+      },
+      "weapon" : {
+        "isWeapon": false,
+        "range": 0,
+        "ammo": 0
+      },
+      "armor": {
+        "isArmor": false
+      },
+      "vehicle": {
+        "isVehicle": false,
+        "linkedActorId" : ""
       }
     }
   }

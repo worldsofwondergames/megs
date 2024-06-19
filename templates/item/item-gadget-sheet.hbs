@@ -105,12 +105,24 @@
           </div>
           
           <div class="gadget-property flex-group-center">
+            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Can Be Taken Away?'}}</label>
+            <div>
+            <select  class="resource-select"  name="system.isCarried" data-type="String">
+              {{#select system.canBeTakenAway}}
+                  <option value="true">{{localize 'Yes'}}</option>
+                  <option value="false">{{localize 'No'}}</option>
+              {{/select}}
+            </select>
+            </div>
+          </div>
+          
+          <div class="gadget-property flex-group-center">
             <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'Can Be Taken Away?'}}">{{localize 'Can Be Taken Away?'}}</label>
             <div>
             <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
               {{#select system.canBeTakenAway}}
-                  <option  value="false">{{localize 'No'}}</option>
-                  <option  value="true">{{localize 'Yes'}}</option>
+                  <option value="false">{{localize 'No'}}</option>
+                  <option value="true">{{localize 'Yes'}}</option>
               {{/select}}
             </select>
             </div>

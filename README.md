@@ -71,6 +71,14 @@ The current version (0.2.2) of MEGS for Foundry has basic character sheets, some
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get out of beta.
 
+### Are there any changes to this ruleset unique to MEGS for Foundry?
+
+There are a few because of technical and/or design constraints of the platform:
+- Advantages and Drawbacks are grouped as "Traits" for ease of reference.
+- Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
+- Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
+- Vehicles should be created as both Items and Characters. More on this as we approach 1.0.
+
 ### Do you have future plans?
 
 Do I ever! MEGS for Foundry is currently sitting at **version 0.2.2**.

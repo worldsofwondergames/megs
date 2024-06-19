@@ -1,6 +1,6 @@
 {
    "Actor": {
-    "types": ["hero", "villain", "npc", "pet"],
+    "types": ["hero", "villain", "npc", "pet", "Vehicle"],
     "templates": {
       "identity": {
         "biography": "",
@@ -140,7 +140,8 @@
       "templates": ["baseCharacter", "attributes", "owned"]
     },
     "vehicle": {
-      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"]
+      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
+      "linkedItemId" : ""
     }
  },
   "Item": {

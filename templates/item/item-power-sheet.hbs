@@ -120,9 +120,10 @@
                   {{#each system.ranges as |range key|}}
                   <option  value="{{key}}">{{range}}</option>
                   {{/each}}
-                  <option  value="varies">Varies</option>
+                  <option value="varies">Varies</option>
               {{/select}}
             </select>
+            <span>{{system.range}}</span>
             {{#if (compare system.range "eq" MEGS.ranges.numeric)}}
             <div>{{system.rangeAPs}}</div>
             {{/if}}

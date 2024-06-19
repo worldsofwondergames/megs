@@ -123,8 +123,7 @@
                   <option value="varies">Varies</option>
               {{/select}}
             </select>
-            <span>{{system.range}}</span>
-            {{#if (compare system.range "eq" MEGS.ranges.numeric)}}
+            {{#if (compare system.range "eq" "numeric")}}
             <div>{{system.rangeAPs}}</div>
             {{/if}}
           </div>

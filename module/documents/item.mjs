@@ -47,7 +47,6 @@ export class MEGSItem extends Item {
       } else {
         this.gadgetBonus = 2;
       }
-      console.error(this.gadgetBonus); // TODO
     }
 
     // calculate total cost of the item

@@ -263,15 +263,15 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Physical powers - OV and RV are DEX and BODY
         if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {
-          dataset.key = "str";
+          dataset.key = MEGS.attributeAbbreviations.str;
         }
         // Mental powers - OV and RV are INT and MIND
         if (this.object.system.source === MEGS.powerSources.mental.toLowerCase()) {
-          dataset.key = "int";
+          dataset.key = MEGS.attributeAbbreviations.int;
         }
         // Mystical powers - OV and RV are INFL and SPIRIT
         if (this.object.system.source === MEGS.powerSources.mystical.toLowerCase()) {
-          dataset.key = "infl";
+          dataset.key = MEGS.attributeAbbreviations.infl;
         }
         if (targetActor) {
           opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
@@ -317,12 +317,12 @@ export class MEGSItemSheet extends ItemSheet {
    */
   _getOpposingValueForPower(key, targetActor) {
     let opposingValue;
-    if (key === "str") {
+    if (key === MEGS.attributeAbbreviations.str) {
       opposingValue = targetActor.system.attributes.dex.value;
-    } else if (key === "will") {
+    } else if (key === MEGS.attributeAbbreviations.will) {
       opposingValue = targetActor.system.attributes.int.value;
-    } else if (key === "aura") {
-      opposingValue = targetActor.system.attributes.info.value;
+    } else if (key === MEGS.attributeAbbreviations.aura) {
+      opposingValue = targetActor.system.attributes.infl.value;
     } else {
       ui.notifications.error("_getOpposingValueForPower: Invalid attribute selection");
       return;

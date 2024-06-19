@@ -40,14 +40,13 @@ class Actor {
       Object.assign(this, data)
     } else {
       this._id = 1
-      this.name = 'Batman'
+      this.name = 'Anonymous Hero'
       Object.assign(this, {
         system: {
           attributes: {
             dex: {
               "value": 9,
               "factorCost": 7,
-              "isActionAttribute": true,
               "label": "Dexterity",
               "type": "physical",
               "rolls": ["action", "opposing"]
@@ -55,7 +54,6 @@ class Actor {
             "str": {
               "value": 5,
               "factorCost": 6,
-              "isActionAttribute": false,
               "label": "Strength",
               "type": "physical",
               "rolls": ["effect"]
@@ -63,7 +61,6 @@ class Actor {
             "body": {
               "value": 6,
               "factorCost": 6,
-              "isActionAttribute": false,
               "label": "Body",
               "type": "physical",
               "rolls": ["resistance"]
@@ -71,7 +68,6 @@ class Actor {
             "int": {
               "value": 12,
               "factorCost": 7,
-              "isActionAttribute": true,
               "label": "Intelligence",
               "type": "mental",
               "rolls": ["action", "opposing"]
@@ -79,7 +75,6 @@ class Actor {
             "will": {
               "value": 12,
               "factorCost": 6,
-              "isActionAttribute": false,
               "label": "Will",
               "type": "mental",
               "rolls": ["effect"]
@@ -87,7 +82,6 @@ class Actor {
             "mind": {
               "value": 10,
               "factorCost": 6,
-              "isActionAttribute": false,
               "label": "Mind",
               "type": "mental",
               "rolls": ["resistance"]
@@ -95,7 +89,6 @@ class Actor {
             "infl": {
               "value": 10,
               "factorCost": 7,
-              "isActionAttribute": true,
               "label": "Influence",
               "type": "mystical",
               "rolls": ["action", "opposing"]
@@ -103,7 +96,6 @@ class Actor {
             "aura": {
               "value": 8,
               "factorCost": 6,
-              "isActionAttribute": false,
               "label": "Aura",
               "type": "mystical",
               "rolls": ["effect"]
@@ -111,13 +103,12 @@ class Actor {
             "spirit": {
               "value": 10,
               "factorCost": 6,
-              "isActionAttribute": false,
               "label": "Spirit",
               "type": "mystical",
               "rolls": ["resistance"]
             }
           },
-          "name": "Batman",
+          "name": "Anonymous Hero",
           "currentBody": {
             "value": 6,
             "min": 0,
@@ -182,7 +173,7 @@ class ActorSheet {
       Object.assign(this, data)
     } else {
       this._id = 1
-      this.name = 'Batman'
+      this.name = 'Anonymous Hero'
       Object.assign(this, {
         system: {
         }
@@ -198,6 +189,19 @@ class ActorSheet {
 }
 global.actorSheet = new ActorSheet()
 global.ActorSheet = ActorSheet
+
+
+class ItemSheet {
+  constructor (data, options) {
+    if (data) {
+      Object.assign(this, data)
+    } else {
+      this._id = 1
+    }
+  }
+}
+global.itemSheet = new ItemSheet()
+global.ItemSheet = ItemSheet
 
 
 /**

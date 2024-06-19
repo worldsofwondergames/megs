@@ -12,7 +12,7 @@ import { MEGSActor } from '../documents/actor.mjs';
 const actor = new MEGSActor();
 
 test('prepareData sets ability modifiers', () => {
-  expect(actor.name).toBe('Batman')
+  expect(actor.name).toBe('Anonymous Hero')
 
   const attributes = actor.system.attributes
   expect(attributes.dex.value).toEqual(9)

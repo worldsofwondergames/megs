@@ -1,5 +1,5 @@
 {
-   "Actor": {
+  "Actor": {
     "types": ["hero", "villain", "npc", "pet", "Vehicle"],
     "templates": {
       "identity": {
@@ -40,7 +40,6 @@
           "dex": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Dexterity",
             "type": "physical",
             "rolls": ["action", "opposing"]
@@ -48,7 +47,6 @@
           "str": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Strength",
             "type": "physical",
             "rolls": ["effect"]
@@ -56,7 +54,6 @@
           "body": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Body",
             "type": "physical",
             "rolls": ["resistance"]
@@ -64,7 +61,6 @@
           "int": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Intelligence",
             "type": "mental",
             "rolls": ["action", "opposing"]
@@ -72,7 +68,6 @@
           "will": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Will",
             "type": "mental",
             "rolls": ["effect"]
@@ -80,7 +75,6 @@
           "mind": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Mind",
             "type": "mental",
             "rolls": ["resistance"]
@@ -88,7 +82,6 @@
           "infl": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Influence",
             "type": "mystical",
             "rolls": ["action", "opposing"]
@@ -96,7 +89,6 @@
           "aura": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Aura",
             "type": "mystical",
             "rolls": ["effect"]
@@ -104,7 +96,6 @@
           "spirit": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Spirit",
             "type": "mystical",
             "rolls": ["resistance"]
@@ -157,7 +148,6 @@
           "dex": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Dexterity",
             "type": "physical",
             "rolls": ["action", "opposing"],
@@ -166,7 +156,6 @@
           "str": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Strength",
             "type": "physical",
             "rolls": ["effect"],
@@ -175,7 +164,6 @@
           "body": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Body",
             "type": "physical",
             "rolls": ["resistance"],
@@ -184,7 +172,6 @@
           "int": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Intelligence",
             "type": "mental",
             "rolls": ["action", "opposing"],
@@ -193,7 +180,6 @@
           "will": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Will",
             "type": "mental",
             "rolls": ["effect"],
@@ -202,7 +188,6 @@
           "mind": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Mind",
             "type": "mental",
             "rolls": ["resistance"],
@@ -211,7 +196,6 @@
           "infl": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Influence",
             "type": "mystical",
             "rolls": ["action", "opposing"],
@@ -220,7 +204,6 @@
           "aura": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Aura",
             "type": "mystical",
             "rolls": ["effect"],
@@ -229,12 +212,31 @@
           "spirit": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Spirit",
             "type": "mystical",
             "rolls": ["resistance"],
             "alwaysSubstitute": false
           }
+        }
+      },
+      "currentAttributes": {
+        "currentBody": {
+          "value": 0,
+          "min": 0,
+          "max": 60,
+          "label": "Current Body"
+        },
+        "currentMind": {
+          "value": 0,
+          "min": 0,
+          "max": 60,
+          "label": "Current Mind"
+        },
+        "currentSpirit": {
+          "value": 0,
+          "min": 0,
+          "max": 60,
+          "label": "Current Spirit"
         }
       },
       "abilities": {
@@ -246,11 +248,11 @@
       "purchasable": {
         "baseCost": 0,
         "totalCost": 0
-       }, 
+      }, 
       "scalable": {
         "factorCost": 0,
         "aps": 0
-       },
+      },
       "hasModifiers": {
         "bonuses": [],
         "limitations": []
@@ -310,7 +312,7 @@
       "img": "icons/svg/degen.svg"
     },
     "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal", "omniGadget"],
+      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omniGadget"],
       "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
       "actionValue": 0,
@@ -323,24 +325,6 @@
         "physical": true,
         "mental": false,
         "mystical": false
-      },
-      "currentBody": {
-        "value": 0,
-        "min": 0,
-        "max": 60,
-        "label": "Current Body"
-      },
-      "currentMind": {
-        "value": 0,
-        "min": 0,
-        "max": 60,
-        "label": "Current Mind"
-      },
-      "currentSpirit": {
-        "value": 0,
-        "min": 0,
-        "max": 60,
-        "label": "Current Spirit"
       }
     }
   }

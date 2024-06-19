@@ -487,12 +487,13 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _getResistanceValueForAttribute(key, targetActor) {
+    // TODO use rolls attribute?
     let resistanceValue;
-    if (key === "dex") {
+    if (key === MEGS.attributeAbbreviations.dex) {
       resistanceValue = targetActor.system.attributes.body.value;
-    } else if (key === "int") {
+    } else if (key === MEGS.attributeAbbreviations.int) {
       resistanceValue = targetActor.system.attributes.mind.value;
-    } else if (key === "infl") {
+    } else if (key === MEGS.attributeAbbreviations.infl) {
       resistanceValue = targetActor.system.attributes.spirit.value;
     } else {
       ui.notifications.error("Invalid attribute selection");
@@ -508,6 +509,8 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _getEffectValueForAttribute(key) {
+    // TODO use rolls attribute?
+    // TODO use target actor as well?
     let effectValue;
     if (key === MEGS.attributeAbbreviations.dex) {
       effectValue = this.actor.system.attributes.str.value;

@@ -117,12 +117,11 @@
           <div>
             {{#if (compare system.range "eq" "numeric")}}
             <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
+            <select class="resource-select" name="system.range" data-type="string" class="numericSelected">
             {{/if}}
-            <select class="resource-select" name="system.range" data-type="String"
-            {{#if (compare system.range "eq" "numeric")}}
-            class="numericSelected"
-            {{/if}}
-            >
+            {{#unless (compare system.range "eq" "numeric")}}
+            <select class="resource-select" name="system.range" data-type="string">
+            {{/unless}}
               {{#select system.range}}
                   {{#each system.ranges as |range key|}}
                   <option  value="{{key}}">{{range}}</option>

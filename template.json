@@ -321,6 +321,7 @@
       "isBroken": false,
       "canBeTakenAway": true,
       "hasHardenedDefenses": false,
+      "range": 0,
       "hasAttributes": {
         "physical": true,
         "mental": false,

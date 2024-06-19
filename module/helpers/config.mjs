@@ -80,4 +80,10 @@ MEGS.advantages = {
   LIGHTNING_REFLEXES: "Lightning Reflexes"
 }
 
+MEGS.omnigadgets = {
+  A: "Physical Attributes",
+  B: "Mental Attributes",
+  C: "Physical and Mental Powers",
+  D: "Italicized Attributes"
+}
 

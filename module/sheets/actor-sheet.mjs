@@ -260,7 +260,6 @@ export class MEGSActorSheet extends ActorSheet {
         i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
         gadgets.push(i);
       }
-      // TODO handle omni-gadgets
     }
 
     // Assign and return

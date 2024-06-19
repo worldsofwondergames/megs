@@ -40,7 +40,16 @@ export class MEGSItem extends Item {
       }
     }
 
+    // calculate gadget bonus
+console.error(this); // TODO
+    // if (itemData.canBeTakenAway) {
+    //   this.gadget
+    // } else {
+
+    // }
+
     // calculate total cost of the item
+    // TODO gadgets are different
     if (systemData.hasOwnProperty("baseCost")) {
       if (systemData.hasOwnProperty("factorCost") && systemData.hasOwnProperty("aps")) {
         systemData.totalCost = systemData.baseCost + (systemData.factorCost * systemData.aps);

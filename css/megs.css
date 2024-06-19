@@ -763,14 +763,14 @@ details summary.no-arrow {
   box-shadow: none;
 }
 
-.system-megs details summary.item-summary {
+
+.megs details summary.item-summary {
   font-weight: bold;
   font-size: 24px;
   letter-spacing: 0.1em;
-  background-color: #1f5079;
   color: #fff;
   margin: 9px 0 3px 0;
-  padding: 3px 0 3px 0;
-  background: #a9a7a7;
+  padding: 3px 0 3px 5px;
+  background-color: #1f5079;
 }
 

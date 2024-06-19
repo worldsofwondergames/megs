@@ -117,6 +117,9 @@
     </section>
 
     {{!-- Gadget attributes --}}
+    <details>
+      <summary class="roll-dialog-summary">Attributes</summary>
+
     {{#each system.attributes as |attribute key|}}
       {{#if (isDivisor 3 @index)}}
        <section class="attributes grid grid-3col attributeRow">
@@ -139,6 +142,7 @@
         </section>
      {{/if}}
    {{/each}}
+   </details>
     </div>
 
     {{!-- Owned Powers Tab --}}

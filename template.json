@@ -255,8 +255,7 @@
         "limitations": []
       },
       "modifier": {
-        "factorCostMod": 0,
-        "link": ""
+        "factorCostMod": 0
       },
       "hasParent": {
         "parent": ""

@@ -777,3 +777,16 @@ details summary.no-arrow {
 .megs details[open] summary.item-summary {
   background-color: #5fa2d9;
 }
+
+select.numericSelected {
+  width: 75%;
+  float: left;
+}
+
+input.numericSelected {
+  width: 25%;
+  float: left;
+  font-size: 22px;
+  text-align: center;
+  color: #1f5079;
+}

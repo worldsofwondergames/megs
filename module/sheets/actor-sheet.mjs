@@ -258,7 +258,6 @@ export class MEGSActorSheet extends ActorSheet {
       else if (i.type === MEGS.itemTypes.gadget) {
         i.ownerId = this.object._id;
         i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
-        console.error(i); // TODO add rollable tag
         gadgets.push(i);
       }
       // TODO handle omni-gadgets
@@ -464,13 +463,10 @@ export class MEGSActorSheet extends ActorSheet {
    * @returns 
    */
   _getOwnedItemById(id) {
-    console.error("TEST1: "+id);
 
     let ownedItem;
     const items = this.object.collections.items;
-    console.error(items);
     for (let i of items) {
-      console.error(i);
       if (i._id === id) {
         ownedItem = i;
         break;

@@ -778,15 +778,16 @@ details summary.no-arrow {
   background-color: #5fa2d9;
 }
 
-select.numericSelected {
+.megs .attributes .attribute select.numericSelected {
   width: 75%;
   float: left;
 }
 
-input.numericSelected {
+.megs .attributes .attribute input.numericSelected {
   width: 25%;
   float: left;
   font-size: 22px;
   text-align: center;
   color: #1f5079;
+  background-color: #ddebf6;
 }

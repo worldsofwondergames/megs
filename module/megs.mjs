@@ -177,7 +177,7 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
   return "N/A";
 });
 
-Handlebars.registerHelper('getSkillDisplayName', function(skill) {
+Handlebars.registerHelper('getSkillDisplayName', function(skill, subskills) {
   let displayName = skill.name;
   console.error(skill);
   if (skill.system.aps === 0) {

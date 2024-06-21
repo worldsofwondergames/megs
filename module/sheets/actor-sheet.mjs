@@ -314,7 +314,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     // 
     subskills.forEach((element) => {
-      const result = context.skills.find(({ _id }) => _id === element.system.parent);
+      const result = skills.find(({ _id }) => _id === element.system.parent);
       if (result) {
         console.error(result.name + " : " + result._id);
         result.subskills.push(element);

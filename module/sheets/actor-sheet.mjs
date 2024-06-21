@@ -316,7 +316,7 @@ export class MEGSActorSheet extends ActorSheet {
     subskills.forEach((element) => {
       const result = context.items.find(({ _id }) => _id === element.system.parent);
       console.error(element._id + " : "+ element.system.parent); // TODO
-      if (result.type === MEGS.itemTypes.skill) {
+      if (result && result.type === MEGS.itemTypes.skill) {
         console.error(result);
       }
             // if has a system.parent

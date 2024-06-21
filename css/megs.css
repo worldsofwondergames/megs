@@ -77,6 +77,7 @@
 }
 
 .megs div.biography div.editor-content {
+  margin-top: 2px;
   border: 1px solid #1f5079; 
   background-color: #ddebf6;
 }

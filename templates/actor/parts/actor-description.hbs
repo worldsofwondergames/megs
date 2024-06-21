@@ -26,9 +26,5 @@
         </div>
       </section>
 
-      <section class="grid-1col description-item">
-        <div class="flex-group-left biography-input">
-          <label for="system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.biography}}">{{localize 'Biography'}}</label>
-          {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
-        </div>
-      </section>
+      <label for="system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.biography}}">{{localize 'Biography'}}</label>
+      {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}

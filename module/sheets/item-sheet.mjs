@@ -463,6 +463,7 @@ export class MEGSItemSheet extends ItemSheet {
     const advantages = [];
     const drawbacks = [];
     const subskills = [];
+    const gadgets = [];
 
     let items = [];
     if (context.document.parent) {
@@ -503,9 +504,30 @@ export class MEGSItemSheet extends ItemSheet {
           i.skill = context.item;
           subskills.push(i);
         }
+        // Append to gadgets
+        else if (i.type === MEGS.itemTypes.gadget) {
+          gadgets.push(i);
+        }
       }
 
     }
+
+    // sort alphabetically
+    const arrays = [
+      powers,
+      skills,
+      advantages,
+      drawbacks,
+      subskills,
+      gadgets
+    ];
+    arrays.forEach((element) => {
+      element.sort(function(a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+    });
 
     // Assign and return
     context.powers = powers;

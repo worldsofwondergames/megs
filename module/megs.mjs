@@ -178,11 +178,11 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 });
 
 Handlebars.registerHelper('getSkillDisplayName', function(skill, subskills) {
+  console.error(subskills); // TODO
   let displayName = skill.name;
   console.error(skill);
   if (skill.system.aps === 0) {
-    console.error("TEST!!!!!!!!!!!!");
-    console.error(subskills);
+    // TODO
   }
   if (skill.system.isLinked === "true") {
     displayName += "*";

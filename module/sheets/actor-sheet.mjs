@@ -265,10 +265,11 @@ export class MEGSActorSheet extends ActorSheet {
       // Append to skills.
       else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
         context.items.forEach((element) => {
-          if (element.type === MEGS.itemTypes.subskill){ //} && element.system.parent === i._id) {
-console.error(element); // TODO
+          if (element.type === MEGS.itemTypes.subskill ) { //} && element.system.parent === i._id) {
+console.error(element._id + " : "+ element.system.parent); // TODO
           }
         });
+        console.error("==========================================");
 
         if (i.system.aps === 0) {
           i.unskilled = true;

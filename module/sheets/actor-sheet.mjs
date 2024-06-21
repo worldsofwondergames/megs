@@ -90,7 +90,6 @@ export class MEGSActorSheet extends ActorSheet {
           } else if (owner.items) {
             owner.items.forEach((element) => {
               if (element.type === MEGS.itemTypes.gadget) {
-                console.error(element); // TODO
                 context.vehicles[element.name] = element._id;
               }
             });

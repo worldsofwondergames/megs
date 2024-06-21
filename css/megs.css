@@ -76,8 +76,12 @@
   font-size: 22px;
 }
 
+.megs div.biography div.editor {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
+
 .megs div.biography div.editor-content {
-  margin-top: 2px;
   border: 1px solid #1f5079; 
   background-color: #ddebf6;
 }

@@ -5,26 +5,36 @@
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
     <div class="header-fields">
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  --}}
-      <div class="resources grid grid-3col">
 
-         <div class="resource flex-group-center">
+        <div class="resources grid grid-3col">
+          <div class="resource flex-group-center">
           <label for="system.currentBody.ownerId" class="resource-label">Owner</label>
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
               {{#each characters as |id name|}}
-            <option value="{{id}}">{{name}}</option>
+              <option value="{{id}}">{{name}}</option>
               {{/each}}
             {{/select}}
             </select>
-            </div>
-
+          </div>
         </div>       
 
-        <!-- TODO linked item -->
+        <div class="resources grid grid-3col">
+          <div class="resource flex-group-center">
+          <label for="system.currentBody.linkedItemId" class="resource-label">Linked Item</label>
+          <div>
+            {{#if system.ownerId && vehicles}}
+            <select  class="resource-select"  name="system.linkedItemId" data-type="String">
+            {{#select system.linkedItemId}}
+              {{#each vehicles as |id name|}}
+              <option value="{{id}}">{{name}}</option>
+              {{/each}}
+            {{/select}}
+            </select>
+            {{/if}}
+          </div>
+        </div>       
 
         {{!-- "flex-group-center" is also defined in the _grid.scss file
         and it will add a small amount of padding, a border, and will

@@ -83,7 +83,10 @@ export class MEGSActorSheet extends ActorSheet {
       }); 
       console.error(context.characters);
 
-      // TODO if actor selected, get items that are vehicles
+      context.vehicles = {};
+      if (system.ownerId) {
+        // TODO if actor selected, get items that are vehicles
+      }
     }
 
     // Add roll data for TinyMCE editors.

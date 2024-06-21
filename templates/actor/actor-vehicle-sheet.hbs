@@ -44,8 +44,6 @@
     {{!-- Abilities Tab --}}
     <div class="tab abilities" data-group="primary" data-tab="abilities">
 
-    {{> "systems/megs/templates/actor/parts/actor-init-hp.hbs"}}
-
     {{#each system.attributes as |attribute key|}}
       {{#if (isDivisor 3 @index)}}
        <section class="attributes grid grid-3col attributeRow">

@@ -264,12 +264,19 @@ export class MEGSActorSheet extends ActorSheet {
       }
       // Append to skills.
       else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
+        context.items.forEach((element) => {
+          if (element.type === MEGS.itemTypes.subskill && element.system.parent === i._id) {
+console.error(element); // TODO
+          }
+        });
+
         if (i.system.aps === 0) {
           i.unskilled = true;
           i.linkedAPs = this.object.system.attributes[i.system.link].value;
         } else {
           i.unskilled = false;
         }
+        i.subskills = [];
         skills.push(i);
       }
       // Append to advantages.
@@ -282,7 +289,6 @@ export class MEGSActorSheet extends ActorSheet {
       }
       // Append to subskills.
       else if (i.type === MEGS.itemTypes.subskill) {
-        console.error(i); // TODO
         subskills.push(i);
       }
       // Append to gadgets
@@ -310,6 +316,14 @@ export class MEGSActorSheet extends ActorSheet {
       });
 
     }
+
+    // 
+    subskills.forEach((element) => {
+      // if has a system.parent
+        // get related skill
+        // push to that skill's subskills
+      // else delete subskill
+    });
 
     // Assign and return
     context.powers = powers;

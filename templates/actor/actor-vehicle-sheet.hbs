@@ -15,8 +15,8 @@
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
-              {{#each system.powerTypes as |powerType key|}}
-            <option value="{{key}}">{{powerType}}</option>
+              {{#each system.characters as |name id|}}
+            <option value="{{id}}">{{name}}</option>
               {{/each}}
             {{/select}}
             </select>

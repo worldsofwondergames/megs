@@ -71,8 +71,16 @@ export class MEGSActorSheet extends ActorSheet {
     if (actorData.type === MEGS.characterTypes.vehicle) {
       this._prepareCharacterData(context);
 
-      // TODO game.actors - loop
-      game.actors.forEach((element) => console.log(element));
+      context.characters = {};
+      game.actors.forEach((element) => {
+        if (element.type === MEGS.characterTypes.hero 
+          || element.type === MEGS.characterTypes.vehicle 
+          || element.type === MEGS.characterTypes.npc) 
+        {
+          context.characters[element.name] = element._id;
+        }
+        
+      }); 
 
       // TODO if actor selected, get items that are vehicles
     }

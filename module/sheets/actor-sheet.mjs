@@ -264,15 +264,7 @@ export class MEGSActorSheet extends ActorSheet {
       }
       // Append to skills.
       else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
-        context.items.forEach((element) => {
-          if (element.type === MEGS.itemTypes.subskill ) { //} && element.system.parent === i._id) {
-const result = context.items.find(({ _id }) => _id === element.system.parent);
-console.error(element._id + " : "+ element.system.parent); // TODO
-console.error(result);
-          }
-        });
-        console.error("==========================================");
-
+        i.subskills = [];
         if (i.system.aps === 0) {
           i.unskilled = true;
           i.linkedAPs = this.object.system.attributes[i.system.link].value;
@@ -322,7 +314,12 @@ console.error(result);
 
     // 
     subskills.forEach((element) => {
-      // if has a system.parent
+      const result = context.items.find(({ _id }) => _id === element.system.parent);
+      console.error(element._id + " : "+ element.system.parent); // TODO
+      if (result.type === MEGS.itemTypes.skill) {
+        console.error(result);
+      }
+            // if has a system.parent
         // get related skill
         // push to that skill's subskills
       // else delete subskill

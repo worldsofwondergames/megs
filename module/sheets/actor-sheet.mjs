@@ -78,15 +78,14 @@ export class MEGSActorSheet extends ActorSheet {
           || element.type === MEGS.characterTypes.npc) 
         {
           context.characters[element.name] = element._id;
-          console.error(element);
         }
       }); 
-      console.error(context.characters);
+      console.error(context.system);
 
       context.vehicles = {};
-      if (system.ownerId) {
-        // TODO if actor selected, get items that are vehicles
-      }
+      // if (system.ownerId) {
+      //   // TODO if actor selected, get items that are vehicles
+      // }
     }
 
     // Add roll data for TinyMCE editors.

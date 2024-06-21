@@ -179,8 +179,10 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 
 
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
-  let displayName = skill.name;
   console.error(skill);
+
+  let displayName = skill.name;
+
   if (skill.system.isLinked) {
     displayName += "*";
   }

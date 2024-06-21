@@ -30,7 +30,8 @@
       "hero": "Hero",
       "npc": "NPC",
       "villain": "Villain",
-      "pet": "Pet"
+      "pet": "Pet",
+      "vehicle": "Vehicle"
     },
     "Item": {
       "gadget": "Gadget",

@@ -329,6 +329,9 @@
         "mental": false,
         "mystical": false
       },
+      "hasPowers": true,
+      "hasSkills": true,
+      "hasGadgets": true,
       "weapon" : {
         "isWeapon": false,
         "range": 0,

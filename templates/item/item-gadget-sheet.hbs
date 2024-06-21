@@ -44,7 +44,9 @@
 
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="abilities">{{localize 'Abilities'}}</a>
+    {{#if (compare system.hasPowers "eq" "true")}}
     <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
+    {{/if}}
     <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
     <a class="item" data-tab="traits">{{localize 'Traits'}}</a>
     <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
@@ -84,7 +86,7 @@
                   class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
                   data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
                   data-value="{{attribute.value}}" data-key="{{key}}">
-                {{attribute.label}} {{#if (compare system.hasAttributes.physical "eq" "true")}}TEST{{/if}}
+                {{attribute.label}}
               </label>
   <!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
               <div class="quantity attribute-input">
@@ -236,6 +238,65 @@
         >
         <label for="system.hasAttributes.mystical"> Has mystical attributes?</label>
       </div>
+
+      <hr/>
+
+      <div>
+        <input type="checkbox" id="system.weapon.isWeapon" name="system.weapon.isWeapon" value="true"
+        {{#if (compare system.weapon.isWeapon "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.weapon.isWeapon"> Is a weapon?</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.armor.isArmor" name="system.armor.isArmor" value="true"
+        {{#if (compare system.armor.isArmor "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.armor.isArmor"> Is armor?</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.vehicle.isVehicle" name="system.vehicle.isVehicle" value="true"
+        {{#if (compare system.vehicle.isVehicle "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.vehicle.isVehicle"> Is a vehicle?</label>
+      </div>
+
+      <hr/>
+
+      <div>
+        <input type="checkbox" id="system.hasPowers" name="system.hasPowers" value="true"
+        {{#if (compare system.hasPowers "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.hasPowers"> Has powers??</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.hasSkills" name="system.hasSkills" value="true"
+        {{#if (compare system.hasSkills "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.hasSkills"> Has skills??</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.hasGadgets" name="system.hasGadgets" value="true"
+        {{#if (compare system.hasGadgets "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.hasGadgets"> Has gadgets?</label>
+      </div>
+
     </div>
 
   </section>

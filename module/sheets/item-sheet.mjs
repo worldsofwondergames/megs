@@ -534,7 +534,7 @@ export class MEGSItemSheet extends ItemSheet {
     context.advantages = advantages;
     context.drawbacks = drawbacks;
     context.subskills = subskills;
-    console.error(context.subskills); // TODO
+    console.error(context); // TODO
   }
 
   /**

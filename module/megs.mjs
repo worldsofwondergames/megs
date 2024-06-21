@@ -180,13 +180,13 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   console.error(skill);
+return "TEST"; // TODO
+  // let displayName = skill.name;
 
-  let displayName = skill.name;
-
-  if (skill.system.isLinked) {
-    displayName += "*";
-  }
-  return displayName;
+  // if (skill.system.isLinked) {
+  //   displayName += "*";
+  // }
+  // return displayName;
 });
 
 Handlebars.registerHelper('getGadgetDescription', function(gadget) {

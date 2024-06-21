@@ -266,7 +266,9 @@ export class MEGSActorSheet extends ActorSheet {
       else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
         context.items.forEach((element) => {
           if (element.type === MEGS.itemTypes.subskill ) { //} && element.system.parent === i._id) {
+const result = context.items.find(({ _id }) => _id === element.system.parent);
 console.error(element._id + " : "+ element.system.parent); // TODO
+console.error(result);
           }
         });
         console.error("==========================================");

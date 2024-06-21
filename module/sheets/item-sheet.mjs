@@ -442,7 +442,6 @@ export class MEGSItemSheet extends ItemSheet {
       });
       
       context.subskills = subskills;
-      console.error(context.subskills);
     }
   }
 

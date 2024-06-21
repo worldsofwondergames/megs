@@ -83,12 +83,17 @@ export class MEGSActorSheet extends ActorSheet {
 
       context.vehicles = {};
       if (context.system.ownerId) {
+        const owner = game.actors.get(context.system.ownerId);
+        if (owner) {
+          console.error(owner);
+        }
       //   // TODO if actor selected, get items that are vehicles
-        game.items.forEach((element) => {
-          if (element.type === MEGS.itemTypes.gadget) {
-            console.error(element);            // TODO
-          }
-        });
+        // game.items.forEach((element) => {
+        //   if (element.type === MEGS.itemTypes.gadget) {
+        //     console.error(element);            // TODO
+        //     // system.vehicle.isVehicle
+        //   }
+        // });
       }
     }
 

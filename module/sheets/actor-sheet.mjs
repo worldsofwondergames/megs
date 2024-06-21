@@ -68,6 +68,15 @@ export class MEGSActorSheet extends ActorSheet {
       this._prepareInitiative(context);
     }
 
+    if (actorData.type === MEGS.characterTypes.vehicle) {
+      this._prepareCharacterData(context);
+
+      // TODO game.actors - loop
+      game.actors.forEach((element) => console.log(element));
+
+      // TODO if actor selected, get items that are vehicles
+    }
+
     // Add roll data for TinyMCE editors.
     // TODO does this do anything in current model?
     context.rollData = context.actor.getRollData();

@@ -10,6 +10,20 @@
       from 1 to 12 and will create that number of columns.  --}}
       <div class="resources grid grid-3col">
 
+         <div class="resource flex-group-center">
+          <label for="system.currentBody.ownerId" class="resource-label">Owner</label>
+          <div>
+            <select  class="resource-select"  name="system.ownerId" data-type="String">
+            {{#select system.ownerId}}
+              {{#each system.powerTypes as |powerType key|}}
+            <option value="{{key}}">{{powerType}}</option>
+              {{/each}}
+            {{/select}}
+            </select>
+            </div>
+
+        </div>       
+
         <!-- TODO linked item -->
 
         {{!-- "flex-group-center" is also defined in the _grid.scss file

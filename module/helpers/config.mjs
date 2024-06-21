@@ -32,7 +32,8 @@ MEGS.characterTypes = {
   hero: 'hero',
   npc: 'npc',
   villain: 'villain',
-  pet: "pet"
+  pet: "pet",
+  vehicle: "vehicle"
 }
 
 MEGS.itemTypes = {

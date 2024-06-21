@@ -26,8 +26,7 @@
           class='item-control item-edit'
           title='{{localize "DOCUMENT.Update" type=item.name}}'
         >
-          {{item.name}}
-          {{#if (compare item.system.isLinked "===" "true")}}*{{/if}}
+          {{#getSkillDisplayName item}}
         </a>
       </div>
       <div class='item-aps'>

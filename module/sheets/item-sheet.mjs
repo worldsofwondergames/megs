@@ -531,9 +531,11 @@ export class MEGSItemSheet extends ItemSheet {
     subskills.forEach((element) => {
       const result = skills.find(({ _id }) => _id === element.system.parent);
       if (result) {
+        console.error("TEST1: " + element.name + " : " + element.system.parent); // TODO
         result.subskills.push(element);
-      } else {
-        console.error(element._id + " : " + element.system.parent); // TODO
+      } 
+      else {
+        console.error("TEST2: " + element.name + " : " + element.system.parent); // TODO
       }
     });
 

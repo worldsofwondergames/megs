@@ -71,7 +71,8 @@
 
     {{!-- Description Tab --}}
     <div class="tab biography" data-group="primary" data-tab="description">
-       {{> "systems/megs/templates/actor/parts/actor-vehicle-description.hbs"}}
+      <label for="system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.biography}}">{{localize 'Description'}}</label>
+      {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
     </div>
 
   </section>

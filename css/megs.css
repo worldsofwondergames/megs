@@ -808,3 +808,8 @@ details summary.no-arrow {
   background-color: #ddebf6;
   border: 2px solid #a9a7a7;
 }
+
+
+.megs .tabs.settings label {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}

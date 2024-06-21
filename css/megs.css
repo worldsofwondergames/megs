@@ -74,6 +74,10 @@
   background-color: #ddebf6;
 }
 
+.megs div.biography label.biography-label {
+  font-size: 22px;
+}
+
 .megs .description-text {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 14px;

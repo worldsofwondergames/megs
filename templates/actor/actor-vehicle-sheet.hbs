@@ -24,7 +24,7 @@
           <div class="resource flex-group-center">
           <label for="system.currentBody.linkedItemId" class="resource-label">Linked Item</label>
           <div>
-            {{#if system.ownerId && vehicles}}
+            {{#if vehicles}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
             {{#select system.linkedItemId}}
               {{#each vehicles as |id name|}}

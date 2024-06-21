@@ -116,10 +116,10 @@
           </div>
           
           <div class="gadget-property flex-group-center">
-            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Can Be Taken Away?'}}</label>
+            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Is Carried?'}}</label>
             <div>
             <select  class="resource-select"  name="system.isCarried" data-type="String">
-              {{#select system.canBeTakenAway}}
+              {{#select system.isCarried}}
                   <option value="true">{{localize 'Yes'}}</option>
                   <option value="false">{{localize 'No'}}</option>
               {{/select}}

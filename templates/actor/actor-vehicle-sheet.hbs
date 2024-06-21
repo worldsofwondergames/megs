@@ -26,6 +26,7 @@
           <div>
         {{#if vehicles}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
+                <option value="">None</option>
         {{#select system.linkedItemId}}
             {{#each vehicles as |id name|}}
               <option value="{{id}}">{{name}}</option>

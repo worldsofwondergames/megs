@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["hero", "villain", "npc", "pet", "Vehicle"],
+    "types": ["hero", "villain", "npc", "pet", "vehicle"],
     "templates": {
       "identity": {
         "biography": "",

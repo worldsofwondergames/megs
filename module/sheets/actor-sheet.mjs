@@ -282,6 +282,7 @@ export class MEGSActorSheet extends ActorSheet {
       }
       // Append to subskills.
       else if (i.type === MEGS.itemTypes.subskill) {
+        console.error(i); // TODO
         subskills.push(i);
       }
       // Append to gadgets

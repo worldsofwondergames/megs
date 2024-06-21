@@ -629,6 +629,7 @@ export class MEGSItemSheet extends ItemSheet {
 
     const sheetTypeSkill = this.object.type === MEGS.itemTypes.skill;
     if (sheetTypeSkill && item.type === MEGS.itemTypes.subskill) {
+      console.error(item); // TODO
       return this._onDropItem(event, data);
     }
 

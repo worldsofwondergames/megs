@@ -810,6 +810,6 @@ details summary.no-arrow {
 }
 
 
-.megs .tabs.settings label {
+.megs div.tab.settings label {
   font-family: 'Helvetica', 'Arial', sans-serif;
 }

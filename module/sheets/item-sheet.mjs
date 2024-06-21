@@ -625,13 +625,19 @@ export class MEGSItemSheet extends ItemSheet {
     const allowed = Hooks.call("dropActorSheetData", actor, this, data);
     const isDroppable = this.object.type === MEGS.itemTypes.power;
     const item = await Item.implementation.fromDropData(data);
-    const isSubItem = item.type === MEGS.itemTypes.bonus || item.type === MEGS.itemTypes.limitation;
+    const isSubItem = item.type === MEGS.itemTypes.bonus || item.type === MEGS.itemTypes.limitation || item.type === MEGS.itemTypes.subskill;
+
+    const sheetTypeSkill = this.object.type === MEGS.itemTypes.skill;
+    if (sheetTypeSkill && item.type === MEGS.itemTypes.subskill) {
+      return this._onDropItem(event, data);
+    }
 
     const sheetTypeGadget = this.object.type === MEGS.itemTypes.gadget;
 
     if ( (!allowed || !isDroppable || !isSubItem) && (!sheetTypeGadget)) return;
 
     if (sheetTypeGadget && isSubItem) return;
+
 
     // Handle different data types
     // TODO remove this?

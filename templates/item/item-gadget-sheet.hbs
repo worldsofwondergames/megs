@@ -47,9 +47,12 @@
     {{#if (compare system.hasPowers "eq" "true")}}
     <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
     {{/if}}
+    {{#if (compare system.hasSkills "eq" "true")}}
     <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
-    <a class="item" data-tab="traits">{{localize 'Traits'}}</a>
+    {{/if}}
+    {{#if (compare system.hasGadgets "eq" "true")}}
     <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
+    {{/if}}
     <a class="item" data-tab="description">{{localize 'Description'}}</a>
     <a class="item" data-tab="settings">{{localize 'Settings'}}</a>
   </nav>

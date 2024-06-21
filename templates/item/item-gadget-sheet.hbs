@@ -43,6 +43,7 @@
     <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
     <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
     <a class="item" data-tab="traits">{{localize 'Traits'}}</a>
+    <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
     <a class="item" data-tab="description">{{localize 'Description'}}</a>
   </nav>
 
@@ -190,6 +191,11 @@
       {{#if hasActor}}
       {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
       {{/if}}
+    </div>
+
+    {{!-- Owned gadgets Tab --}}
+    <div class="tab gadgets" data-group="primary" data-tab="gadgets">
+       {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
     </div>
 
     {{!-- Description Tab --}}

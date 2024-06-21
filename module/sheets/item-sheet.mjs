@@ -15,7 +15,7 @@ export class MEGSItemSheet extends ItemSheet {
   static get defaultOptions() {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'item'];
-    newOptions.width = 570;
+    newOptions.width = 585;
     newOptions.height = 480;
     newOptions.dragDrop = [{dragSelector: ".item-list .item", dropSelector: null}];
     newOptions.tabs = [

@@ -178,12 +178,10 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 });
 
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
-  console.error(skill.subskills); // TODO
   let displayName = skill.name;
   if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
     displayName += " ("
     skill.subskills.forEach((subskill, index) => {
-      console.error(subskill); // TODO
       if (index > 0) { displayName += " ,"; }
       displayName += subskill.name + " " + subskill.system.aps;
     });

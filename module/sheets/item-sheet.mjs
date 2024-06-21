@@ -528,13 +528,21 @@ export class MEGSItemSheet extends ItemSheet {
       });
     });
 
+    subskills.forEach((element) => {
+      const result = skills.find(({ _id }) => _id === element.system.parent);
+      if (result) {
+        result.subskills.push(element);
+      } else {
+        console.error(element._id + " : " + element.system.parent); // TODO
+      }
+    });
+
     // Assign and return
     context.powers = powers;
     context.skills = skills;
     context.advantages = advantages;
     context.drawbacks = drawbacks;
     context.subskills = subskills;
-    console.error(context); // TODO
   }
 
   /**

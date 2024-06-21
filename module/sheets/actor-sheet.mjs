@@ -316,15 +316,9 @@ export class MEGSActorSheet extends ActorSheet {
     subskills.forEach((element) => {
       const result = skills.find(({ _id }) => _id === element.system.parent);
       if (result) {
-        console.error(result.name + " : " + result._id);
         result.subskills.push(element);
       }
-            // if has a system.parent
-        // get related skill
-        // push to that skill's subskills
-      // else delete subskill
     });
-    console.error(skills);
 
     // Assign and return
     context.powers = powers;

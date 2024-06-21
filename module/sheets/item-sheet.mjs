@@ -125,7 +125,7 @@ export class MEGSItemSheet extends ItemSheet {
       context.items = itemData.system.items;
       this._prepareGadgetData(context);
 
-      console.error(context); // TODO 
+      console.error(context.system.hasAttributes); // TODO 
     }
 
     // store all skills for dropdown on subskill page

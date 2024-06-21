@@ -208,21 +208,28 @@
 
     {{!-- Settings Tab --}}
     <div class="tabs settings" data-group="primary" data-tab="settings">
-      <div>
+      <div style="display: block;">
         <input type="checkbox" id="system.hasAttributes.physical" name="system.hasAttributes.physical" value="true"
         {{#if (system.hasAttributes.physical)}}
           checked
         {{/if}}
         >
         <label for="system.hasAttributes.physical"> Has physical attributes?</label>
-        TEST: {{system.hasAttributes.physical}}
       </div>
-      <div>
-        <input type="checkbox" id="system.hasAttributes.mental" name="system.hasAttributes.mental" value="true">
+      <div style="display: block;">
+        <input type="checkbox" id="system.hasAttributes.mental" name="system.hasAttributes.mental" value="true"
+        {{#if (system.hasAttributes.mental)}}
+          checked
+        {{/if}}
+        >
         <label for="system.hasAttributes.mental"> Has mental attributes?</label>
       </div>
-      <div>
-        <input type="checkbox" id="system.hasAttributes.mystical" name="system.hasAttributes.mystical" value="true">
+      <div style="display: block;">
+        <input type="checkbox" id="system.hasAttributes.mystical" name="system.hasAttributes.mystical" value="true"
+        {{#if (system.hasAttributes.mystical)}}
+          checked
+        {{/if}}
+        >
         <label for="system.hasAttributes.mystical"> Has mystical attributes?</label>
       </div>
     </div>

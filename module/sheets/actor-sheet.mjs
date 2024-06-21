@@ -324,7 +324,7 @@ export class MEGSActorSheet extends ActorSheet {
         // push to that skill's subskills
       // else delete subskill
     });
-    console.error(context.skills);
+    console.error(skills);
 
     // Assign and return
     context.powers = powers;

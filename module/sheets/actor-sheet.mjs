@@ -85,10 +85,21 @@ export class MEGSActorSheet extends ActorSheet {
       if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
-          console.error(owner);
+          if (!owner) {
+            console.error("Owner actor not returned for ID " + gadget.ownerId);
+            // TODO this is probably related to compendium; research storing items as well?
+            // https://foundryvtt.com/api/classes/client.CompendiumCollection.html
+          }
+        
+          if (owner && owner.items) {
+            owner.items.forEach((element) => {
+              console.error(element);
+        //     // system.vehicle.isVehicle
+            });
+          }
         }
       //   // TODO if actor selected, get items that are vehicles
-        // game.items.forEach((element) => {
+        // owner.items.forEach((element) => {
         //   if (element.type === MEGS.itemTypes.gadget) {
         //     console.error(element);            // TODO
         //     // system.vehicle.isVehicle

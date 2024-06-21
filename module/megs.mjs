@@ -180,7 +180,7 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   console.error(skill);
   let displayName = skill.name;
-  if (system.aps === 0) {
+  if (skill.aps === 0) {
     console.error(subskills);
   }
   if (skill.system.isLinked === "true") {

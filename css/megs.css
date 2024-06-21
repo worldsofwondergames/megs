@@ -61,6 +61,10 @@
   padding: 10px 5px 0 5px;
 }
 
+.megs .editor-edit {
+  display: inline-block;
+}
+
 .megs .editor-content {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 14px;

@@ -76,6 +76,7 @@
         <summary class="item-summary">Attributes</summary>
 
       {{#each system.attributes as |attribute key|}}
+        {{#if (compare system.hasAttributes[attribute.type] "eq" "true")}}
         {{#if (isDivisor 3 @index)}}
         <section class="attributes grid grid-3col attributeRow">
         {{/if}}
@@ -95,6 +96,7 @@
             </div>
         {{#if (isDivisor 3 (sum @index 1))}}
           </section>
+      {{/if}}
       {{/if}}
     {{/each}}
       </details>

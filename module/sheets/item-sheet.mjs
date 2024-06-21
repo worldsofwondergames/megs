@@ -465,7 +465,6 @@ export class MEGSItemSheet extends ItemSheet {
     const subskills = [];
 
     let items = [];
-    // TODO this is sort of ugly
     if (context.document.parent) {
       const parentActorSheet = context.document.parent._sheet;
       const parentActorItems = parentActorSheet.getData().data.items;

@@ -179,6 +179,7 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   let displayName = skill.name;
+  console.error(skill);
   if (skill.aps === 0) {
     console.error("TEST!!!!!!!!!!!!");
     console.error(subskills);

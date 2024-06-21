@@ -78,9 +78,10 @@ export class MEGSActorSheet extends ActorSheet {
           || element.type === MEGS.characterTypes.npc) 
         {
           context.characters[element.name] = element._id;
+          console.error(element);
         }
-        
       }); 
+      console.error(context.characters);
 
       // TODO if actor selected, get items that are vehicles
     }

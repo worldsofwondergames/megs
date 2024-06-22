@@ -78,18 +78,10 @@ export class MEGSActorSheet extends ActorSheet {
           context.characters[element.name] = element._id;
         }
       });
-// Sort the keys
-const sortedKeys = Object.keys(context.characters).sort();
- 
-// Create a new object with sorted keys
-const sortedObject = sortedKeys.reduce((acc, key) => {
-    acc[key] = context.characters[key];
-    return acc;
-}, {});
-context.characters = sortedObject;
+      context.characters = this._sortArray(context.characters);
 
 
-      context.vehicles = {};
+      context.vehicles = [];
       if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
@@ -101,8 +93,10 @@ context.characters = sortedObject;
                 context.vehicles[element.name] = element._id;
               }
             });
+            context.vehicles = this._sortArray(context.vehicles);
           }
         }
+
       }
     }
 
@@ -120,6 +114,20 @@ context.characters = sortedObject;
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
 
     return context;
+  }
+
+  /**
+   * 
+   * @param {*} array 
+   * @returns 
+   */
+  _sortArray(array) {
+    const sortedKeys = Object.keys(array).sort();
+    const sortedObject = sortedKeys.reduce((acc, key) => {
+        acc[key] = array[key];
+        return acc;
+    }, {});
+    return sortedObject;
   }
 
   /**

@@ -205,7 +205,6 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
       if (gadget.system.omniClasses[key]) {
         description += key.toUpperCase();
       }
-      console.error(key + " : "+gadget.system.omniClasses[key]);
     });
     return description;
   }

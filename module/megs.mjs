@@ -271,6 +271,22 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     description += "EV " + gadget.system.effectValue;
   }
 
+  // range
+  if (gadget.system.weapon.isWeapon && gadget.system.weapon.range > 0) {
+    if (description) {
+      description += ", ";
+    }
+    description += "Range " + gadget.system.weapon.range;
+  }
+
+  // ammo
+  if (gadget.system.weapon.isWeapon && gadget.system.weapon.ammo > 0) {
+    if (description) {
+      description += ", ";
+    }
+    description += "Ammo " + gadget.system.weapon.ammo;
+  }
+
   // reliability
   if (gadget.system.reliability > 0) {
     if (description) {
@@ -278,10 +294,6 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     }
     description += "R # " + gadget.system.reliability;
   }
-
-  // TODO range
-
-  // TODO ammo
 
   return description;
 });

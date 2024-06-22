@@ -2,7 +2,6 @@
 
 import { jest } from '@jest/globals'
 
-// TODO change to MEGSItem
 /**
  * MEGSItem
  */

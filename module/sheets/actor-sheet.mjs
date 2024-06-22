@@ -255,7 +255,6 @@ export class MEGSActorSheet extends ActorSheet {
     const gadgets = [];
     
     // TODO delete this by 1.0
-    console.error("TEST1: " + context.items.length);
     const list = context.items.filter(i => (    
       (i.system.type !== MEGS.itemTypes.bonus 
          && i.system.type !== MEGS.itemTypes.limitation 
@@ -323,7 +322,6 @@ export class MEGSActorSheet extends ActorSheet {
     subskills.forEach((element) => {
       const result = skills.find(({ _id }) => _id === element.system.parent);
       if (result) {
-        console.error(element.name); // TODO
         result.subskills.push(element);
       }
     });

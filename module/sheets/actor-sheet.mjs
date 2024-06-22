@@ -71,23 +71,22 @@ export class MEGSActorSheet extends ActorSheet {
     if (actorData.type === MEGS.characterTypes.vehicle) {
       this._prepareCharacterData(context);
 
-      context.characters = {};
+      context.characters = [];
       game.actors.forEach((element) => {
         if (element.type !== MEGS.characterTypes.vehicle)
         {
           context.characters[element.name] = element._id;
         }
       });
-      context.characters.sort(function(a, b) {
-        console.error(a);
-        console.error(b);
-        // var textA = a.name.toUpperCase();
-        // var textB = b.name.toUpperCase();
-        // return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-      });
-      // Object.keys(obj).forEach(key => {
-      //   console.log(key, obj[key]);
-      // });
+// Sort the keys
+const sortedKeys = Object.keys(context.characters).sort();
+ 
+// Create a new object with sorted keys
+const sortedObject = sortedKeys.reduce((acc, key) => {
+    acc[key] = context.characters[key];
+    return acc;
+}, {});
+context.characters = sortedObject;
 
 
       context.vehicles = {};

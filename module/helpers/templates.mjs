@@ -17,6 +17,7 @@ export const preloadHandlebarsTemplates = async function () {
     // item partials
     'systems/megs/templates/item/parts/item-gadget-abilities.hbs',
     'systems/megs/templates/item/parts/item-gadget-header.hbs',
+    'systems/megs/templates/item/parts/item-gadget-omni-abilities.hbs',
     'systems/megs/templates/item/parts/item-gadget-omni-header.hbs',
     'systems/megs/templates/item/parts/item-skill-calculator-header.hbs'
   ]);

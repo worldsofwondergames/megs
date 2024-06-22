@@ -270,7 +270,12 @@
       "omni": {
         "isOmni": false,
         "aps": 0,
-        "classes": []
+        "omniClasses": {
+          "a": false,
+          "b": false,
+          "c": false,
+          "d": false
+        }
       }
     },
     "power": {

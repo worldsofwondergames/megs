@@ -546,7 +546,7 @@ export class MEGSItemSheet extends ItemSheet {
     context.skills = skills;
     context.advantages = advantages;
     context.drawbacks = drawbacks;
-    //context.subskills = subskills;
+    context.subskills = subskills;
   }
 
   /**

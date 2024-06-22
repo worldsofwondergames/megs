@@ -44,16 +44,18 @@
 
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="abilities">{{localize 'Abilities'}}</a>
-    {{#if (compare system.hasPowers "eq" "true")}}
-    <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
+    {{#if (compare system.isOmni "!==" "true")}}
+      {{#if (compare system.hasPowers "eq" "true")}}
+      <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
+      {{/if}}
+      {{#if (compare system.hasSkills "eq" "true")}}
+      <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
+      {{/if}}
+      {{#if (compare system.hasGadgets "eq" "true")}}
+      <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
+      {{/if}}
+      <a class="item" data-tab="description">{{localize 'Description'}}</a>
     {{/if}}
-    {{#if (compare system.hasSkills "eq" "true")}}
-    <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
-    {{/if}}
-    {{#if (compare system.hasGadgets "eq" "true")}}
-    <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
-    {{/if}}
-    <a class="item" data-tab="description">{{localize 'Description'}}</a>
     <a class="item" data-tab="settings">{{localize 'Settings'}}</a>
   </nav>
 
@@ -217,6 +219,16 @@
 
     {{!-- Settings Tab --}}
     <div class="tab settings" data-group="primary" data-tab="settings">
+      <div>
+        <input type="checkbox" id="system.isOmni" name="system.isOmni" value="true"
+        {{#if (compare system.isOmni "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.isOmni"> Is Omni-Gadget?</label>
+      </div>
+
+      <hr/>
       <div>
         <input type="checkbox" id="system.hasAttributes.physical" name="system.hasAttributes.physical" value="true"
         {{#if (compare system.hasAttributes.physical "eq" "true")}}

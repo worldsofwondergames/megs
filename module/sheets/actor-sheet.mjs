@@ -261,7 +261,7 @@ export class MEGSActorSheet extends ActorSheet {
          && i.system.type !== MEGS.itemTypes.limitation 
          && i.system.type !== MEGS.itemTypes.subskill)
       || i.system.parent !== ""));
-      console.error("TEST2: " + list.length);
+      context.items = list;
  
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {

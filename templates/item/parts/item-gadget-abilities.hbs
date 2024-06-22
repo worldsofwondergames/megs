@@ -46,12 +46,29 @@
       <details>
         <summary class="item-summary">Miscellaneous</summary>
         <section class="gadget-properties grid grid-3col">
+
           <div class="gadget-property flex-group-center">
             <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'Quantity'}}">{{localize 'Quantity'}}</label>
             <div>
             {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
             </div>
           </div>
+
+        {{#if (compare system.weapon.isWeapon "eq" "true")}}
+          <div class="gadget-property flex-group-center">
+            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'Range'}}">{{localize 'Range'}}</label>
+            <div>
+            {{> plusMinusInput id='range' classes='attribute-input' min=1 value=system.weapon.range}}
+            </div>
+          </div>
+
+          <div class="gadget-property flex-group-center">
+            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'Ammo'}}">{{localize 'Ammo'}}</label>
+            <div>
+            {{> plusMinusInput id='ammo' classes='attribute-input' min=0 value=system.weapon.ammo}}
+            </div>
+          </div>
+        {{/if}}
           
           <div class="gadget-property flex-group-center">
             <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Is Carried?'}}</label>

@@ -471,8 +471,6 @@ export class MEGSItemSheet extends ItemSheet {
       items = parentActorItems;
     }
 
-    console.error(items); // TODO
-
     // Iterate through items, allocating to containers
     for (let i of items) {
       if (i.system.parent === this.document._id) {
@@ -641,7 +639,6 @@ export class MEGSItemSheet extends ItemSheet {
 
     const sheetTypeSkill = this.object.type === MEGS.itemTypes.skill;
     if (sheetTypeSkill && item.type === MEGS.itemTypes.subskill) {
-      console.error(item); // TODO
       return this._onDropItem(event, data);
     }
 

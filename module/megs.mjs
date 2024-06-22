@@ -199,6 +199,10 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
 Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
 
+  if (gadget.system.isOmni) {
+    console.error("TEST1: "+gadget.system.isOmni);
+  }
+
   // attributes first
   for (let attributeName in gadget.system.attributes) {
     if (Object.prototype.hasOwnProperty.call(gadget.system.attributes, attributeName)) {

@@ -200,7 +200,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
 
   if (gadget.system.isOmni) {
-    description = gadget.system.aps + " AP";
+    description = gadget.system.aps + " AP ";
     Object.keys(gadget.system.omniClasses).forEach(key => {
       if (gadget.system.omniClasses[key]) {
         description += key.toUpperCase();

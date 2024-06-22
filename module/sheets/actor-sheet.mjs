@@ -254,8 +254,14 @@ export class MEGSActorSheet extends ActorSheet {
     const subskills = [];
     const gadgets = [];
 
+    context.items.forEach((i, index) => {
+      if (i.system.parent === "") {
+        console.error(i);
+      }
+    });
+
     // Iterate through items, allocating to containers
-    for (let i of context.items) {
+    context.items.forEach((i) => {
       i.img = i.img || Item.DEFAULT_ICON;
 
       // Append to powers
@@ -292,25 +298,24 @@ export class MEGSActorSheet extends ActorSheet {
         i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
         gadgets.push(i);
       }
+    });
 
-      // sort alphabetically
-      const arrays = [
+    // sort alphabetically
+    const arrays = [
         powers,
         skills,
         advantages,
         drawbacks,
         subskills,
         gadgets
-      ];
-      arrays.forEach((element) => {
-        element.sort(function(a, b) {
-          var textA = a.name.toUpperCase();
-          var textB = b.name.toUpperCase();
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-        });
+    ];
+    arrays.forEach((element) => {
+      element.sort(function(a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
       });
-
-    }
+    });
 
     subskills.forEach((element) => {
       const result = skills.find(({ _id }) => _id === element.system.parent);
@@ -318,7 +323,6 @@ export class MEGSActorSheet extends ActorSheet {
         result.subskills.push(element);
       }
     });
-    console.error(subskills); // TODO
 
     // Assign and return
     context.powers = powers;

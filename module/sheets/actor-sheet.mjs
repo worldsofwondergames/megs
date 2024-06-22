@@ -318,6 +318,7 @@ export class MEGSActorSheet extends ActorSheet {
         result.subskills.push(element);
       }
     });
+    console.error(subskills); // TODO
 
     // Assign and return
     context.powers = powers;

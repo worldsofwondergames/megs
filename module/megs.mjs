@@ -180,12 +180,15 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   let displayName = skill.name;
   if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
-    displayName += " ("
+    let subskillText = " ("
     skill.subskills.forEach((subskill, index) => {
-      if (index > 0) { displayName += " ,"; }
-      displayName += subskill.name + " " + subskill.system.aps;
+      if (subskill.system.aps > 0) {
+        if (index > 0) { displayName += " ,"; }
+        subskillText += subskill.name + " " + subskill.system.aps;
+      }
     });
-    displayName += ")";
+    subskillText += ")";
+    if (subskillText !== " ()") displayName += subskillText;
   }
   if (skill.system.isLinked === "true") {
     displayName += "*";

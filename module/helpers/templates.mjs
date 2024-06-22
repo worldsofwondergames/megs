@@ -15,6 +15,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/megs/templates/actor/parts/actor-skills.hbs',
     'systems/megs/templates/actor/parts/actor-traits.hbs',
     // item partials
+    'systems/megs/templates/item/parts/item-gadget-header.hbs',
     'systems/megs/templates/item/parts/item-skill-calculator-header.hbs'
   ]);
 };

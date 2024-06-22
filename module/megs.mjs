@@ -203,7 +203,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     description = gadget.system.aps + " AP";
     Object.keys(gadget.system.omniClasses).forEach(key => {
       if (gadget.system.omniClasses[key]) {
-        description += key.toUpperCase;
+        description += key.toUpperCase();
       }
       console.error(key + " : "+gadget.system.omniClasses[key]);
     });

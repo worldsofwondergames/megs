@@ -200,7 +200,14 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
 
   if (gadget.system.isOmni) {
-    console.error("TEST1: "+gadget.system.isOmni);
+    description = gadget.system.aps + " AP";
+    Object.keys(gadget.system.omniClasses).forEach(key => {
+      if (gadget.system.omniClasses[key]) {
+        description += key.toUpperCase;
+      }
+      console.error(key + " : "+gadget.system.omniClasses[key]);
+    });
+    return description;
   }
 
   // attributes first

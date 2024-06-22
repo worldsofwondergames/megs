@@ -255,11 +255,13 @@ export class MEGSActorSheet extends ActorSheet {
     const gadgets = [];
     
     // TODO delete this by 1.0
-    context.items = context.items.filter(i => (    
+    console.error("TEST1: " + context.items.length);
+    const list = context.items.filter(i => (    
       (i.system.type !== MEGS.itemTypes.bonus 
          && i.system.type !== MEGS.itemTypes.limitation 
          && i.system.type !== MEGS.itemTypes.subskill)
       || i.system.parent !== ""));
+      console.error("TEST2: " + list.length);
  
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {

@@ -255,7 +255,9 @@ export class MEGSActorSheet extends ActorSheet {
     const gadgets = [];
 
     context.items.forEach((i, index) => {
-      if (i.system.parent === "") {
+      if (    (i.system.type === MEGS.itemTypes.bonus || i.system.type === MEGS.itemTypes.limitation 
+                || i.system.type === MEGS.itemTypes.subskill)
+           && i.system.parent === "") {
         console.error(i);
       }
     });

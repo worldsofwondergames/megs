@@ -73,13 +73,22 @@ export class MEGSActorSheet extends ActorSheet {
 
       context.characters = {};
       game.actors.forEach((element) => {
-        if (element.type === MEGS.characterTypes.hero 
-          || element.type === MEGS.characterTypes.vehicle 
-          || element.type === MEGS.characterTypes.npc) 
+        if (element.type !== MEGS.characterTypes.vehicle)
         {
           context.characters[element.name] = element._id;
         }
-      }); 
+      });
+      context.characters.sort(function(a, b) {
+        console.error(a);
+        console.error(b);
+        // var textA = a.name.toUpperCase();
+        // var textB = b.name.toUpperCase();
+        // return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+      // Object.keys(obj).forEach(key => {
+      //   console.log(key, obj[key]);
+      // });
+
 
       context.vehicles = {};
       if (context.system.ownerId) {

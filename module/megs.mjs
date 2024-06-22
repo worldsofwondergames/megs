@@ -183,7 +183,7 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
     let subskillText = " ("
     skill.subskills.forEach((subskill, index) => {
       if (subskill.system.aps > 0) {
-        if (index > 0) { displayName += " ,"; }
+        if (subskillText !== " (") { subskillText += " ,"; }
         subskillText += subskill.name + " " + subskill.system.aps;
       }
     });

@@ -471,6 +471,8 @@ export class MEGSItemSheet extends ItemSheet {
       items = parentActorItems;
     }
 
+    console.error(items); // TODO
+
     // Iterate through items, allocating to containers
     for (let i of items) {
       if (i.system.parent === this.document._id) {

@@ -22,15 +22,21 @@
 
         <div class="resource flex-group-center">
           <label for="system.currentMind.value" class="resource-label">{{system.currentMind.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=0 max=system.attributes.mind.value hasValue=true}}
+          <div>
+            <div class="resource-content flexrow flex-center flex-between attribute-container">
+              {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=0 max=system.attributes.mind.value hasValue=true}}
+            </div>
+            <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
           </div>
         </div>
 
         <div class="resource flex-group-center">
           <label for="system.currentSpirit.value" class="resource-label">{{system.currentSpirit.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}
+          <div>
+           <div class="resource-content flexrow flex-center flex-between attribute-container">
+              {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}
+            </div>
+            <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
           </div>
         </div>
 

@@ -14,8 +14,11 @@
         center all of its child elements content and text. --}}
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{system.currentBody.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+          <div>
+            <div class="resource-content flexrow flex-center flex-between attribute-container">
+              {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+            </div>
+            <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
           </div>
         </div>
 

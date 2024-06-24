@@ -9,7 +9,7 @@
       <div class="resources grid grid-3col">
 
         <div class="resource flex-group-center">
-          <label for="system.currentBody.ownerId" class="resource-label">Owner</label>
+          <label for="system.ownerId" class="resource-label">Owner</label>
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
@@ -22,7 +22,7 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.currentBody.linkedItemId" class="resource-label">Linked Item</label>
+          <label for="system.linkedItemId" class="resource-label">Linked Item</label>
           <div>
         {{#if vehicles}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
@@ -39,8 +39,11 @@
 
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{system.currentBody.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+          <div>
+            <div class="resource-content flexrow flex-center flex-between attribute-container">
+              {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+            </div>
+            <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
           </div>
         </div>
 

@@ -113,7 +113,8 @@ export class MEGSActorSheet extends ActorSheet {
 
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
     //context.showZeroAPSkills = console.system.settings.hideZeroAPSkills;
-    console.error("TEST1: "+context.actor);
+    console.error("TEST1: ")
+    console.error(context.actor);
 
     return context;
   }

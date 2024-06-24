@@ -6,8 +6,8 @@
   >
   <label for="system.settings.hideZeroAPSkills"> Hide Zero-Rank Skills?</label>
 </div>
-  <div>{{hideZeroAPSkills}}</div><!-- TODO -->
-  <div>{{system.heroPoints.value}}</div><!-- TODO -->
+{{#if (compare system.settings.hideZeroAPSkill "eq" "true")}}true{{/if}}
+  <div>{{system.settings.hideZeroAPSkills}}</div><!-- TODO -->
 
 <ol class='items-list'>
   <li class='item flexrow items-header'>
@@ -19,7 +19,7 @@
     <div class='item-controls'></div>
   </li>
   {{#each skills as |item id|}}
-    {{#if (showSkill item showHeroPointCosts)}}
+    {{#if (compare item.system.aps "gt" 0)}}
     <li class='item flexrow item-row
       {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>

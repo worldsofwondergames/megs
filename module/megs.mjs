@@ -298,12 +298,11 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   return description;
 });
 
-Handlebars.registerHelper('showSkill', function(skill, hideZeroAPSkills){
+Handlebars.registerHelper('isNotZeroAP', function(skill){
   console.error("===============");
-  console.error(skill);
-  console.error(hideZeroAPSkills);
+  console.error(skill.system.aps);
   console.error("===============");
-  return true;
+  return skill.system.aps;
 });
 
 /* -------------------------------------------- */

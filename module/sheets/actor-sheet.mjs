@@ -112,7 +112,6 @@ export class MEGSActorSheet extends ActorSheet {
     );
 
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
-    context.showZeroAPSkills = context.actor.system.settings.hideZeroAPSkills;
 
     return context;
   }

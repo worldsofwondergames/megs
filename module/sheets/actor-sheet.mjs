@@ -111,6 +111,16 @@ export class MEGSActorSheet extends ActorSheet {
       this.actor.allApplicableEffects()
     );
 
+    // Filter skills
+    context.filteredSkills = [];
+    if (system.settings.hideZeroAPSkills !== "true") {
+      context.filteredSkills = context.skills;
+    } else {
+      context.skills.forEach(skill => {
+        console.log(skill); // TODO
+      });
+    }
+
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
 
     return context;

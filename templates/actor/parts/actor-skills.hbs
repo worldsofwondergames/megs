@@ -19,8 +19,6 @@
     <div class='item-controls'></div>
   </li>
   {{#each skills as |item id|}}
-  <div>{{item.system.aps}} | {{system.settings.hideZeroAPSkills}}</div>
-    {{#if (compare (compare item.system.aps ">" 0) "||" (compare system.settings.hideZeroAPSkills "!==" "true") )}}
     <li class='item flexrow item-row
       {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>
@@ -95,6 +93,5 @@
         <!-- END TODO -->
       </div>
     </li>
-    {{/if}}
   {{/each}}
 </ol>

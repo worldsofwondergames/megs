@@ -335,6 +335,12 @@
   height: 50px;
   margin: 5px 0 0 0;
 }
+
+.megs header.sheet-header img.reset {
+  width: 20px;
+  height: 20px;
+}
+
 .megs .sheet-tabs {
   flex: 0;
 }

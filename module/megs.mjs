@@ -298,6 +298,11 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   return description;
 });
 
+Handlebars.registerHelper('showSkill', function(skill, hideZeroAPSkills){
+  console.error(skill);
+  console.error(hideZeroAPSkills);
+});
+
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */
 /* -------------------------------------------- */

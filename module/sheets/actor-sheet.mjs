@@ -128,6 +128,7 @@ export class MEGSActorSheet extends ActorSheet {
     return context;
   }
 
+
   /**
    * 
    * @param {*} skill 

@@ -353,6 +353,10 @@
   background-color: #ffffff;
 }
 
+.megs .sheet-header .header-fields select {
+  margin-top: 5px;
+}
+
 .megs .sheet-tabs {
   flex: 0;
 }

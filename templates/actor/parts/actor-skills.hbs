@@ -21,7 +21,7 @@
   {{#each skills as |item id|}}
     {{#if (showSkill item system.settings.hideZeroAPSkills)}}
     <li class='item flexrow item-row
-    {{#if item.system.aps}}bold{{/if}}
+      {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>
@@ -94,7 +94,6 @@
         <!-- END TODO -->
       </div>
     </li>
-    {{/if}}
     {{/if}}
   {{/each}}
 </ol>

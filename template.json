@@ -33,6 +33,9 @@
         "heroPoints": {
           "value": 0,
           "label": "Hero Points"
+        },
+        "settings": {
+          "hideZeroAPSkills": true
         }
       },
       "attributes": {

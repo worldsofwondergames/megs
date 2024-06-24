@@ -1,10 +1,10 @@
 <div>
-  <input type="checkbox" id="system.hideZeroAPSkills" name="system.hideZeroAPSkills" value="true"
-  {{#if (compare system.hideZeroAPSkills "eq" "true")}}
+  <input type="checkbox" id="system.settings.hideZeroAPSkills" name="system.settings.hideZeroAPSkills" value="true"
+  {{#if (compare system.settings.hideZeroAPSkills "eq" "true")}}
     checked
   {{/if}}
   >
-  <label for="system.hideZeroAPSkills"> Hide Zero-Rank Skills?</label>
+  <label for="system.settings.hideZeroAPSkills"> Hide Zero-Rank Skills?</label>
 </div>
 
 <ol class='items-list'>
@@ -17,7 +17,7 @@
     <div class='item-controls'></div>
   </li>
   {{#each skills as |item id|}}
-    {{#if (showSkill item system.hideZeroAPSkills)}}
+    {{#if (showSkill item system.settings.hideZeroAPSkills)}}
     <li class='item flexrow item-row
     {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>

@@ -301,6 +301,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 Handlebars.registerHelper('showSkill', function(skill, hideZeroAPSkills){
   console.error(skill);
   console.error(hideZeroAPSkills);
+  return true;
 });
 
 /* -------------------------------------------- */

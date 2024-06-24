@@ -113,7 +113,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     // Filter skills
     context.filteredSkills = [];
-    if (system.settings.hideZeroAPSkills !== "true") {
+    if (context.system.settings.hideZeroAPSkills !== "true") {
       context.filteredSkills = context.skills;
     } else {
       context.skills.forEach(skill => {

@@ -19,7 +19,7 @@
     <div class='item-controls'></div>
   </li>
   {{#each skills as |item id|}}
-    {{#if (showSkill item hideZeroAPSkills)}}
+    {{#if (showSkill item showHeroPointCosts)}}
     <li class='item flexrow item-row
       {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>

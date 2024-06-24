@@ -349,6 +349,7 @@
   border: none;
   cursor: pointer;
   background-image: url(/systems/megs/assets/images/icons/reset.png);
+  background-size: 30px auto;
 }
 
 .megs .sheet-tabs {

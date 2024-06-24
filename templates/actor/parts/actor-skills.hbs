@@ -19,7 +19,7 @@
     <div class='item-controls'></div>
   </li>
   {{#each skills as |item id|}}
-    {{#if (compare item.system.aps "gt" 0)}}
+    {{#if (compare item.system.aps ">" 0)}}
     <li class='item flexrow item-row
       {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>

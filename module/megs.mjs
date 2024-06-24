@@ -299,8 +299,10 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 });
 
 Handlebars.registerHelper('showSkill', function(skill, hideZeroAPSkills){
+  console.error("===============");
   console.error(skill);
   console.error(hideZeroAPSkills);
+  console.error("===============");
   return true;
 });
 

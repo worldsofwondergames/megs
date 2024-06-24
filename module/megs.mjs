@@ -298,13 +298,6 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   return description;
 });
 
-Handlebars.registerHelper('isNotZeroAP', function(skill){
-  console.error("===============");
-  console.error(skill.system.aps);
-  console.error("===============");
-  return skill.system.aps;
-});
-
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */
 /* -------------------------------------------- */

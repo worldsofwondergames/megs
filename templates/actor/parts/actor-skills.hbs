@@ -6,6 +6,8 @@
   >
   <label for="system.settings.hideZeroAPSkills"> Hide Zero-Rank Skills?</label>
 </div>
+  <div>{{system.settings.hideZeroAPSkills}}</div><!-- TODO -->
+  <div>{{system.heroPoints.value}}</div><!-- TODO -->
 
 <ol class='items-list'>
   <li class='item flexrow items-header'>
@@ -17,7 +19,6 @@
     <div class='item-controls'></div>
   </li>
   {{#each skills as |item id|}}
-  <div>{{system.settings.hideZeroAPSkills}}</div><!-- TODO -->
     {{#if (showSkill item system)}}
     <li class='item flexrow item-row
     {{#if item.system.aps}}bold{{/if}}

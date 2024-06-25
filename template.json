@@ -332,14 +332,21 @@
       "isCarried": true,
       "canBeTakenAway": true,
       "hasHardenedDefenses": false,
-      "hasAttributes": {
-        "physical": true,
-        "mental": false,
-        "mystical": false
+      "settings": {
+        "isDetailsOpen": {
+          "attributes": false,
+          "miscellaneous": false
+        },
+        "hasAttributes": {
+          "physical": true,
+          "mental": false,
+          "mystical": false
+        },
+        "hasPowers": true,
+        "hasSkills": true,
+        "hasGadgets": true,
+        "hideZeroAPSkills": true
       },
-      "hasPowers": true,
-      "hasSkills": true,
-      "hasGadgets": true,
       "weapon" : {
         "isWeapon": false,
         "range": 0,

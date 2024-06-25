@@ -22,7 +22,7 @@
           </div>
         </div>
 
-      {{#if (compare system.hasAttributes.mental "eq" "true")}}
+      {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
         <div class="resource flex-group-center">
           <label for="system.currentMind.value" class="resource-label">{{system.currentMind.label}}</label>
           <div>
@@ -34,7 +34,7 @@
         </div>
       {{/if}}
 
-      {{#if (compare system.hasAttributes.mystical "eq" "true")}}
+      {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
         <div class="resource flex-group-center">
           <label for="system.currentSpirit.value" class="resource-label">{{system.currentSpirit.label}}</label>
           <div>

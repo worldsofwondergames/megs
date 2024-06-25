@@ -301,6 +301,10 @@
 }
 
 /* Styles limited to megs sheets */
+.megs input[type="checkbox"] + label  {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
 .megs .item-form {
   color: #1f5079;
 }

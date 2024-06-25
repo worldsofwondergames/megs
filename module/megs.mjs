@@ -184,11 +184,14 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
     skill.subskills.forEach((subskill, index) => {
       if (subskill.system.aps > 0) {
         if (subskillText !== " (") { subskillText += " ,"; }
-        subskillText += subskill.name + " " + subskill.system.aps;
+        // No need to show " Weapons" after every weapon type
+        subskillText += subskill.name.replace(' Weapons', '') + " " + subskill.system.aps;
       }
     });
     subskillText += ")";
-    if (subskillText !== " ()") displayName += subskillText;
+    if (subskillText !== " ()") {
+      displayName += subskillText;
+    }
   }
   if (skill.system.isLinked === "true") {
     displayName += "*";

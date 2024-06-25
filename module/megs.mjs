@@ -327,6 +327,15 @@ Hooks.once('ready', function () {
   Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
   Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
   Hooks.on('toggle', (event) => console.error("*************TEST!**********"));
+
+  document.getElementById("attributeDetails").addEventListener("toggle", () => {
+    console.log(someString);
+    // 'Data' on first click,
+    // 'Data Again' on second click
+  
+    someString = "Data Again";
+  });
+  
 });
 
 function interceptMegsRoll(message, data) {

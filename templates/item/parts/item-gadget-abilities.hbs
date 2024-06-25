@@ -15,7 +15,7 @@
       </section>
 
       {{!-- Gadget attributes --}}
-      <details open="{{system.settings.isDetailsOpen.attributes}}" ontoggle="console.error(system);system.settings.isDetailsOpen.attributes = this.open">
+      <details open="{{system.settings.isDetailsOpen.attributes}}" ontoggle="console.error(system);">
         <summary class="item-summary">Attributes</summary>
 
       {{#each system.attributes as |attribute key|}}

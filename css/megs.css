@@ -303,6 +303,11 @@
 /* Styles limited to megs sheets */
 .megs input[type="checkbox"] + label  {
   font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 13px;
+}
+
+.megs input[type="checkbox"] {
+  vertical-align: middle;
 }
 
 .megs .item-form {

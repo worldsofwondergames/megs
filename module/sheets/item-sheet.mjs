@@ -752,6 +752,10 @@ export class MEGSItemSheet extends ItemSheet {
     return this.object.parent.updateEmbeddedDocuments("Item", updateData);
   }
 
+  onDetailsClick(detailsObj) {
+    console.error(detailsObj);
+  }
+
   /* -------------------------------------------- */
   
   /**

@@ -80,10 +80,8 @@
                 data-value="{{attribute.value}}" data-key="{{key}}">
               {{attribute.label}}
             </label>
-            <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
-              <input id="{{key}}Input" name="system.linkedItem.system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>
-              <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
+            <div class="quantity attribute-input align-center">
+              {{attribute.value}}
              </div>
           </div>
       {{#if (isDivisor 3 (sum @index 1))}}
@@ -95,7 +93,7 @@
     {{!-- Description Tab --}}
     <div class="tab biography" data-group="primary" data-tab="description">
       <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'Description'}}</label>
-      {{editor system.linkedItem.system.biography target="system.linkedItem.system.biography" rollData=rollData button=true owner=owner editable=editable}}
+      <div>{{system.linkedItem.system.biography}}</div>
     </div>
 
   </section>

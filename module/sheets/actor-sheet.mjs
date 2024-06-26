@@ -90,7 +90,7 @@ export class MEGSActorSheet extends ActorSheet {
           if (!owner) {
             console.error("Owner actor not returned for ID " + gadget.ownerId);
           } else if (owner.items) {
-            context.system.llinkedItem = undefined;
+            context.system.linkedItem = undefined;
             owner.items.forEach((element) => {
               if (element.type === MEGS.itemTypes.gadget) {
 

@@ -15,9 +15,7 @@
       </section>
 
       {{!-- Gadget attributes --}}
-      <input id="gadgetAttributesDetailsOpen" type="checkbox" value="true" style="display:none"
-       name="system.settings.isDetailsOpen.attributes" /> 
-      <details onToggle="gadgetAttributesDetailsOpen.checked = this.open">
+      <details open>
         <summary class="item-summary">Attributes {{gadgetAttributesDetailsOpen}}</summary>
 
       {{#each system.attributes as |attribute key|}}
@@ -45,7 +43,7 @@
       </details>
 
       {{!-- Gadget misc properties --}}
-      <details>
+      <details open>
         <summary class="item-summary">Miscellaneous</summary>
         <section class="gadget-properties grid grid-3col">
 

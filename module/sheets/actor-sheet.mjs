@@ -90,15 +90,14 @@ export class MEGSActorSheet extends ActorSheet {
           if (!owner) {
             console.error("Owner actor not returned for ID " + gadget.ownerId);
           } else if (owner.items) {
-            context.linkedVehicleItem = undefined;
+            context.system.llinkedItem = undefined;
             owner.items.forEach((element) => {
               if (element.type === MEGS.itemTypes.gadget) {
 
                 // store linked vehicle item
-                console.error(element._id + " : " + context.system.linkedItemId);
                 if (element._id === context.system.linkedItemId) {
-                  context.linkedVehicleItem = element;
-                  console.error(context.linkedVehicleItem); // TODO
+                  context.system.linkedItem = element;
+                  console.error(context.system.linkedItem); // TODO
                 }
 
                 // add to list for header

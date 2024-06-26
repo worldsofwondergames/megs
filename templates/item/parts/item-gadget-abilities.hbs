@@ -15,8 +15,10 @@
       </section>
 
       {{!-- Gadget attributes --}}
-      <details id="attributeDetails">
-        <summary class="item-summary">Attributes</summary>
+      <input id="gadgetAttributesDetailsOpen" type="checkbox" value="true" style="display:none"
+       name="system.settings.isDetailsOpen.attributes" /> 
+      <details onToggle="gadgetAttributesDetailsOpen.checked = this.open">
+        <summary class="item-summary">Attributes {{gadgetAttributesDetailsOpen}}</summary>
 
       {{#each system.attributes as |attribute key|}}
         {{#if (isDivisor 3 @index)}}

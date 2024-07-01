@@ -499,8 +499,14 @@ export class MegsTableRolls {
     const actionTable = CONFIG.tables.actionTable;
     const difficulty = actionTable[avIndex][ovIndex];
 
-    if (avIndex < 0 || ovIndex < 0 || avIndex >= actionTable.length || ovIndex >= actionTable[avIndex].length) {
-      console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | OV = "+ovAdjusted+" | col shifts = "+ovColumnShifts+" | avIndex = "+avIndex+")");
+    if (avIndex < 0) {
+      console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | avIndex = "+avIndex+")");
+    } else if (ovIndex < 0) {
+      console.error("ERROR: Index beyond table boundaries (OV = "+ovAdjusted+" | ovIndex = "+ovIndex+")");
+    } else if (avIndex >= actionTable.length) {
+      console.error("ERROR: Index beyond table boundaries (avIndex = "+avIndex+" | actionTable.length = "+actionTable.length+")");
+    } else if (ovIndex >= actionTable[avIndex].length) {
+      console.error("ERROR: Index beyond table boundaries (avIndex = "+avIndex+" | ovIndex = "+ovIndex+" | actionTable[avIndex].length = "+actionTable[avIndex].length+")");
     }
 
     return difficulty;

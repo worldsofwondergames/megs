@@ -257,9 +257,11 @@ export class MEGSItemSheet extends ItemSheet {
       let targetActor = MegsTableRolls.getTargetActor();
 
       if (this.object.type === MEGS.itemTypes.power) {
-        // for powers, AV and EV are APs of power
+        // for powers, AV and EV are typically APs of power
         actionValue = parseInt(dataset.value);
         effectValue = parseInt(dataset.value);
+
+        // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
 
         // Physical powers - OV and RV are DEX and BODY
         if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {

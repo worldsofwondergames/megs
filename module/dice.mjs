@@ -500,7 +500,7 @@ export class MegsTableRolls {
     const difficulty = actionTable[avIndex][ovIndex];
 
     if (avIndex < 0 || ovIndex < 0 || avIndex >= actionTable.length || ovIndex >= actionTable[avIndex].length) {
-      console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | OV = "+ovAdjusted+" | col shifts = "+ovColumnShifts+")");
+      console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | OV = "+ovAdjusted+" | col shifts = "+ovColumnShifts+" | avIndex = "+avIndex+")");
     }
 
     return difficulty;

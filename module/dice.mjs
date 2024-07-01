@@ -493,7 +493,7 @@ export class MegsTableRolls {
     const avIndex = this._getRangeIndex(avAdjusted);
 
     // get range index for OV
-    const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
+    const ovIndex = this._getRangeIndex(ovAdjusted) + ovColumnShifts;
 
     // consult action chart for difficulty
     const actionTable = CONFIG.tables.actionTable;
@@ -502,7 +502,7 @@ export class MegsTableRolls {
     if (avIndex < 0) {
       console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | avIndex = "+avIndex+")");
     } else if (ovIndex < 0) {
-      console.error("ERROR: Index beyond table boundaries (OV = "+ovAdjusted+" | ovIndex = "+ovIndex+")");
+      console.error("ERROR: Index beyond table boundaries (OV = "+ovAdjusted+" | ovIndex = "+ovIndex+" | ovColumnShifts = "+ovColumnShifts+")");
     } else if (avIndex >= actionTable.length) {
       console.error("ERROR: Index beyond table boundaries (avIndex = "+avIndex+" | actionTable.length = "+actionTable.length+")");
     } else if (ovIndex >= actionTable[avIndex].length) {

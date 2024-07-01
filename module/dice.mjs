@@ -198,8 +198,8 @@ export class MegsTableRolls {
     }
     if (combatManeuverKey) {
       const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-      ovColumnShifts += combatManeuver.ovShifts;
-      rvColumnShifts += combatManeuver.rvShifts;
+      ovColumnShifts += parseInt(combatManeuver.ovShifts);
+      rvColumnShifts += parseInt(combatManeuver.rvShifts);
     }
     if (resultColumnShifts) {
       rvColumnShifts += resultColumnShifts;

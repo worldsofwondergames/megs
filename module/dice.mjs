@@ -493,7 +493,7 @@ export class MegsTableRolls {
     const avIndex = this._getRangeIndex(avAdjusted);
 
     // get range index for OV
-    const ovIndex = this._getRangeIndex(ovAdjusted) + ovColumnShifts;
+    const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
 
     // consult action chart for difficulty
     const actionTable = CONFIG.tables.actionTable;

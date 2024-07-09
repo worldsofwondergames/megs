@@ -1,3 +1,4 @@
+import { YesDialog } from '../__mocks__/foundry.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs'
 
 test("_handleRoll", () => {
@@ -12,36 +13,87 @@ test("_handleRolls", () => {
   // TODO
 })
 
+// TODO test combat maneuvers - assets/combatManuevers.json
+
+
+
 // TODO test for APs beyond A - ex: av = 7, ov = 4, 10 + 10 + 9 + 8 = 8 column shifts, ev = 4, rv = 4, pretty sure should be 10
 // _handleRolls -> refactor out of this
-/*
+
 test("_rollDice should return if dice do not match", () => {
-  const values = new RollValues("Test",0,0,0,0,0,'1d10 + 1d10');
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 0,
+    opposingValue: 0,
+    effectValue: 0,
+    resistanceValue: 0,
+    rollFormula: "2 + 3",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
   const dice = new MegsTableRolls(values);
 
-  global.rollIndex = 0;
-  const data = {
-      "result": "Double 1s: Automatic failure!",
-      "actionValue": 0,
-      "opposingValue": 0,
-      "difficulty": 0,
-      "columnShifts": 0,
-      "effectValue": 0,
-      "resistanceValue": 0,
-      "success": false,
-      "evResult": ""
+  let resultData = {
+    "result": "",
+    "actionValue": 0,
+    "opposingValue": 0,
+    "difficulty": 0,
+    "dice": [2,3],
+    "columnShifts": 0,
+    "effectValue": 0,
+    "resistanceValue": 0,
+    "success": true,
+    "evResult": "",
+    "rvColumnShifts": 0
   };
 
-  const dataset = {
-     roll: [2, 3]
-  };
-  dice._rollDice(dataset , {}).then((response) => {
+  dice._rollDice(resultData , {}).then((response) => {
       expect(response).toStrictEqual([2, 3]);
   });
 });
 
 test("_rollDice should roll again if have matching dice on first roll and elect to roll again", () => {
-  const values = new RollValues("Test",0,0,0,0,0,'1d10 + 1d10');
+  global.Dialog = YesDialog
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 0,
+    opposingValue: 0,
+    effectValue: 0,
+    resistanceValue: 0,
+    rollFormula: "2 + 2 + 3 + 4",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
+  const dice = new MegsTableRolls(values);
+
+  let resultData = {
+    "result": "",
+    "actionValue": 0,
+    "opposingValue": 0,
+    "difficulty": 0,
+    "dice": [2,2,3,4],
+    "columnShifts": 0,
+    "effectValue": 0,
+    "resistanceValue": 0,
+    "success": true,
+    "evResult": "",
+    "rvColumnShifts": 0
+  };
+
+  dice._rollDice(resultData , {}).then((response) => {
+      expect(response).toStrictEqual([2, 2, 3, 4]);
+  });
+});
+
+/*
+test("_rollDice should roll again if have matching dice on first roll and elect to roll again", () => {
+  const values = new RollValues("Test","attribute",0,0,0,0,0,0,'1d10 + 1d10',false);
   const dice = new MegsTableRolls(values);
 
   global.rollIndex = 0;
@@ -65,8 +117,8 @@ test("_rollDice should roll again if have matching dice on first roll and elect 
     expect(response).toStrictEqual([2, 2, 3, 4]);
   });
 });
-
-
+*/
+/*
 test("_rollDice should roll again if have matching dice on first and second rolls and user elects to roll again both times", () => {
   const values = new RollValues("Test",0,0,0,0,0,'1d10 + 1d10');
   const dice = new MegsTableRolls(values);

@@ -480,6 +480,8 @@ global.mergeObject = function (original, other = {}, {
   return original
 }
 
+global.renderTemplate = async function(template, data) {  };
+
 /**
  * Handlebars
  */

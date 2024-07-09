@@ -1,5 +1,6 @@
 /* eslint-env jest */
 import { jest } from '@jest/globals';
+import { log, error } from "console"; // jest overrides console; use these instead
 
 /**
  * Mocks for Foundry's Roll class
@@ -13,21 +14,17 @@ global.rollToMessageMock = jest.fn((messageData = {}, { rollMode = null, create 
 global.rollEvaluateMock = jest.fn(() => {
   return { total: 2 }
 })
+global.rollEvaluateMock = function() {
+  return { total: 2 }
+}
+
 global.rollValidateMock = jest.fn((formula) => {
   return true
 })
-const Roll = jest.fn((diceArray, data = {}) => {
-
+const Roll = jest.fn((diceFormula, data = {}) => {
   const offset = global.rollIndex * 2;
-  diceArray = diceArray.slice(offset, offset + 2);
-  let diceFormula = "";
-  if (!diceArray) diceArray = [];
-  diceArray.forEach((element, index, array) => {
-    diceFormula = diceFormula + element;
-    if (index !== (array.length -1)) {
-      diceFormula = diceFormula + " + ";
-    }
-  });
+  const diceArray = diceFormula.split("+").map(s => s.trim());
+  diceFormula = diceArray[global.rollIndex*2] + " + " + diceArray[(global.rollIndex*2)+1];
   global.rollIndex++;
 
   return {

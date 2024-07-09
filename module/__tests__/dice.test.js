@@ -1,5 +1,6 @@
-import { YesDialog } from '../__mocks__/foundry.mjs';
+import { NoDialog, YesDialog } from '../__mocks__/foundry.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs'
+import { log, error } from "console"; // jest overrides console; use these instead
 
 test("_handleRoll", () => {
   // TODO
@@ -91,112 +92,116 @@ test("_rollDice should roll again if have matching dice on first roll and elect 
   });
 });
 
-/*
-test("_rollDice should roll again if have matching dice on first roll and elect to roll again", () => {
-  const values = new RollValues("Test","attribute",0,0,0,0,0,0,'1d10 + 1d10',false);
-  const dice = new MegsTableRolls(values);
-
-  global.rollIndex = 0;
-  global.Dialog = YesDialog
-  const data = {
-       "result": "",
-       "actionValue": 0,
-       "opposingValue": 0,
-       "difficulty": 0,
-       "columnShifts": 0,
-       "effectValue": 0,
-       "resistanceValue": 0,
-       "success": false,
-       "evResult": ""
-  };
-
-  const dataset = {
-    roll: [2, 2, 3, 4]
-  };
-  dice._rollDice(dataset , {}).then((response) => {
-    expect(response).toStrictEqual([2, 2, 3, 4]);
-  });
-});
-*/
-/*
 test("_rollDice should roll again if have matching dice on first and second rolls and user elects to roll again both times", () => {
-  const values = new RollValues("Test",0,0,0,0,0,'1d10 + 1d10');
+  global.Dialog = YesDialog
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 0,
+    opposingValue: 0,
+    effectValue: 0,
+    resistanceValue: 0,
+    rollFormula: "2 + 2 + 3 + 3 + 4 + 5",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
   const dice = new MegsTableRolls(values);
 
-  global.rollIndex = 0;
-  global.Dialog = YesDialog
-   const data = {
-       "result": "",
-       "actionValue": 0,
-       "opposingValue": 0,
-       "difficulty": 0,
-       "columnShifts": 0,
-       "effectValue": 0,
-       "resistanceValue": 0,
-       "success": false,
-       "evResult": ""
-   };
+  let resultData = {
+    "result": "",
+    "actionValue": 0,
+    "opposingValue": 0,
+    "difficulty": 0,
+    "dice": [2,2,3,4],
+    "columnShifts": 0,
+    "effectValue": 0,
+    "resistanceValue": 0,
+    "success": true,
+    "evResult": "",
+    "rvColumnShifts": 0
+  };
 
-   const dataset = {
-      roll: [2, 2, 3, 3, 4, 5]
-   };
-   dice._rollDice(dataset , {}).then((response) => {
-       expect(response).toStrictEqual([2, 2, 3, 3, 4, 5]);
-   });
+  dice._rollDice(resultData , {}).then((response) => {
+      expect(response).toStrictEqual([2, 2, 3, 3, 4, 5]);
+  });
 });
 
 test("_rollDice should not roll again if have matching dice on first roll and user elects not to roll again", () => {
-  const values = new RollValues("Test",0,0,0,0,0,'1d10 + 1d10');
-  const dice = new MegsTableRolls(values);
-
-  global.rollIndex = 0;
   global.Dialog = NoDialog
-  const data = {
-       "result": "",
-       "actionValue": 0,
-       "opposingValue": 0,
-       "difficulty": 0,
-       "columnShifts": 0,
-       "effectValue": 0,
-       "resistanceValue": 0,
-       "success": false,
-       "evResult": ""
-  };
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 0,
+    opposingValue: 0,
+    effectValue: 0,
+    resistanceValue: 0,
+    rollFormula: "2 + 2",
+    unskilled: false
+  }
+  global.rollIndex = 0;
 
-  const dataset = {
-    roll: [2, 2, 3, 4]
-  };
-  dice._rollDice(dataset , {}).then((response) => {
-    expect(response).toStrictEqual([2, 2, 3, 4]);
-  });
-});
-
-test("_rollDice should fail on double 1s on first roll", () => {
-  const values = new RollValues("Test",0,0,0,0,0,'1d10');
   const dice = new MegsTableRolls(values);
 
-  global.rollIndex = 0;
-  const data = {
-      "result": "Double 1s: Automatic failure!",
-      "actionValue": 0,
-      "opposingValue": 0,
-      "difficulty": 0,
-      "columnShifts": 0,
-      "effectValue": 0,
-      "resistanceValue": 0,
-      "success": false,
-      "evResult": ""
+  let resultData = {
+    "result": "",
+    "actionValue": 0,
+    "opposingValue": 0,
+    "difficulty": 0,
+    "dice": [2,2,3,4],
+    "columnShifts": 0,
+    "effectValue": 0,
+    "resistanceValue": 0,
+    "success": true,
+    "evResult": "",
+    "rvColumnShifts": 0
   };
 
-  const dataset = {
-      roll: [1, 1]
-  };
-  dice._rollDice(dataset, {}).then((response) => {
-      // TODO not really failing
-      expect(response).toStrictEqual([1, 1]);
+  dice._rollDice(resultData , {}).then((response) => {
+      expect(response).toStrictEqual([2, 2]);
   });
 });
-*/
+
+test("_rollDice should not roll again if have matching dice on first roll and user elects not to roll again", () => {
+  global.Dialog = NoDialog
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 0,
+    opposingValue: 0,
+    effectValue: 0,
+    resistanceValue: 0,
+    rollFormula: "1 + 1",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
+  const dice = new MegsTableRolls(values);
+
+  let resultData = {
+    "result": "",
+    "actionValue": 0,
+    "opposingValue": 0,
+    "difficulty": 0,
+    "dice": [1, 1],
+    "columnShifts": 0,
+    "effectValue": 0,
+    "resistanceValue": 0,
+    "success": true,
+    "evResult": "",
+    "rvColumnShifts": 0
+  };
+
+  dice._rollDice(resultData , {}).then((response) => {
+    expect(response).toStrictEqual([1, 1]);
+    expect(resultData.result).toEqual("Double 1s: Automatic failure!");
+    // TODO not really failing -> success === false
+  });
+});
+
 
 test("_getActionTableDifficulty returns the correct difficulty number", () => {
   // TODO
@@ -212,8 +217,8 @@ test("_getColumnShifts returns the correct number of column shifts", () => {
   // The roll must be greater than the Success Number
   // The total die roll must lie on or beyond the Column Shift Threshold. 
   for (let i=1; i < 19; i++) {
-      expect(dice._getColumnShifts(11, i, actionTable)).toBe(0);
-      expect(dice._getColumnShifts(12, i, actionTable)).toBe(0);
+    expect(dice._getColumnShifts(11, i, actionTable)).toBe(0);
+    expect(dice._getColumnShifts(12, i, actionTable)).toBe(0);
   }
   
   expect(dice._getColumnShifts(14, 1, actionTable)).toBe(1);

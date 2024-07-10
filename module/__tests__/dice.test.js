@@ -1,6 +1,34 @@
-import { NoDialog, YesDialog } from '../__mocks__/foundry.mjs';
+import { HandleRollDialog, NoDialog, YesDialog } from '../__mocks__/foundry.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs'
 import { log, error } from "console"; // jest overrides console; use these instead
+
+CONFIG.combatManeuvers = {
+  "Critical Blow": { 
+      "ovShifts": -2,
+      "rvShifts": -3
+  },
+  "Devastating Attack": { 
+      "ovShifts": -4,
+      "rvShifts": -6
+  },
+  "Flailing Attack": { 
+      "ovShifts": 2,
+      "rvShifts": 3
+  },
+  "Grappling Attack": { 
+      "ovShifts": 0,
+      "rvShifts": 0
+  },
+  "Multi-Attack vs 2": { 
+      "ovShifts": -1,
+      "rvShifts": 1
+  },
+  "Multi-Attack vs 3-4": { 
+      "ovShifts": -2,
+      "rvShifts": 2
+  },
+}
+
 
 test("_handleRoll", () => {
   // TODO
@@ -10,11 +38,112 @@ test("_handleTargetedRolls", () => {
   // TODO
 })
 
-test("_handleRolls", () => {
-  // TODO
+test("_handleRolls should return 0 result APs for simplest fail path", () => {
+  global.Dialog = HandleRollDialog
+
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 4,
+    opposingValue: 4,
+    effectValue: 4,
+    resistanceValue: 4,
+    rollFormula: "7 + 3",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
+  const dice = new MegsTableRolls(values);
+0,
+  dice._rollDice = async function() {
+    return [7,3];
+  }
+
+  dice._showRollResultInChat = async function(data, roll, callingPoint) {
+    expect(data.result).toEqual("Action failed!");
+    expect(data.success).toBe(false);
+    expect(data.evResult).toEqual("");
+  }
+
+  dice._handleRolls(0, 0,  0, 0, 0, 0,  "", 0, false ).then((response) => {
+    expect(response).toStrictEqual([7,3]);
+  });
+
+})
+
+test("_handleRolls should return 1 result APs for simplest happy path", () => {
+  global.Dialog = HandleRollDialog
+
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 4,
+    opposingValue: 4,
+    effectValue: 4,
+    resistanceValue: 4,
+    rollFormula: "7 + 4",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
+  const dice = new MegsTableRolls(values);
+0,
+  dice._rollDice = async function() {
+    return [7,4];
+  }
+  
+  dice._showRollResultInChat = async function(data, roll, callingPoint) {
+    expect(data.result).toEqual("Success: 1 RAPs!");
+    expect(data.success).toBe(true);
+    expect(data.evResult).toEqual(1);
+  }
+
+  //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
+  // combatManeuverKey, resultColumnShifts, isUnskilled) {
+    dice._handleRolls(0, 0,  0, 0, 0, 0,  "", 0, false ).then((response) => {
+    expect(response).toEqual(1);
+  });
+
 })
 
 // TODO test combat maneuvers - assets/combatManuevers.json
+test("_handleRolls should return 1 result APs for CM Multi-Attack vs 2", () => {
+  global.Dialog = HandleRollDialog
+
+  const values = {
+    label: "Test",
+    type: "attribute",
+    valueOrAps: 0,
+    actionValue: 10,
+    opposingValue: 7,
+    effectValue: 4,
+    resistanceValue: 8,
+    rollFormula: "7 + 8",
+    unskilled: false
+  }
+  global.rollIndex = 0;
+
+  const dice = new MegsTableRolls(values);
+0,
+  dice._rollDice = async function() {
+    return [7,4];
+  }
+  
+  dice._showRollResultInChat = async function(data, roll, callingPoint) {
+    expect(data.result).toEqual("Success: 1 RAPs!");
+    expect(data.success).toBe(true);
+    expect(data.evResult).toEqual(1);
+  }
+
+  //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
+  // combatManeuverKey, resultColumnShifts, isUnskilled) {
+    dice._handleRolls(0, 0,  0, 0, 0, 0,  "Multi-Attack vs 2", 0, false ).then((response) => {
+    expect(response).toEqual(1);
+  });
+
+})
 
 
 

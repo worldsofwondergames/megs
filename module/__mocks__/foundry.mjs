@@ -261,7 +261,11 @@ export class NoDialog {
   }
 }
 
-// export class Dialog {
+export class HandleRollDialog {
+  static confirm() {
+    return true;
+  }
+}
 
 // }
 // global.Dialog = Dialog

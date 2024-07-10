@@ -1,5 +1,3 @@
-import { log, error } from "console"; // jest overrides console; use these instead
-
 export const ShowResultCall = Object.freeze({
   FAILURE: 0,
   ALL_RESULT: 1,
@@ -200,17 +198,12 @@ export class MegsTableRolls {
     }
     if (combatManeuverKey) {
       const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-      error(combatManeuver);
       ovColumnShifts += parseInt(combatManeuver.ovShifts);
       rvColumnShifts += parseInt(combatManeuver.rvShifts);
-      error("rvColumnShifts = "+rvColumnShifts+" | resultColumnShifts = "+resultColumnShifts);
     }
     if (resultColumnShifts) {
-      error("TEST1: rvColumnShifts = "+rvColumnShifts+" | resultColumnShifts = "+resultColumnShifts);
       rvColumnShifts += resultColumnShifts;
-      error("TEST2: rvColumnShifts = "+rvColumnShifts+" | resultColumnShifts = "+resultColumnShifts);
     }
-    error("TEST3: ovColumnShifts = " + ovColumnShifts + " | rvColumnShifts = "+rvColumnShifts);
 
     /**********************************
      * ACTION TABLE
@@ -219,11 +212,8 @@ export class MegsTableRolls {
 
     const ovAdjusted = this.opposingValue + hpSpentOV;
 
-    error("avAdjusted = " + avAdjusted + " | ovAdjusted = "+ovAdjusted);
-
     // consult action chart for difficulty
     const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
-    error("difficulty = " + difficulty);
 
     // determine whether happens
     const avRoll = new MegsRoll(this.rollFormula, {});
@@ -249,25 +239,20 @@ export class MegsTableRolls {
       dice = response;
     });
     resultData.dice = dice;
-    error(dice);
 
     let avRollTotal = 0;
     dice.forEach(die => {
       avRollTotal = avRollTotal + parseInt(die);
     });
-    error("avRollTotal = "+avRollTotal);
 
     // return dice
     resultData.avRollSuccess = avRollTotal >= difficulty;
-    error("avRollSuccess = " + resultData.avRollSuccess);
 
     // if fails, output message
     if (!resultData.avRollSuccess) {
       resultData.result = "Action failed!";
       await this._showRollResultInChat(resultData, avRoll, ShowResultCall.FAILURE);
 
-      error("==================================");
-      error("");
       return dice;
     }
 
@@ -333,19 +318,13 @@ export class MegsTableRolls {
 
       await this._showRollResultInChat(resultData, avRoll, ShowResultCall.NO_EFFECT);
       return dice;
-      error("==================================");
-      error("");
-      }
+    }
 
     // results output to chat
     resultData.result = "Success: " + resultAPs + " RAPs!";
     resultData.success = true;
     resultData.evResult = resultAPs;
     await this._showRollResultInChat(resultData, avRoll, ShowResultCall.SUCCESS);
-
-    error("resultAPs = " + resultAPs);
-    error("==================================");
-    error("");
 
     return resultAPs;
   }

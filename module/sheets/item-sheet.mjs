@@ -78,7 +78,7 @@ export class MEGSItemSheet extends ItemSheet {
         }
       }
 
-      if (actor &&context.system.isLinked === "true") {
+      if (actor && context.system.isLinked === "true") {
         context.minAPs = actor.system.attributes[context.system.link].value;
         context.maxAPs = actor.system.attributes[context.system.link].value;
       } else {
@@ -547,6 +547,7 @@ export class MEGSItemSheet extends ItemSheet {
     context.advantages = advantages;
     context.drawbacks = drawbacks;
     context.subskills = subskills;
+    context.gadgets = gadgets;
   }
 
   /**

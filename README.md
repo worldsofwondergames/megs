@@ -91,7 +91,7 @@ Do I ever! MEGS for Foundry is currently sitting at **version 0.4.0**.
 - Adding an edit lock feature for the page
 - UI fixes to reduce the number of clicks you have to make to take an action
 
-Issues are tracked [here]().
+Issues are tracked [here](https://github.com/codemonkey1972/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Acodemonkey1972%2F4).
 
 I'm also trying to come up with a way of adding skills, if not powers, to the system without stepping on other people's IP. No promises, but if I can find a way that won't get me sued, it will go in here.
 

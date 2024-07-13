@@ -30,7 +30,7 @@ export class RollValues {
   constructor(label, type, valueOrAps, actionValue, opposingValue, effectValue, resistanceValue, rollFormula, unskilled) {
     this.label = label;
     this.type = type; // attribute, power, skill
-    this.valueOrAps = valueOrAps;
+    this.valueOrAps = valueOrAps; // used solely to calculate maxHpToSpend
     this.actionValue = actionValue;
     this.opposingValue = opposingValue;
     this.effectValue = effectValue;

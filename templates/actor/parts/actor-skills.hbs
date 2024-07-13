@@ -1,3 +1,12 @@
+<div>
+  <input type="checkbox" id="system.settings.hideZeroAPSkills" name="system.settings.hideZeroAPSkills" value="true"
+  {{#if (compare system.settings.hideZeroAPSkills "eq" "true")}}
+    checked
+  {{/if}}
+  >
+  <label for="system.settings.hideZeroAPSkills"> Hide Zero-Rank Skills?</label>
+</div>
+
 <ol class='items-list'>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'Name'}}</div>
@@ -7,9 +16,9 @@
     {{/if}}
     <div class='item-controls'></div>
   </li>
-  {{#each skills as |item id|}}
+  {{#each filteredSkills as |item id|}}
     <li class='item flexrow item-row
-    {{#if item.system.aps}}bold{{/if}}
+      {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>
@@ -26,8 +35,7 @@
           class='item-control item-edit'
           title='{{localize "DOCUMENT.Update" type=item.name}}'
         >
-          {{item.name}}
-          {{#if (compare item.system.isLinked "===" "true")}}*{{/if}}
+          {{getSkillDisplayName item}}
         </a>
       </div>
       <div class='item-aps'>
@@ -70,9 +78,17 @@
           data-type="skill" data-link="{{item.system.link}}"
         {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
         >
-          <img src="/systems/megs/assets/images/icons/d10blue.svg" class="svg-icon" alt="Roll" />
+          <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="Roll" />
         </a>
           {{/if}}
+          <!-- TODO delete this for 1.0 -->
+        <a
+          class='item-control item-delete'
+          title='{{localize "DOCUMENT.Delete" type=item.name}}'
+        >
+          <i class='fas fa-trash'></i>
+        </a>
+        <!-- END TODO -->
       </div>
     </li>
   {{/each}}

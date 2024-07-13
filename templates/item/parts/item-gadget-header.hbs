@@ -1,7 +1,9 @@
- <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
+
+  {{!-- Sheet Header --}}
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120"/>
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
       {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
       use both the "grid" and "grid-Ncol" class where "N" can be any number
       from 1 to 12 and will create that number of columns.  --}}
@@ -20,6 +22,7 @@
           </div>
         </div>
 
+      {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
         <div class="resource flex-group-center">
           <label for="system.currentMind.value" class="resource-label">{{system.currentMind.label}}</label>
           <div>
@@ -29,7 +32,9 @@
             <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
           </div>
         </div>
+      {{/if}}
 
+      {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
         <div class="resource flex-group-center">
           <label for="system.currentSpirit.value" class="resource-label">{{system.currentSpirit.label}}</label>
           <div>
@@ -39,6 +44,7 @@
             <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
           </div>
         </div>
+      {{/if}}
 
       </div>
     </div>

@@ -1,6 +1,6 @@
 {
-   "Actor": {
-    "types": ["hero", "villain", "npc", "pet"],
+  "Actor": {
+    "types": ["hero", "villain", "npc", "pet", "vehicle"],
     "templates": {
       "identity": {
         "biography": "",
@@ -33,6 +33,9 @@
         "heroPoints": {
           "value": 0,
           "label": "Hero Points"
+        },
+        "settings": {
+          "hideZeroAPSkills": true
         }
       },
       "attributes": {
@@ -40,7 +43,6 @@
           "dex": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Dexterity",
             "type": "physical",
             "rolls": ["action", "opposing"]
@@ -48,7 +50,6 @@
           "str": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Strength",
             "type": "physical",
             "rolls": ["effect"]
@@ -56,7 +57,6 @@
           "body": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Body",
             "type": "physical",
             "rolls": ["resistance"]
@@ -64,7 +64,6 @@
           "int": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Intelligence",
             "type": "mental",
             "rolls": ["action", "opposing"]
@@ -72,7 +71,6 @@
           "will": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Will",
             "type": "mental",
             "rolls": ["effect"]
@@ -80,7 +78,6 @@
           "mind": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Mind",
             "type": "mental",
             "rolls": ["resistance"]
@@ -88,7 +85,6 @@
           "infl": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Influence",
             "type": "mystical",
             "rolls": ["action", "opposing"]
@@ -96,7 +92,6 @@
           "aura": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Aura",
             "type": "mystical",
             "rolls": ["effect"]
@@ -104,7 +99,6 @@
           "spirit": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Spirit",
             "type": "mystical",
             "rolls": ["resistance"]
@@ -138,10 +132,14 @@
     },
     "pet": {
       "templates": ["baseCharacter", "attributes", "owned"]
+    },
+    "vehicle": {
+      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
+      "linkedItemId" : ""
     }
  },
   "Item": {
-    "types": ["advantage", "bonus", "drawback", "gadget", "limitation", "omni-gadget", "power", "skill", "subskill"],
+    "types": ["advantage", "bonus", "drawback", "gadget", "limitation", "power", "skill", "subskill"],
     "templates": {
       "baseItem": {
         "name": "",
@@ -153,7 +151,6 @@
           "dex": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Dexterity",
             "type": "physical",
             "rolls": ["action", "opposing"],
@@ -162,7 +159,6 @@
           "str": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Strength",
             "type": "physical",
             "rolls": ["effect"],
@@ -171,7 +167,6 @@
           "body": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Body",
             "type": "physical",
             "rolls": ["resistance"],
@@ -180,7 +175,6 @@
           "int": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Intelligence",
             "type": "mental",
             "rolls": ["action", "opposing"],
@@ -189,7 +183,6 @@
           "will": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Will",
             "type": "mental",
             "rolls": ["effect"],
@@ -198,7 +191,6 @@
           "mind": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Mind",
             "type": "mental",
             "rolls": ["resistance"],
@@ -207,7 +199,6 @@
           "infl": {
             "value": 0,
             "factorCost": 7,
-            "isActionAttribute": true,
             "label": "Influence",
             "type": "mystical",
             "rolls": ["action", "opposing"],
@@ -216,7 +207,6 @@
           "aura": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Aura",
             "type": "mystical",
             "rolls": ["effect"],
@@ -225,7 +215,6 @@
           "spirit": {
             "value": 0,
             "factorCost": 6,
-            "isActionAttribute": false,
             "label": "Spirit",
             "type": "mystical",
             "rolls": ["resistance"],
@@ -233,33 +222,63 @@
           }
         }
       },
+      "currentAttributes": {
+        "currentBody": {
+          "value": 0,
+          "min": 0,
+          "max": 60,
+          "label": "Current Body"
+        },
+        "currentMind": {
+          "value": 0,
+          "min": 0,
+          "max": 60,
+          "label": "Current Mind"
+        },
+        "currentSpirit": {
+          "value": 0,
+          "min": 0,
+          "max": 60,
+          "label": "Current Spirit"
+        }
+      },
       "abilities": {
         "link": "",
         "isLinked": false,
         "range": "",
+        "rangeAPs": 0,
         "formula": "1d10 + 1d10"
       }, 
       "purchasable": {
         "baseCost": 0,
         "totalCost": 0
-       }, 
+      }, 
       "scalable": {
         "factorCost": 0,
         "aps": 0
-       },
+      },
       "hasModifiers": {
         "bonuses": [],
         "limitations": []
       },
       "modifier": {
-        "factorCostMod": 0,
-        "link": ""
+        "factorCostMod": 0
       },
       "hasParent": {
         "parent": ""
       },
       "trackOriginal": {
         "originalId": ""
+      },
+      "omni": {
+        "isOmni": false,
+        "aps": 0,
+        "omniClasses": {
+          "a": false,
+          "b": false,
+          "c": false,
+          "d": false
+        }
       }
     },
     "power": {
@@ -303,41 +322,43 @@
       "img": "icons/svg/degen.svg"
     },
     "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal"],
-      "actionValue": 0,
+      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni"],
+      "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
+      "actionValue": 0,
       "effectValue": 0,
       "reliability": 0,
       "isBroken": false,
+      "isCarried": true,
       "canBeTakenAway": true,
       "hasHardenedDefenses": false,
-      "hasAttributes": {
-        "physical": true,
-        "mental": false,
-        "mystical": false
+      "settings": {
+        "isDetailsOpen": {
+          "attributes": false,
+          "miscellaneous": false
+        },
+        "hasAttributes": {
+          "physical": true,
+          "mental": false,
+          "mystical": false
+        },
+        "hasPowers": true,
+        "hasSkills": true,
+        "hasGadgets": true,
+        "hideZeroAPSkills": true
       },
-      "currentBody": {
-        "value": 0,
-        "min": 0,
-        "max": 60,
-        "label": "Current Body"
+      "weapon" : {
+        "isWeapon": false,
+        "range": 0,
+        "ammo": 0
       },
-      "currentMind": {
-        "value": 0,
-        "min": 0,
-        "max": 60,
-        "label": "Current Mind"
+      "armor": {
+        "isArmor": false
       },
-      "currentSpirit": {
-        "value": 0,
-        "min": 0,
-        "max": 60,
-        "label": "Current Spirit"
+      "vehicle": {
+        "isVehicle": false,
+        "linkedActorId" : ""
       }
-    },
-    "omni-gadget": {
-      "aps": 0,
-      "classes": []
     }
   }
 }

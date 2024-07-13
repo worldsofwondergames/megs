@@ -71,6 +71,14 @@ The current version (0.2.2) of MEGS for Foundry has basic character sheets, some
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get out of beta.
 
+### Are there any changes to this ruleset unique to MEGS for Foundry?
+
+There are a few because of technical and/or design constraints of the platform:
+- Advantages and Drawbacks are grouped as "Traits" for ease of reference.
+- Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
+- Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
+- Vehicles should be created as both Items and Characters. More on this as we approach 1.0.
+
 ### Do you have future plans?
 
 Do I ever! MEGS for Foundry is currently sitting at **version 0.2.2**.
@@ -81,11 +89,12 @@ Do I ever! MEGS for Foundry is currently sitting at **version 0.2.2**.
 
 I'm also trying to come up with a way of adding skills, if not powers, to the system without stepping on other people's IP. No promises, but if I can find a way that won't get me sued, it will go in here.
 
-**Version 0.4.0** (hopefully by July 2024, parallel with 0.3.0) is going to tackle some of the thorny rules bits I skipped to get the rest of the system out. Among these are: 
+**Version 0.4.0** (hopefully by end of July 2024) is going to tackle some of the thorny rules bits I skipped to get the rest of the system out. Among these are: 
 - Making Ritual Magic work
 - Making Mystic Link work
 - Adding Omni-Gadgets
 - Adding Pets
+- Adding Vehicles
 - Allowing rolling on Gadgets (right now it's a manual process of copying the RV/EV to the roll input box for the character attribute or skill)
 
 **Version 0.5.0** (aiming for September 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.

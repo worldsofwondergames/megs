@@ -2,7 +2,7 @@
 TODO Test skill roll from actor sheet
 */
 
-import { MEGSActorSheet, } from "../sheets/actor-sheet.mjs";
+import { MEGSActorSheet } from "../sheets/actor-sheet.mjs";
 import { YesDialog, NoDialog } from "../__mocks__/foundry.mjs";
 
 const actorSheet = new MEGSActorSheet();

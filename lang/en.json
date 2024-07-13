@@ -13,6 +13,7 @@
     },
     "SheetLabels": {
       "Actor": "MEGS Actor Sheet",
+      "CharacterBuilder": "MEGS Character Builder",
       "Item": "MEGS Item Sheet"
     },
     "Effect": {
@@ -29,7 +30,8 @@
       "hero": "Hero",
       "npc": "NPC",
       "villain": "Villain",
-      "pet": "Pet"
+      "pet": "Pet",
+      "vehicle": "Vehicle"
     },
     "Item": {
       "gadget": "Gadget",
@@ -47,6 +49,10 @@
     "showHeroPointCosts": {
       "name": "Show character calculator",
       "label": "Check to show calculator and item costs"
+    },
+    "showActiveEffects": {
+      "name": "Show active effects",
+      "label": "Check to show active effects"
     }
   }
 }

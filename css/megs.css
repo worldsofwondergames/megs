@@ -54,11 +54,34 @@
   color: #1f5079;
 }
 
+.megs .message-panel {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  color: #1f5079;  
+  padding: 10px 5px 0 5px;
+}
+
+.megs .editor-edit {
+  display: inline-block;
+}
+
 .megs .editor-content {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 14px;
   color: #1f5079;  
   padding: 10px 5px 0 5px;
+}
+
+.megs div.biography label.biography-label {
+  font-size: 22px;
+}
+
+.megs div.biography div.editor {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
+
+.megs div.biography div.editor-content {
   border: 1px solid #1f5079; 
   background-color: #ddebf6;
 }
@@ -278,6 +301,15 @@
 }
 
 /* Styles limited to megs sheets */
+.megs input[type="checkbox"] + label  {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 13px;
+}
+
+.megs input[type="checkbox"] {
+  vertical-align: middle;
+}
+
 .megs .item-form {
   color: #1f5079;
 }
@@ -312,6 +344,28 @@
   height: 50px;
   margin: 5px 0 0 0;
 }
+
+.megs header.sheet-header .attribute-container {
+  display: inline-block;
+  width: calc(100% - 40px);
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.megs header.sheet-header button.reset {
+  width: 30px;
+  height: 30px;
+  vertical-align: bottom;
+  border: none;
+  cursor: pointer;
+  background-image: url(/systems/megs/assets/images/icons/reset.png);
+  background-size: 30px auto;
+  background-color: #ffffff;
+}
+
+.megs .sheet-header .header-fields select {
+  margin-top: 5px;
+}
+
 .megs .sheet-tabs {
   flex: 0;
 }
@@ -387,6 +441,11 @@
 .megs .sheet-body .gadget-properties select {
   width: 100%;
   text-align: center;  
+}
+
+.megs .sheet-body section.border-bottom {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border-light-primary);
 }
 
 .megs .sheet-body .attributeRow:hover {
@@ -628,6 +687,11 @@ li.directory-item img[src*="assets/images/icons"] {
   filter: invert(100%);
 }
 
+
+/*------------------------------------------------------------------------*/
+/*
+/*------------------------------------------------------------------------*/
+
 details summary.no-arrow {
   display: block;
   cursor: pointer;
@@ -639,11 +703,6 @@ details summary.no-arrow {
   background: #a9a7a7;
 }
 
-.system-megs details summary.roll-dialog-summary {
-  margin: 9px 0 3px 0;
-  padding: 3px 0 3px 0;
-  background: #a9a7a7;
-}
 
 .padding-bottom-10px {
   padding-bottom: 10px;
@@ -680,8 +739,8 @@ details summary.no-arrow {
 }
 
 .svg-icon {
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
   border: none;
 }
 
@@ -749,4 +808,38 @@ details summary.no-arrow {
 .attribute-container {
   padding: 4px 15px 0 15px;
   box-shadow: none;
+}
+
+
+.megs details summary.item-summary {
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 0.1em;
+  color: #fff;
+  margin: 9px 0 3px 0;
+  padding: 3px 0 3px 5px;
+  background-color: #1f5079;
+}
+
+.megs details[open] summary.item-summary {
+  background-color: #5fa2d9;
+}
+
+.megs .attributes .attribute select.numericSelected {
+  width: 75%;
+  float: left;
+}
+
+.megs .attributes .attribute input.numericSelected {
+  width: 25%;
+  float: left;
+  font-size: 22px;
+  text-align: center;
+  color: #1f5079;
+  background-color: #ddebf6;
+  border: 2px solid #a9a7a7;
+}
+
+.megs div.tab.readableText label {
+  font-family: 'Helvetica', 'Arial', sans-serif;
 }

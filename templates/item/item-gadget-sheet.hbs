@@ -1,156 +1,79 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  {{!-- Sheet Header --}}
- <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120"/>
-    <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  --}}
-      <div class="resources grid grid-3col">
+  {{#unless (compare system.isOmni "eq" "true")}}
+  {{> "systems/megs/templates/item/parts/item-gadget-header.hbs"}}
+  {{/unless}}
 
-        {{!-- "flex-group-center" is also defined in the _grid.scss file
-        and it will add a small amount of padding, a border, and will
-        center all of its child elements content and text. --}}
-        <div class="resource flex-group-center">
-          <label for="system.currentBody.value" class="resource-label">{{system.currentBody.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
-          </div>
-        </div>
-
-        <div class="resource flex-group-center">
-          <label for="system.currentMind.value" class="resource-label">{{system.currentMind.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=0 max=system.attributes.mind.value hasValue=true}}
-          </div>
-        </div>
-
-        <div class="resource flex-group-center">
-          <label for="system.currentSpirit.value" class="resource-label">{{system.currentSpirit.label}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </header>
+  {{#if (compare system.isOmni "eq" "true")}}
+  {{> "systems/megs/templates/item/parts/item-gadget-omni-header.hbs"}}
+  {{/if}}
 
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="abilities">{{localize 'Abilities'}}</a>
-    <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
-    <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
-    <a class="item" data-tab="traits">{{localize 'Traits'}}</a>
-    <a class="item" data-tab="description">{{localize 'Description'}}</a>
+    {{#if (compare system.isOmni "!==" "true")}}
+      {{#if (compare system.settings.hasPowers "eq" "true")}}
+      <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
+      {{/if}}
+      {{#if (compare system.settings.hasSkills "eq" "true")}}
+      <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
+      {{/if}}
+      {{#if (compare system.settings.hasGadgets "eq" "true")}}
+      <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
+      {{/if}}
+      <a class="item" data-tab="description">{{localize 'Description'}}</a>
+    {{/if}}
+    <a class="item" data-tab="settings">{{localize 'Settings'}}</a>
   </nav>
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
-    {{!-- Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
+  {{#unless (compare system.isOmni "eq" "true")}}
+  {{> "systems/megs/templates/item/parts/item-gadget-abilities.hbs"}}
+  {{/unless}}
 
-    <section class="gadget-properties grid grid-2col">
-      
-      <div class="gadget-property flex-group-center">
-        <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Action Value'}}">{{localize 'Action Value'}}</label>
-        {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
-      </div>
-      <div class="gadget-property flex-group-center">
-        <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Effect Value'}}">{{localize 'Effect Value'}}</label>
-        {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
-      </div>
-
-      <div class="gadget-property flex-group-center">
-        <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Reliability'}}">{{localize 'Reliability'}}</label>
-        {{> plusMinusInput id='reliability' classes='attribute-input' min=0 value=system.reliability}}
-      </div>
-      <div class="gadget-property flex-group-center">
-        <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'Is Broken?'}}">{{localize 'Is Broken?'}}</label>
-        <div>
-        <select  class="resource-select"  name="system.isBroken" data-type="String">
-          {{#select system.isBroken}}
-              <option  value="false">{{localize 'No'}}</option>
-              <option  value="true">{{localize 'Yes'}}</option>
-          {{/select}}
-        </select>
-        </div>
-      </div>
-    </section>
-
-    <section class="gadget-properties grid grid-3col">
-      <div class="gadget-property flex-group-center">
-        <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'Quantity'}}">{{localize 'Quantity'}}</label>
-        <div>
-        {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
-        </div>
-      </div>
-      
-      <div class="gadget-property flex-group-center">
-        <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'Can Be Taken Away?'}}">{{localize 'Can Be Taken Away?'}}</label>
-        <div>
-        <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
-          {{#select system.canBeTakenAway}}
-              <option  value="false">{{localize 'No'}}</option>
-              <option  value="true">{{localize 'Yes'}}</option>
-          {{/select}}
-        </select>
-        </div>
-      </div>
-      
-      <div class="gadget-property flex-group-center">
-        <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'Has Hardened Defenses?'}}">{{localize 'Has Hardened Defenses?'}}</label>
-        <div>
-        <select  class="resource-select"  name="system.hasHardenedDefenses" data-type="String">
-          {{#select system.hasHardenedDefenses}}
-            <option  value="false">{{localize 'No'}}</option>
-            <option  value="true">{{localize 'Yes'}}</option>
-          {{/select}}
-        </select>
-        </div>
-      </div>
-    </section>
-
-    {{#each system.attributes as |attribute key|}}
-      {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
-      {{/if}}
-          <div class="attribute flex-group-center">
-            <label for="system.attributes.{{key}}.value" 
-                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
-                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
-                data-value="{{attribute.value}}" data-key="{{key}}">
-              {{attribute.label}}
-            </label>
-<!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
-            <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
-              <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>
-              <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
-            </div>
-          </div>
-      {{#if (isDivisor 3 (sum @index 1))}}
-        </section>
-     {{/if}}
-   {{/each}}
-    </div>
+  {{#if (compare system.isOmni "eq" "true")}}
+  {{> "systems/megs/templates/item/parts/item-gadget-omni-abilities.hbs"}}
+  {{/if}}
 
     {{!-- Owned Powers Tab --}}
-
     <div class="tab powers" data-group="primary" data-tab="powers">
-       {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+      {{#unless hasActor}}
+        <div class="message-panel">Due to technical limitations, Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
+      {{/unless}}
+      {{#if hasActor}}
+      {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+      {{/if}}
     </div>
 
     {{!-- Owned Skills Tab --}}
     <div class="tab skills" data-group="primary" data-tab="skills">
+      {{#unless hasActor}}
+        <div class="message-panel">Due to technical limitations, Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
+      {{/unless}}
+      {{#if hasActor}}
       {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
+      {{/if}}
     </div>
 
     {{!-- Traits Tab --}}
      <div class="tab traits" data-group="primary" data-tab="traits">
-       {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+      {{#unless hasActor}}
+        <div class="message-panel">Due to technical limitations, Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
+      {{/unless}}
+      {{#if hasActor}}
+      {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+      {{/if}}
+    </div>
+
+    {{!-- Owned gadgets Tab --}}
+    <div class="tab gadgets" data-group="primary" data-tab="gadgets">
+      {{#unless hasActor}}
+        <div class="message-panel">Due to technical limitations, Gadgets cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
+      {{/unless}}
+      {{#if hasActor}}
+       {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
+      {{/if}}
     </div>
 
     {{!-- Description Tab --}}
@@ -158,6 +81,103 @@
 
       {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+    </div>
+
+    {{!-- Settings Tab --}}
+    <div class="tab settings readableText" data-group="primary" data-tab="settings">
+      <div>
+        <input type="checkbox" id="system.isOmni" name="system.isOmni" value="true"
+        {{#if (compare system.isOmni "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.isOmni"> Is Omni-Gadget?</label>
+      </div>
+
+      <hr/>
+      <div>
+        <input type="checkbox" id="system.settings.hasAttributes.physical" name="system.settings.hasAttributes.physical" value="true"
+        {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasAttributes.physical"> Has physical attributes?</label>
+      </div>
+      <div>
+        <input type="checkbox" id="system.settings.hasAttributes.mental" name="system.settings.hasAttributes.mental" value="true"
+        {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasAttributes.mental"> Has mental attributes?</label>
+      </div>
+      <div>
+        <input type="checkbox" id="system.settings.hasAttributes.mystical" name="system.settings.hasAttributes.mystical" value="true"
+        {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasAttributes.mystical"> Has mystical attributes?</label>
+      </div>
+
+      <hr/>
+
+      <div>
+        <input type="checkbox" id="system.weapon.isWeapon" name="system.weapon.isWeapon" value="true"
+        {{#if (compare system.weapon.isWeapon "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.weapon.isWeapon"> Is a weapon?</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.armor.isArmor" name="system.armor.isArmor" value="true"
+        {{#if (compare system.armor.isArmor "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.armor.isArmor"> Is armor?</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.vehicle.isVehicle" name="system.vehicle.isVehicle" value="true"
+        {{#if (compare system.vehicle.isVehicle "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.vehicle.isVehicle"> Is a vehicle?</label>
+      </div>
+
+      <hr/>
+
+      <div>
+        <input type="checkbox" id="system.settings.hasPowers" name="system.settings.hasPowers" value="true"
+        {{#if (compare system.settings.hasPowers "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasPowers"> Has powers?</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.settings.hasSkills" name="system.settings.hasSkills" value="true"
+        {{#if (compare system.settings.hasSkills "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasSkills"> Has skills?</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="system.settings.hasGadgets" name="system.settings.hasGadgets" value="true"
+        {{#if (compare system.settings.hasGadgets "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasGadgets"> Has gadgets?</label>
+      </div>
+
     </div>
 
   </section>

@@ -15,7 +15,7 @@ export class MEGSItemSheet extends ItemSheet {
   static get defaultOptions() {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'item'];
-    newOptions.width = 570;
+    newOptions.width = 585;
     newOptions.height = 480;
     newOptions.dragDrop = [{dragSelector: ".item-list .item", dropSelector: null}];
     newOptions.tabs = [
@@ -78,7 +78,7 @@ export class MEGSItemSheet extends ItemSheet {
         }
       }
 
-      if (actor &&context.system.isLinked === "true") {
+      if (actor && context.system.isLinked === "true") {
         context.minAPs = actor.system.attributes[context.system.link].value;
         context.maxAPs = actor.system.attributes[context.system.link].value;
       } else {
@@ -124,6 +124,7 @@ export class MEGSItemSheet extends ItemSheet {
     if (itemData.type === MEGS.itemTypes.gadget) {
       context.items = itemData.system.items;
       this._prepareGadgetData(context);
+      console.error(context.gadgets); // TODO
     }
 
     // store all skills for dropdown on subskill page
@@ -142,6 +143,7 @@ export class MEGSItemSheet extends ItemSheet {
 
     context.hasActor = this.object.parent ? true : false;
 
+    // TODO locked
     // if (context.hasActor == null) { // == is correct here; want null and undefined
     //   if (context.hasActor) { 
     //     this.isLocked = true;
@@ -256,21 +258,23 @@ export class MEGSItemSheet extends ItemSheet {
       let targetActor = MegsTableRolls.getTargetActor();
 
       if (this.object.type === MEGS.itemTypes.power) {
-        // for powers, AV and EV are APs of power
+        // for powers, AV and EV are typically APs of power
         actionValue = parseInt(dataset.value);
         effectValue = parseInt(dataset.value);
 
+        // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
+
         // Physical powers - OV and RV are DEX and BODY
         if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {
-          dataset.key = "str";
+          dataset.key = MEGS.attributeAbbreviations.str;
         }
         // Mental powers - OV and RV are INT and MIND
         if (this.object.system.source === MEGS.powerSources.mental.toLowerCase()) {
-          dataset.key = "int";
+          dataset.key = MEGS.attributeAbbreviations.int;
         }
         // Mystical powers - OV and RV are INFL and SPIRIT
         if (this.object.system.source === MEGS.powerSources.mystical.toLowerCase()) {
-          dataset.key = "infl";
+          dataset.key = MEGS.attributeAbbreviations.infl;
         }
         if (targetActor) {
           opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
@@ -316,12 +320,12 @@ export class MEGSItemSheet extends ItemSheet {
    */
   _getOpposingValueForPower(key, targetActor) {
     let opposingValue;
-    if (key === "str") {
+    if (key === MEGS.attributeAbbreviations.str) {
       opposingValue = targetActor.system.attributes.dex.value;
-    } else if (key === "will") {
+    } else if (key === MEGS.attributeAbbreviations.will) {
       opposingValue = targetActor.system.attributes.int.value;
-    } else if (key === "aura") {
-      opposingValue = targetActor.system.attributes.info.value;
+    } else if (key === MEGS.attributeAbbreviations.aura) {
+      opposingValue = targetActor.system.attributes.infl.value;
     } else {
       ui.notifications.error("_getOpposingValueForPower: Invalid attribute selection");
       return;
@@ -461,6 +465,7 @@ export class MEGSItemSheet extends ItemSheet {
     const advantages = [];
     const drawbacks = [];
     const subskills = [];
+    const gadgets = [];
 
     let items = [];
     if (context.document.parent) {
@@ -501,9 +506,41 @@ export class MEGSItemSheet extends ItemSheet {
           i.skill = context.item;
           subskills.push(i);
         }
+        // Append to gadgets
+        else if (i.type === MEGS.itemTypes.gadget) {
+          gadgets.push(i);
+        }
       }
 
     }
+
+    // sort alphabetically
+    const arrays = [
+      powers,
+      skills,
+      advantages,
+      drawbacks,
+      subskills,
+      gadgets
+    ];
+    arrays.forEach((element) => {
+      element.sort(function(a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+    });
+
+    subskills.forEach((element) => {
+      const result = skills.find(({ _id }) => _id === element.system.parent);
+      if (result) {
+        console.error("TEST1: " + element.name + " : " + element.system.parent); // TODO
+        result.subskills.push(element);
+      } 
+      else {
+        console.error("TEST2: " + element.name + " : " + element.system.parent); // TODO
+      }
+    });
 
     // Assign and return
     context.powers = powers;
@@ -511,6 +548,7 @@ export class MEGSItemSheet extends ItemSheet {
     context.advantages = advantages;
     context.drawbacks = drawbacks;
     context.subskills = subskills;
+    context.gadgets = gadgets;
   }
 
   /**
@@ -569,6 +607,7 @@ export class MEGSItemSheet extends ItemSheet {
   /** @inheritdoc */
   _onDragStart(event) {
     const li = event.currentTarget;
+
     if ( event.target.classList.contains("content-link") ) return;
 
     // Create drag data
@@ -580,7 +619,7 @@ export class MEGSItemSheet extends ItemSheet {
       dragData = item.toDragData();
     }
 
-    // Active Effect
+    // Active Effect TODO
     if ( li.dataset.effectId ) {
       const effect = this.object.parent.effects.get(li.dataset.effectId);
       dragData = effect.toDragData();
@@ -600,13 +639,19 @@ export class MEGSItemSheet extends ItemSheet {
     const allowed = Hooks.call("dropActorSheetData", actor, this, data);
     const isDroppable = this.object.type === MEGS.itemTypes.power;
     const item = await Item.implementation.fromDropData(data);
-    const isSubItem = item.type === MEGS.itemTypes.bonus || item.type === MEGS.itemTypes.limitation;
+    const isSubItem = item.type === MEGS.itemTypes.bonus || item.type === MEGS.itemTypes.limitation || item.type === MEGS.itemTypes.subskill;
+
+    const sheetTypeSkill = this.object.type === MEGS.itemTypes.skill;
+    if (sheetTypeSkill && item.type === MEGS.itemTypes.subskill) {
+      return this._onDropItem(event, data);
+    }
 
     const sheetTypeGadget = this.object.type === MEGS.itemTypes.gadget;
 
     if ( (!allowed || !isDroppable || !isSubItem) && (!sheetTypeGadget)) return;
 
     if (sheetTypeGadget && isSubItem) return;
+
 
     // Handle different data types
     // TODO remove this?

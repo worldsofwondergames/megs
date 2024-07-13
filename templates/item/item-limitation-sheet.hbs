@@ -5,21 +5,6 @@
       <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
  
       <div class="resources grid grid-2col">
-
-        <div class="resource flex-group-center">
-          <label for="system.link" class="resource-label">{{localize 'Linked Power'}}</label>
-          <div class="resource-content flexrow flex-center flex-between">
-          <select  class="resource-select"  name="system.link" data-type="String">
-            {{#select system.link}}
-                <option  value="">Select one</option>
-                {{#each powers as |power key|}}
-                <option  value="{{key}}">{{power.name}}</option>
-                {{/each}}
-            {{/select}}
-          </select>
-          </div>
-        </div>
-
         <div class="resource flex-group-center">
           <label for="system.factorCostMod" class="resource-label">{{localize 'Factor Cost Mod'}}</label>
           <div class="resource-content flexrow flex-center flex-between">

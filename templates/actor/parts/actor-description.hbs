@@ -26,6 +26,5 @@
         </div>
       </section>
 
-
-      {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
+      <label for="system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.biography}}">{{localize 'Biography'}}</label>
       {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}

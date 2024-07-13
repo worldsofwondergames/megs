@@ -88,9 +88,29 @@ export class MEGSActor extends Actor {
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
   }
+  /**
+   * @override
+   * Augment the actor source data with additional dynamic data. Typically,
+   * you'll want to handle most of your calculated/derived data in this step.
+   * Data calculated in this step should generally not exist in template.json
+   * (such as ability modifiers rather than ability scores) and should be
+   * available both inside and outside of character sheets (such as if an actor
+   * is queried and has a roll executed directly from it).
+   */
+  prepareDerivedData() {
+    super.prepareDerivedData();
+    
+    this.system.currentBody.max = this.system.attributes.body.value;
+    this.system.currentMind.max = this.system.attributes.mind.value;
+    this.system.currentSpirit.max = this.system.attributes.spirit.value;
+  }
 
+  /**
+   * 
+   * @returns 
+   */
   _calculateInitiativeBonus() {
- // TODO replace all of this with effects?
+    // TODO replace all of this with effects?
 
     // calculate initiativeBonus
     let initiativeBonus = this.system.attributes.dex.value + this.system.attributes.int.value

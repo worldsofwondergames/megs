@@ -3,6 +3,7 @@ import { MEGSActor } from './documents/actor.mjs';
 import { MEGSItem } from './documents/item.mjs';
 // Import sheet classes.
 import { MEGSActorSheet } from './sheets/actor-sheet.mjs';
+import { MEGSCharacterBuilderSheet } from './sheets/character-creator-sheet.mjs';
 import { MEGSItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
@@ -72,6 +73,10 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'MEGS.SheetLabels.Actor',
   });
+  Actors.registerSheet('megs', MEGSCharacterBuilderSheet, {
+    makeDefault: false,
+    label: 'MEGS.SheetLabels.CharacterBuilder',
+  })
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('megs', MEGSItemSheet, {
     makeDefault: true,
@@ -136,7 +141,7 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
 
 Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
   for (let i of game.items) {
-    if (i.type === 'skill') {
+    if (i.type === MEGS.itemTypes.skill) { 
       if (i.name === skillName) {
         return i.system.range;
       }
@@ -147,7 +152,7 @@ Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
 
 Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
   for (let i of game.items) {
-    if (i.type === 'skill') {
+    if (i.type === MEGS.itemTypes.skill) { 
       if (i.name === skillName) {
         return i.system.type;
       }
@@ -157,18 +162,55 @@ Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
 });
 
 Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
-  for (let i of game.items) {
-    if (i.type === 'skill') {
-      if (i.name === skillName) {
-        return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
+  if (game.items) {
+    for (let i of game.items) {
+      if (i.type === MEGS.itemTypes.skill) { 
+        if (i.name === skillName) {
+          return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
+        }
       }
     }
+  } else {
+    console.error(`Returned undefined for game.items!`);
   }
+
   return "N/A";
+});
+
+Handlebars.registerHelper('getSkillDisplayName', function(skill) {
+  let displayName = skill.name;
+  if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
+    let subskillText = " ("
+    skill.subskills.forEach((subskill, index) => {
+      if (subskill.system.aps > 0) {
+        if (subskillText !== " (") { subskillText += " ,"; }
+        // No need to show " Weapons" after every weapon type
+        subskillText += subskill.name.replace(' Weapons', '') + " " + subskill.system.aps;
+      }
+    });
+    subskillText += ")";
+    if (subskillText !== " ()") {
+      displayName += subskillText;
+    }
+  }
+  if (skill.system.isLinked === "true") {
+    displayName += "*";
+  }
+  return displayName;
 });
 
 Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
+
+  if (gadget.system.isOmni) {
+    description = gadget.system.aps + " AP ";
+    Object.keys(gadget.system.omniClasses).forEach(key => {
+      if (gadget.system.omniClasses[key]) {
+        description += key.toUpperCase();
+      }
+    });
+    return description;
+  }
 
   // attributes first
   for (let attributeName in gadget.system.attributes) {
@@ -183,30 +225,38 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     }
   }
 
-  // powers
   const owner = game.actors.get(gadget.ownerId);
-  for (let i of owner.items) {
-    if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
-      if (description) {
-        description += ", ";
-      }
-      description += i.name + " " + i.system.aps;
-    }
+  if (!owner) {
+    console.error("Owner actor not returned for ID " + gadget.ownerId);
+    // TODO this is probably related to compendium; research storing items as well?
+    // https://foundryvtt.com/api/classes/client.CompendiumCollection.html
   }
 
-  // skills
-  for (let i of owner.items) {
-    if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
-      if (description) {
-        description += ", ";
+  if (owner && owner.items) {
+    // powers
+    for (let i of owner.items) {
+      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
+        if (description) {
+          description += ", ";
+        }
+        description += i.name + " " + i.system.aps;
       }
-      description += i.name + " " + i.system.aps;
-    } else if (i.type === MEGS.itemTypes.subskill && i.system.parent === gadget._id && i.system.aps > 0) {
-      if (description) {
-        description += ", ";
+    }
+
+    // skills
+    for (let i of owner.items) {
+      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
+        if (description) {
+          description += ", ";
+        }
+        description += i.name + " " + i.system.aps;
+      } else if (i.type === MEGS.itemTypes.subskill && i.system.parent === gadget._id && i.system.aps > 0) {
+        if (description) {
+          description += ", ";
+        }
+        // TODO multiple subskills: Skill (subskill) #
+        description += i.linkedSkill + " (" + i.name + ") " + i.system.aps
       }
-      // TODO multiple subskills: Skill (subskill) #
-      description += i.linkedSkill + " (" + i.name + ") " + i.system.aps
     }
   }
 
@@ -224,6 +274,22 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     description += "EV " + gadget.system.effectValue;
   }
 
+  // range
+  if (gadget.system.weapon.isWeapon && gadget.system.weapon.range > 0) {
+    if (description) {
+      description += ", ";
+    }
+    description += "Range " + gadget.system.weapon.range;
+  }
+
+  // ammo
+  if (gadget.system.weapon.isWeapon && gadget.system.weapon.ammo > 0) {
+    if (description) {
+      description += ", ";
+    }
+    description += "Ammo " + gadget.system.weapon.ammo;
+  }
+
   // reliability
   if (gadget.system.reliability > 0) {
     if (description) {
@@ -231,10 +297,6 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     }
     description += "R # " + gadget.system.reliability;
   }
-
-  // TODO range
-
-  // TODO ammo
 
   return description;
 });
@@ -365,6 +427,14 @@ function registerSystemSettings() {
     scope: "client",
     name: "SETTINGS.showHeroPointCosts.name",
     hint: "SETTINGS.showHeroPointCosts.label",
+    type: Boolean,
+    default: false
+  });
+  game.settings.register("megs", "showActiveEffects", {
+    config: true,
+    scope: "client",
+    name: "SETTINGS.showActiveEffects.name",
+    hint: "SETTINGS.showActiveEffects.label",
     type: Boolean,
     default: false
   });

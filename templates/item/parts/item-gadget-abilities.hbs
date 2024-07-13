@@ -1,0 +1,129 @@
+    {{!-- Abilities Tab --}}
+    <div class="tab abilities" data-group="primary" data-tab="abilities">
+      
+      {{!-- Gadget values --}}
+      <section class="gadget-properties grid grid-2coll border-bottom">
+        <div class="gadget-property flex-group-center">
+          <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'Action Value'}}">{{localize 'Action Value'}}</label>
+          {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
+        </div>
+        <div class="gadget-property flex-group-center">
+          <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'Effect Value'}}">{{localize 'Effect Value'}}</label>
+          {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
+        </div>
+
+      </section>
+
+      {{!-- Gadget attributes --}}
+      <details open>
+        <summary class="item-summary">Attributes {{gadgetAttributesDetailsOpen}}</summary>
+
+      {{#each system.attributes as |attribute key|}}
+        {{#if (isDivisor 3 @index)}}
+        <section class="attributes grid grid-3col attributeRow">
+        {{/if}}
+            <div class="attribute flex-group-center">
+              <label for="system.attributes.{{key}}.value" 
+                  class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
+                  data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
+                  data-value="{{attribute.value}}" data-key="{{key}}">
+                {{attribute.label}}
+              </label>
+  <!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
+              <div class="quantity attribute-input">
+                <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
+                <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>
+                <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
+              </div>
+            </div>
+        {{#if (isDivisor 3 (sum @index 1))}}
+          </section>
+      {{/if}}
+    {{/each}}
+      </details>
+
+      {{!-- Gadget misc properties --}}
+      <details open>
+        <summary class="item-summary">Miscellaneous</summary>
+        <section class="gadget-properties grid grid-3col">
+
+          <div class="gadget-property flex-group-center">
+            <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'Quantity'}}">{{localize 'Quantity'}}</label>
+            <div>
+            {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
+            </div>
+          </div>
+
+        {{#if (compare system.weapon.isWeapon "eq" "true")}}
+          <div class="gadget-property flex-group-center">
+            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'Range'}}">{{localize 'Range'}}</label>
+            <div>
+            {{> plusMinusInput id='range' classes='attribute-input' min=1 value=system.weapon.range}}
+            </div>
+          </div>
+
+          <div class="gadget-property flex-group-center">
+            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'Ammo'}}">{{localize 'Ammo'}}</label>
+            <div>
+            {{> plusMinusInput id='ammo' classes='attribute-input' min=0 value=system.weapon.ammo}}
+            </div>
+          </div>
+        {{/if}}
+          
+          <div class="gadget-property flex-group-center">
+            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Is Carried?'}}</label>
+            <div>
+            <select  class="resource-select"  name="system.isCarried" data-type="String">
+              {{#select system.isCarried}}
+                  <option value="true">{{localize 'Yes'}}</option>
+                  <option value="false">{{localize 'No'}}</option>
+              {{/select}}
+            </select>
+            </div>
+          </div>
+          
+          <div class="gadget-property flex-group-center">
+            <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'Can Be Taken Away?'}}">{{localize 'Can Be Taken Away?'}}</label>
+            <div>
+            <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
+              {{#select system.canBeTakenAway}}
+                  <option value="false">{{localize 'No'}}</option>
+                  <option value="true">{{localize 'Yes'}}</option>
+              {{/select}}
+            </select>
+            </div>
+          </div>
+          
+          <div class="gadget-property flex-group-center">
+            <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'Has Hardened Defenses?'}}">{{localize 'Has Hardened Defenses?'}}</label>
+            <div>
+            <select  class="resource-select"  name="system.hasHardenedDefenses" data-type="String">
+              {{#select system.hasHardenedDefenses}}
+                <option  value="false">{{localize 'No'}}</option>
+                <option  value="true">{{localize 'Yes'}}</option>
+              {{/select}}
+            </select>
+            </div>
+          </div>
+
+          {{!-- Gadget reliability --}}
+          <div class="gadget-property flex-group-center">
+            <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Reliability'}}">{{localize 'Reliability'}}</label>
+            {{> plusMinusInput id='reliability' classes='attribute-input' min=0 value=system.reliability}}
+          </div>
+
+          <div class="gadget-property flex-group-center">
+            <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'Is Broken?'}}">{{localize 'Is Broken?'}}</label>
+            <div>
+            <select  class="resource-select"  name="system.isBroken" data-type="String">
+              {{#select system.isBroken}}
+                  <option  value="false">{{localize 'No'}}</option>
+                  <option  value="true">{{localize 'Yes'}}</option>
+              {{/select}}
+            </select>
+            </div>
+          </div>
+        </section>
+      </details>
+
+    </div>

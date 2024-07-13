@@ -32,7 +32,8 @@ MEGS.characterTypes = {
   hero: 'hero',
   npc: 'npc',
   villain: 'villain',
-  pet: "pet"
+  pet: "pet",
+  vehicle: "vehicle"
 }
 
 MEGS.itemTypes = {
@@ -43,8 +44,7 @@ MEGS.itemTypes = {
   power: "power", 
   skill: "skill", 
   subskill: "subskill",
-  gadget: "gadget", 
-  omnigadget: "omni-gadget"
+  gadget: "gadget"
 }
 
 MEGS.powerTypes = {
@@ -64,7 +64,8 @@ MEGS.ranges = {
   normal: "Normal",
   self: "Self",
   special: "Special",
-  touch: "Touch"
+  touch: "Touch",
+  numeric: "APs"
 }
 
 MEGS.powers = {
@@ -80,4 +81,10 @@ MEGS.advantages = {
   LIGHTNING_REFLEXES: "Lightning Reflexes"
 }
 
+MEGS.omniRanges = {
+  A: "Physical Attributes",
+  B: "Mental Attributes",
+  C: "Physical and Mental Powers",
+  D: "Italicized Attributes"
+}
 

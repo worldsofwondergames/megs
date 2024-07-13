@@ -98,31 +98,42 @@
         <div class="attribute flex-group-center">
           <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'Is Linked?'}}">{{localize 'Is Linked?'}}</label>
           <div>
+          {{#if hasActor}}
           <select  class="resource-select"  name="system.isLinked" data-type="String">
             {{#select system.isLinked}}
                 <option  value="false">{{localize 'No'}}</option>
                 <option  value="true">{{localize 'Yes'}}</option>
             {{/select}}
           </select>
+          {{/if}}
+          {{#unless hasActor}}
+          {{localize 'No'}}
+          {{/unless}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
           <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'Range'}}</label>
           <div>
-            <select  class="resource-select"  name="system.range" data-type="String">
+            {{#if (compare system.range "eq" "numeric")}}
+            <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
+            <select class="resource-select numericSelected" name="system.range" data-type="string">
+            {{/if}}
+            {{#unless (compare system.range "eq" "numeric")}}
+            <select class="resource-select" name="system.range" data-type="string">
+            {{/unless}}
               {{#select system.range}}
                   {{#each system.ranges as |range key|}}
                   <option  value="{{key}}">{{range}}</option>
                   {{/each}}
-                  <option  value="varies">Varies</option>
+                  <option value="varies">Varies</option>
               {{/select}}
             </select>
           </div>
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.type" class="resource-label rollable flexlarge align-left" data-label="{{localize 'Type'}}">{{localize 'Type'}}</label>
+          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'Type'}}">{{localize 'Type'}}</label>
            <div>
           <select  class="resource-select"  name="system.type" data-type="String">
             {{#select system.type}}
@@ -150,12 +161,17 @@
         <div class="attribute flex-group-center">
           <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'Activate Free?'}}">{{localize 'Activate Free?'}}</label>
           <div>
+          {{#if hasActor}}
           <select  class="resource-select"  name="system.activateFree" data-type="String">
             {{#select system.activateFree}}
                 <option  value="false">{{localize 'No'}}</option>
                 <option  value="true">{{localize 'Yes'}}</option>
             {{/select}}
           </select>
+          {{/if}}
+          {{#unless hasActor}}
+          {{localize 'No'}}
+          {{/unless}}
           </div>
         </div>
               
@@ -171,6 +187,7 @@
 
     {{!-- Modifiers Tab --}}
     <div class="tab modifiers" data-group="primary" data-tab="modifiers">
+      {{#if hasActor}}
       <div class="resources grid grid-2col">
 
           <div class="resource flex-group-center">
@@ -285,6 +302,11 @@
 
         </div>
       </div>
+      {{/if}}
+      {{#unless hasActor}}
+        <div class="message-panel">Due to technical limitations, Modifiers cannot be added to an unowned Power. Please add this Power to a character in order to add Modifiers.</div>
+      {{/unless}}
+
     </div>
   </section>
 </form>

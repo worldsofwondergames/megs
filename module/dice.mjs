@@ -1,3 +1,31 @@
+export const ShowResultCall = Object.freeze({
+  FAILURE: 0,
+  ALL_RESULT: 1,
+  NO_EFFECT: 2,
+  SUCCESS: 3,
+  DOUBLE_1S: 4
+});
+
+/* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
+    Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
+const COLUMN_SHIFT_THRESHOLD = 11; 
+
+export class MegsRoll extends Roll {
+  async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
+
+    const msg = await ChatMessage.create(
+      {
+        user: game.user.id,
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        content: dialogHtml,
+        sound: CONFIG.sounds.dice
+      }
+    );
+    
+    return msg;
+  }
+}
+
 export class RollValues {
   constructor(label, type, valueOrAps, actionValue, opposingValue, effectValue, resistanceValue, rollFormula, unskilled) {
     this.label = label;
@@ -170,8 +198,8 @@ export class MegsTableRolls {
     }
     if (combatManeuverKey) {
       const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-      ovColumnShifts += combatManeuver.ovShifts;
-      rvColumnShifts += combatManeuver.rvShifts;
+      ovColumnShifts += parseInt(combatManeuver.ovShifts);
+      rvColumnShifts += parseInt(combatManeuver.rvShifts);
     }
     if (resultColumnShifts) {
       rvColumnShifts += resultColumnShifts;
@@ -188,7 +216,7 @@ export class MegsTableRolls {
     const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
 
     // determine whether happens
-    const avRoll = new Roll(this.rollFormula, {});
+    const avRoll = new MegsRoll(this.rollFormula, {});
 
     // Execute the roll
     await avRoll.evaluate();
@@ -223,7 +251,8 @@ export class MegsTableRolls {
     // if fails, output message
     if (!resultData.avRollSuccess) {
       resultData.result = "Action failed!";
-      await this._showRollResultInChat(resultData);
+      await this._showRollResultInChat(resultData, avRoll, ShowResultCall.FAILURE);
+
       return dice;
     }
 
@@ -274,7 +303,7 @@ export class MegsTableRolls {
         resultData.evResult = resultData.evResult + " + " + Math.abs(shiftedRvIndex);
       }
 
-      await this._showRollResultInChat(resultData);
+      await this._showRollResultInChat(resultData, avRoll, ShowResultCall.ALL_RESULT);
       return resultAPs;
     }
 
@@ -287,7 +316,7 @@ export class MegsTableRolls {
       resultData.success = false;
       resultData.evResult = "N";
 
-      await this._showRollResultInChat(resultData);
+      await this._showRollResultInChat(resultData, avRoll, ShowResultCall.NO_EFFECT);
       return dice;
     }
 
@@ -295,7 +324,7 @@ export class MegsTableRolls {
     resultData.result = "Success: " + resultAPs + " RAPs!";
     resultData.success = true;
     resultData.evResult = resultAPs;
-    await this._showRollResultInChat(resultData);
+    await this._showRollResultInChat(resultData, avRoll, ShowResultCall.SUCCESS);
 
     return resultAPs;
   }
@@ -333,7 +362,7 @@ export class MegsTableRolls {
         // dice are both 1s
         data.result = "Double 1s: Automatic failure!"
         data.dice = dice;
-        await this._showRollResultInChat(data);
+        await this._showRollResultInChat(data, avRoll, ShowResultCall.DOUBLE_1S);
         stopRolling = true;
       } else  if (rolledDice[0] === rolledDice[1]) {
         // dice match but are not 1s
@@ -363,18 +392,16 @@ export class MegsTableRolls {
    * @returns {Promise<void>}
    * @private
    */
-  async _showRollResultInChat(data) {
+  async _showRollResultInChat(data, roll, callingPoint) {
     const rollChatTemplate = "systems/megs/templates/chat/rollResult.hbs";
     
     // what's being rolled (used for display)
     data.title = this.label ? `${this.label}` : '';
 
+    console.log("Calling show result from point: " + callingPoint);
+
     const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-    await ChatMessage.create(
-      {
-        content: dialogHtml
-      }
-    );
+    await roll.toMessage(dialogHtml);
   }
 
   /**
@@ -401,12 +428,12 @@ export class MegsTableRolls {
       // TODO handle totals greater than 60 on table
 
       // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
-      if (avRollTotal > 11) {
+      if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
 
         /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
             Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
         for (let i = 0; i < actionTable[avIndex].length; i++) {
-          if (actionTable[avIndex][i] > 11) {
+          if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
             // The roll must be greater than the Success Number
             if (avRollTotal > actionTable[avIndex][i]) {
               columnShifts++;
@@ -472,8 +499,14 @@ export class MegsTableRolls {
     const actionTable = CONFIG.tables.actionTable;
     const difficulty = actionTable[avIndex][ovIndex];
 
-    if (avIndex < 0 || ovIndex < 0 || avIndex >= actionTable.length || ovIndex >= actionTable[avIndex].length) {
-      console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | OV = "+ovAdjusted+" | col shifts = "+ovColumnShifts+")");
+    if (avIndex < 0) {
+      console.error("ERROR: Index beyond table boundaries (AV = "+avAdjusted+" | avIndex = "+avIndex+")");
+    } else if (ovIndex < 0) {
+      console.error("ERROR: Index beyond table boundaries (OV = "+ovAdjusted+" | ovIndex = "+ovIndex+" | ovColumnShifts = "+ovColumnShifts+")");
+    } else if (avIndex >= actionTable.length) {
+      console.error("ERROR: Index beyond table boundaries (avIndex = "+avIndex+" | actionTable.length = "+actionTable.length+")");
+    } else if (ovIndex >= actionTable[avIndex].length) {
+      console.error("ERROR: Index beyond table boundaries (avIndex = "+avIndex+" | ovIndex = "+ovIndex+" | actionTable[avIndex].length = "+actionTable[avIndex].length+")");
     }
 
     return difficulty;

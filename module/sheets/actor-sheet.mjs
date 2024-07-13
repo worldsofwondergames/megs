@@ -34,7 +34,6 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override */
   getData () {
-
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for
     // sheets are the actor object, the data object, whether or not it's
@@ -64,7 +63,52 @@ export class MEGSActorSheet extends ActorSheet {
 
     // Prepare NPC data and items.
     if (actorData.type === MEGS.characterTypes.npc) {
+      this._prepareItems(context);
       this._prepareCharacterData(context);
+      this._prepareInitiative(context);
+    }
+
+    if (actorData.type === MEGS.characterTypes.vehicle) {
+      this._prepareCharacterData(context);
+
+      // get list of potential actors to own
+      context.characters = [];
+      game.actors.forEach((element) => {
+        if (element.type !== MEGS.characterTypes.vehicle)
+        {
+          context.characters[element.name] = element._id;
+        }
+      });
+      context.characters = this._sortArray(context.characters);
+
+      context.vehicles = [];
+      if (context.system.ownerId) {
+        const owner = game.actors.get(context.system.ownerId);
+        if (owner) {
+
+          // get list of vehicle items from owner actor to link
+          if (!owner) {
+            console.error("Owner actor not returned for ID " + gadget.ownerId);
+          } else if (owner.items) {
+            context.system.linkedItem = undefined;
+            owner.items.forEach((element) => {
+              if (element.type === MEGS.itemTypes.gadget) {
+
+                // store linked vehicle item
+                if (element._id === context.system.linkedItemId) {
+                  context.system.linkedItem = element;
+                  console.error(context.system.linkedItem); // TODO
+                }
+
+                // add to list for header
+                context.vehicles[element.name] = element._id;
+              }
+            });
+            context.vehicles = this._sortArray(context.vehicles);
+          }
+        }
+      }
+
     }
 
     // Add roll data for TinyMCE editors.
@@ -78,9 +122,51 @@ export class MEGSActorSheet extends ActorSheet {
       this.actor.allApplicableEffects()
     );
 
+    // Filter skills
+    context.filteredSkills = [];
+    if (context.system.settings.hideZeroAPSkills !== "true") {
+      context.filteredSkills = context.skills;
+    } else {
+      context.skills.forEach(skill => {
+        if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+          context.filteredSkills.push(skill);
+        }
+      });
+    }
+
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
 
     return context;
+  }
+
+
+  /**
+   * 
+   * @param {*} skill 
+   * @returns 
+   */
+  _doSubskillsHaveAPs(skill) {
+    let doSubskillsHaveAPs = false;
+    skill.subskills.forEach(subskill => {
+      if (subskill.system.aps > 0) {
+        doSubskillsHaveAPs = true;
+      }
+    });
+    return doSubskillsHaveAPs;
+  }
+
+  /**
+   * 
+   * @param {*} array 
+   * @returns 
+   */
+  _sortArray(array) {
+    const sortedKeys = Object.keys(array).sort();
+    const sortedObject = sortedKeys.reduce((acc, key) => {
+        acc[key] = array[key];
+        return acc;
+    }, {});
+    return sortedObject;
   }
 
   /**
@@ -214,7 +300,7 @@ export class MEGSActorSheet extends ActorSheet {
    * @return {undefined}
    * @private
    */
-  _prepareItems (context) {
+  _prepareItems(context) {
     // Initialize containers.
     const powers = [];
     const skills = [];
@@ -222,9 +308,17 @@ export class MEGSActorSheet extends ActorSheet {
     const drawbacks = [];
     const subskills = [];
     const gadgets = [];
-
+    
+    // TODO delete this by 1.0
+    const list = context.items.filter(i => (    
+      (i.system.type !== MEGS.itemTypes.bonus 
+         && i.system.type !== MEGS.itemTypes.limitation 
+         && i.system.type !== MEGS.itemTypes.subskill)
+      || i.system.parent !== ""));
+      context.items = list;
+ 
     // Iterate through items, allocating to containers
-    for (let i of context.items) {
+    context.items.forEach((i) => {
       i.img = i.img || Item.DEFAULT_ICON;
 
       // Append to powers
@@ -233,12 +327,14 @@ export class MEGSActorSheet extends ActorSheet {
       }
       // Append to skills.
       else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
+        i.subskills = [];
         if (i.system.aps === 0) {
           i.unskilled = true;
           i.linkedAPs = this.object.system.attributes[i.system.link].value;
         } else {
           i.unskilled = false;
         }
+        i.subskills = [];
         skills.push(i);
       }
       // Append to advantages.
@@ -256,10 +352,34 @@ export class MEGSActorSheet extends ActorSheet {
       // Append to gadgets
       else if (i.type === MEGS.itemTypes.gadget) {
         i.ownerId = this.object._id;
+        i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
         gadgets.push(i);
       }
-      // TODO handle omni-gadgets
-    }
+    });
+
+    // sort alphabetically
+    const arrays = [
+        powers,
+        skills,
+        advantages,
+        drawbacks,
+        subskills,
+        gadgets
+    ];
+    arrays.forEach((element) => {
+      element.sort(function(a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+    });
+
+    subskills.forEach((element) => {
+      const result = skills.find(({ _id }) => _id === element.system.parent);
+      if (result) {
+        result.subskills.push(element);
+      }
+    });
 
     // Assign and return
     context.powers = powers;
@@ -362,7 +482,7 @@ export class MEGSActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
 
-    const actionValue = parseInt(dataset.value);
+    let actionValue = parseInt(dataset.value);
     let opposingValue = 0;
     let effectValue = 0;
     let resistanceValue = 0;
@@ -381,17 +501,96 @@ export class MEGSActorSheet extends ActorSheet {
         }
       }
     }
+
     if (dataset.type === MEGS.itemTypes.attribute) {
+
       effectValue = this._getEffectValueForAttribute(dataset.key);
-    } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill || dataset.type === MEGS.itemTypes.subskill) {
+
+    } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill 
+        || dataset.type === MEGS.itemTypes.subskill) {
+
       effectValue = parseInt(dataset.value);
-    }
+
+    } else if (dataset.type === MEGS.itemTypes.gadget) {
+
+      // TODO clean all this up; waaaay too complex
+      actionValue = parseInt(dataset.actionvalue);
+      effectValue = parseInt(dataset.effectvalue);
+      
+      if (effectValue === 0) {
+        // no EV specified; check attributes
+        const gadget = this._getOwnedItemById(dataset.gadgetid);
+
+        if (gadget) {
+          if (gadget.system.attributes.str > 0) {
+
+            effectValue = gadget.system.attributes.str;
+
+            if (actionValue === 0) {
+              if (gadget.system.attributes.dex > 0) {
+                actionValue = gadget.system.attributes.dex;
+              } else {
+                actionValue = this.object.system.attributes.dex;
+              }
+            }
+
+          } else if (gadget.system.attributes.will > 0) {
+
+            effectValue = gadget.system.attributes.will;
+
+            if (actionValue === 0) {
+              if (gadget.system.attributes.int > 0) {
+                actionValue = gadget.system.attributes.int;
+              } else {
+                actionValue = this.object.system.attributes.int;
+              }
+            }
+
+          } else if (gadget.system.attributes.aura > 0) {
+
+            effectValue = gadget.system.attributes.aura;
+
+            if (actionValue === 0) {
+              if (gadget.system.attributes.infl > 0) {
+                actionValue = gadget.system.attributes.infl;
+              } else {
+                actionValue = this.object.system.attributes.infl;
+              }
+            }
+
+          } 
+          
+        } else {
+          console.error("No gadget with ID "+dataset.gadgetid+" found");
+        }
+      } else {
+        // TODO
+      }
+  }
 
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
         effectValue, resistanceValue, dataset.roll, dataset.unskilled);
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {
     })
+  }
+
+  /**
+   * 
+   * @param {*} id 
+   * @returns 
+   */
+  _getOwnedItemById(id) {
+
+    let ownedItem;
+    const items = this.object.collections.items;
+    for (let i of items) {
+      if (i._id === id) {
+        ownedItem = i;
+        break;
+      }
+    }
+    return ownedItem;
   }
 
   /**
@@ -402,12 +601,13 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _getResistanceValueForAttribute(key, targetActor) {
+    // TODO use rolls attribute?
     let resistanceValue;
-    if (key === "dex") {
+    if (key === MEGS.attributeAbbreviations.dex) {
       resistanceValue = targetActor.system.attributes.body.value;
-    } else if (key === "int") {
+    } else if (key === MEGS.attributeAbbreviations.int) {
       resistanceValue = targetActor.system.attributes.mind.value;
-    } else if (key === "infl") {
+    } else if (key === MEGS.attributeAbbreviations.infl) {
       resistanceValue = targetActor.system.attributes.spirit.value;
     } else {
       ui.notifications.error("Invalid attribute selection");
@@ -423,6 +623,8 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _getEffectValueForAttribute(key) {
+    // TODO use rolls attribute?
+    // TODO use target actor as well?
     let effectValue;
     if (key === MEGS.attributeAbbreviations.dex) {
       effectValue = this.actor.system.attributes.str.value;

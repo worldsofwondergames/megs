@@ -108,10 +108,76 @@ test("_handleRolls should return 1 result APs for simplest happy path", () => {
 
 })
 
-// TODO test combat maneuvers - assets/combatManuevers.json
+
+test("_handleRolls should return correct result for Critical Blow", () => {
+  global.Dialog = HandleRollDialog
+  global.rollIndex = 0;
+  const values = {
+    label: "Critical Blow",
+    type: "attribute",
+    valueOrAps: 0,
+    // actionValue: 10,
+    // opposingValue: 7,
+    effectValue: 0,
+    resistanceValue: 0,
+//    rollFormula: "7 + 8",
+    unskilled: false
+  }
+
+  /*Whenever a Player declares that his Character is attempting
+    a Criticul Blow, his adversary receives +2 Column Shifts to the
+    Opposing Value.
+    
+    If the attack succeeds, however, the defender receives -3 Column Shifts to his Resistance Value.
+    
+    Example: A character with 11 DEX and 8 STR attacks a character with 7 DEX and 8 BODY with a Critical Blow.
+  */
+
+  let av = 1;
+  let ov = 1;
+
+  // test action table
+//  for (let av = 1; av < 61; av++){
+//    for (let ov = 0; ov < 61; ov++) {
+      for (let dice1 = 1; dice1 < 11; dice1 ++) {
+        for (let dice2 = 1; dice2 < 11; dice2 ++) {
+
+          values.actionValue = av;
+          values.opposingValue = ov;
+          values.rollFormula = dice1 + " + " + dice2;
+          const dice = new MegsTableRolls(values);
+
+          dice._rollDice = async function() {
+            return [dice1, dice2];
+          }
+            
+          dice._showRollResultInChat = async function(data, roll, callingPoint) {
+            // expect(data.result).toEqual("Success: 1 RAPs!");
+            // expect(data.success).toBe(true);
+            // expect(data.evResult).toEqual(1);
+            error("av = " + av + " | ov = " + ov + "dice 1 = " + dice1 + " | dice 2 = " + dice2 + " | result = " + JSON.stringify(data));
+
+          }
+
+          // async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
+          //      combatManeuverKey, resultColumnShifts, isUnskilled) {
+          dice._handleRolls(0, 0,  0, 0, 0, 0,  "Critical Blow", 0, false ).then((response) => {
+            //expect(response).toEqual(1);
+            // just returns dice or NaN
+          });
+  
+          
+        }
+      }
+    
+//    }
+//  }
+
+})
+
 test("_handleRolls should return 1 result APs for CM Multi-Attack vs 2", () => {
   global.Dialog = HandleRollDialog
-
+  global.rollIndex = 0;
   const values = {
     label: "Test",
     type: "attribute",
@@ -123,7 +189,6 @@ test("_handleRolls should return 1 result APs for CM Multi-Attack vs 2", () => {
     rollFormula: "7 + 8",
     unskilled: false
   }
-  global.rollIndex = 0;
 
   const dice = new MegsTableRolls(values);
 0,
@@ -139,7 +204,7 @@ test("_handleRolls should return 1 result APs for CM Multi-Attack vs 2", () => {
 
   //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
   // combatManeuverKey, resultColumnShifts, isUnskilled) {
-    dice._handleRolls(0, 0,  0, 0, 0, 0,  "Multi-Attack vs 2", 0, false ).then((response) => {
+  dice._handleRolls(0, 0,  0, 0, 0, 0,  "Multi-Attack vs 2", 0, false ).then((response) => {
     expect(response).toEqual(1);
   });
 

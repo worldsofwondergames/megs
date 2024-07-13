@@ -81,25 +81,19 @@ There are a few because of technical and/or design constraints of the platform:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 0.2.2**.
+Do I ever! MEGS for Foundry is currently sitting at **version 0.4.0**.
 
 (Note that everything below is subject to change.)
 
-**Version 0.3.0** is the bug fix release. People who are not me are using it now. It's going to break. This is where those bugs get fixed.
-
-I'm also trying to come up with a way of adding skills, if not powers, to the system without stepping on other people's IP. No promises, but if I can find a way that won't get me sued, it will go in here.
-
-**Version 0.4.0** (hopefully by end of July 2024) is going to tackle some of the thorny rules bits I skipped to get the rest of the system out. Among these are: 
-- Making Ritual Magic work
-- Making Mystic Link work
-- Adding Omni-Gadgets
-- Adding Pets
-- Adding Vehicles
-- Allowing rolling on Gadgets (right now it's a manual process of copying the RV/EV to the roll input box for the character attribute or skill)
-
 **Version 0.5.0** (aiming for September 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.
 - Tracking all 3 Current attribute fields (Foundry forces you to a max of 2; there's a module called [Bar Brawl](https://foundryvtt.com/packages/barbrawl) that can be installed as a workaround until then)
+- Making pets and vehicles fully work
+- Adding an edit lock feature for the page
+- UI fixes to reduce the number of clicks you have to make to take an action
 
+Issues are tracked [here]().
+
+I'm also trying to come up with a way of adding skills, if not powers, to the system without stepping on other people's IP. No promises, but if I can find a way that won't get me sued, it will go in here.
 
 Also, Foundry has released version 12, so upgrading MEGS to work for that will probably be put in this release.
 

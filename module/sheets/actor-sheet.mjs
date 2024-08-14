@@ -15,6 +15,7 @@ export class MEGSActorSheet extends ActorSheet {
     newOptions.classes = ['megs', 'sheet', 'actor'];
     newOptions.width = 600;
     newOptions.height = 600;
+    newOptions.dragDrop = [{dragSelector: ".item-list .item, .abilities .attributes", dropSelector: null}];
     newOptions.tabs = [
       {
         navSelector: '.sheet-tabs',

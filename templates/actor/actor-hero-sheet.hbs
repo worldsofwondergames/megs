@@ -17,11 +17,11 @@
 <!-- TODO push this into a partial -->
     {{#each system.attributes as |attribute key|}}
       {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
+       <section class="attributes grid grid-3col attributeRow item-list">
       {{/if}}
           <div class="attribute flex-group-center
       {{#if (isDivisor 3 @index)}}
-            effectiveAttribute
+            effectiveAttribute item
       {{/if}}
           "  data-type="attribute" type="test1">
             <label for="system.attributes.{{key}}.value" 

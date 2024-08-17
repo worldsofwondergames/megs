@@ -640,4 +640,10 @@ export class MEGSActorSheet extends ActorSheet {
     return effectValue;
   }
 
+  async _onDrop(event) {
+    const data = TextEditor.getDragEventData(event);
+    console.error(data);
+    super._onDrop(event);
+  }
+
 }

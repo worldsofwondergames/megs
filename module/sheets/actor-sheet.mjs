@@ -482,6 +482,7 @@ export class MEGSActorSheet extends ActorSheet {
   _onRoll (event) {
     const element = event.currentTarget;
     const dataset = element.dataset;
+    console.error(dataset);
 
     let actionValue = parseInt(dataset.value);
     let opposingValue = 0;
@@ -489,9 +490,11 @@ export class MEGSActorSheet extends ActorSheet {
     let resistanceValue = 0;
   
     let targetActor = MegsTableRolls.getTargetActor();
-    console.error("*************** targetActor *************** ");
-    console.error(targetActor);
     if (targetActor) {
+      console.error("*************** targetActor *************** ");
+      console.error(targetActor);
+      console.error("TEST: "+dataset.type);
+
       if (dataset.type === MEGS.itemTypes.attribute) {
         opposingValue = targetActor.system.attributes[dataset.key].value;
         resistanceValue = this._getResistanceValueForAttribute(dataset.key, targetActor);

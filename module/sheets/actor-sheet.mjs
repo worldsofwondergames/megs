@@ -489,6 +489,8 @@ export class MEGSActorSheet extends ActorSheet {
     let resistanceValue = 0;
   
     let targetActor = MegsTableRolls.getTargetActor();
+    console.error("*************** targetActor *************** ");
+    console.error(targetActor);
     if (targetActor) {
       if (dataset.type === MEGS.itemTypes.attribute) {
         opposingValue = targetActor.system.attributes[dataset.key].value;

@@ -490,14 +490,11 @@ export class MEGSActorSheet extends ActorSheet {
   
     let targetActor = MegsTableRolls.getTargetActor();
     if (targetActor) {
-      if (dataset.type === MEGS.itemTypes.attribute) {
-        console.error("*************** targetActor *************** ");
-        console.error(dataset);
-        console.error(targetActor);
-  
+      console.error("*************** targetActor *************** ");
+      console.error(dataset.type);
+      if (dataset.type === MEGS.rollTypes.attribute) {
         opposingValue = targetActor.system.attributes[dataset.key].value;
         resistanceValue = this._getResistanceValueForAttribute(dataset.key, targetActor);
-
       } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill) {
         if (dataset.link) {
           opposingValue = targetActor.system.attributes[dataset.link].value;
@@ -508,7 +505,7 @@ export class MEGSActorSheet extends ActorSheet {
       }
     }
 
-    if (dataset.type === MEGS.itemTypes.attribute) {
+    if (dataset.type === MEGS.rollTypes.attribute) {
 
       effectValue = this._getEffectValueForAttribute(dataset.key);
 

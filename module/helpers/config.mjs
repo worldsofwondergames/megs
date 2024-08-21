@@ -36,6 +36,12 @@ MEGS.characterTypes = {
   vehicle: "vehicle"
 }
 
+MEGS.rollTypes = {
+  attribute: 'attribute',
+  power: 'power',
+  skill: 'skill'
+};
+
 MEGS.itemTypes = {
   advantage: "advantage", 
   drawback: "drawback", 
@@ -44,7 +50,7 @@ MEGS.itemTypes = {
   power: "power", 
   skill: "skill", 
   subskill: "subskill",
-  gadget: "gadget"
+  gadget: "gadget",
 }
 
 MEGS.powerTypes = {

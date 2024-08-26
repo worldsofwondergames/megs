@@ -1,0 +1,139 @@
+{
+    "skills": [
+        {
+            "name": "Acrobatics",
+            "baseCost": 15,
+            "factorCost": 7,
+            "linkedAttribute": "dex",
+            "useUnskilled": true,
+            "range": "normal",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Climbing",
+                    "range": "normal",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Dodging",
+                    "range": "normal",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Gymnastics",
+                    "range": "normal",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Animal Handling",
+            "baseCost": 5,
+            "factorCost": 4,
+            "linkedAttribute": "infl",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "both",
+            "subskills": [
+                {
+                    "name": "Animal Training",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "both"
+                },
+                {
+                    "name": "Riding",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "both"
+                }
+            ]
+        },
+        {
+            "name": "Artist",
+            "baseCost": 5,
+            "factorCost": 8,
+            "linkedAttribute": "infl",
+            "useUnskilled": false,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Anctor",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Dancer",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Musician",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Painter",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Photographer",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Sculptor",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Writer",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Charisma",
+            "baseCost": 20,
+            "factorCost": 6,
+            "linkedAttribute": "infl",
+            "useUnskilled": false,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Interrogation",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Intimidation",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Riding",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+
+    ]
+}

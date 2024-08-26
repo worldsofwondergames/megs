@@ -367,7 +367,6 @@ async function _loadData(jsonPath) {
  * @returns {Promise}
  */
 async function createItemMacro(data, slot) {
-  console.error(data)
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return;
   if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
@@ -416,7 +415,6 @@ function rollItemMacro(itemUuid) {
         `Could not find item ${itemName}. You may need to delete and recreate this macro.`
       );
     }
-    console.error(item);
 
     // Trigger the item roll
     item.roll();

@@ -13,7 +13,7 @@
           <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
         </div>
       {{#if isRollable}}
-        <div class="d10 grid-span-1 rollable" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{system.aps}}" data-link="{{system.link}}">&nbsp;</div>
+        <div class="d10 grid-span-1 rollable" data-type="Roll" data-uuid="{{item.uuid}}" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{system.aps}}" data-link="{{system.link}}">&nbsp;</div>
       {{/if}}
       </div>
  

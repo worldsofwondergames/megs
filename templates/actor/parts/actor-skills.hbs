@@ -60,10 +60,10 @@
         {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
         {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
           data-type="skill" data-link="{{item.system.link}}"
-        {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
-        >
-          <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" alt="Roll Unskilled"/>
-        </a>
+            {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
+            >
+              <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" alt="Roll Unskilled"/>
+            </a>
             {{/if}}
             {{#unless (compare item.system.useUnskilled '===' 'true')}}
           <img src="/systems/megs/assets/images/icons/transparent.png" class="svg-icon" />

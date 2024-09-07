@@ -395,6 +395,7 @@ console.error(data);
       command: command,
       flags: { 'megs.itemMacro': true },
     });
+    console.error(macro);
   }
   game.user.assignHotbarMacro(macro, slot);
   return false;
@@ -420,6 +421,8 @@ function rollItemMacro(itemUuid) {
         `Could not find item ${itemName}. You may need to delete and recreate this macro.`
       );
     }
+
+    console.error(item);
 
     // Trigger the item roll
     item.roll();

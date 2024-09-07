@@ -312,6 +312,10 @@ export class MEGSItemSheet extends ItemSheet {
         li.setAttribute('draggable', true);
         li.addEventListener('dragstart', handler, false);
       });
+      html.find('div.d10.rollable').each((i, div) => {
+        div.setAttribute('draggable', true);
+        div.addEventListener('dragstart', handler, false);
+      });
     }
   }
   

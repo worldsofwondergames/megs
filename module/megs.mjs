@@ -395,6 +395,10 @@ console.error(data);
       command: command,
       flags: { 'megs.itemMacro': true },
     });
+    console.error("TEST1");
+    console.error(macro);
+  } else {
+    console.error("TEST2");
     console.error(macro);
   }
   game.user.assignHotbarMacro(macro, slot);

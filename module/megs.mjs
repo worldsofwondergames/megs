@@ -371,7 +371,6 @@ async function createItemMacro(data, slot) {
   console.error("TEST5");
   console.error(data);
 
-  )
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return;
   if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {

@@ -118,7 +118,7 @@ export class MEGSItem extends Item {
       const roll = new Roll(rollData.formula, rollData);
       // If you need to store the value first, uncomment the next line.
       // const result = await roll.evaluate();
-      console.error("TEST4");
+      console.error("TEST4i");
       roll.toMessage({
         speaker: speaker,
         rollMode: rollMode,

@@ -617,7 +617,7 @@ export class MEGSItemSheet extends ItemSheet {
 
   /** @inheritdoc */
   _onDragStart(event) {
-    console.error("TEST4");
+    console.error("TEST4is");
     console.error(event);
 
     const li = event.currentTarget;

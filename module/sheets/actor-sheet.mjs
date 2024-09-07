@@ -454,7 +454,7 @@ export class MEGSActorSheet extends ActorSheet {
    * @param {*} event 
    */
   _onDragStart(event) {
-    console.error("TEST4");
+    console.error("TEST4as");
     console.error(event);
     super._onDragStart(event);
   }

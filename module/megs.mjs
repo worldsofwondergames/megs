@@ -368,7 +368,7 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
-  console.error("TEST5";
+  console.error("TEST5");
   console.error(data);
 
   )

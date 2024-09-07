@@ -615,6 +615,8 @@ export class MEGSItemSheet extends ItemSheet {
 
   /** @inheritdoc */
   _onDragStart(event) {
+    console.error(event);
+    
     const li = event.currentTarget;
 
     if ( event.target.classList.contains("content-link") ) return;

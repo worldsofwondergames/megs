@@ -368,6 +368,10 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
+  console.error("TEST5";
+  console.error(data);
+
+  )
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return;
   if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
@@ -375,6 +379,8 @@ async function createItemMacro(data, slot) {
       'You can only create macro buttons for owned Items'
     );
   }
+
+
   // If it is, retrieve it based on the uuid.
   const item = await Item.fromDropData(data);
 

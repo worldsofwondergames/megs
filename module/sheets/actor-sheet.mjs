@@ -450,6 +450,16 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   /**
+   * 
+   * @param {*} event 
+   */
+  _onDragStart(event) {
+    console.error("TEST4");
+    console.error(event);
+    super._onDragStart(event);
+  }
+
+  /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
    * @param {Event} event   The originating click event
    * @private

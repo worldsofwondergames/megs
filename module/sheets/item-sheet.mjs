@@ -307,14 +307,16 @@ export class MEGSItemSheet extends ItemSheet {
 
     if (this.object.parent && this.object.parent.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
+      console.error("TEST2");
+      console.error(handler);
       html.find('li.item').each((i, li) => {
         if (li.classList.contains('inventory-header')) return;
         li.setAttribute('draggable', true);
         li.addEventListener('dragstart', handler, false);
       });
       html.find('div.d10.rollable').each((i, div) => {
+        console.error("TEST3");
         console.error(div);
-        console.error(handler);
         div.setAttribute('draggable', true);
         div.addEventListener('dragstart', handler, false);
       });
@@ -615,8 +617,9 @@ export class MEGSItemSheet extends ItemSheet {
 
   /** @inheritdoc */
   _onDragStart(event) {
+    console.error("TEST4");
     console.error(event);
-    
+
     const li = event.currentTarget;
 
     if ( event.target.classList.contains("content-link") ) return;

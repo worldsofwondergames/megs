@@ -387,6 +387,8 @@ console.error(data);
   let macro = game.macros.find(
     (m) => m.name === item.name && m.command === command
   );
+  console.error("TEST1");
+  console.error(macro);
   if (!macro) {
     macro = await Macro.create({
       name: item.name,
@@ -395,6 +397,7 @@ console.error(data);
       command: command,
       flags: { 'megs.itemMacro': true },
     });
+    console.error("TEST2");
     console.error(macro);
   }
   game.user.assignHotbarMacro(macro, slot);

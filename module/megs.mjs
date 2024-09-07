@@ -367,7 +367,6 @@ async function _loadData(jsonPath) {
  * @returns {Promise}
  */
 async function createItemMacro(data, slot) {
-console.error(data);
 
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return;
@@ -378,18 +377,14 @@ console.error(data);
   }
   // If it is, retrieve it based on the uuid.
   const item = await Item.fromDropData(data);
-  console.error(item);
 
   // Create the macro command using the uuid.
   const command = `game.megs.rollItemMacro("${data.uuid}");`;
-  console.error(command);
 
   let macro = game.macros.find(
     (m) => m.name === item.name && m.command === command
   );
-  console.error("TEST1");
-  console.error(macro);
-//  if (!macro) {
+  if (!macro) {
     macro = await Macro.create({
       name: item.name,
       type: 'script',
@@ -397,9 +392,7 @@ console.error(data);
       command: command,
       flags: { 'megs.itemMacro': true },
     });
-    console.error("TEST2");
-    console.error(macro);
-//  }
+  }
   game.user.assignHotbarMacro(macro, slot);
   return false;
 }

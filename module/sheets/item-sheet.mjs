@@ -611,13 +611,8 @@ export class MEGSItemSheet extends ItemSheet {
   _onDragStart(event) {
     const li = event.currentTarget;
 
-    console.error("TEST3");
-    console.error(event);
-
     if ( event.target.classList.contains("content-link") ) return;
     
-    console.error("TEST4");
-
     // Create drag data
     let dragData;
 
@@ -633,11 +628,7 @@ export class MEGSItemSheet extends ItemSheet {
       dragData = effect.toDragData();
     }
 
-    console.error("TEST5");
-    console.error(dragData);
-
     if ( !dragData ) return;
-console.error("TEST6");
 
     // Set data transfer
     event.dataTransfer.setData("text/plain", JSON.stringify(dragData));

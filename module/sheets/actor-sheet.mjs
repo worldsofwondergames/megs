@@ -16,8 +16,7 @@ export class MEGSActorSheet extends ActorSheet {
     newOptions.width = 600;
     newOptions.height = 600;
     newOptions.dragDrop = [
-//      {dragSelector: ".item-list .item", dropSelector: null},
-      {dragSelector: ".item-list .item .item-controls .item-control.rollable", dropSelector: null}
+      {dragSelector: ".item-list .item", dropSelector: null}
     ];
     newOptions.tabs = [
       {

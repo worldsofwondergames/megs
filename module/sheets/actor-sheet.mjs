@@ -435,17 +435,15 @@ export class MEGSActorSheet extends ActorSheet {
     html.on('click', '.rollable', this._onRoll.bind(this));
 
     // Drag events for macros.
-    if (this.actor.owner) {
-      let handler = ev => this._onDragStart(ev);
-      // Find all items on the character sheet.
+    if (this.actor.isOwner) {
+      let handler = (ev) => this._onDragStart(ev);
       html.find('li.item').each((i, li) => {
-        // Ignore for the header row.
-        if (li.classList.contains("item-header")) return;
-        // Add draggable attribute and dragstart listener.
-        li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", handler, false);
+        if (li.classList.contains('inventory-header')) return;
+        li.setAttribute('draggable', true);
+        li.addEventListener('dragstart', handler, false);
       });
-    }  }
+    }
+  }
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset

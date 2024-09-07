@@ -389,7 +389,7 @@ console.error(data);
   );
   console.error("TEST1");
   console.error(macro);
-  if (!macro) {
+//  if (!macro) {
     macro = await Macro.create({
       name: item.name,
       type: 'script',
@@ -399,7 +399,7 @@ console.error(data);
     });
     console.error("TEST2");
     console.error(macro);
-  }
+//  }
   game.user.assignHotbarMacro(macro, slot);
   return false;
 }

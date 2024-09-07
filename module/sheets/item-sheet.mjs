@@ -19,8 +19,9 @@ export class MEGSItemSheet extends ItemSheet {
     newOptions.height = 480;
     newOptions.dragDrop = [
  //     {dragSelector: ".item-list .item", dropSelector: null}
-      {dragSelector: ".item-list .item .item-controls .item-control.rollable", dropSelector: null}
-    ];
+ {dragSelector: ".item-list .item .item-controls .item-control.rollable", dropSelector: null}
+ {dragSelector: ".d10.rollable", dropSelector: null}
+];
     newOptions.tabs = [
       {
         navSelector: '.sheet-tabs',

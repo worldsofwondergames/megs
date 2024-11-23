@@ -77,8 +77,6 @@ export class MEGSActor extends Actor {
           item.system.actorId = this._id;
         }
       });
-    } else {
-      // TODO log warning
     }
 
   }

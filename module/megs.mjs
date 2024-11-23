@@ -368,8 +368,7 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
-  console.error("TEST5");
-  console.error(data);
+  console.error(data); // TODO delete
 
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return;
@@ -423,7 +422,7 @@ function rollItemMacro(itemUuid) {
       );
     }
 
-    console.error(item);
+    console.error(item); // TODO delete
 
     // Trigger the item roll
     item.roll();

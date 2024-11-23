@@ -439,8 +439,6 @@ export class MEGSActorSheet extends ActorSheet {
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
-      console.error("TEST1");
-      console.error(handler);
       html.find('li.item').each((i, li) => {
         if (li.classList.contains('inventory-header')) return;
         li.setAttribute('draggable', true);
@@ -454,8 +452,6 @@ export class MEGSActorSheet extends ActorSheet {
    * @param {*} event 
    */
   _onDragStart(event) {
-    console.error("TEST4as");
-    console.error(event);
     super._onDragStart(event);
   }
 
@@ -655,7 +651,7 @@ export class MEGSActorSheet extends ActorSheet {
 
   async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
-    console.error(data);
+    console.error(data); // TODO delete
     super._onDrop(event);
   }
 

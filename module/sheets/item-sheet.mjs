@@ -127,7 +127,6 @@ export class MEGSItemSheet extends ItemSheet {
     if (itemData.type === MEGS.itemTypes.gadget) {
       context.items = itemData.system.items;
       this._prepareGadgetData(context);
-      console.error(context.gadgets); // TODO
     }
 
     // store all skills for dropdown on subskill page
@@ -307,16 +306,12 @@ export class MEGSItemSheet extends ItemSheet {
 
     if (this.object.parent && this.object.parent.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
-      console.error("TEST2");
-      console.error(handler);
       html.find('li.item').each((i, li) => {
         if (li.classList.contains('inventory-header')) return;
         li.setAttribute('draggable', true);
         li.addEventListener('dragstart', handler, false);
       });
       html.find('div.d10.rollable').each((i, div) => {
-        console.error("TEST3");
-        console.error(div);
         div.setAttribute('draggable', true);
         div.addEventListener('dragstart', handler, false);
       });
@@ -545,12 +540,8 @@ export class MEGSItemSheet extends ItemSheet {
     subskills.forEach((element) => {
       const result = skills.find(({ _id }) => _id === element.system.parent);
       if (result) {
-        console.error("TEST1: " + element.name + " : " + element.system.parent); // TODO
         result.subskills.push(element);
       } 
-      else {
-        console.error("TEST2: " + element.name + " : " + element.system.parent); // TODO
-      }
     });
 
     // Assign and return
@@ -617,8 +608,7 @@ export class MEGSItemSheet extends ItemSheet {
 
   /** @inheritdoc */
   _onDragStart(event) {
-    console.error("TEST4is");
-    console.error(event);
+    console.error(event); // TODO delete
 
     const li = event.currentTarget;
 

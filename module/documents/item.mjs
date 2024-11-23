@@ -91,8 +91,6 @@ export class MEGSItem extends Item {
   async roll() {
     const item = this;
 
-    console.error("TEST1");
-
     // Initialize chat data.
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
@@ -100,7 +98,6 @@ export class MEGSItem extends Item {
 
     // If there's no roll data, send a chat message.
     if (!this.system.formula) {
-      console.error("TEST2");
       ChatMessage.create({
         speaker: speaker,
         rollMode: rollMode,
@@ -110,7 +107,6 @@ export class MEGSItem extends Item {
     }
     // Otherwise, create a roll and send a chat message from it.
     else {
-      console.error("TEST3");
       // Retrieve roll data.
       const rollData = this.getRollData();
 
@@ -118,7 +114,6 @@ export class MEGSItem extends Item {
       const roll = new Roll(rollData.formula, rollData);
       // If you need to store the value first, uncomment the next line.
       // const result = await roll.evaluate();
-      console.error("TEST4i");
       roll.toMessage({
         speaker: speaker,
         rollMode: rollMode,

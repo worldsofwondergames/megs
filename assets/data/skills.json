@@ -134,6 +134,348 @@
                 }
             ]
         },
-
+        {
+            "name": "Detective",
+            "baseCost": 10,
+            "factorCost": 7,
+            "linkedAttribute": "int",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Clue Analysis",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Counterfeit Recognition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Identification Systems",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Law",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Police Procedure",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Gadgetry",
+            "baseCost": 25,
+            "factorCost": 8,
+            "linkedAttribute": "int",
+            "useUnskilled": false,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Build Gadget",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Identify Gadget",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Martial Artist",
+            "baseCost": 25,
+            "factorCost": 6,
+            "linkedAttribute": "dex",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": []
+        },
+        {
+            "name": "Medicine",
+            "baseCost": 5,
+            "factorCost": 6,
+            "linkedAttribute": "int",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "First Aid",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Forensics",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Medical Treatment",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Surgery",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Military Science",
+            "baseCost": 10,
+            "factorCost": 8,
+            "linkedAttribute": "int",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Camouflage",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Cartography",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Danger Recognition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Demolition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Field Command",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Tracking",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Occultist",
+            "baseCost": 20,
+            "factorCost": 9,
+            "linkedAttribute": "infl",
+            "useUnskilled": false,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Create Artifact",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Identify Artifact",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Occult Knowledge",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Premonition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Ritual Magic",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Scientist",
+            "baseCost": 10,
+            "factorCost": 5,
+            "linkedAttribute": "int",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Analysis",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Drawing Plans",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Thief",
+            "baseCost": 10,
+            "factorCost": 8,
+            "linkedAttribute": "dex",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Escape Artist",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Forgery",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Locks and Safes",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Pickpocketing",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Security Systems",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Stealth",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Vehicles",
+            "baseCost": 5,
+            "factorCost": 5,
+            "linkedAttribute": "dex",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Air Vehicles",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Land Vehicles",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Space Craft",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Water Vehicles",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ]
+        },
+        {
+            "name": "Weaponry",
+            "baseCost": 5,
+            "factorCost": 6,
+            "linkedAttribute": "dex",
+            "useUnskilled": true,
+            "range": "self",
+            "type": "dice",
+            "subskills": [
+                {
+                    "name": "Exotic Weapons",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Firearms",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Heavy Weapons",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Melee Weapons",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Missile Weapons",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ]
+        }
     ]
 }

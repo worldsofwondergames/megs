@@ -48,6 +48,7 @@
               {{getSkillDisplayName item}}
             </a>
             {{/if}}
+            {{#unless (compare item.system.useUnskilled '===' 'true')}}{{getSkillDisplayName item}}{{/unless}}
           {{/unless}}
           {{#if item.system.aps}}{{getSkillDisplayName item}}{{/if}}
         </a>

@@ -29,10 +29,6 @@
               height='24'
             />
         </div>
-        <a
-          class='item-control item-edit'
-          title='{{localize "DOCUMENT.Update" type=item.name}}'
-        >
           {{#unless item.system.aps}}
             {{#if (compare item.system.useUnskilled '===' 'true')}}
         <a
@@ -49,7 +45,6 @@
             {{#unless (compare item.system.useUnskilled '===' 'true')}}{{getSkillDisplayName item}}{{/unless}}
           {{/unless}}
           {{#if item.system.aps}}{{getSkillDisplayName item}}{{/if}}
-        </a>
       </div>
       <div class='item-aps'>
           {{item.system.aps}}

@@ -47,19 +47,28 @@ Hooks.once('init', function () {
     CONFIG.tables = response;
   });
 
+  // TODO delete
+  for (let i of game.items) {
+    if (i.type === MEGS.itemTypes.skill) {
+      console.error(i)
+    }
+  }
+
   // load sklls
   _loadData('systems/megs/assets/data/skills.json').then((response) => {
     console.log(`Received response for skills data: ${response.status}`);
     // TODO
-    response.skills.forEach(skill => {
+/*    response.skills.forEach(skill => {
       console.error(skill)
+      let skillObj = new MEGSItem()
       
       skill.subskills.forEach(subskill => {
-        console.error(ssubskill)
+        console.error(subskill)
 
       })
     });
-  });
+*/
+    });
 
 
   /**

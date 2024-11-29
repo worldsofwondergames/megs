@@ -56,11 +56,15 @@ Hooks.once('init', function () {
       const subskills = skillData.subskills;
       delete skillData.subskills;
       console.error(subskills);
-      const skill = await MEGSItem.create({
+
+      const itemData = {
         name: skillData.name,
-        type:  MEGS.itemTypes.skill,
-        img: skillData.img ? 'icons/svg/' + skillData.img + '.png' : 'item-bag.svg'
-      }, {});
+        type: MEGS.itemTypes.skill,
+        system: skillData,
+      };
+      delete itemData.system['type'];
+
+      const skill = await MEGSItem.create({itemData}, {});
       console.error (skill);
       
 /*      console.error(skill)

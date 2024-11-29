@@ -15,20 +15,7 @@ export class MEGSActor extends Actor {
       let allGameSkills = [];
       let allGameSubskills = [];
 
-      let existingActorSkills = [];
-      let existingActorSubskills = [];
-      // TODO get all items for actor
-      // get all skills and subskills from list
-
-      // create skills from JSON
-      _loadData('systems/megs/assets/data/skills.json').then((response) => {
-        console.log(`Received response for skills data: ${response.status}`);
-        // TODO
-        console.error(response)
-      });
-    
-
-
+      // TODO create skills form JSON
 
       /*
       for (let i of game.items) {

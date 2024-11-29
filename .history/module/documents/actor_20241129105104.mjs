@@ -20,11 +20,10 @@ export class MEGSActor extends Actor {
       // TODO get all items for actor
       // get all skills and subskills from list
 
-      // create skills from JSON
+      // TODO create skills from JSON
       _loadData('systems/megs/assets/data/skills.json').then((response) => {
         console.log(`Received response for skills data: ${response.status}`);
-        // TODO
-        console.error(response)
+        CONFIG.tables = response;
       });
     
 

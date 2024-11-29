@@ -24,7 +24,6 @@ export class MEGSActor extends Actor {
       _loadData('systems/megs/assets/data/skills.json').then((response) => {
         console.log(`Received response for skills data: ${response.status}`);
         // TODO
-        console.error(response)
       });
     
 

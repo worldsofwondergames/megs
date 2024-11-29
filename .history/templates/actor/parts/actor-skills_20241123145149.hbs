@@ -39,7 +39,7 @@
         </a>
       </div>
       <div class='item-aps'>
-        {{item.system.aps}}
+          {{item.system.aps}}
       </div>
       {{#if showHeroPointCosts}}
       <div class='item-total-cost'>
@@ -57,8 +57,8 @@
         <a
           class='item-control d10 rollable' title='{{localize "Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}'
           data-label="{{item.name}}" data-roll="1d10 + 1d10" 
-              {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
-              {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
+        {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
+        {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
           data-type="skill" data-link="{{item.system.link}}"
             {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
             >

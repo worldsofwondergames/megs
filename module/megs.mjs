@@ -55,7 +55,6 @@ Hooks.once('init', function () {
 
       const subskills = skillData.subskills;
       delete skillData.subskills;
-      console.error(subskills);
 
       const itemData = {
         name: skillData.name,

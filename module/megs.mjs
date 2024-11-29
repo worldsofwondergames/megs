@@ -64,7 +64,7 @@ Hooks.once('init', function () {
       };
       delete itemData.system['type'];
 
-      const skill = await MEGSItem.create({itemData}, {});
+      const skill = await MEGSItem.create(itemData, {});
       console.error (skill);
       
 /*      console.error(skill)

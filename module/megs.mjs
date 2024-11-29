@@ -59,7 +59,7 @@ Hooks.once('init', function () {
       const skill = await MEGSItem.create({
         name: skillData.name,
         type:  MEGS.itemTypes.skill,
-        img: 'icons/svg/' + (skillData.img || 'item-bag.svg')
+        img: skillData.img ? 'icons/svg/' + skillData.img + '.png' : 'item-bag.svg'
       }, {});
       console.error (skill);
       

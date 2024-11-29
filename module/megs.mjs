@@ -51,7 +51,10 @@ Hooks.once('init', function () {
   _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
     console.log(`Received response for skills data: ${response.status}`);
 
-    console.error(new MEGSItem());
+    console.error(new MEGSItem({
+      name: "TEST",
+      type:  MEGS.itemTypes.skill
+    }));
 
     for (const skillData of response.skills) {
 

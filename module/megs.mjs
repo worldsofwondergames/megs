@@ -47,38 +47,6 @@ Hooks.once('init', function () {
     CONFIG.tables = response;
   });
 
-  // load sklls
-  _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
-    console.log(`Received response for skills data: ${response.status}`);
-
-    for (const skillData of response.skills) {
-
-      const subskills = skillData.subskills;
-      delete skillData.subskills;
-
-      const itemData = {
-        name: skillData.name,
-        type: MEGS.itemTypes.skill,
-        system: skillData,
-      };
-      delete itemData.system['type'];
-
-      const skill = await MEGSItem.create(itemData, {});
-      console.error (skill);
-      
-/*      console.error(skill)
-      let skillObj = new MEGSItem()
-      
-      skill.subskills.forEach(subskill => {
-        console.error(subskill)
-
-      })
-        */
-    }
-
-  });
-
-
   /**
    * Set an initiative formula for the system
    * @type {String}

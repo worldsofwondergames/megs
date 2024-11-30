@@ -23,6 +23,37 @@ export class MEGSActor extends Actor {
       // TODO create skills from JSON
     
 
+  // load sklls
+  _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
+    console.log(`Received response for skills data: ${response.status}`);
+
+    for (const skillData of response.skills) {
+
+      const subskills = skillData.subskills;
+      delete skillData.subskills;
+
+      const itemData = {
+        name: skillData.name,
+        type: MEGS.itemTypes.skill,
+        system: skillData,
+      };
+      delete itemData.system['type'];
+
+      const skill = await MEGSItem.create(itemData, {});
+      console.error (skill);
+      
+/*      console.error(skill)
+      let skillObj = new MEGSItem()
+      
+      skill.subskills.forEach(subskill => {
+        console.error(subskill)
+
+      })
+        */
+    }
+
+  });
+
 
 
       /*
@@ -95,6 +126,7 @@ export class MEGSActor extends Actor {
 
   }
 
+  
   /** @override */
   prepareBaseData() {
     // Data modifications in this step occur before processing embedded
@@ -224,3 +256,17 @@ export class MEGSActor extends Actor {
   }
 
 }
+
+
+/**
+ * Create the MEGS tables from JSON data.
+ * Grab the JSON and place it in an object.
+ * @param {Object} jsonPath     The path in the Foundry Data directory to the JSON asset
+ * @returns {Promise}
+ */
+async function _loadData(jsonPath) {
+  const response = await fetch(jsonPath);
+  const contents = await response.json();
+  return contents;
+}
+

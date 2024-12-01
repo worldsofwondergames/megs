@@ -35,7 +35,7 @@ export class MEGSActor extends Actor {
       const itemData = {
         name: skillData.name,
         type: MEGS.itemTypes.skill,
-        img: skillData.img ? 
+        img: skillData.img ? 'systems/megs/assets/images/icons/skills/' + skillData.img : 'systems/megs/assets/images/icons/skills/skill.png',
         system: skillData,
       };
       console.error (itemData);
@@ -44,9 +44,7 @@ export class MEGSActor extends Actor {
       const skill = await MEGSItem.implementation.create(itemData, { parent: this.actor });
       console.error (skill);
       
-/*      console.error(skill)
-      let skillObj = new MEGSItem()
-      
+/*      
       skill.subskills.forEach(subskill => {
         console.error(subskill)
 

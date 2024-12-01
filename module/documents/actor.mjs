@@ -9,16 +9,6 @@ export class MEGSActor extends Actor {
 
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
-  }
-
-  /** @override */
-  prepareData() {
-    // Prepare data for the actor. Calling the super version of this executes
-    // the following, in order: data reset (to clear active effects),
-    // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
-    // prepareDerivedData().
-    super.prepareData();
-
 
     // Create default skills and subskills
     if (game.items) {
@@ -50,9 +40,10 @@ export class MEGSActor extends Actor {
       };
       console.error (itemData);
       delete itemData.system['type'];
-      console.error(this);
 
-      const skill = await MEGSItem.implementation.create(itemData, { parent: this });
+      console.error(this.actor)
+
+      const skill = await MEGSItem.implementation.create(itemData, { parent: this.actor });
       console.error (skill);
       
 /*      
@@ -117,7 +108,15 @@ export class MEGSActor extends Actor {
       */
 
     }
+  }
 
+  /** @override */
+  prepareData() {
+    // Prepare data for the actor. Calling the super version of this executes
+    // the following, in order: data reset (to clear active effects),
+    // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
+    // prepareDerivedData().
+    super.prepareData();
 
     if (this.items) {
       this.items.forEach(item => {

@@ -652,6 +652,7 @@ export class MEGSActorSheet extends ActorSheet {
   async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
     console.error(data); // TODO delete
+    console.error(this.actor.items);
     super._onDrop(event);
   }
 

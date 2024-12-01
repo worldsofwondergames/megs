@@ -41,7 +41,7 @@ export class MEGSActor extends Actor {
       console.error (itemData);
       delete itemData.system['type'];
 
-      const skill = await MEGSItem.implementation.create(itemData, { parent: this.actor });
+      const skill = await MEGSItem.implementation.create(itemData, { parent: this });
       console.error (skill);
       
 /*      

@@ -2,7 +2,7 @@
     "skills": [
         {
             "name": "Acrobatics",
-            "img": "",
+            "img": "acrobatics.png",
             "baseCost": 15,
             "factorCost": 7,
             "linkedAttribute": "dex",

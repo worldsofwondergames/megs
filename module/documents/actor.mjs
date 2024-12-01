@@ -31,11 +31,13 @@ export class MEGSActor extends Actor {
 
       const subskills = skillData.subskills;
       delete skillData.subskills;
-
+/*
+systems/megs/assets/images/icons/skillls/acrobatics.png
+*/
       const itemData = {
         name: skillData.name,
         type: MEGS.itemTypes.skill,
-        img: skillData.img ? 'systems/megs/assets/images/icons/skills/' + skillData.img : 'systems/megs/assets/images/icons/skills/skill.png',
+        img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
         system: skillData,
       };
       console.error (itemData);

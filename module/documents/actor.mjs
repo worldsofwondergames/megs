@@ -23,43 +23,6 @@ export class MEGSActor extends Actor {
       // TODO create skills from JSON
     
 
-  // load sklls
-  _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
-    console.log(`Received response for skills data: ${response.status}`);
-
-
-    for (const skillData of response.skills) {
-
-      const subskills = skillData.subskills;
-      delete skillData.subskills;
-  
-      const itemData = {
-        name: skillData.name,
-        type: MEGS.itemTypes.skill,
-        img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
-        system: skillData,
-      };
-      console.error (itemData);
-      delete itemData.system['type'];
-
-      const item = new MEGSItem(itemData);
-      const items = this.items.toObject();
-      items.push(itemData);
-      this.updateSource({ items });
- 
-      console.error(this);
-     
-      // const skill = await MEGSItem.create(itemData, { });
-      // console.error (skill);
-      
-/*      
-      skill.subskills.forEach(subskill => {
-        console.error(subskill)
-
-      })
-        */
-    }
-
   });
 
 
@@ -123,6 +86,44 @@ export class MEGSActor extends Actor {
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
     // prepareDerivedData().
     super.prepareData();
+
+    
+  // load sklls
+  _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
+    console.log(`Received response for skills data: ${response.status}`);
+
+
+    for (const skillData of response.skills) {
+
+      const subskills = skillData.subskills;
+      delete skillData.subskills;
+  
+      const itemData = {
+        name: skillData.name,
+        type: MEGS.itemTypes.skill,
+        img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
+        system: skillData,
+      };
+      console.error (itemData);
+      delete itemData.system['type'];
+
+      const item = new MEGSItem(itemData);
+      const items = this.items.toObject();
+      items.push(itemData);
+      this.updateSource({ items });
+ 
+      console.error(this);
+     
+      // const skill = await MEGSItem.create(itemData, { });
+      // console.error (skill);
+      
+/*      
+      skill.subskills.forEach(subskill => {
+        console.error(subskill)
+
+      })
+        */
+    }
 
     if (this.items) {
       this.items.forEach(item => {

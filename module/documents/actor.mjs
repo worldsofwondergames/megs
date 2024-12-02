@@ -27,6 +27,7 @@ export class MEGSActor extends Actor {
   _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
     console.log(`Received response for skills data: ${response.status}`);
 
+
     for (const skillData of response.skills) {
 
       const subskills = skillData.subskills;
@@ -41,9 +42,13 @@ export class MEGSActor extends Actor {
       console.error (itemData);
       delete itemData.system['type'];
 
+      const item = new MEGSItem(itemData);
+      const items = this.items.toObject();
+      items.push(itemData);
+      this.updateSource({ items });
+ 
       console.error(this);
-
-      this.items.updateSource([itemData]);
+     
       // const skill = await MEGSItem.create(itemData, { });
       // console.error (skill);
       

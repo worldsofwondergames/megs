@@ -11,50 +11,54 @@ export class MEGSActor extends Actor {
     await super._preCreate(data, options, user);
 
     console.error("TEST0: preCreate");
-    // Create default skills and subskills
-    if (game.items) {
-      let allGameSkills = [];
-      let allGameSubskills = [];
 
-      let existingActorSkills = [];
-      let existingActorSubskills = [];
+    // TODO create skills from JSON
+    _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
+
+      for (const skillData of response.skills) {
+
+        const subskills = skillData.subskills;
+        delete skillData.subskills;
+    
+        const itemData = {
+          name: skillData.name,
+          type: MEGS.itemTypes.skill,
+          img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
+          system: skillData,
+        };
+        delete itemData.system['type'];
+
+        // const item = new MEGSItem(itemData);
+        const skill = await MEGSItem.create(itemData, { });
+        const items = this.items.toObject();
+        items.push(skill);
+
+        console.log(this.items);
+        this.updateSource({ items: items });
+      
+  /*      
+        skill.subskills.forEach(subskill => {
+          console.error(subskill)
+
+        })
+          */
+      }
+
+      console.error("TEST1: preCreate");
+      console.error(this.items);
+
+    });
+
+    // Create default skills and subskills
+    // if (game.items) {
+    //   let allGameSkills = [];
+    //   let allGameSubskills = [];
+
+    //   let existingActorSkills = [];
+    //   let existingActorSubskills = [];
       // TODO get all items for actor
       // get all skills and subskills from list
 
-      // TODO create skills from JSON
-      _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
-
-        for (const skillData of response.skills) {
-  
-          const subskills = skillData.subskills;
-          delete skillData.subskills;
-      
-          const itemData = {
-            name: skillData.name,
-            type: MEGS.itemTypes.skill,
-            img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
-            system: skillData,
-          };
-          delete itemData.system['type'];
-  
-          // const item = new MEGSItem(itemData);
-          const skill = await MEGSItem.create(itemData, { });
-          const items = this.items.toObject();
-          items.push(skill);
-          this.updateSource({ items: items });
-        
-    /*      
-          skill.subskills.forEach(subskill => {
-            console.error(subskill)
-  
-          })
-            */
-        }
-  
-        console.error("TEST1: onCreate");
-        console.error(this.items);
-  
-      });
       
       /*
       for (let i of game.items) {
@@ -105,13 +109,7 @@ export class MEGSActor extends Actor {
       }
       */
 
-    }
-  }
-
-  async _onCreate(data, options, user) {
-    await super._onCreate(data, options, user);
-    
-    // load sklls
+ //   }
   }
 
   /** @override */

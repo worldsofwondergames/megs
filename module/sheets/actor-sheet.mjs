@@ -323,14 +323,14 @@ export class MEGSActorSheet extends ActorSheet {
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {
       i.img = i.img || Item.DEFAULT_ICON;
-
+      console.error(i); // TODO
+ 
       // Append to powers
       if (i.type === MEGS.itemTypes.power && !i.system.parent) {
         powers.push(i);
       }
       // Append to skills.
       else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
-        console.error(i); // TODO
         i.subskills = [];
         if (i.system.aps === 0) {
           i.unskilled = true;

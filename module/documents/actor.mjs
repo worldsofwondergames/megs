@@ -7,8 +7,8 @@ import { MEGSItem } from "./item.mjs";
  */
 export class MEGSActor extends Actor {
 
-  async _preCreate(data, options, user) {
-    await super._preCreate(data, options, user);
+  _preCreate(data, options, user) {
+    super._preCreate(data, options, user);
 
       _loadData('systems/megs/assets/data/skills.json').then((skillsFromJson) => {
 
@@ -2140,10 +2140,15 @@ export class MEGSActor extends Actor {
 
           console.error(skills);
           for (let i of skills) {
+            delete i.folder;
             delete i._id;
+
+            const skill = i.toObject();
+
+            this.createEmbeddedDocuments('Item', [skill])
           }
 
-          this.updateSource({ items: skills });
+//          this.updateSource({ items: skills });
           
 /*    
           // create skills

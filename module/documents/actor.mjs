@@ -2141,9 +2141,9 @@ export class MEGSActor extends Actor {
           let skills = [];
           for (let i of skillsJson) {
             delete i.folder;
-            delete i._id;
 
             const skill = new MEGSItem(i);
+            delete skill._id;
             console.error(skill);
             skills.push(skill);
           }

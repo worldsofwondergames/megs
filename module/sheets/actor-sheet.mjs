@@ -304,7 +304,7 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _prepareItems(context) {
-    console.error(context.items); // TODO
+    console.error(context); // TODO
 
     // Initialize containers.
     const powers = [];

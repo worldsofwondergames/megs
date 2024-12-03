@@ -120,7 +120,7 @@ console.error(skills);
       //   game.items.get(itemId).delete();
       // }
 
- //   }
+    }
   }
 
   /** @override */
@@ -271,7 +271,7 @@ console.error(skills);
     // Process additional NPC data here.
   }
 
-}
+} 
 
 
 /**

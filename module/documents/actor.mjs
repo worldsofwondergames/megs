@@ -76,13 +76,12 @@ export class MEGSActor extends Actor {
     }
   }
 
-  _onCreate(data, options, user) {
-    super._onCreate(data, options, user);
+  async _onCreate(data, options, user) {
+    await super._onCreate(data, options, user);
     
     // load sklls
     _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
       console.log(`Received response for skills data: ${response.status}`);
-
 
       for (const skillData of response.skills) {
 
@@ -112,10 +111,12 @@ export class MEGSActor extends Actor {
           */
       }
       this.updateSource({ items: items });
- 
+
       console.error(this.items);
- 
-    });
+
+    }), (error) => {
+      console.error(`_loadData for skills failed with: ${error.message}`);
+    }
   }
 
   /** @override */

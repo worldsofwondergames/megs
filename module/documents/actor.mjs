@@ -32,7 +32,7 @@ export class MEGSActor extends Actor {
         delete itemData.system['type'];
 
         // const item = new MEGSItem(itemData);
-        const skill = await MEGSItem.create(itemData, { });
+        const skill = new MEGSItem(itemData);
         const items = this.items.toObject();
         items.push(skill);
 

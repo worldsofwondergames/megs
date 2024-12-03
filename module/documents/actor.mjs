@@ -1,5 +1,6 @@
 import { MEGS } from "../helpers/config.mjs";
 import { MEGSItem } from "./item.mjs";
+import * as skillsJson from "systems/megs/assets/data/skills.json"
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -19,7 +20,7 @@ export class MEGSActor extends Actor {
           //   }
           // }
 
-          const skillsJson = require('systems/megs/assets/data/skills.json');
+          console.error(skillsJson);
           /*
           const skillsJson = [
             {

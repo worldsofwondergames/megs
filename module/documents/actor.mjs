@@ -22,31 +22,22 @@ export class MEGSActor extends Actor {
       for (const skillData of response) {
         console.error(skillData.name);
 
-        const subskills = skillData.subskills;
+        const subskills = skillData.subskills; // TODO
         delete skillData.subskills;
     
         const itemData = {
           name: skillData.name,
           type: MEGS.itemTypes.skill,
           img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
-          system: skillData,
+          system: skillData.system,
         };
         delete itemData.system['type'];
 
         // const item = new MEGSItem(itemData);
         const skill = new MEGSItem(itemData);
+        delete skill._id;
         console.error(skill); // TODO
         skills.push(skill);
-
-
-        // console.log(this.items);
-        // this.updateSource({ items: items });
-      
-      
-        // skill.subskills.forEach(subskill => {
-        //   console.error(subskill)
-
-        // })
       }
 
       // const items = this.items.toObject();

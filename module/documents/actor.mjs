@@ -10,12 +10,14 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-    console.error("TEST0: preCreate");
+    console.error("TEST0: preCreate: "+ this.name);
 
     // TODO create skills from JSON
     _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
 
-      for (const skillData of response.skills) {
+      console.log("TEST:");
+      console.log(response);
+      for (const skillData of response) {
 
         const subskills = skillData.subskills;
         delete skillData.subskills;
@@ -120,7 +122,6 @@ export class MEGSActor extends Actor {
     // prepareDerivedData().
     super.prepareData();
 
-    console.error("TEST2: prepareData");
     console.error(this.items);
     if (this.items) {
       this.items.forEach(item => {

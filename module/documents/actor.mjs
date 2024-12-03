@@ -19,7 +19,7 @@ export class MEGSActor extends Actor {
           //   }
           // }
 
-          let skills = [
+          let skillsFromJson = [
             {
                 "folder": "ccsPUuPcI7snbGSw",
                 "name": "Acrobatics",
@@ -2138,17 +2138,17 @@ export class MEGSActor extends Actor {
             }
           ];
 
-          console.error(skills);
-          for (let i of skills) {
+          let skills = [];
+          for (let i of skillsFromJson) {
             delete i.folder;
             delete i._id;
 
             const skill = new MEGSItem(i);
-
-            this.createEmbeddedDocuments('Item', [skill])
+            console.error(skill);
+            skills.push(skill);
           }
 
-//          this.updateSource({ items: skills });
+          this.updateSource({ items: skills });
           
 /*    
           // create skills

@@ -17,8 +17,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Animal Handling",
@@ -38,8 +37,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Artist",
@@ -59,8 +57,7 @@
             "useUnskilled": "false",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Charisma",
@@ -80,8 +77,7 @@
             "useUnskilled": "false",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Detective",
@@ -101,8 +97,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Gadgetry",
@@ -122,8 +117,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Martial Artist",
@@ -143,8 +137,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Medicine",
@@ -164,8 +157,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Military Science",
@@ -185,9 +177,8 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
-    },
+        }
+     },
     {
         "name": "Occultist",
         "type": "skill",
@@ -206,8 +197,7 @@
             "useUnskilled": "false",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Scientist",
@@ -227,8 +217,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Thief",
@@ -248,8 +237,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Vehicles",
@@ -269,8 +257,7 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     },
     {
         "name": "Weaponry",
@@ -290,7 +277,6 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        },
-        "effects": []
+        }
     }
 ]

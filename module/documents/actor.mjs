@@ -10,9 +10,9 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
+    /*
     _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
       for (const skillData of response) {
-        console.error(skillData.name);
 
         const subskills = skillData.subskills; // TODO
         delete skillData.subskills;
@@ -26,88 +26,49 @@ export class MEGSActor extends Actor {
         delete itemData.system['type'];
 
         const skill = new MEGSItem(itemData);
+        delete skill._id;
         const items = this.items.toObject();
         items.push(skill);
         this.updateSource({ items: items });
       }
 
-      
-
-
-      // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
-      // this.updateSource({ items: skills });
-
-
       // const items = this.items.toObject();
       // items.push(skills);
-      this.updateSource({ items: skills });
-      console.error(this.items); // TODO
-    });
-
-
-    // Create default skills and subskills
-    // if (game.items) {
-    //    let allGameSkills = [];
-    //    let skills = [];
-    //   let allGameSubskills = [];
-
-    //   let existingActorSkills = [];
-    //   let existingActorSubskills = [];
-      // TODO get all items for actor
-      // get all skills and subskills from list
-
-      
-      
-      // for (let i of game.items) {
-      //   if (i.type === MEGS.itemTypes.skill) {
-      //     allGameSkills.push(i);
-      //   }
-      //   // if (i.type === MEGS.itemTypes.subskill) {
-      //   //   allGameSubskills.push(i);
-      //   // }
-      // }
-
-      // TODO creating and deleting is really clunky; find a better way
-      
-      // create skills
-      // let skillIds = [];
-//       for (let i of allGameSkills) {
-//         const itemData = { ...i };
-//         delete itemData._id;
-//         const item = await MEGSItem.create(itemData, {});
-//         // skillIds.push(item._id);
-//         skills.push(item);
-//       }
-
-      // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
       // this.updateSource({ items: skills });
-      // for (let itemId of skillIds) {
-      //   game.items.get(itemId).delete();
-      // }
+      // console.error(this.items); // TODO
+    });
+    */
+    
 
-      // let actorSkills = {};
-      // this.items.forEach(skill => {
-      //   actorSkills[skill.name] = skill._id;
-      // });
+    if (game.items) {
+      let allGameSkills = [];
+      for (let i of game.items) {
+        if (i.type === MEGS.itemTypes.skill) {
+          allGameSkills.push(i);
+        }
+      }
 
-      // // add subskills with skill IDs as system.parent
-      // let subskillIds = [];
-      // for (let i of allGameSubskills) {
-      //   const itemData = { ...i };
-      //   delete itemData._id;
-      //   const item = await MEGSItem.create(itemData, {});
-      //   subskillIds.push(item._id);
-      // }
-      // const subskills = await Promise.all(subskillIds.map(async (i) => (await game.items.get(i)).toObject()));
-      // for (let i of subskills) {
-      //   i.system.parent = actorSkills[i.system.linkedSkill]; // TODO parentId
-      // }
-      // this.updateSource({ items: subskills });
-      // for (let itemId of subskillIds) {
-      //   game.items.get(itemId).delete();
-      // }
+      console.error(allGameSkills);
 
-//    }
+    //   let skillIds = [];
+    //   for (let i of allGameSkills) {
+    //     const itemData = { ...i };
+    //     delete itemData._id;
+    //     const item = await MEGSItem.create(itemData, {});
+    //     skillIds.push(item._id);
+    //   }
+    //   const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
+    //   this.updateSource({ items: skills });
+    //   for (let itemId of skillIds) {
+    //     game.items.get(itemId).delete();
+    //   }
+
+    //   let actorSkills = {};
+    //   this.items.forEach(skill => {
+    //     actorSkills[skill.name] = skill._id;
+    //   });
+    // }
+    }
   }
 
   /** @override */

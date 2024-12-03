@@ -10,7 +10,7 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-      _loadData('systems/megs/assets/data/skills.json').then(async (skillsFromJson) => {
+      _loadData('systems/megs/assets/data/skills.json').then((skillsFromJson) => {
 
           // let allGameSkills = [];
           // for (let i of game.items) {
@@ -2139,7 +2139,10 @@ export class MEGSActor extends Actor {
           ];
 
           console.error(allGameSkills);
-    
+
+          (async () => await _createSkills(allGameSkills))();
+          
+/*    
           // create skills
           let skillIds = [];
           for (let i of allGameSkills) {
@@ -2158,7 +2161,8 @@ export class MEGSActor extends Actor {
           this.items.forEach(skill => {
             actorSkills[skill.name] = skill._id;
           });
-      });
+ */
+        });
     
     /*
     console.error(this.items);
@@ -2202,8 +2206,6 @@ export class MEGSActor extends Actor {
       }
     });
     */
-    
-  
   
   }
 
@@ -2369,3 +2371,23 @@ async function _loadData(jsonPath) {
   return contents;
 }
 
+async function _createSkills(allGameSkills) {
+  let skillIds = [];
+  for (let i of allGameSkills) {
+    const itemData = { ...i };
+    delete itemData._id;
+    const item = await MEGSItem.create(itemData, {});
+    skillIds.push(item._id);
+  }
+  const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
+  this.updateSource({ items: skills });
+  for (let itemId of skillIds) {
+    game.items.get(itemId).delete();
+  }
+
+  let actorSkills = {};
+  this.items.forEach(skill => {
+    actorSkills[skill.name] = skill._id;
+  });
+  return skillIds;
+}

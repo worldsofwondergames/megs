@@ -43,10 +43,10 @@ export class MEGSActor extends Actor {
         // this.updateSource({ items: items });
       
       
-        skill.subskills.forEach(subskill => {
-          console.error(subskill)
+        // skill.subskills.forEach(subskill => {
+        //   console.error(subskill)
 
-        })
+        // })
       }
 
       // const items = this.items.toObject();
@@ -119,7 +119,7 @@ export class MEGSActor extends Actor {
       //   game.items.get(itemId).delete();
       // }
 
-    }
+//    }
   }
 
   /** @override */

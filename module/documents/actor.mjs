@@ -12,13 +12,13 @@ export class MEGSActor extends Actor {
 
     console.error(this.items);
     _loadData('systems/megs/assets/data/skills.json').then(async (skillList) => {
+
+      const items = this.items.toObject();
       for (const skill of skillList) {
 
         delete skill._id;
 
-        const items = this.items.toObject();
         items.push(skill);
-        this.updateSource({ items: items });
 
         // const subskills = skillData.subskills; // TODO
         // delete skillData.subskills;
@@ -37,6 +37,7 @@ export class MEGSActor extends Actor {
       //   items.push(skill);
       //   this.updateSource({ items: items });
       }
+      this.updateSource({ items: skillList });
       console.error(this.items);
 
       // const items = this.items.toObject();

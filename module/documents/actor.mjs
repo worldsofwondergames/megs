@@ -37,7 +37,7 @@ export class MEGSActor extends Actor {
       //   items.push(skill);
       //   this.updateSource({ items: items });
       }
-      this.updateSource({ items: skillList });
+      this.updateSource({ items: items });
       console.error(this.items);
 
       // const items = this.items.toObject();

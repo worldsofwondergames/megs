@@ -298,7 +298,8 @@ export class MEGSActor extends Actor {
       const itemData = { ...i };
       delete itemData._id;
       itemData.img =  itemData.img ? 'systems/megs/assets/images/icons/skillls/' + itemData.img : 'systems/megs/assets/images/icons/skillls/skill.png';
-      const item = await MEGSItem.create(itemData, {});
+//      const item = await MEGSItem.create(itemData, {});
+      const item = new MEGSItem(itemData);
       skillIds.push(item._id);
     }
     const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));

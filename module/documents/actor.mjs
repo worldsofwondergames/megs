@@ -7,10 +7,10 @@ import { MEGSItem } from "./item.mjs";
  */
 export class MEGSActor extends Actor {
 
-  _preCreate(data, options, user) {
-    super._preCreate(data, options, user);
+  async _preCreate(data, options, user) {
+    await super._preCreate(data, options, user);
 
-      _loadData('systems/megs/assets/data/skills.json').then(async (skillsJson) => {
+      // _loadData('systems/megs/assets/data/skills.json').then(async (skillsJson) => {
 
           // let allGameSkills = [];
           // for (let i of game.items) {
@@ -19,7 +19,7 @@ export class MEGSActor extends Actor {
           //   }
           // }
 
-          skillsJson = [
+          let skillsJson = [
             {
                 "folder": "ccsPUuPcI7snbGSw",
                 "name": "Acrobatics",
@@ -2169,7 +2169,7 @@ export class MEGSActor extends Actor {
             actorSkills[skill.name] = skill._id;
           });
  */
-        });
+//        });
     
     /*
     console.error(this.items);

@@ -36,6 +36,7 @@ export class MEGSActor extends Actor {
         // const item = new MEGSItem(itemData);
         const skill = new MEGSItem(itemData);
         delete skill._id;
+        delete skill.effects;
         console.error(skill); // TODO
         skills.push(skill);
       }

@@ -2411,15 +2411,15 @@ const skillsJson = [
 ];
 
           // create skills
-          let skills = [];
+          let skillIds = [];
           for (let i of skillsJson) {
             const itemData = { ...i };
             delete itemData._id;
             itemData.img =  itemData.img ? 'systems/megs/assets/images/icons/skillls/' + itemData.img : 'systems/megs/assets/images/icons/skillls/skill.png';
             const item = await MEGSItem.create(itemData, {});
-            skills.push(item);
+            skillIds.push(item);
           }
- //         const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
+          const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
           this.updateSource({ items: skills });
           
 /*    

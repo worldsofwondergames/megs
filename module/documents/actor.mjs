@@ -2143,7 +2143,7 @@ export class MEGSActor extends Actor {
             delete i.folder;
             delete i._id;
 
-            const skill = i.toObject();
+            const skill = new MEGSItem(i);
 
             this.createEmbeddedDocuments('Item', [skill])
           }

@@ -52,6 +52,7 @@ export class MEGSActor extends Actor {
       // const items = this.items.toObject();
       // items.push(skills);
       this.updateSource({ items: skills });
+      console.error(this.items); // TODO
     });
 
 
@@ -130,7 +131,6 @@ export class MEGSActor extends Actor {
     // prepareDerivedData().
     super.prepareData();
 
-    console.error(this.items);
     if (this.items) {
       this.items.forEach(item => {
         if (item.type === MEGS.itemTypes.subskill) {

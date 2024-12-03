@@ -10,8 +10,6 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-    // const test = require('systems/megs/assets/data/skills.json');
-    // console.error(test);
       // _loadData('systems/megs/assets/data/skills.json').then(async (skillsJson) => {
 
           // let allGameSkills = [];
@@ -21,7 +19,9 @@ export class MEGSActor extends Actor {
           //   }
           // }
 
-          let skillsJson = [
+          const skillsJson = require('systems/megs/assets/data/skills.json');
+          /*
+          const skillsJson = [
             {
                 "folder": "ccsPUuPcI7snbGSw",
                 "name": "Acrobatics",
@@ -2139,7 +2139,8 @@ export class MEGSActor extends Actor {
                 "sort": 0
             }
           ];
- 
+ */
+
           // create skills
           let skillIds = [];
           for (let i of skillsJson) {

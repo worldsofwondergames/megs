@@ -17,7 +17,8 @@ export class MEGSActor extends Actor {
 
       console.log("TEST:");
       console.log(response);
-      for (const skillData of response) {
+      for (const skillData of response.skills) {
+        console.error(skillData.name);
 
         const subskills = skillData.subskills;
         delete skillData.subskills;

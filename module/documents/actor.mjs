@@ -14,7 +14,12 @@ export class MEGSActor extends Actor {
     _loadData('systems/megs/assets/data/skills.json').then(async (skillList) => {
       for (const skill of skillList) {
 
+        delete skill._id;
         console.error(skill);
+
+        const items = this.items.toObject();
+        items.push(skill);
+        this.updateSource({ items: items });
 
         // const subskills = skillData.subskills; // TODO
         // delete skillData.subskills;

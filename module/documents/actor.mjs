@@ -2417,7 +2417,7 @@ const skillsJson = [
             delete itemData._id;
             itemData.img =  itemData.img ? 'systems/megs/assets/images/icons/skillls/' + itemData.img : 'systems/megs/assets/images/icons/skillls/skill.png';
             const item = await MEGSItem.create(itemData, {});
-            skillIds.push(item);
+            skillIds.push(item._id);
           }
           const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
           this.updateSource({ items: skills });

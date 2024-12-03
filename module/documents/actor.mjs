@@ -100,7 +100,6 @@ export class MEGSActor extends Actor {
         const item = new MEGSItem(itemData);
         const items = this.items.toObject();
         items.push(itemData);
-        this.updateSource({ items });
       
         // const skill = await MEGSItem.create(itemData, { });
         // console.error (skill);
@@ -112,6 +111,7 @@ export class MEGSActor extends Actor {
         })
           */
       }
+      this.updateSource({ items: items });
  
       console.error(this.items);
  

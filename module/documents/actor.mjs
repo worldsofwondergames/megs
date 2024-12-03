@@ -17,6 +17,8 @@ export class MEGSActor extends Actor {
 
       console.log("TEST:");
       console.log(response);
+
+      let skills = [];
       for (const skillData of response.skills) {
         console.error(skillData.name);
 
@@ -33,11 +35,12 @@ export class MEGSActor extends Actor {
 
         // const item = new MEGSItem(itemData);
         const skill = new MEGSItem(itemData);
-        const items = this.items.toObject();
-        items.push(skill);
+        console.error(skill); // TODO
+        skills.push(skill);
 
-        console.log(this.items);
-        this.updateSource({ items: items });
+
+        // console.log(this.items);
+        // this.updateSource({ items: items });
       
   /*      
         skill.subskills.forEach(subskill => {
@@ -47,10 +50,12 @@ export class MEGSActor extends Actor {
           */
       }
 
-      console.error("TEST1: preCreate");
-      console.error(this.items);
-
     });
+
+    // const items = this.items.toObject();
+    // items.push(skills);
+    this.updateSource({ items: skills });
+
 
     // Create default skills and subskills
     // if (game.items) {

@@ -10,6 +10,7 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
+    console.error("TEST0: preCreate");
     // Create default skills and subskills
     if (game.items) {
       let allGameSkills = [];
@@ -21,9 +22,40 @@ export class MEGSActor extends Actor {
       // get all skills and subskills from list
 
       // TODO create skills from JSON
-    
+      _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
 
-
+        for (const skillData of response.skills) {
+  
+          const subskills = skillData.subskills;
+          delete skillData.subskills;
+      
+          const itemData = {
+            name: skillData.name,
+            type: MEGS.itemTypes.skill,
+            img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
+            system: skillData,
+          };
+          delete itemData.system['type'];
+  
+          // const item = new MEGSItem(itemData);
+          const skill = await MEGSItem.create(itemData, { });
+          const items = this.items.toObject();
+          items.push(skill);
+          this.updateSource({ items: items });
+        
+    /*      
+          skill.subskills.forEach(subskill => {
+            console.error(subskill)
+  
+          })
+            */
+        }
+  
+        console.error("TEST1: onCreate");
+        console.error(this.items);
+  
+      });
+      
       /*
       for (let i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
@@ -80,43 +112,6 @@ export class MEGSActor extends Actor {
     await super._onCreate(data, options, user);
     
     // load sklls
-    _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
-      console.log(`Received response for skills data: ${response.status}`);
-
-      for (const skillData of response.skills) {
-
-        const subskills = skillData.subskills;
-        delete skillData.subskills;
-    
-        const itemData = {
-          name: skillData.name,
-          type: MEGS.itemTypes.skill,
-          img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
-          system: skillData,
-        };
-        delete itemData.system['type'];
-
-        const item = new MEGSItem(itemData);
-        const items = this.items.toObject();
-        items.push(itemData);
-      
-        // const skill = await MEGSItem.create(itemData, { });
-        // console.error (skill);
-        
-  /*      
-        skill.subskills.forEach(subskill => {
-          console.error(subskill)
-
-        })
-          */
-      }
-      this.updateSource({ items: items });
-
-      console.error(this.items);
-
-    }), (error) => {
-      console.error(`_loadData for skills failed with: ${error.message}`);
-    }
   }
 
   /** @override */
@@ -127,6 +122,7 @@ export class MEGSActor extends Actor {
     // prepareDerivedData().
     super.prepareData();
 
+    console.error("TEST2: prepareData");
     console.error(this.items);
     if (this.items) {
       this.items.forEach(item => {
@@ -279,8 +275,6 @@ export class MEGSActor extends Actor {
 async function _loadData(jsonPath) {
   const response = await fetch(jsonPath);
   const contents = await response.json();
-  console.error(response); // TODO delete
-  console.error(contents); // TODO delete
   return contents;
 }
 

@@ -10,8 +10,16 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-    _loadData('systems/megs/assets/data/skills.json').then(async (allGameSkills) => {
-      // Create default skills and subskills
+        // Create default skills and subskills
+        if (game.items) {
+          let allGameSkills = [];
+          for (let i of game.items) {
+            if (i.type === MEGS.itemTypes.skill) {
+              allGameSkills.push(i);
+            }
+          }
+
+          console.error(allGameSkills);
     
           // create skills
           let skillIds = [];
@@ -32,8 +40,8 @@ export class MEGSActor extends Actor {
             actorSkills[skill.name] = skill._id;
           });
 
+        }
         console.error(this.items);
-      });
     
     /*
     console.error(this.items);

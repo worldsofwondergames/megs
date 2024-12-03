@@ -305,6 +305,7 @@ console.error("TEST1");
       const item = new MEGSItem(itemData);
 console.error("TEST2");
 delete item._id;
+delete item.effects;
 skills.push(item);
 //      skillIds.push(item._id);
     }

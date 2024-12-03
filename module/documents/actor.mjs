@@ -10,6 +10,7 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
+    // TODO how to load from file?
     const skillsJson = [
     {
         "name": "Acrobatics",
@@ -29,7 +30,8 @@ export class MEGSActor extends Actor {
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        }    },
+        }
+    },
     {
         "name": "Animal Handling",
         "type": "skill",
@@ -292,29 +294,17 @@ export class MEGSActor extends Actor {
     }
     ];
 
-    // create skills
     let skills = [];
-//    let skillIds = [];
     for (let i of skillsJson) {
-      const itemData = { ...i };
-      delete itemData._id;
-      delete itemData.effects;
-      itemData.img =  itemData.img ? 'systems/megs/assets/images/icons/skillls/' + itemData.img : 'systems/megs/assets/images/icons/skillls/skill.png';
-//      const item = await MEGSItem.create(itemData, {});
-console.error("TEST1");
-      const item = { ...new MEGSItem(itemData)};
-console.error("TEST2");
-delete item._id;
-delete item.effects;
-skills.push(item);
-//      skillIds.push(item._id);
+      i.img =  i.img ? 'systems/megs/assets/images/icons/skillls/' + i.img : 'systems/megs/assets/images/icons/skillls/skill.png';
+      const item = { ...new MEGSItem(i) };
+      delete item._id;
+      delete item.effects;
+      skills.push(item);
+
+      // TODO subskills
     }
-//    const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
     this.updateSource({ items: skills });
-    // for (let itemId of skillIds) {
-    //   game.items.get(itemId).delete();
-    // }
-  
   }
 
   /** @override */

@@ -19,6 +19,7 @@ export class MEGSActor extends Actor {
       console.log(response);
 
       let skills = [];
+      let skillIds = [];
       for (const skillData of response) {
         console.error(skillData.name);
 
@@ -35,9 +36,18 @@ export class MEGSActor extends Actor {
 
         //const skill = new MEGSItem(itemData);
         const skill = await MEGSItem.create(itemData, {});
-        delete skill._id;
+        skillIds.push(skill._id);
         skills.push(skill);
       }
+
+
+      const allSkills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
+      this.updateSource({ items: allSkills });
+
+
+      // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
+      // this.updateSource({ items: skills });
+
 
       // const items = this.items.toObject();
       // items.push(skills);
@@ -79,8 +89,6 @@ export class MEGSActor extends Actor {
 //         // skillIds.push(item._id);
 //         skills.push(item);
 //       }
-// console.error("TEST5");
-// console.error(skills);
 
       // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
       // this.updateSource({ items: skills });

@@ -11,7 +11,7 @@ export class MEGSActor extends Actor {
     await super._preCreate(data, options, user);
 
     console.error("TEST0: preCreate: "+ this.name);
-/*
+
     // TODO create skills from JSON
     _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
 
@@ -19,7 +19,7 @@ export class MEGSActor extends Actor {
       console.log(response);
 
       let skills = [];
-      for (const skillData of response.skills) {
+      for (const skillData of response) {
         console.error(skillData.name);
 
         const subskills = skillData.subskills;
@@ -53,13 +53,12 @@ export class MEGSActor extends Actor {
       // items.push(skills);
       this.updateSource({ items: skills });
     });
-*/
 
 
     // Create default skills and subskills
-    if (game.items) {
-       let allGameSkills = [];
-       let skills = [];
+    // if (game.items) {
+    //    let allGameSkills = [];
+    //    let skills = [];
     //   let allGameSubskills = [];
 
     //   let existingActorSkills = [];
@@ -69,28 +68,28 @@ export class MEGSActor extends Actor {
 
       
       
-      for (let i of game.items) {
-        if (i.type === MEGS.itemTypes.skill) {
-          allGameSkills.push(i);
-        }
-        // if (i.type === MEGS.itemTypes.subskill) {
-        //   allGameSubskills.push(i);
-        // }
-      }
+      // for (let i of game.items) {
+      //   if (i.type === MEGS.itemTypes.skill) {
+      //     allGameSkills.push(i);
+      //   }
+      //   // if (i.type === MEGS.itemTypes.subskill) {
+      //   //   allGameSubskills.push(i);
+      //   // }
+      // }
 
       // TODO creating and deleting is really clunky; find a better way
       
       // create skills
       // let skillIds = [];
-      for (let i of allGameSkills) {
-        const itemData = { ...i };
-        delete itemData._id;
-        const item = await MEGSItem.create(itemData, {});
-        // skillIds.push(item._id);
-        skills.push(item);
-      }
-console.error("TEST5");
-console.error(skills);
+//       for (let i of allGameSkills) {
+//         const itemData = { ...i };
+//         delete itemData._id;
+//         const item = await MEGSItem.create(itemData, {});
+//         // skillIds.push(item._id);
+//         skills.push(item);
+//       }
+// console.error("TEST5");
+// console.error(skills);
 
       // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
       // this.updateSource({ items: skills });

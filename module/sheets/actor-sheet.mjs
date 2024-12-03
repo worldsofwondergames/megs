@@ -304,6 +304,8 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _prepareItems(context) {
+    console.error(context.items); // TODO
+
     // Initialize containers.
     const powers = [];
     const skills = [];
@@ -323,7 +325,6 @@ export class MEGSActorSheet extends ActorSheet {
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {
       i.img = i.img || Item.DEFAULT_ICON;
-      console.error(i); // TODO
  
       // Append to powers
       if (i.type === MEGS.itemTypes.power && !i.system.parent) {

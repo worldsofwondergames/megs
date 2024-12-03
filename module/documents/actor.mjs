@@ -2421,7 +2421,10 @@ const skillsJson = [
           }
           const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
           this.updateSource({ items: skills });
-          
+          for (let itemId of skillIds) {
+            game.items.get(itemId).delete();
+          }
+         
 /*    
           // create skills
           let skillIds = [];

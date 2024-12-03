@@ -10,16 +10,7 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-    console.error("TEST0: preCreate: "+ this.name);
-
-    // TODO create skills from JSON
     _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
-
-      console.log("TEST:");
-      console.log(response);
-
-      let skills = [];
-      let skillIds = [];
       for (const skillData of response) {
         console.error(skillData.name);
 
@@ -34,15 +25,13 @@ export class MEGSActor extends Actor {
         };
         delete itemData.system['type'];
 
-        //const skill = new MEGSItem(itemData);
-        const skill = await MEGSItem.create(itemData, {});
-        skillIds.push(skill._id);
-        skills.push(skill);
+        const skill = new MEGSItem(itemData);
+        const items = this.items.toObject();
+        items.push(skill);
+        this.updateSource({ items: items });
       }
 
-
-      const allSkills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
-      this.updateSource({ items: allSkills });
+      
 
 
       // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));

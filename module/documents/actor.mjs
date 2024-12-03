@@ -303,7 +303,8 @@ export class MEGSActor extends Actor {
 console.error("TEST1");
       const item = new MEGSItem(itemData);
 console.error("TEST2");
-      skills.push(item);
+delete item._id;
+skills.push(item);
 //      skillIds.push(item._id);
     }
 //    const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));

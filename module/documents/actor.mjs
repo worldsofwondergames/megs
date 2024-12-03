@@ -95,15 +95,12 @@ export class MEGSActor extends Actor {
           img: skillData.img ? 'systems/megs/assets/images/icons/skillls/' + skillData.img : 'systems/megs/assets/images/icons/skillls/skill.png',
           system: skillData,
         };
-        console.error (itemData);
         delete itemData.system['type'];
 
         const item = new MEGSItem(itemData);
         const items = this.items.toObject();
         items.push(itemData);
         this.updateSource({ items });
-  
-        console.error(this);
       
         // const skill = await MEGSItem.create(itemData, { });
         // console.error (skill);
@@ -115,7 +112,9 @@ export class MEGSActor extends Actor {
         })
           */
       }
-
+ 
+      console.error(this.items);
+ 
     });
   }
 
@@ -127,6 +126,7 @@ export class MEGSActor extends Actor {
     // prepareDerivedData().
     super.prepareData();
 
+    console.error(this.items);
     if (this.items) {
       this.items.forEach(item => {
         if (item.type === MEGS.itemTypes.subskill) {

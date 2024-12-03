@@ -50,11 +50,11 @@ export class MEGSActor extends Actor {
           */
       }
 
+      // const items = this.items.toObject();
+      // items.push(skills);
+      this.updateSource({ items: skills });
     });
 
-    // const items = this.items.toObject();
-    // items.push(skills);
-    this.updateSource({ items: skills });
 
 
     // Create default skills and subskills

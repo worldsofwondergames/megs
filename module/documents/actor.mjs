@@ -302,7 +302,7 @@ export class MEGSActor extends Actor {
       itemData.img =  itemData.img ? 'systems/megs/assets/images/icons/skillls/' + itemData.img : 'systems/megs/assets/images/icons/skillls/skill.png';
 //      const item = await MEGSItem.create(itemData, {});
 console.error("TEST1");
-      const item = new MEGSItem(itemData);
+      const item = { ...new MEGSItem(itemData)};
 console.error("TEST2");
 delete item._id;
 delete item.effects;

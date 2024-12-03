@@ -11,7 +11,7 @@ export class MEGSActor extends Actor {
     await super._preCreate(data, options, user);
 
     console.error("TEST0: preCreate: "+ this.name);
-
+/*
     // TODO create skills from JSON
     _loadData('systems/megs/assets/data/skills.json').then(async (response) => {
 
@@ -42,24 +42,24 @@ export class MEGSActor extends Actor {
         // console.log(this.items);
         // this.updateSource({ items: items });
       
-  /*      
+      
         skill.subskills.forEach(subskill => {
           console.error(subskill)
 
         })
-          */
       }
 
       // const items = this.items.toObject();
       // items.push(skills);
       this.updateSource({ items: skills });
     });
-
+*/
 
 
     // Create default skills and subskills
-    // if (game.items) {
-    //   let allGameSkills = [];
+    if (game.items) {
+       let allGameSkills = [];
+       let skills = [];
     //   let allGameSubskills = [];
 
     //   let existingActorSkills = [];
@@ -68,54 +68,57 @@ export class MEGSActor extends Actor {
       // get all skills and subskills from list
 
       
-      /*
+      
       for (let i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
           allGameSkills.push(i);
         }
-        if (i.type === MEGS.itemTypes.subskill) {
-          allGameSubskills.push(i);
-        }
+        // if (i.type === MEGS.itemTypes.subskill) {
+        //   allGameSubskills.push(i);
+        // }
       }
 
       // TODO creating and deleting is really clunky; find a better way
       
       // create skills
-      let skillIds = [];
+      // let skillIds = [];
       for (let i of allGameSkills) {
         const itemData = { ...i };
         delete itemData._id;
         const item = await MEGSItem.create(itemData, {});
-        skillIds.push(item._id);
+        // skillIds.push(item._id);
+        skills.push(item);
       }
-      const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
-      this.updateSource({ items: skills });
-      for (let itemId of skillIds) {
-        game.items.get(itemId).delete();
-      }
+console.error("TEST5");
+console.error(skills);
 
-      let actorSkills = {};
-      this.items.forEach(skill => {
-        actorSkills[skill.name] = skill._id;
-      });
+      // const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
+      // this.updateSource({ items: skills });
+      // for (let itemId of skillIds) {
+      //   game.items.get(itemId).delete();
+      // }
 
-      // add subskills with skill IDs as system.parent
-      let subskillIds = [];
-      for (let i of allGameSubskills) {
-        const itemData = { ...i };
-        delete itemData._id;
-        const item = await MEGSItem.create(itemData, {});
-        subskillIds.push(item._id);
-      }
-      const subskills = await Promise.all(subskillIds.map(async (i) => (await game.items.get(i)).toObject()));
-      for (let i of subskills) {
-        i.system.parent = actorSkills[i.system.linkedSkill]; // TODO parentId
-      }
-      this.updateSource({ items: subskills });
-      for (let itemId of subskillIds) {
-        game.items.get(itemId).delete();
-      }
-      */
+      // let actorSkills = {};
+      // this.items.forEach(skill => {
+      //   actorSkills[skill.name] = skill._id;
+      // });
+
+      // // add subskills with skill IDs as system.parent
+      // let subskillIds = [];
+      // for (let i of allGameSubskills) {
+      //   const itemData = { ...i };
+      //   delete itemData._id;
+      //   const item = await MEGSItem.create(itemData, {});
+      //   subskillIds.push(item._id);
+      // }
+      // const subskills = await Promise.all(subskillIds.map(async (i) => (await game.items.get(i)).toObject()));
+      // for (let i of subskills) {
+      //   i.system.parent = actorSkills[i.system.linkedSkill]; // TODO parentId
+      // }
+      // this.updateSource({ items: subskills });
+      // for (let itemId of subskillIds) {
+      //   game.items.get(itemId).delete();
+      // }
 
  //   }
   }

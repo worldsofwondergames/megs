@@ -279,6 +279,8 @@ export class MEGSActor extends Actor {
 async function _loadData(jsonPath) {
   const response = await fetch(jsonPath);
   const contents = await response.json();
+  console.error(response); // TODO delete
+  console.error(contents); // TODO delete
   return contents;
 }
 

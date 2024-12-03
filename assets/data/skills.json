@@ -1,5 +1,6 @@
 [
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Acrobatics",
         "type": "skill",
         "img": "systems/megs/assets/images/icons/skillls/acrobatics.png",
@@ -191,6 +192,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Animal Handling",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/animal-handling.png",
@@ -338,6 +340,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Artist",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/artist.png",
@@ -485,6 +488,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Charisma",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/charisma.png",
@@ -632,6 +636,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Detective",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/detective.png",
@@ -779,6 +784,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Gadgetry",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/gadgetry.png",
@@ -926,6 +932,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Martial Artist",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/martial-artist.png",
@@ -1073,6 +1080,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Medicine",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/medicine.png",
@@ -1220,6 +1228,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Military Science",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/military%20science.png",
@@ -1367,6 +1376,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Occultist",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/occultist.png",
@@ -1514,6 +1524,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Scientist",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/scientist.png",
@@ -1661,6 +1672,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Thief",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/thief.png",
@@ -1808,6 +1820,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Vehicles",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/vehicles.png",
@@ -1955,6 +1968,7 @@
         "sort": 0
     },
     {
+        "folder": "ccsPUuPcI7snbGSw",
         "name": "Weaponry",
         "type": "skill",
         "img": "modules/dcheroes3e-shared/assets/images/icons/skills/weaponry.png",

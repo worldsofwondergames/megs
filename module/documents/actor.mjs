@@ -10,7 +10,7 @@ export class MEGSActor extends Actor {
   _preCreate(data, options, user) {
     super._preCreate(data, options, user);
 
-      _loadData('systems/megs/assets/data/skills.json').then((skillsFromJson) => {
+      _loadData('systems/megs/assets/data/skills.json').then((skillsJson) => {
 
           // let allGameSkills = [];
           // for (let i of game.items) {
@@ -19,7 +19,7 @@ export class MEGSActor extends Actor {
           //   }
           // }
 
-          let skillsFromJson = [
+          skillsJson = [
             {
                 "folder": "ccsPUuPcI7snbGSw",
                 "name": "Acrobatics",
@@ -2139,7 +2139,7 @@ export class MEGSActor extends Actor {
           ];
 
           let skills = [];
-          for (let i of skillsFromJson) {
+          for (let i of skillsJson) {
             delete i.folder;
             delete i._id;
 

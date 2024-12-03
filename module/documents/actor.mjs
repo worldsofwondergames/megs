@@ -311,9 +311,9 @@ skills.push(item);
     }
 //    const skills = await Promise.all(skillIds.map(async (i) => (await game.items.get(i)).toObject()));
     this.updateSource({ items: skills });
-    for (let itemId of skillIds) {
-      game.items.get(itemId).delete();
-    }
+    // for (let itemId of skillIds) {
+    //   game.items.get(itemId).delete();
+    // }
   
   }
 

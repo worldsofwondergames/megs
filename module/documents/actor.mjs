@@ -301,13 +301,13 @@ export class MEGSActor extends Actor {
     for (let i of skillsJson) {
       i.img =  i.img ? 'systems/megs/assets/images/icons/skillls/' + i.img : 'systems/megs/assets/images/icons/skillls/skill.png';
       const item = { ...new MEGSItem(i) };
-      delete item.subskills;
+      delete item.system.subskills;
       delete item._id;
       delete item.effects;
       skills.push(item);
 
       // TODO subskills
-      for (let j of i.subskills) {
+      for (let j of i.system.subskills) {
         console.error(j.name);
       }
     }

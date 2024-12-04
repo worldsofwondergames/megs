@@ -10,6 +10,8 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
+    if (this._stats.compendiumSource || this._stats.duplicateSource) return;
+
     console.error(this);
 
     const skillsJson = await _loadData('systems/megs/assets/data/skills.json');

@@ -30,11 +30,15 @@ export class MEGSActor extends Actor {
       if (i.system.subskills) {
         for (let j of i.system.subskills) {
             console.error(item._id);
-            j.system.parent = item._id;
+            j.parentId = item._id;
+            subskills.push(j);
           }
         }
     }
     this.updateSource({ items: skills });
+    console.error(skills);
+
+
     this.updateSource({ items: subskills });
   }
 

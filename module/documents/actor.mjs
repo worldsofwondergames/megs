@@ -10,7 +10,9 @@ export class MEGSActor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
-    _loadData('systems/megs/assets/data/skills.json').then(async (skillsFromJson) => {
+    const actor = this;
+
+    _loadData('systems/megs/assets/data/skills.json').then(async (skillsFromJson, actor) => {
 
     // TODO how to load from file?
     const skillsJson = [
@@ -306,7 +308,7 @@ export class MEGSActor extends Actor {
 
       // TODO subskills
     }
-    this.updateSource({ items: skills });
+    actor.updateSource({ items: skills });
 })
   }
 

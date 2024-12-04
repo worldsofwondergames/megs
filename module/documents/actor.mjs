@@ -12,7 +12,7 @@ export class MEGSActor extends Actor {
 
     const actor = this;
 
-    _loadData('systems/megs/assets/data/skills.json').then(async (skillsFromJson, actor) => {
+    _loadData('systems/megs/assets/data/skills.json').then(async (skillsFromJson) => {
 
     // TODO how to load from file?
     const skillsJson = [
@@ -298,6 +298,8 @@ export class MEGSActor extends Actor {
     }
     ];
 
+    console.error(this);
+
     let skills = [];
     for (let i of skillsJson) {
       i.img =  i.img ? 'systems/megs/assets/images/icons/skillls/' + i.img : 'systems/megs/assets/images/icons/skillls/skill.png';
@@ -308,7 +310,7 @@ export class MEGSActor extends Actor {
 
       // TODO subskills
     }
-    actor.updateSource({ items: skills });
+    this.updateSource({ items: skills });
 })
   }
 

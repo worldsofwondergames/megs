@@ -14,6 +14,26 @@
             "factorCost": 7,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Climbing",
+                    "range": "normal",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Dodging",
+                    "range": "normal",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Gymnastics",
+                    "range": "normal",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -33,6 +53,20 @@
             "factorCost": 4,
             "aps": 0,
             "type": "both",
+            "subskills": [
+                {
+                    "name": "Animal Training",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "both"
+                },
+                {
+                    "name": "Riding",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "both"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -53,6 +87,50 @@
             "factorCost": 8,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Anctor",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Dancer",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Musician",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Painter",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Photographer",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Sculptor",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Writer",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "false",
             "linked": false,
             "unskilled": true
@@ -73,6 +151,26 @@
             "factorCost": 6,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Interrogation",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Intimidation",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Riding",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "false",
             "linked": false,
             "unskilled": true
@@ -93,6 +191,38 @@
             "factorCost": 7,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Clue Analysis",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Counterfeit Recognition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Identification Systems",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Law",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Police Procedure",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -113,6 +243,20 @@
             "factorCost": 8,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Build Gadget",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Identify Gadget",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -153,6 +297,32 @@
             "factorCost": 6,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "First Aid",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Forensics",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Medical Treatment",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Surgery",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -173,6 +343,44 @@
             "factorCost": 8,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Camouflage",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Cartography",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Danger Recognition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Demolition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Field Command",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Tracking",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -193,6 +401,38 @@
             "factorCost": 9,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Create Artifact",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Identify Artifact",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Occult Knowledge",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Premonition",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Ritual Magic",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "false",
             "linked": false,
             "unskilled": true
@@ -213,6 +453,20 @@
             "factorCost": 5,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Analysis",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Drawing Plans",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -233,6 +487,44 @@
             "factorCost": 8,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Escape Artist",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Forgery",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Locks and Safes",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Pickpocketing",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Security Systems",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Stealth",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -253,6 +545,32 @@
             "factorCost": 5,
             "aps": 0,
             "type": "dice",
+            "subskills": [
+                {
+                    "name": "Air Vehicles",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Land Vehicles",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Space Craft",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Water Vehicles",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ],
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
@@ -273,7 +591,39 @@
             "factorCost": 6,
             "aps": 0,
             "type": "dice",
-            "useUnskilled": "true",
+            "subskills": [
+                {
+                    "name": "Exotic Weapons",
+                    "range": "self",
+                    "useUnskilled": false,
+                    "type": "dice"
+                },
+                {
+                    "name": "Firearms",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Heavy Weapons",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Melee Weapons",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                },
+                {
+                    "name": "Missile Weapons",
+                    "range": "self",
+                    "useUnskilled": true,
+                    "type": "dice"
+                }
+            ],
+             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
         }

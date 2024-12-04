@@ -12,7 +12,15 @@ export class MEGSActor extends Actor {
 
     if (this._stats.compendiumSource || this._stats.duplicateSource) return;
 
-    console.error(this);
+    // TODO delete this block
+    let allGameSubskills = [];
+    for (let i of game.items) {
+        if (i.type === MEGS.itemTypes.subskill) {
+          allGameSubskills.push(i);
+        }
+      }
+      console.error(allGameSubskills);
+
 
     const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 

@@ -307,9 +307,11 @@ export class MEGSActor extends Actor {
       skills.push(item);
 
       // TODO subskills
-      for (let j of i.system.subskills) {
-        console.error(j.name);
-      }
+      if (i.system.subskills) {
+        for (let j of i.system.subskills) {
+            console.error(j.name);
+          }
+        }
     }
     this.updateSource({ items: skills });
   }

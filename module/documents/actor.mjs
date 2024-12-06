@@ -51,7 +51,7 @@ export class MEGSActor extends Actor {
     }
     this.updateSource({ items: skills });
     this.updateSource({ items: subskills });
-    for (let j of i.system.subskills) { {
+    for (let j of i.system.subskills) {
       console.error(j);
     }
   }

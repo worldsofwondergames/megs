@@ -49,6 +49,7 @@ export class MEGSActor extends Actor {
         }
     }
 
+    this.updateSource({ items: skills });
     console.error(skills);
 
     

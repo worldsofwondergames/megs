@@ -12,16 +12,6 @@ export class MEGSActor extends Actor {
 
     if (this._stats.compendiumSource || this._stats.duplicateSource) return;
 
-    // TODO delete this block
-    let allGameSubskills = [];
-    for (let i of game.items) {
-        if (i.type === MEGS.itemTypes.subskill) {
-          allGameSubskills.push(i);
-        }
-      }
-      console.error(allGameSubskills);
-
-
     const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
     let skills = [];
@@ -37,17 +27,33 @@ export class MEGSActor extends Actor {
       // TODO subskills
       if (i.system.subskills) {
         for (let j of i.system.subskills) {
-            console.error(item._id);
-            j.parentId = item._id;
-            subskills.push(j);
+            const subskillObj = {
+                "name": j.name,
+                "type": "subskill",
+                "img": j.img ? 'systems/megs/assets/images/icons/subskillls/' + j.img : 'systems/megs/assets/images/icons/skillls/skill.png',
+                "system": {
+                    "baseCost": 0,
+                    "totalCost": 0,
+                    "factorCost": 0,
+                    "aps": 0,
+                    "parent": "",
+                    "type": j.type,
+                    "linkedSkill": i.name,
+                    "useUnskilled": j.useUnskilled,
+                    "actorId": "",
+                },
+            }
+
+            // TODO finish
+            subskills.push(subskillObj);
           }
         }
     }
     this.updateSource({ items: skills });
-    console.error(skills);
-
-
     this.updateSource({ items: subskills });
+    for (let j of i.system.subskills) { {
+      console.error(j);
+    }
   }
 
   /** @override */

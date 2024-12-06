@@ -38,8 +38,7 @@ export class MEGSActor extends Actor {
                     "parent": "",
                     "type": j.type,
                     "linkedSkill": i.name,
-                    "useUnskilled": j.useUnskilled,
-                    "actorId": "",
+                    "useUnskilled": j.useUnskilled
                 },
             }
             subskills.push(subskillObj);

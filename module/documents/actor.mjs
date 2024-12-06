@@ -48,6 +48,9 @@ export class MEGSActor extends Actor {
           }
         }
     }
+
+    console.error(skills);
+
     
     let actorSkills = {};
     this.items.forEach(skill => {

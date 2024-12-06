@@ -42,28 +42,22 @@ export class MEGSActor extends Actor {
                     "actorId": "",
                 },
             }
-
-            // TODO finish
             subskills.push(subskillObj);
           }
         }
     }
 
     this.updateSource({ items: skills });
-    console.error(skills);
-
     
     let actorSkills = {};
     this.items.forEach(skill => {
       actorSkills[skill.name] = skill._id;
     });
-    console.error(actorSkills);
     
     for (let i of subskills) {
       i.system.parent = actorSkills[i.system.linkedSkill];
     }
     this.updateSource({ items: subskills });
-    console.error(subskills);
   }
 
   /** @override */

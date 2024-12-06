@@ -24,7 +24,6 @@ export class MEGSActor extends Actor {
       delete item.effects;
       skills.push(item);
 
-      // TODO subskills
       if (i.system.subskills) {
         for (let j of i.system.subskills) {
             const subskillObj = {
@@ -54,11 +53,13 @@ export class MEGSActor extends Actor {
     this.items.forEach(skill => {
       actorSkills[skill.name] = skill._id;
     });
+    console.error(actorSkills);
     
     for (let i of subskills) {
       i.system.parent = actorSkills[i.system.linkedSkill];
     }
     this.updateSource({ items: subskills });
+    console.error(subskills);
   }
 
   /** @override */

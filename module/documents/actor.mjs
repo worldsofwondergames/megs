@@ -12,12 +12,16 @@ export class MEGSActor extends Actor {
 
     if (this._stats.compendiumSource || this._stats.duplicateSource) return;
 
+    await this._getSkills();
+  }
+
+  async _getSkills() {
     const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
     let skills = [];
     let subskills = [];
     for (let i of skillsJson) {
-      i.img =  i.img ? 'systems/megs/assets/images/icons/skillls/' + i.img : 'systems/megs/assets/images/icons/skillls/skill.png';
+      i.img = i.img ? 'systems/megs/assets/images/icons/skillls/' + i.img : 'systems/megs/assets/images/icons/skillls/skill.png';
       const item = { ...new MEGSItem(i) };
       delete item.system.subskills;
       delete item._id;
@@ -26,34 +30,33 @@ export class MEGSActor extends Actor {
 
       if (i.system.subskills) {
         for (let j of i.system.subskills) {
-            const subskillObj = {
-                "name": j.name,
-                "type": "subskill",
-                "img": j.img ? 'systems/megs/assets/images/icons/subskillls/' + j.img : 'systems/megs/assets/images/icons/skillls/skill.png',
-                "system": {
-                    "baseCost": 0,
-                    "totalCost": 0,
-                    "factorCost": 0,
-                    "aps": 0,
-                    "parent": "",
-                    "type": j.type,
-                    "linkedSkill": i.name,
-                    "useUnskilled": j.useUnskilled,
-                    "actorId": "",
-                },
-            }
-            subskills.push(subskillObj);
-          }
+          const subskillObj = {
+            "name": j.name,
+            "type": "subskill",
+            "img": j.img ? 'systems/megs/assets/images/icons/subskillls/' + j.img : 'systems/megs/assets/images/icons/skillls/skill.png',
+            "system": {
+              "baseCost": 0,
+              "totalCost": 0,
+              "factorCost": 0,
+              "aps": 0,
+              "parent": "",
+              "type": j.type,
+              "linkedSkill": i.name,
+              "useUnskilled": j.useUnskilled
+            },
+          };
+          subskills.push(subskillObj);
         }
+      }
     }
 
     this.updateSource({ items: skills });
-    
+
     let actorSkills = {};
     this.items.forEach(skill => {
       actorSkills[skill.name] = skill._id;
     });
-    
+
     for (let i of subskills) {
       i.system.parent = actorSkills[i.system.linkedSkill];
     }

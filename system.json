@@ -16,7 +16,7 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/70-copying-character-to-repository-doubles-skills/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
     }
   ],
@@ -37,8 +37,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/70-copying-character-to-repository-doubles-skills/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/70-copying-character-to-repository-doubles-skills/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/main/",
   "background": "systems/megs/assets/images/megs-logo-multiversal.jpg",
   "grid": {
     "distance": 5,

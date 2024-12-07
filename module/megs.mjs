@@ -235,7 +235,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   if (owner && owner.items) {
     // powers
     for (let i of owner.items) {
-      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
+      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { 
         if (description) {
           description += ", ";
         }
@@ -245,7 +245,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 
     // skills
     for (let i of owner.items) {
-      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
+      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { 
         if (description) {
           description += ", ";
         }
@@ -368,6 +368,7 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
+  console.error("createItemMacro")
   console.error(data); // TODO delete
 
   // First, determine if this is a valid owned item.

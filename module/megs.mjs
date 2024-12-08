@@ -115,33 +115,33 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
     case 'eq':
       return (v1 === v2);
     case '==':
-        return (v1 == v2);
+      return (v1 == v2);
     case '===':
-        return (v1 === v2);
+      return (v1 === v2);
     case '!=':
-        return (v1 != v2);
+      return (v1 != v2);
     case '!==':
-        return (v1 !== v2);
+      return (v1 !== v2);
     case '<':
-        return (v1 < v2);
+      return (v1 < v2);
     case '<=':
-        return (v1 <= v2);
+      return (v1 <= v2);
     case '>':
-        return (v1 > v2);
+      return (v1 > v2);
     case '>=':
-        return (v1 >= v2);
+      return (v1 >= v2);
     case '&&':
-        return (v1 && v2);
+      return (v1 && v2);
     case '||':
-        return (v1 || v2);
+      return (v1 || v2);
     default:
-        return options.inverse(this);
+      return options.inverse(this);
   }
 });
 
 Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
   for (let i of game.items) {
-    if (i.type === MEGS.itemTypes.skill) { 
+    if (i.type === MEGS.itemTypes.skill) {
       if (i.name === skillName) {
         return i.system.range;
       }
@@ -152,7 +152,7 @@ Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
 
 Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
   for (let i of game.items) {
-    if (i.type === MEGS.itemTypes.skill) { 
+    if (i.type === MEGS.itemTypes.skill) {
       if (i.name === skillName) {
         return i.system.type;
       }
@@ -164,7 +164,7 @@ Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
 Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
   if (game.items) {
     for (let i of game.items) {
-      if (i.type === MEGS.itemTypes.skill) { 
+      if (i.type === MEGS.itemTypes.skill) {
         if (i.name === skillName) {
           return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
         }
@@ -215,13 +215,13 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   // attributes first
   for (let attributeName in gadget.system.attributes) {
     if (Object.prototype.hasOwnProperty.call(gadget.system.attributes, attributeName)) {
-        const attribute = gadget.system.attributes[attributeName];
-        if (attribute.value > 0) {
-          if (description) {
-            description += ", ";
-          }
-          description += attributeName.toUpperCase() + " " + attribute.value;
+      const attribute = gadget.system.attributes[attributeName];
+      if (attribute.value > 0) {
+        if (description) {
+          description += ", ";
         }
+        description += attributeName.toUpperCase() + " " + attribute.value;
+      }
     }
   }
 
@@ -235,7 +235,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   if (owner && owner.items) {
     // powers
     for (let i of owner.items) {
-      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
+      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) {
         if (description) {
           description += ", ";
         }
@@ -245,7 +245,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 
     // skills
     for (let i of owner.items) {
-      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
+      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) {
         if (description) {
           description += ", ";
         }
@@ -311,11 +311,11 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
 
-  return '<div class="quantity ' + classes + '">' + 
-    '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
-    '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
-    '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
-    '</div>'
+  return '<div class="quantity ' + classes + '">' +
+      '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
+      '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
+      '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
+      '</div>'
 });
 
 /* -------------------------------------------- */
@@ -368,13 +368,14 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
+  console.error("createItemMacro")
   console.error(data); // TODO delete
 
   // First, determine if this is a valid owned item.
   if (data.type !== 'Item') return;
   if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
     return ui.notifications.warn(
-      'You can only create macro buttons for owned Items'
+        'You can only create macro buttons for owned Items'
     );
   }
 
@@ -386,7 +387,7 @@ async function createItemMacro(data, slot) {
   const command = `game.megs.rollItemMacro("${data.uuid}");`;
 
   let macro = game.macros.find(
-    (m) => m.name === item.name && m.command === command
+      (m) => m.name === item.name && m.command === command
   );
   if (!macro) {
     macro = await Macro.create({
@@ -418,7 +419,7 @@ function rollItemMacro(itemUuid) {
     if (!item || !item.parent) {
       const itemName = item?.name ?? itemUuid;
       return ui.notifications.warn(
-        `Could not find item ${itemName}. You may need to delete and recreate this macro.`
+          `Could not find item ${itemName}. You may need to delete and recreate this macro.`
       );
     }
 

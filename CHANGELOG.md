@@ -6,3 +6,4 @@
 ## 0.5.0 (December 7, 2024)
 - Added generic skill tree
 - Various bug fixes
+

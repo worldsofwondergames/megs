@@ -115,27 +115,27 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
     case 'eq':
       return (v1 === v2);
     case '==':
-      return (v1 == v2);
+        return (v1 == v2);
     case '===':
-      return (v1 === v2);
+        return (v1 === v2);
     case '!=':
-      return (v1 != v2);
+        return (v1 != v2);
     case '!==':
-      return (v1 !== v2);
+        return (v1 !== v2);
     case '<':
-      return (v1 < v2);
+        return (v1 < v2);
     case '<=':
-      return (v1 <= v2);
+        return (v1 <= v2);
     case '>':
-      return (v1 > v2);
+        return (v1 > v2);
     case '>=':
-      return (v1 >= v2);
+        return (v1 >= v2);
     case '&&':
-      return (v1 && v2);
+        return (v1 && v2);
     case '||':
-      return (v1 || v2);
+        return (v1 || v2);
     default:
-      return options.inverse(this);
+        return options.inverse(this);
   }
 });
 
@@ -215,13 +215,13 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   // attributes first
   for (let attributeName in gadget.system.attributes) {
     if (Object.prototype.hasOwnProperty.call(gadget.system.attributes, attributeName)) {
-      const attribute = gadget.system.attributes[attributeName];
-      if (attribute.value > 0) {
-        if (description) {
-          description += ", ";
+        const attribute = gadget.system.attributes[attributeName];
+        if (attribute.value > 0) {
+          if (description) {
+            description += ", ";
+          }
+          description += attributeName.toUpperCase() + " " + attribute.value;
         }
-        description += attributeName.toUpperCase() + " " + attribute.value;
-      }
     }
   }
 
@@ -312,10 +312,10 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
 
   return '<div class="quantity ' + classes + '">' +
-      '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
-      '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
-      '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
-      '</div>'
+    '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
+    '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
+    '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
+    '</div>'
 });
 
 /* -------------------------------------------- */
@@ -375,7 +375,7 @@ async function createItemMacro(data, slot) {
   if (data.type !== 'Item') return;
   if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
     return ui.notifications.warn(
-        'You can only create macro buttons for owned Items'
+      'You can only create macro buttons for owned Items'
     );
   }
 
@@ -387,7 +387,7 @@ async function createItemMacro(data, slot) {
   const command = `game.megs.rollItemMacro("${data.uuid}");`;
 
   let macro = game.macros.find(
-      (m) => m.name === item.name && m.command === command
+    (m) => m.name === item.name && m.command === command
   );
   if (!macro) {
     macro = await Macro.create({
@@ -419,7 +419,7 @@ function rollItemMacro(itemUuid) {
     if (!item || !item.parent) {
       const itemName = item?.name ?? itemUuid;
       return ui.notifications.warn(
-          `Could not find item ${itemName}. You may need to delete and recreate this macro.`
+        `Could not find item ${itemName}. You may need to delete and recreate this macro.`
       );
     }
 

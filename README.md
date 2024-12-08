@@ -19,7 +19,7 @@ Nothing aside from using the same characters. Those are two completely distinct 
 
 ### What about Blood of Heroes?
 
-Mayfair licensed the DC Heroes game mechanics and text to Pulsar Games, who produced two editions of an RPG called [Blood of Heroes](https://en.wikipedia.org/wiki/Blood_of_Heroes_(role-playing_game)) in 1998 and 2000 using the DC Heroes text with original characters replacing the DC characters and a few minor rules changes.
+Mayfair licensed the DC Heroes game mechanics and text to Pulsar Games, who produced two editions of an RPG called [Blood of Heroes](https://en.wikipedia.org/wiki/Blood_of_Heroes_(role-playing_game)) in 1998 and 2000 using the DC Heroes text with original characters replacing the DC characters and a few minor rules changes. 
 
 However, it was discovered that Mayfair had no rights to the DC Heroes game or text in the first place; the rights remained with DC Comics and their parent corporation Warner Brothers. Further publication was suspended, and Pulsar Games went under a few years later.
 
@@ -35,7 +35,7 @@ The core mechanics of the DC Heroes / Underground / Blood of Heroes games was du
 
 ### But wait: You're calling this the "Multiversal Exponential Gaming System"?
 
-Yeah. While MEGS is not anyone's intellectual property, "Mayfair" is. And since this is a generic representation of a game system spanning 3 games, 5-ish companies, and 4 decades, I'm trying really hard not to get sued for using anyone's IP.
+Yeah. While MEGS is not anyone's intellectual property, "Mayfair" is. And since this is a generic representation of a game system spanning 3 games, 5-ish companies, and 4 decades, I'm trying really hard not to get sued for using anyone's IP. 
 
 ### Is that likely to happen?
 
@@ -47,9 +47,9 @@ Which bring us to...
 
 Caveat: I am not a lawyer and this is not legal advice.
 
-This is an unofficial, fan-made representation of the MEGS rule set. I'm producing it under the fair use clause.
+This is an unofficial, fan-made representation of the MEGS rule set. I'm producing it under the fair use clause. 
 
-Also, game rules and math are not copyrightable, only the specific implementation of them is. So, the math for the Action and Effect Tables is fair game; the text and example(s) explaining them from the rules books, no.
+Also, game rules and math are not copyrightable, only the specific implementation of them is. So, the math for the Action and Effect Tables is fair game; the text and example(s) explaining them from the rules books, no. 
 
 In short, I'm not reproducing anything anyone else legally owns for publication as part of this Foundry VTT system.
 

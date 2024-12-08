@@ -120,9 +120,9 @@ export class MEGSActorSheet extends ActorSheet {
 
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(
-      // A generator that returns all effects stored on the actor
-      // as well as any items
-      this.actor.allApplicableEffects()
+        // A generator that returns all effects stored on the actor
+        // as well as any items
+        this.actor.allApplicableEffects()
     );
 
     // Filter skills
@@ -144,9 +144,9 @@ export class MEGSActorSheet extends ActorSheet {
 
 
   /**
-   * 
-   * @param {*} skill 
-   * @returns 
+   *
+   * @param {*} skill
+   * @returns
    */
   _doSubskillsHaveAPs(skill) {
     let doSubskillsHaveAPs = false;
@@ -159,15 +159,15 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   /**
-   * 
-   * @param {*} array 
-   * @returns 
+   *
+   * @param {*} array
+   * @returns
    */
   _sortArray(array) {
     const sortedKeys = Object.keys(array).sort();
     const sortedObject = sortedKeys.reduce((acc, key) => {
-        acc[key] = array[key];
-        return acc;
+      acc[key] = array[key];
+      return acc;
     }, {});
     return sortedObject;
   }
@@ -212,10 +212,10 @@ export class MEGSActorSheet extends ActorSheet {
 
     // calculate initiativeBonus
     let initiativeBonus = context.document.system.attributes.dex.value + context.document.system.attributes.int.value
-      + context.document.system.attributes.infl.value;
-    
+        + context.document.system.attributes.infl.value;
+
     // Superspeed adds APs of their power
-     if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {
+    if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {
       const aps = this._getAbilityAPs(context.powers, MEGS.powers.SUPERSPEED);
       initiativeBonus = initiativeBonus + aps;
     }
@@ -264,10 +264,10 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   /**
-   * 
-   * @param {*} array 
-   * @param {*} name 
-   * @returns 
+   *
+   * @param {*} array
+   * @param {*} name
+   * @returns
    */
   _getAbilityFromArray(array, name) {
     let returnValue;
@@ -304,6 +304,7 @@ export class MEGSActorSheet extends ActorSheet {
    * @private
    */
   _prepareItems(context) {
+
     // Initialize containers.
     const powers = [];
     const skills = [];
@@ -311,15 +312,15 @@ export class MEGSActorSheet extends ActorSheet {
     const drawbacks = [];
     const subskills = [];
     const gadgets = [];
-    
+
     // TODO delete this by 1.0
-    const list = context.items.filter(i => (    
-      (i.system.type !== MEGS.itemTypes.bonus 
-         && i.system.type !== MEGS.itemTypes.limitation 
-         && i.system.type !== MEGS.itemTypes.subskill)
-      || i.system.parent !== ""));
-      context.items = list;
- 
+    const list = context.items.filter(i => (
+        (i.system.type !== MEGS.itemTypes.bonus
+            && i.system.type !== MEGS.itemTypes.limitation
+            && i.system.type !== MEGS.itemTypes.subskill)
+        || i.system.parent !== ""));
+    context.items = list;
+
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {
       i.img = i.img || Item.DEFAULT_ICON;
@@ -362,12 +363,12 @@ export class MEGSActorSheet extends ActorSheet {
 
     // sort alphabetically
     const arrays = [
-        powers,
-        skills,
-        advantages,
-        drawbacks,
-        subskills,
-        gadgets
+      powers,
+      skills,
+      advantages,
+      drawbacks,
+      subskills,
+      gadgets
     ];
     arrays.forEach((element) => {
       element.sort(function(a, b) {
@@ -432,7 +433,7 @@ export class MEGSActorSheet extends ActorSheet {
     //       : this.actor.items.get(row.dataset.parentId);
     //   onManageActiveEffect(ev, document);
     // });
-    
+
     // Rollable attributes.
     html.on('click', '.rollable', this._onRoll.bind(this));
 
@@ -448,8 +449,8 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   /**
-   * 
-   * @param {*} event 
+   *
+   * @param {*} event
    */
   _onDragStart(event) {
     super._onDragStart(event);
@@ -496,7 +497,7 @@ export class MEGSActorSheet extends ActorSheet {
     let opposingValue = 0;
     let effectValue = 0;
     let resistanceValue = 0;
-  
+
     let targetActor = MegsTableRolls.getTargetActor();
     if (targetActor) {
       if (dataset.type === MEGS.rollTypes.attribute) {
@@ -516,7 +517,7 @@ export class MEGSActorSheet extends ActorSheet {
 
       effectValue = this._getEffectValueForAttribute(dataset.key);
 
-    } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill 
+    } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill
         || dataset.type === MEGS.itemTypes.subskill) {
 
       effectValue = parseInt(dataset.value);
@@ -526,7 +527,7 @@ export class MEGSActorSheet extends ActorSheet {
       // TODO clean all this up; waaaay too complex
       actionValue = parseInt(dataset.actionvalue);
       effectValue = parseInt(dataset.effectvalue);
-      
+
       if (effectValue === 0) {
         // no EV specified; check attributes
         const gadget = this._getOwnedItemById(dataset.gadgetid);
@@ -568,17 +569,17 @@ export class MEGSActorSheet extends ActorSheet {
               }
             }
 
-          } 
-          
+          }
+
         } else {
           console.error("No gadget with ID "+dataset.gadgetid+" found");
         }
       } else {
         // TODO
       }
-  }
+    }
 
-  const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
+    const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
         effectValue, resistanceValue, dataset.roll, dataset.unskilled);
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {
@@ -586,9 +587,9 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   /**
-   * 
-   * @param {*} id 
-   * @returns 
+   *
+   * @param {*} id
+   * @returns
    */
   _getOwnedItemById(id) {
 
@@ -652,6 +653,7 @@ export class MEGSActorSheet extends ActorSheet {
   async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
     console.error(data); // TODO delete
+    console.error(this.actor.items);
     super._onDrop(event);
   }
 

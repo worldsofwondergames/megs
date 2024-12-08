@@ -1,7 +1,9 @@
 # MEGS System
 
-![Foundry v11](https://img.shields.io/badge/foundry-v11-green)
+![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
 
+
+![Mutiversal Exponential Gaming System](https://github.com/codemonkey1972/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
 
 ## What is DC Heroes?
 
@@ -33,7 +35,7 @@ The core mechanics of the DC Heroes / Underground / Blood of Heroes games was du
 
 ### But wait: You're calling this the "Multiversal Exponential Gaming System"?
 
-Yeah. While MEGS is not anyone's intellectual property, "Mayfair" is. And since this is a generic representation of the game system spanning 3 games, 5-ish companies, and 4 decades, I'm trying really hard not to get sued for using anyone's IP. 
+Yeah. While MEGS is not anyone's intellectual property, "Mayfair" is. And since this is a generic representation of a game system spanning 3 games, 5-ish companies, and 4 decades, I'm trying really hard not to get sued for using anyone's IP. 
 
 ### Is that likely to happen?
 
@@ -51,7 +53,7 @@ Also, game rules and math are not copyrightable, only the specific implementatio
 
 In short, I'm not reproducing anything anyone else legally owns for publication as part of this Foundry VTT system.
 
-### Is that why the system doesn't contain the skills, powers, etc.?
+### Is that why the system doesn't contain the skills text, powers text, etc.?
 
 Yep.
 
@@ -59,7 +61,7 @@ Yep.
 
 You're getting it.
 
-### Is that why you haven't packaged up any existing characters, artwork, adventures-  
+### Is that why you haven't packaged up any existing characters, artwork, adventures-
 
 You got it. Let's move on.
 
@@ -67,7 +69,7 @@ You got it. Let's move on.
 
 It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
-The current version (0.2.2) of MEGS for Foundry has basic character sheets, some die rolling, and outcome resolution. It allows you to create heroes, villains, NPCs, powers, skills, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
+The current version (0.5.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get out of beta.
 
@@ -81,23 +83,19 @@ There are a few because of technical and/or design constraints of the platform:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 0.4.0**.
+Do I ever! MEGS for Foundry is currently sitting at **version 0.5.0**.
 
 (Note that everything below is subject to change.)
 
-**Version 0.5.0** (aiming for September 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.
-- Tracking all 3 Current attribute fields (Foundry forces you to a max of 2; there's a module called [Bar Brawl](https://foundryvtt.com/packages/barbrawl) that can be installed as a workaround until then)
+**Version 0.5.1** (aiming for end of year 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.
+- Tracking all 3 Current attribute fields on a token (Foundry forces you to a max of 2; there's a module called [Bar Brawl](https://foundryvtt.com/packages/barbrawl) that can be installed as a workaround until then)
 - Making pets and vehicles fully work
 - Adding an edit lock feature for the page
 - UI fixes to reduce the number of clicks you have to make to take an action
 
 Issues are tracked [here](https://github.com/codemonkey1972/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Acodemonkey1972%2F4).
 
-I'm also trying to come up with a way of adding skills, if not powers, to the system without stepping on other people's IP. No promises, but if I can find a way that won't get me sued, it will go in here.
-
-Also, Foundry has released version 12, so upgrading MEGS to work for that will probably be put in this release.
-
-Then... **version 1.0.0**, probably around November 2024. Incorporating any feedback I've gotten and:
+Then... **version 1.0.0**, probably around March 2025. Incorporating any feedback I've gotten and:
 - Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
 - Character Builder/Calculator
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
@@ -112,6 +110,6 @@ Nothing at all...
 
 ## Wow, this is the greatest thing ever and thanks to you I can now realize my childhood dream of playing Superman in the MEGS system! How can I ever repay you?
 
-I have a [KoFi](https://ko-fi.com/worldsofwonder) if you really want to kick me a few bucks. 
+I have a [KoFi](https://ko-fi.com/worldsofwonder) if you really want to kick me a few bucks.
 
 Alternately, Legacy of Heroes will be a thing eventually...

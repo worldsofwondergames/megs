@@ -16,7 +16,7 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/70-copying-character-to-repository-doubles-skills/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
     }
   ],

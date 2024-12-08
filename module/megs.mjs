@@ -141,7 +141,7 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
 
 Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
   for (let i of game.items) {
-    if (i.type === MEGS.itemTypes.skill) { 
+    if (i.type === MEGS.itemTypes.skill) {
       if (i.name === skillName) {
         return i.system.range;
       }
@@ -152,7 +152,7 @@ Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
 
 Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
   for (let i of game.items) {
-    if (i.type === MEGS.itemTypes.skill) { 
+    if (i.type === MEGS.itemTypes.skill) {
       if (i.name === skillName) {
         return i.system.type;
       }
@@ -164,7 +164,7 @@ Handlebars.registerHelper('getSelectedSkillType', function(skillName) {
 Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
   if (game.items) {
     for (let i of game.items) {
-      if (i.type === MEGS.itemTypes.skill) { 
+      if (i.type === MEGS.itemTypes.skill) {
         if (i.name === skillName) {
           return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
         }
@@ -235,7 +235,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   if (owner && owner.items) {
     // powers
     for (let i of owner.items) {
-      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) { // TODO change to parentId
+      if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) {
         if (description) {
           description += ", ";
         }
@@ -245,7 +245,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 
     // skills
     for (let i of owner.items) {
-      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) { // TODO change to parentId
+      if (i.type === MEGS.itemTypes.skill && i.system.parent === gadget._id && i.system.aps > 0) {
         if (description) {
           description += ", ";
         }
@@ -311,7 +311,7 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
 
-  return '<div class="quantity ' + classes + '">' + 
+  return '<div class="quantity ' + classes + '">' +
     '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
     '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
     '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
@@ -368,6 +368,7 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
+  console.error("createItemMacro")
   console.error(data); // TODO delete
 
   // First, determine if this is a valid owned item.

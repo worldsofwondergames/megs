@@ -22,7 +22,16 @@
     ' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>
-          <a class='item-control item-edit'>
+<!--          <a class='item-control item-edit'>
+    -->
+        <a
+          class='item-control d10 rollable' title='{{localize "Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}'
+          data-label="{{item.name}}" data-roll="1d10 + 1d10"
+              {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
+              {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
+          data-type="skill" data-link="{{item.system.link}}"
+            {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
+            >
             <img
               src='{{item.img}}'
               title='{{item.name}}'

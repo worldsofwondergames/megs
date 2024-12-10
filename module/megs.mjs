@@ -379,8 +379,9 @@ async function createBoilerplateMacro(data, slot) {
     );
   }
 
-  const item = data.data;
-  console.error("createBoilerplateMacro item");
+  // If it is, retrieve it based on the uuid.
+  const item = await Item.fromDropData(data);
+  console.error("createItemMacro item");
   console.error(item); // TODO delete
 
   // Create the macro command

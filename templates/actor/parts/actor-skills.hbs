@@ -25,7 +25,13 @@
 <!--
           <a class='item-control item-edit'>
     -->
-          <a class="item-roll">
+        <a class="item-roll" title='{{localize "DOCUMENT.Update" type=item.name}}'
+          data-label="{{item.name}}" data-roll="1d10 + 1d10"
+          {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
+          {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
+          data-type="skill" data-link="{{item.system.link}}"
+          {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
+        >
             <img
               src='{{item.img}}'
               title='{{item.name}}'
@@ -40,7 +46,13 @@
           title='{{localize "DOCUMENT.Update" type=item.name}}'
         >
         -->
-        <a class="item-roll" title='{{localize "DOCUMENT.Update" type=item.name}}'>
+        <a class="item-roll" title='{{localize "DOCUMENT.Update" type=item.name}}'
+          data-label="{{item.name}}" data-roll="1d10 + 1d10"
+          {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
+          {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
+          data-type="skill" data-link="{{item.system.link}}"
+          {{#if (compare item.system.aps '===' 0)}}data-unskilled="true"{{/if}}
+        >
           {{getSkillDisplayName item}}
         </a>
       </div>

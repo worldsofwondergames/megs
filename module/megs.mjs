@@ -425,6 +425,7 @@ function rollItemMacro(itemUuid) {
       );
     }
 
+    console.error("TEST1");
     console.error(item); // TODO delete
 
     // Trigger the item roll

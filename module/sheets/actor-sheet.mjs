@@ -423,10 +423,7 @@ export class MEGSActorSheet extends ActorSheet {
       li.slideUp(200, () => this.render(false));
     });
 
-    html.on('click', '.item-roll', (ev) => {
-      console.error(ev);
-      this._onRoll(ev);
-    });
+    html.on('click', '.item-roll', this._onRoll.bind(this));
 
       // Active Effect management
     // TODO delete

@@ -373,7 +373,11 @@ async function createBoilerplateMacro(data, slot) {
   console.error(data); // TODO delete
 
   if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
+  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
+    return ui.notifications.warn(
+        'You can only create macro buttons for owned Items'
+    );
+  }
 
   const item = data.data;
   console.error("createBoilerplateMacro item");

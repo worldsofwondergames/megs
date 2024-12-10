@@ -385,7 +385,7 @@ async function createBoilerplateMacro(data, slot) {
   console.error(item); // TODO delete
 
   // Create the macro command
-  const command = `game.megs.rollItemMacro("${data.uuid}");`;
+  const command = `game.megs.rollMacro("${data.uuid}");`;
   console.error("createBoilerplateMacro command");
   console.error(command); // TODO delete
 
@@ -394,6 +394,7 @@ async function createBoilerplateMacro(data, slot) {
   );
   console.error("createBoilerplateMacro macro");
   console.error(macro); // TODO delete
+
   if (!macro) {
     console.error("createItemMacro no macro");
     macro = await Macro.create({
@@ -415,17 +416,29 @@ async function createBoilerplateMacro(data, slot) {
  * @param {string} itemName
  * @return {Promise}
  */
-function rollItemMacro(itemName) {
-  console.error("TEST2"); // TODO
-  const speaker = ChatMessage.getSpeaker();
-  let actor;
-  if (speaker.token) actor = game.actors.tokens[speaker.token];
-  if (!actor) actor = game.actors.get(speaker.actor);
-  const item = actor ? actor.items.find(i => i.name === itemName) : null;
-  if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
+function rollMacro(itemName) {
+  console.error("TEST: rollMacro");
+  // Reconstruct the drop data so that we can load the item.
+  const dropData = {
+    type: 'Item',
+    uuid: itemUuid,
+  };
+  // Load the item from the uuid.
+  Item.fromDropData(dropData).then((item) => {
+    // Determine if the item loaded and if it's an owned item.
+    if (!item || !item.parent) {
+      const itemName = item?.name ?? itemUuid;
+      return ui.notifications.warn(
+          `Could not find item ${itemName}. You may need to delete and recreate this macro.`
+      );
+    }
 
-  // Trigger the item roll
-  return item.roll();
+    console.error("TEST1");
+    console.error(item); // TODO delete
+
+    // Trigger the item roll
+    item.roll();
+  });
 }
 
 
@@ -436,6 +449,7 @@ function rollItemMacro(itemName) {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
+/*
 async function createItemMacro(data, slot) {
 
   console.error("createItemMacro data");
@@ -478,6 +492,7 @@ async function createItemMacro(data, slot) {
   game.user.assignHotbarMacro(macro, slot);
   return false;
 }
+*/
 
 /**
  * Create a Macro from an Item drop.

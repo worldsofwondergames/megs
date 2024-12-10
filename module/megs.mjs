@@ -368,7 +368,7 @@ async function _loadData(jsonPath) {
  */
 async function createItemMacro(data, slot) {
 
-  console.error("createItemMacro")
+  console.error("createItemMacro data");
   console.error(data); // TODO delete
 
   // First, determine if this is a valid owned item.
@@ -381,17 +381,21 @@ async function createItemMacro(data, slot) {
 
   // If it is, retrieve it based on the uuid.
   const item = await Item.fromDropData(data);
+  console.error("createItemMacro item");
   console.error(item); // TODO delete
 
   // Create the macro command using the uuid.
   const command = `game.megs.rollItemMacro("${data.uuid}");`;
+  console.error("createItemMacro command");
   console.error(command); // TODO delete
 
   let macro = game.macros.find(
     (m) => m.name === item.name && m.command === command
   );
+  console.error("createItemMacro macro");
   console.error(macro); // TODO delete
   if (!macro) {
+    console.error("createItemMacro no macro");
     macro = await Macro.create({
       name: item.name,
       type: 'script',
@@ -399,6 +403,7 @@ async function createItemMacro(data, slot) {
       command: command,
       flags: { 'megs.itemMacro': true },
     });
+    console.error(macro); // TODO delete
   }
   game.user.assignHotbarMacro(macro, slot);
   return false;

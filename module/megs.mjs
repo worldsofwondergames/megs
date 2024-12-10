@@ -373,11 +373,22 @@ async function _loadData(jsonPath) {
 async function createBoilerplateMacro(data, slot) {
   if (data.type !== "Item") return;
   if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
+
+  console.error("createBoilerplateMacro data");
+  console.error(data); // TODO delete
+
   const item = data.data;
+  console.error("createBoilerplateMacro item");
+  console.error(item); // TODO delete
 
   // Create the macro command
   const command = `game.boilerplate.rollItemMacro("${item.name}");`;
+  console.error("createBoilerplateMacro command");
+  console.error(command); // TODO delete
+
   let macro = game.macros.entities.find(m => (m.name === item.name) && (m.command === command));
+  console.error("createBoilerplateMacro macro");
+  console.error(macro); // TODO delete
   if (!macro) {
     macro = await Macro.create({
       name: item.name,

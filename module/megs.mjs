@@ -28,7 +28,7 @@ Hooks.once('init', function () {
   game.megs = {
     MEGSActor,
     MEGSItem,
-    rollMacro
+    rollMegsMacro
   };
 
   // Add custom constants for configuration.
@@ -324,7 +324,7 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
 
 Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on("hotbarDrop", (bar, data, slot) => createBoilerplateMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => createMegsMacro(data, slot));
 //TODO  Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
   Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
 });
@@ -367,9 +367,9 @@ async function _loadData(jsonPath) {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
-async function createBoilerplateMacro(data, slot) {
+async function createMegsMacro(data, slot) {
 
-  console.error("createBoilerplateMacro data");
+  console.error("createMegsMacro data");
   console.error(data); // TODO delete
 
   if (data.type !== "Item") return;
@@ -385,14 +385,14 @@ async function createBoilerplateMacro(data, slot) {
   console.error(item); // TODO delete
 
   // Create the macro command
-  const command = `game.megs.rollMacro("${data.uuid}");`;
-  console.error("createBoilerplateMacro command");
+  const command = `game.megs.rollMegsMacro("${data.uuid}");`;
+  console.error("createMegsMacro command");
   console.error(command); // TODO delete
 
   let macro = game.macros.find(
       (m) => m.name === item.name && m.command === command
   );
-  console.error("createBoilerplateMacro macro");
+  console.error("createMegsMacro macro");
   console.error(macro); // TODO delete
 
   if (!macro) {
@@ -416,8 +416,8 @@ async function createBoilerplateMacro(data, slot) {
  * @param {string} itemName
  * @return {Promise}
  */
-async function rollMacro(itemUuid) {
-  console.error("TEST: rollMacro");
+function rollMegsMacro(itemUuid) {
+  console.error("TEST: rollMegsMacro");
   // Reconstruct the drop data so that we can load the item.
   const dropData = {
     type: 'Item',

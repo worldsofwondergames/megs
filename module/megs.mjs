@@ -359,9 +359,6 @@ async function _loadData(jsonPath) {
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
-/* -------------------------------------------- */
-/*  Hotbar Macros                               */
-/* -------------------------------------------- */
 
 /**
  * Create a Macro from an Item drop.
@@ -371,11 +368,12 @@ async function _loadData(jsonPath) {
  * @returns {Promise}
  */
 async function createBoilerplateMacro(data, slot) {
-  if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
 
   console.error("createBoilerplateMacro data");
   console.error(data); // TODO delete
+
+  if (data.type !== "Item") return;
+  if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
 
   const item = data.data;
   console.error("createBoilerplateMacro item");

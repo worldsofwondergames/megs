@@ -425,6 +425,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     html.on('click', '.item-roll', (ev) => {
       console.error(ev);
+      this._onRoll.bind(this);
     });
 
       // Active Effect management

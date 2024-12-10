@@ -385,7 +385,7 @@ async function createBoilerplateMacro(data, slot) {
   console.error(item); // TODO delete
 
   // Create the macro command
-  const command = `game.boilerplate.rollItemMacro("${item.name}");`;
+  const command = `game.megs.rollItemMacro("${data.uuid}");`;
   console.error("createBoilerplateMacro command");
   console.error(command); // TODO delete
 

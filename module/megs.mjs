@@ -28,7 +28,7 @@ Hooks.once('init', function () {
   game.megs = {
     MEGSActor,
     MEGSItem,
-    rollItemMacro
+    rollMacro
   };
 
   // Add custom constants for configuration.

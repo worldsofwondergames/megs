@@ -466,6 +466,7 @@ async function createItemMacro(data, slot) {
  * Get an existing item macro if one exists, otherwise create a new one.
  * @param {string} itemUuid
  */
+/*
 function rollItemMacro(itemUuid) {
   console.error("TEST: rollItemMacro");
   // Reconstruct the drop data so that we can load the item.
@@ -490,7 +491,7 @@ function rollItemMacro(itemUuid) {
     item.roll();
   });
 }
-
+*/
 function registerSystemSettings() {
   game.settings.register("megs", "showHeroPointCosts", {
     config: true,

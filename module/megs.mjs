@@ -416,7 +416,7 @@ async function createBoilerplateMacro(data, slot) {
  * @param {string} itemName
  * @return {Promise}
  */
-async function rollMacro(itemName) {
+async function rollMacro(itemUuid) {
   console.error("TEST: rollMacro");
   // Reconstruct the drop data so that we can load the item.
   const dropData = {

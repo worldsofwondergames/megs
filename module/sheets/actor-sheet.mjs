@@ -401,12 +401,11 @@ export class MEGSActorSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    // html.on('click', '.item-edit', (ev) => {
-    //   const li = $(ev.currentTarget).parents('.item');
-    //   const item = this.actor.items.get(li.data('itemId'));
-    //   item.sheet.render(true);
-    // });
-    html.on('click', '.item-edit', this._onRoll.bind(this));
+    html.on('click', '.item-edit', (ev) => {
+      const li = $(ev.currentTarget).parents('.item');
+      const item = this.actor.items.get(li.data('itemId'));
+      item.sheet.render(true);
+    });
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable

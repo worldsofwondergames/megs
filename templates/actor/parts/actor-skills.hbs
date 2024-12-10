@@ -99,7 +99,9 @@
           <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="Roll" />
         </a>
           {{/if}}
-          <!-- TODO delete this for 1.0 -->
+        <a class='item-control item-edit' title='{{localize "DOCUMENT.Edit" type=item.name}}'>
+            <img src="/systems/megs/assets/images/icons/edit.png" class="svg-icon" alt="{{localize "DOCUMENT.Edit" type=item.name}}"/>
+        </a>
         <a
           class='item-control item-delete'
           title='{{localize "DOCUMENT.Delete" type=item.name}}'

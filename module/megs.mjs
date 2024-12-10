@@ -389,17 +389,21 @@ async function createBoilerplateMacro(data, slot) {
   console.error("createBoilerplateMacro command");
   console.error(command); // TODO delete
 
-  let macro = game.macros.entities.find(m => (m.name === item.name) && (m.command === command));
+  let macro = game.macros.find(
+      (m) => m.name === item.name && m.command === command
+  );
   console.error("createBoilerplateMacro macro");
   console.error(macro); // TODO delete
   if (!macro) {
+    console.error("createItemMacro no macro");
     macro = await Macro.create({
       name: item.name,
-      type: "script",
+      type: 'script',
       img: item.img,
       command: command,
-      flags: { "boilerplate.itemMacro": true }
+      flags: { 'megs.itemMacro': true },
     });
+    console.error(macro); // TODO delete
   }
   game.user.assignHotbarMacro(macro, slot);
   return false;

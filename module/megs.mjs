@@ -366,9 +366,9 @@ async function _loadData(jsonPath) {
  * @returns {Promise}
  */
 async function createMegsMacro(item, slot) {
-  const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'Alien RPG System Macros');
+  const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS System Macros');
   // Create the macro command
-  const command = `game.alienrpg.rollItemMacro("${item.name}");`;
+  const command = `game.megs.rollItemMacro("${item.name}");`;
   let macro = game.macros.find(
       (m) =>
           m.name === item.name &&
@@ -388,6 +388,7 @@ async function createMegsMacro(item, slot) {
       'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
     });
   }
+  console.error(macro);
   game.user.assignHotbarMacro(macro, slot);
 }
 

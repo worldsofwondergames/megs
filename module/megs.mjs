@@ -441,7 +441,7 @@ async function createMegsMacro(data, slot) {
  * @param {string} itemName
  * @return {Promise}
  */
-function rollMegsMacro(itemUuid) {
+function rollItemMacro(itemUuid) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
   if (speaker.token) actor = game.actors.tokens[speaker.token];

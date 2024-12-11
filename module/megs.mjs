@@ -365,8 +365,19 @@ async function _loadData(jsonPath) {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
-async function createMegsMacro(item, slot) {
+async function createMegsMacro(data, slot) {
+
+  if (data.type !== "Item") return;
+  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
+    return ui.notifications.warn(
+        'You can only create macro buttons for owned Items'
+    );
+  }
+
   const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS System Macros');
+
+  const item = await Item.fromDropData(data);
+
   // Create the macro command
   const command = `game.megs.rollItemMacro("${item.name}");`;
   let macro = game.macros.find(

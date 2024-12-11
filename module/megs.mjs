@@ -377,6 +377,9 @@ async function createMegsMacro(item, slot) {
               m.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
               m.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
   );
+  console.error(item);
+  console.error(macro);
+
   if (!macro) {
     macro = await Macro.create({
       name: item.name,

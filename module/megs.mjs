@@ -509,11 +509,11 @@ function rollItemMacro(uuid) {
   console.error(item);
   if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
   console.error("TEST4");
-  if (!item.system.header.active) {
-    const itemName = item?.name ?? itemUuid;
-    return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
-  }
-  console.error("TEST5");
+  // if (!item.system.header.active) {
+  //   const itemName = item?.name ?? itemUuid;
+  //   return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
+  // }
+  // console.error("TEST5");
 
   // Trigger the item roll
   return item.roll();

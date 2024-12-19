@@ -417,7 +417,7 @@ async function createAlienrpgMacro(item, slot) {
   const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS RPG System Macros');
   console.error(folder); // TODO delete
   // Create the macro command
-  const command = `game.megs.rollItemMacro("${item.name}");`;
+  const command = `game.megs.rollItemMacro("${item.uuid}");`;
   console.error(command); // TODO delete
   let macro = game.macros.find(
       (m) =>
@@ -493,7 +493,7 @@ async function createMegsMacro(data, slot) {
  * @param {string} itemName
  * @return {Promise}
  */
-function rollItemMacro(itemUuid) {
+function rollItemMacro(uuid) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
   console.error("TEST1");
@@ -503,11 +503,14 @@ function rollItemMacro(itemUuid) {
   console.error("TEST3");
   console.error(actor);
   // console.warn('alienrpg.js 155 - Got here', speaker, actor);
-  const item = actor ? actor.items.find((i) => i.name === itemName) : null;
+  const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
   console.error(item);
-  if (!item) return ui.notifications.warn(game.i18n.localize('ALIENRPG.NoItem') + ' ' + ` ${itemName}`);
+  if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
   console.error("TEST4");
-  if (!item.system.header.active) return ui.notifications.warn(game.i18n.localize('ALIENRPG.NotActive') + ' ' + ` ${itemName}`);
+  if (!item.system.header.active) {
+    const itemName = item?.name ?? itemUuid;
+    return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
+  }
   console.error("TEST5");
 
   // Trigger the item roll
@@ -526,7 +529,8 @@ function rollItemMacro(itemUuid) {
     if (!item || !item.parent) {
       const itemName = item?.name ?? itemUuid;
       return ui.notifications.warn(
-          `Could not find item ${itemName}. You may need to delete and recreate this macro.`
+          `
+  }Could not find item ${itemName}. You may need to delete and recreate this macro.`
       );
     }
 

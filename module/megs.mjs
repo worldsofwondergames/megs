@@ -325,9 +325,8 @@ Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
     let item = fromUuidSync(data.uuid);
-    console.error(item);
     if (item && item.system) {
-      createAlienrpgMacro(item, slot);
+      createMegsMacro(item, slot);
       return false;
     }
   });
@@ -372,55 +371,10 @@ async function _loadData(jsonPath) {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
-async function createMegsMacro(data, slot) {
-
-  if (data.type !== "Item") return;
-  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-    return ui.notifications.warn(
-        'You can only create macro buttons for owned Items'
-    );
-  }
-
-  const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS System Macros');
-
-  const item = await Item.fromDropData(data);
-  console.error(item); // TODO remove
-
-  // Create the macro command
-  const command = `game.megs.rollItemMacro("${item.uuid}");`;
-  // TODO use UUID for macro, not name!
-  let macro = game.macros.find(
-      (m) =>
-          m.name === item.name &&
-          m.command === command &&
-          (m.author === game.user.id ||
-              m.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
-              m.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
-  );
-  console.error(item);
-  console.error(macro);
-
-  if (!macro) {
-    macro = await Macro.create({
-      name: item.name,
-      type: 'script',
-      img: item.img,
-      command: command,
-      flags: { 'alienrpg.itemMacro': true },
-      folder: folder?.id,
-      'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
-    });
-  }
-  console.error(macro);
-  game.user.assignHotbarMacro(macro, slot);
-}
-
-async function createAlienrpgMacro(item, slot) {
+async function createMegsMacro(item, slot) {
   const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS RPG System Macros');
-  console.error(folder); // TODO delete
   // Create the macro command
   const command = `game.megs.rollItemMacro("${item.uuid}");`;
-  console.error(command); // TODO delete
   let macro = game.macros.find(
       (m) =>
           m.name === item.name &&
@@ -429,7 +383,6 @@ async function createAlienrpgMacro(item, slot) {
               m.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
               m.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
   );
-  console.error(macro); // TODO delete
   if (!macro) {
     macro = await Macro.create({
       name: item.name,
@@ -440,54 +393,9 @@ async function createAlienrpgMacro(item, slot) {
       folder: folder?.id,
       'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
     });
-    console.error(macro); // TODO delete
   }
   game.user.assignHotbarMacro(macro, slot);
 }
-
-/*
-async function createMegsMacro(data, slot) {
-      console.error("createMegsMacro data");
-      console.error(data); // TODO delete
-
-      if (data.type !== "Item") return;
-      if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-        return ui.notifications.warn(
-            'You can only create macro buttons for owned Items'
-        );
-      }
-
-      // If it is, retrieve it based on the uuid.
-      const item = await Item.fromDropData(data);
-      console.error("createItemMacro item");
-      console.error(item); // TODO delete
-
-      // Create the macro command
-      const command = `game.megs.rollMegsMacro("${data.uuid}");`;
-      console.error("createMegsMacro command");
-      console.error(command); // TODO delete
-
-      let macro = game.macros.find(
-          (m) => m.name === item.name && m.command === command
-      );
-      console.error("createMegsMacro macro");
-      console.error(macro); // TODO delete
-
-      if (!macro) {
-        console.error("createItemMacro no macro");
-        macro = await Macro.create({
-          name: item.name,
-          type: 'script',
-          img: item.img,
-          command: command,
-          flags: { 'megs.itemMacro': true },
-        });
-        console.error(macro); // TODO delete
-      }
-      game.user.assignHotbarMacro(macro, slot);
-      return false;
-
-}*/
 
 /**
  * Create a Macro from an Item drop.
@@ -498,136 +406,17 @@ async function createMegsMacro(data, slot) {
 function rollItemMacro(uuid) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
-  console.error("TEST1");
   if (speaker.token) actor = game.actors.tokens[speaker.token];
-  console.error("TEST2");
   if (!actor) actor = game.actors.get(speaker.actor);
-  console.error("TEST3");
-  console.error(actor);
-  // console.warn('alienrpg.js 155 - Got here', speaker, actor);
   const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
-  console.error(item);
+  console.error(item); // TODO remove
   if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
-  console.error("TEST4");
-  // if (!item.system.header.active) {
-  //   const itemName = item?.name ?? itemUuid;
-  //   return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
-  // }
-  // console.error("TEST5");
+  console.error("TEST4"); // TODO remove
 
   // Trigger the item roll
   return item.roll();
-
-
-/*  console.error("TEST: rollMegsMacro");
-  // Reconstruct the drop data so that we can load the item.
-  const dropData = {
-    type: 'Item',
-    uuid: itemUuid,
-  };
-  // Load the item from the uuid.
-  Item.fromDropData(dropData).then((item) => {
-    // Determine if the item loaded and if it's an owned item.
-    if (!item || !item.parent) {
-      const itemName = item?.name ?? itemUuid;
-      return ui.notifications.warn(
-          `
-  }Could not find item ${itemName}. You may need to delete and recreate this macro.`
-      );
-    }
-
-    console.error("TEST1");
-    console.error(item); // TODO delete
-
-    // Trigger the item roll
-    item.roll();
-  });*/
 }
 
-
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {Object} data     The dropped data
- * @param {number} slot     The hotbar slot to use
- * @returns {Promise}
- */
-/*
-async function createItemMacro(data, slot) {
-
-  console.error("createItemMacro data");
-  console.error(data); // TODO delete
-
-  // First, determine if this is a valid owned item.
-  if (data.type !== 'Item') return;
-  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-    return ui.notifications.warn(
-      'You can only create macro buttons for owned Items'
-    );
-  }
-
-  // If it is, retrieve it based on the uuid.
-  const item = await Item.fromDropData(data);
-  console.error("createItemMacro item");
-  console.error(item); // TODO delete
-
-  // Create the macro command using the uuid.
-  const command = `game.megs.rollItemMacro("${data.uuid}");`;
-  console.error("createItemMacro command");
-  console.error(command); // TODO delete
-
-  let macro = game.macros.find(
-    (m) => m.name === item.name && m.command === command
-  );
-  console.error("createItemMacro macro");
-  console.error(macro); // TODO delete
-  if (!macro) {
-    console.error("createItemMacro no macro");
-    macro = await Macro.create({
-      name: item.name,
-      type: 'script',
-      img: item.img,
-      command: command,
-      flags: { 'megs.itemMacro': true },
-    });
-    console.error(macro); // TODO delete
-  }
-  game.user.assignHotbarMacro(macro, slot);
-  return false;
-}
-*/
-
-/**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemUuid
- */
-/*
-function rollItemMacro(itemUuid) {
-  console.error("TEST: rollItemMacro");
-  // Reconstruct the drop data so that we can load the item.
-  const dropData = {
-    type: 'Item',
-    uuid: itemUuid,
-  };
-  // Load the item from the uuid.
-  Item.fromDropData(dropData).then((item) => {
-    // Determine if the item loaded and if it's an owned item.
-    if (!item || !item.parent) {
-      const itemName = item?.name ?? itemUuid;
-      return ui.notifications.warn(
-        `Could not find item ${itemName}. You may need to delete and recreate this macro.`
-      );
-    }
-
-    console.error("TEST1");
-    console.error(item); // TODO delete
-
-    // Trigger the item roll
-    item.roll();
-  });
-}
-*/
 function registerSystemSettings() {
   game.settings.register("megs", "showHeroPointCosts", {
     config: true,

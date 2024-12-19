@@ -96,6 +96,9 @@ export class MEGSItem extends Item {
     const rollMode = game.settings.get('core', 'rollMode');
     const label = `[${item.type}] ${item.name}`;
 
+    console.error("TEST1"); // TODO remove
+    console.error(item); // TODO remove
+
     // If there's no roll data, send a chat message.
     if (!this.system.formula) {
       ChatMessage.create({

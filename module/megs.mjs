@@ -326,7 +326,7 @@ Hooks.once('ready', function () {
   Hooks.on('hotbarDrop', (bar, data, slot) => {
     let item = fromUuidSync(data.uuid);
     if (item && item.system) {
-      createAlienrpgMacro(item, slot);
+      createMegsMacro(item, slot);
       return false;
     }
   });
@@ -414,35 +414,6 @@ async function createMegsMacro(data, slot) {
   game.user.assignHotbarMacro(macro, slot);
 }
 
-async function createAlienrpgMacro(item, slot) {
-  const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'Alien RPG System Macros');
-  // Create the macro command
-  const command = `game.alienrpg.rollItemMacro("${item.name}");`;
-  let macro = game.macros.find(
-      (m) =>
-          m.name === item.name &&
-          m.command === command &&
-          (m.author === game.user.id ||
-              m.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
-              m.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
-  );
-  console.error(item);
-  console.error(macro);
-  if (!macro) {
-    macro = await Macro.create({
-      name: item.name,
-      type: 'script',
-      img: item.img,
-      command: command,
-      flags: { 'alienrpg.itemMacro': true },
-      folder: folder?.id,
-      'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
-    });
-    console.error(macro);
-  }
-  game.user.assignHotbarMacro(macro, slot);
-}
-
 /*
 async function createMegsMacro(data, slot) {
       console.error("createMegsMacro data");
@@ -496,12 +467,19 @@ async function createMegsMacro(data, slot) {
 function rollItemMacro(itemUuid) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
+  console.error("TEST1");
   if (speaker.token) actor = game.actors.tokens[speaker.token];
+  console.error("TEST2");
   if (!actor) actor = game.actors.get(speaker.actor);
+  console.error("TEST3");
+  console.error(actor);
   // console.warn('alienrpg.js 155 - Got here', speaker, actor);
   const item = actor ? actor.items.find((i) => i.name === itemName) : null;
+  console.error(item);
   if (!item) return ui.notifications.warn(game.i18n.localize('ALIENRPG.NoItem') + ' ' + ` ${itemName}`);
+  console.error("TEST4");
   if (!item.system.header.active) return ui.notifications.warn(game.i18n.localize('ALIENRPG.NotActive') + ' ' + ` ${itemName}`);
+  console.error("TEST5");
 
   // Trigger the item roll
   return item.roll();

@@ -323,15 +323,7 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
 
 Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on('hotbarDrop', (bar, data, slot) => {
-    let item = fromUuidSync(data.uuid);
-    if (item && item.system) {
-      createMegsMacro(item, slot);
-      return false;
-    }
-  });
-
-//  Hooks.on("hotbarDrop", (bar, data, slot) => createMegsMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => createMegsMacro(data, slot));
   Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
 });
 

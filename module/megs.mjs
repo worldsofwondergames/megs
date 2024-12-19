@@ -384,9 +384,11 @@ async function createMegsMacro(data, slot) {
   const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS System Macros');
 
   const item = await Item.fromDropData(data);
+  console.error(item); // TODO remove
 
   // Create the macro command
-  const command = `game.megs.rollItemMacro("${item.name}");`;
+  const command = `game.megs.rollItemMacro("${item.uuid}");`;
+  // TODO use UUID for macro, not name!
   let macro = game.macros.find(
       (m) =>
           m.name === item.name &&

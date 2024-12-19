@@ -323,7 +323,14 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
 
 Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on("hotbarDrop", (bar, data, slot) => createMegsMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => {
+    let item = fromUuidSync(data.uuid);
+    console.error(item);
+    if (item && item.system) {
+      createAlienrpgMacro(item, slot);
+      return false;
+    }
+  });
   Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
 });
 
@@ -403,6 +410,36 @@ async function createMegsMacro(data, slot) {
     });
   }
   console.error(macro);
+  game.user.assignHotbarMacro(macro, slot);
+}
+
+async function createAlienrpgMacro(item, slot) {
+  const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS RPG System Macros');
+  console.error(folder); // TODO delete
+  // Create the macro command
+  const command = `game.megs.rollItemMacro("${item.name}");`;
+  console.error(command); // TODO delete
+  let macro = game.macros.find(
+      (m) =>
+          m.name === item.name &&
+          m.command === command &&
+          (m.author === game.user.id ||
+              m.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
+              m.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
+  );
+  console.error(macro); // TODO delete
+  if (!macro) {
+    macro = await Macro.create({
+      name: item.name,
+      type: 'script',
+      img: item.img,
+      command: command,
+      flags: { 'megs.itemMacro': true },
+      folder: folder?.id,
+      'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
+    });
+    console.error(macro); // TODO delete
+  }
   game.user.assignHotbarMacro(macro, slot);
 }
 

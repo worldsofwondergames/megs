@@ -90,17 +90,47 @@ export class MEGSItem extends Item {
    * @param event
    */
   rollMegs() {
+    console.error("TEST1");
     console.error(this); // TODO
+    console.error(this.actor); // TODO
 
     let actionValue = 0;
     let effectValue = 0;
     let opposingValue = 0;
     let resistanceValue = 0;
 
+    let dataset = { };
+
     let targetActor = MegsTableRolls.getTargetActor();
-    console.error(targetActor);
+    console.error("TEST2");
+    console.error(targetActor); // TODO
 
+    if (this.object.type === MEGS.itemTypes.power) {
+      // for powers, AV and EV are typically APs of power
+      actionValue = parseInt(this.system.aps);
+      effectValue = parseInt(this.system.aps);
 
+      // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
+
+      // Physical powers - OV and RV are DEX and BODY
+      if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
+        dataset.key = MEGS.attributeAbbreviations.str;
+      }
+      // Mental powers - OV and RV are INT and MIND
+      if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
+        dataset.key = MEGS.attributeAbbreviations.int;
+      }
+      // Mystical powers - OV and RV are INFL and SPIRIT
+      if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
+        dataset.key = MEGS.attributeAbbreviations.infl;
+      }
+      if (targetActor) {
+        opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
+        resistanceValue = this._getResistanceValueForPower(dataset.key, targetActor);
+      }
+    }
+
+  console.error("TEST3: av = "+actionValue+" | ev = "+effectValue+" | ov = "+opposingValue+" | rv = "+resistanceValue);
 
     /*
         const element = event.currentTarget;
@@ -165,17 +195,12 @@ export class MEGSItem extends Item {
    * @private
    */
   async roll() {
-    console.error("roll()"); // TODO remove
-
     const item = this;
 
     // Initialize chat data.
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
-    const label = `[${item.type}] ${item.name}`;
-
-    console.error("TEST1"); // TODO remove
-    console.error(item); // TODO remove
+    const label = `[${item.actor.name}] ${item.name}`;
 
     if (!this.system.formula && (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) ) {
       this.rollMegs();

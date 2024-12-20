@@ -138,14 +138,11 @@ export class MEGSItem extends Item {
 
     console.error("TEST3: label = "+label+" | av = "+actionValue+" | ev = "+effectValue+" | ov = "+opposingValue+" | rv = "+resistanceValue);
 
-    /*
-
-        const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
-            effectValue, resistanceValue, dataset.roll, dataset.unskilled);
-        const rollTables = new MegsTableRolls(rollValues);
-        rollTables.roll(event, this.object.parent.system.heroPoints.value).then((response) => {
-        })
-     */
+    const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
+        effectValue, resistanceValue, dataset.roll, dataset.unskilled);
+    const rollTables = new MegsTableRolls(rollValues);
+    rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
+    })
   }
 
   /**

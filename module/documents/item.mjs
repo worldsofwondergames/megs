@@ -101,6 +101,10 @@ export class MEGSItem extends Item {
     console.error("TEST1"); // TODO remove
     console.error(item); // TODO remove
 
+    if (!this.system.formula && (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) ) {
+      this.system.formula = "1d10 + 1d10";
+    }
+
     // If there's no roll data, send a chat message.
     if (!this.system.formula) {
       ChatMessage.create({

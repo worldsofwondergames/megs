@@ -1,4 +1,5 @@
 import { MEGS } from "../helpers/config.mjs";
+import {MegsTableRolls, RollValues} from "../dice.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -83,6 +84,71 @@ export class MEGSItem extends Item {
     return rollData;
   }
 
+
+  /**
+   *
+   * @param event
+   */
+  rollMegs() {
+    console.error(this.actor); // TODO
+
+/*
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+
+    let actionValue = 0;
+    let effectValue = 0;
+    let opposingValue = 0;
+    let resistanceValue = 0;
+
+    let targetActor = MegsTableRolls.getTargetActor();
+
+    if (this.object.type === MEGS.itemTypes.power) {
+      // for powers, AV and EV are typically APs of power
+      actionValue = parseInt(dataset.value);
+      effectValue = parseInt(dataset.value);
+
+      // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
+
+      // Physical powers - OV and RV are DEX and BODY
+      if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {
+        dataset.key = MEGS.attributeAbbreviations.str;
+      }
+      // Mental powers - OV and RV are INT and MIND
+      if (this.object.system.source === MEGS.powerSources.mental.toLowerCase()) {
+        dataset.key = MEGS.attributeAbbreviations.int;
+      }
+      // Mystical powers - OV and RV are INFL and SPIRIT
+      if (this.object.system.source === MEGS.powerSources.mystical.toLowerCase()) {
+        dataset.key = MEGS.attributeAbbreviations.infl;
+      }
+      if (targetActor) {
+        opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
+        resistanceValue = this._getResistanceValueForPower(dataset.key, targetActor);
+      }
+    }
+
+    dataset.type = this.object.type;
+
+    // values of skills and subskills
+    if (this.object.type === MEGS.itemTypes.skill || this.object.type === MEGS.itemTypes.subskill) {
+      actionValue = parseInt(dataset.value);
+      effectValue = parseInt(dataset.value);
+    }
+
+    let label = dataset.label;
+    if (this.object.parent && this.object.parent.name) {
+      label = this.object.parent.name + " - " + label;
+    }
+
+    const rollValues = new RollValues(label, dataset.type, dataset.value, actionValue, opposingValue,
+        effectValue, resistanceValue, dataset.roll, dataset.unskilled);
+    const rollTables = new MegsTableRolls(rollValues);
+    rollTables.roll(event, this.object.parent.system.heroPoints.value).then((response) => {
+    })
+ */
+  }
+
   /**
    * Handle clickable rolls.
    * @param {Event} event   The originating click event
@@ -102,11 +168,11 @@ export class MEGSItem extends Item {
     console.error(item); // TODO remove
 
     if (!this.system.formula && (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) ) {
-      this.system.formula = "1d10 + 1d10";
+      this.rollMegs();
     }
 
     // If there's no roll data, send a chat message.
-    if (!this.system.formula) {
+    else if (!this.system.formula) {
       ChatMessage.create({
         speaker: speaker,
         rollMode: rollMode,

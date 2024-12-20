@@ -404,6 +404,7 @@ async function createMegsMacro(item, slot) {
  * @return {Promise}
  */
 function rollItemMacro(uuid) {
+  console.error(uuid);
   const speaker = ChatMessage.getSpeaker();
 
   let actor;

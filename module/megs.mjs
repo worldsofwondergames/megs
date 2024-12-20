@@ -410,6 +410,11 @@ function rollItemMacro(uuid) {
   let actor;
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
+  if (!actor) {
+    const actorId = uuid.match(/^Actor\.([A-Za-z0-9]+)\.Item\..+/)[1];
+    console.error("TEST2: "+actorId);
+    actor = game.actors.get(actorId);
+  }
 console.error("TEST3");
 console.error(actor);
 

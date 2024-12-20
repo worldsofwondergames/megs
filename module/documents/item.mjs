@@ -94,8 +94,9 @@ export class MEGSItem extends Item {
     console.error(this); // TODO
     console.error(this.actor); // TODO
 
-    let actionValue = 0;
-    let effectValue = 0;
+    // for powers, AV and EV are typically APs of power
+    let actionValue = parseInt(this.system.aps);
+    let effectValue = parseInt(this.system.aps);
     let opposingValue = 0;
     let resistanceValue = 0;
 
@@ -105,11 +106,7 @@ export class MEGSItem extends Item {
     console.error("TEST2");
     console.error(targetActor); // TODO
 
-    if (this.object.type === MEGS.itemTypes.power) {
-      // for powers, AV and EV are typically APs of power
-      actionValue = parseInt(this.system.aps);
-      effectValue = parseInt(this.system.aps);
-
+    if (this.type === MEGS.itemTypes.power) {
       // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
 
       // Physical powers - OV and RV are DEX and BODY
@@ -130,58 +127,20 @@ export class MEGSItem extends Item {
       }
     }
 
-  console.error("TEST3: av = "+actionValue+" | ev = "+effectValue+" | ov = "+opposingValue+" | rv = "+resistanceValue);
+    // values of skills and subskills
+    if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill) {
+    }
+
+    let label = this.name;
+    if (this.parent && this.parent.name) {
+      label = this.parent.name + " - " + label;
+    }
+
+    console.error("TEST3: label = "+label+" | av = "+actionValue+" | ev = "+effectValue+" | ov = "+opposingValue+" | rv = "+resistanceValue);
 
     /*
-        const element = event.currentTarget;
-        const dataset = element.dataset;
 
-        let actionValue = 0;
-        let effectValue = 0;
-        let opposingValue = 0;
-        let resistanceValue = 0;
-
-        let targetActor = MegsTableRolls.getTargetActor();
-
-        if (this.object.type === MEGS.itemTypes.power) {
-          // for powers, AV and EV are typically APs of power
-          actionValue = parseInt(dataset.value);
-          effectValue = parseInt(dataset.value);
-
-          // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
-
-          // Physical powers - OV and RV are DEX and BODY
-          if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {
-            dataset.key = MEGS.attributeAbbreviations.str;
-          }
-          // Mental powers - OV and RV are INT and MIND
-          if (this.object.system.source === MEGS.powerSources.mental.toLowerCase()) {
-            dataset.key = MEGS.attributeAbbreviations.int;
-          }
-          // Mystical powers - OV and RV are INFL and SPIRIT
-          if (this.object.system.source === MEGS.powerSources.mystical.toLowerCase()) {
-            dataset.key = MEGS.attributeAbbreviations.infl;
-          }
-          if (targetActor) {
-            opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
-            resistanceValue = this._getResistanceValueForPower(dataset.key, targetActor);
-          }
-        }
-
-        dataset.type = this.object.type;
-
-        // values of skills and subskills
-        if (this.object.type === MEGS.itemTypes.skill || this.object.type === MEGS.itemTypes.subskill) {
-          actionValue = parseInt(dataset.value);
-          effectValue = parseInt(dataset.value);
-        }
-
-        let label = dataset.label;
-        if (this.object.parent && this.object.parent.name) {
-          label = this.object.parent.name + " - " + label;
-        }
-
-        const rollValues = new RollValues(label, dataset.type, dataset.value, actionValue, opposingValue,
+        const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
             effectValue, resistanceValue, dataset.roll, dataset.unskilled);
         const rollTables = new MegsTableRolls(rollValues);
         rollTables.roll(event, this.object.parent.system.heroPoints.value).then((response) => {

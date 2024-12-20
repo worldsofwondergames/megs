@@ -81,6 +81,8 @@ export class MegsTableRolls {
 
     // TODO does not currently handle > 60 for either AV or OV
 
+    console.error("TEST3"); // TODO
+
     // Manually enter OV and RV for target
     if (game.user.targets.size === 0) {
       const template = "systems/megs/templates/dialogs/rollDialog.hbs";
@@ -98,6 +100,8 @@ export class MegsTableRolls {
       };
       const dialogHtml = await this._renderTemplate(template, data);
 
+      console.error("TEST4"); // TODO
+
       new Dialog({
         title: label,
         content: dialogHtml,
@@ -109,6 +113,8 @@ export class MegsTableRolls {
           button1: {
             label: game.i18n.localize("Submit"),
             callback: (html) => {
+              console.error("TEST5"); // TODO
+
               const response = this._processOpposingValuesEntry(html[0].querySelector('form'));
               this.actionValue = response.actionValue;
               this.effectValue = response.effectValue;

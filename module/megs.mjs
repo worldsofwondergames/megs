@@ -415,6 +415,10 @@ console.error(actor);
 
   const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
 console.error(item); // TODO remove
+  if (!actor && !item) {
+    const itemId = uuid.match(/^Actor\..+\.Item\.([A-Za-z0-9]+)/)[1];
+    console.error("TEST4: "+itemId);
+  }
   if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
 
   // Trigger the item roll

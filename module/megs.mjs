@@ -405,13 +405,16 @@ async function createMegsMacro(item, slot) {
  */
 function rollItemMacro(uuid) {
   const speaker = ChatMessage.getSpeaker();
+
   let actor;
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
+console.error("TEST3");
+console.error(actor);
+
   const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
-  console.error(item); // TODO remove
+console.error(item); // TODO remove
   if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
-  console.error("TEST4"); // TODO remove
 
   // Trigger the item roll
   return item.roll();

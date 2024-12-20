@@ -89,6 +89,8 @@ export class MEGSItem extends Item {
    * @private
    */
   async roll() {
+    console.error("roll()"); // TODO remove
+
     const item = this;
 
     // Initialize chat data.

@@ -90,40 +90,34 @@ export class MEGSItem extends Item {
    * @param event
    */
   rollMegs() {
-    console.error("TEST1");
-    console.error(this); // TODO
-    console.error(this.actor); // TODO
-
     // for powers, AV and EV are typically APs of power
     let actionValue = parseInt(this.system.aps);
     let effectValue = parseInt(this.system.aps);
     let opposingValue = 0;
     let resistanceValue = 0;
 
-    let dataset = { };
-
     let targetActor = MegsTableRolls.getTargetActor();
-    console.error("TEST2");
-    console.error(targetActor); // TODO
 
     if (this.type === MEGS.itemTypes.power) {
       // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
 
+      let key;
+
       // Physical powers - OV and RV are DEX and BODY
       if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
-        dataset.key = MEGS.attributeAbbreviations.str;
+        key = MEGS.attributeAbbreviations.str;
       }
       // Mental powers - OV and RV are INT and MIND
       if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
-        dataset.key = MEGS.attributeAbbreviations.int;
+        key = MEGS.attributeAbbreviations.int;
       }
       // Mystical powers - OV and RV are INFL and SPIRIT
       if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
-        dataset.key = MEGS.attributeAbbreviations.infl;
+        key = MEGS.attributeAbbreviations.infl;
       }
       if (targetActor) {
-        opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
-        resistanceValue = this._getResistanceValueForPower(dataset.key, targetActor);
+        opposingValue = this._getOpposingValueForPower(key, targetActor);
+        resistanceValue = this._getResistanceValueForPower(key, targetActor);
       }
     }
 
@@ -136,10 +130,8 @@ export class MEGSItem extends Item {
       label = this.parent.name + " - " + label;
     }
 
-    console.error("TEST3: label = "+label+" | av = "+actionValue+" | ev = "+effectValue+" | ov = "+opposingValue+" | rv = "+resistanceValue);
-
     const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
-        effectValue, resistanceValue, dataset.roll, dataset.unskilled);
+        effectValue, resistanceValue, "1d10 + 1d10", this.system.unskilled);
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
     })

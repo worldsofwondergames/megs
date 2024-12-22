@@ -250,6 +250,9 @@ export class MEGSItemSheet extends ItemSheet {
 
     // MEGS roll
     html.on('click', '.d10.rollable', (event) => {
+      console.error("TEST: item-sheet MEGS roll 1");
+      // TODO defer roll to item object
+
       const element = event.currentTarget;
       const dataset = element.dataset;
   

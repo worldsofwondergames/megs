@@ -95,6 +95,7 @@ export class MEGSItem extends Item {
     let resistanceValue = 0;
 
     let targetActor = MegsTableRolls.getTargetActor();
+    console.error(targetActor); // TODO delete
 
     if (this.type === MEGS.itemTypes.power) {
       // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
@@ -114,7 +115,6 @@ export class MEGSItem extends Item {
         key = MEGS.attributeAbbreviations.infl;
       }
 
-      console.error(targetActor);
       if (targetActor) {
         opposingValue = this._getOpposingValueForPower(key, targetActor);
         resistanceValue = this._getResistanceValueForPower(key, targetActor);
@@ -123,6 +123,7 @@ export class MEGSItem extends Item {
 
     // values of skills and subskills
     if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill) {
+      console.error(this); // TODO delete
     }
 
     let label = this.name;

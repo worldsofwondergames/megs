@@ -36,6 +36,11 @@ export class MEGSActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
+  isEditable() {
+    return true; // TODO
+  }
+
+  /** @override */
   getData () {
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for
@@ -410,7 +415,6 @@ export class MEGSActorSheet extends ActorSheet {
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
 
-    console.error("TEST: actor-sheet: isEditable = "+this.isEditable); // TODO delete
     if (!this.isEditable) return;
 
     // Add Inventory Item

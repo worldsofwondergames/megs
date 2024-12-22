@@ -1,5 +1,6 @@
 import { MEGS } from "../helpers/config.mjs";
-import {MegsTableRolls, RollValues} from "../dice.mjs";
+import { MegsTableRolls, RollValues } from "../dice.mjs";
+import { Utils } from "../utils.js"
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -113,8 +114,8 @@ export class MEGSItem extends Item {
           key = MEGS.attributeAbbreviations.infl;
         }
 
-        opposingValue = this._getOpposingValueForPower(key, targetActor);
-        resistanceValue = this._getResistanceValueForPower(key, targetActor);
+        opposingValue = Utils.getOpposingValue(key, targetActor);
+        resistanceValue = Utils.getResistanceValue(key, targetActor);
       }
     }
 

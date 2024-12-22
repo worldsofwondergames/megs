@@ -10,7 +10,7 @@ import { Utils } from "../utils.js"
  */
 export class MEGSItemSheet extends ItemSheet {
 
-  //isLocked = false;
+  isEditable = true;
 
   /** @override */
   static get defaultOptions() {
@@ -220,6 +220,7 @@ export class MEGSItemSheet extends ItemSheet {
      super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
+    console.error("TEST: isEditable = " + this.isEditable);
     if (!this.isEditable) return;
   
     // Render the item sheet for viewing/editing prior to the editable check.

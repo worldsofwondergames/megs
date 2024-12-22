@@ -84,10 +84,8 @@ export class MEGSItem extends Item {
     return rollData;
   }
 
-
   /**
    *
-   * @param event
    */
   rollMegs() {
     // for powers, AV and EV are typically APs of power
@@ -115,6 +113,8 @@ export class MEGSItem extends Item {
       if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
         key = MEGS.attributeAbbreviations.infl;
       }
+
+      console.error(targetActor);
       if (targetActor) {
         opposingValue = this._getOpposingValueForPower(key, targetActor);
         resistanceValue = this._getResistanceValueForPower(key, targetActor);

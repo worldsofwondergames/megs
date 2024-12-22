@@ -42,6 +42,9 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override */
   getData () {
+    console.error("TEST999"); // TODO delete
+    console.error(this.ownership);
+
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for
     // sheets are the actor object, the data object, whether or not it's

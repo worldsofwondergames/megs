@@ -1,3 +1,5 @@
+import { MEGS } from "./helpers/config.mjs";
+
 export class Utils {
     /**
      *

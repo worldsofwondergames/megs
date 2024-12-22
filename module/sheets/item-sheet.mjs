@@ -2,6 +2,7 @@ import { MEGSActor } from '../documents/actor.mjs';
 import { MEGSItem } from '../documents/item.mjs';
 import { MEGS } from '../helpers/config.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs'
+import { Utils } from "../utils.js"
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -279,8 +280,8 @@ export class MEGSItemSheet extends ItemSheet {
           dataset.key = MEGS.attributeAbbreviations.infl;
         }
         if (targetActor) {
-          opposingValue = this._getOpposingValueForPower(dataset.key, targetActor);
-          resistanceValue = this._getResistanceValueForPower(dataset.key, targetActor);
+          opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
+          resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
         }
       }
 
@@ -317,52 +318,9 @@ export class MEGSItemSheet extends ItemSheet {
       });
     }
   }
-  
-  /**
-   * 
-   * @param {*} key 
-   * @param {*} targetActor 
-   * @returns 
-   */
-  _getOpposingValueForPower(key, targetActor) {
-    let opposingValue;
-    if (key === MEGS.attributeAbbreviations.str) {
-      opposingValue = targetActor.system.attributes.dex.value;
-    } else if (key === MEGS.attributeAbbreviations.will) {
-      opposingValue = targetActor.system.attributes.int.value;
-    } else if (key === MEGS.attributeAbbreviations.aura) {
-      opposingValue = targetActor.system.attributes.infl.value;
-    } else {
-      ui.notifications.error("_getOpposingValueForPower: Invalid attribute selection");
-      return;
-    }
-    return opposingValue;
-  }
 
   /**
-   *
-   * @param key
-   * @param targetActor
-   * @returns {*}
-   * @private
-   */
-  _getResistanceValueForPower(key, targetActor) {
-    let resistanceValue;
-    if (key === "str") {
-      resistanceValue = targetActor.system.attributes.body.value;
-    } else if (key === "will") {
-      resistanceValue = targetActor.system.attributes.mind.value;
-    } else if (key === "aura") {
-      resistanceValue = targetActor.system.attributes.spirit.value;
-    } else {
-      ui.notifications.error("_getResistanceValueForPower: Invalid attribute selection");
-      return;
-    }
-    return resistanceValue;
-  }
-
-  /**
-   * Set up bonuses and limitations to be shown on power page
+   * Set up bonuses and limitations to be shown on power tab
    * @param {*} context 
    */
   _prepareModifiers(context) {

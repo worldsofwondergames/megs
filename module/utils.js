@@ -6,6 +6,7 @@ export class Utils {
      * @param {*} key
      * @param {*} targetActor
      * @returns
+     * @oublic
      */
     static getOpposingValue(key, targetActor) {
         let opposingValue;
@@ -16,7 +17,7 @@ export class Utils {
         } else if (key === MEGS.attributeAbbreviations.aura) {
             opposingValue = targetActor.system.attributes.infl.value;
         } else {
-            ui.notifications.error("_getOpposingValueForPower: Invalid attribute selection");
+            ui.notifications.error("Utils.getOpposingValue(): Invalid attribute selection");
             return;
         }
         return opposingValue;
@@ -27,7 +28,7 @@ export class Utils {
      * @param key
      * @param targetActor
      * @returns {*}
-     * @private
+     * @public
      */
     static getResistanceValue(key, targetActor) {
         let resistanceValue;
@@ -38,7 +39,7 @@ export class Utils {
         } else if (key === "aura") {
             resistanceValue = targetActor.system.attributes.spirit.value;
         } else {
-            ui.notifications.error("_getResistanceValueForPower: Invalid attribute selection");
+            ui.notifications.error("Utils.getResistanceValue(): Invalid attribute selection");
             return;
         }
         return resistanceValue;

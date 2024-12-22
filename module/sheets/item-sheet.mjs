@@ -309,6 +309,9 @@ export class MEGSItemSheet extends ItemSheet {
       })
     });
 
+    console.error("TEST: checking parent and isOwner");
+    console.error(this.object.parent);
+
     if (this.object.parent && this.object.parent.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
       html.find('li.item').each((i, li) => {

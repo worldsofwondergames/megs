@@ -410,6 +410,7 @@ export class MEGSActorSheet extends ActorSheet {
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
 
+    console.error("TEST: actor-sheet: isEditable = "+this.isEditable); // TODO delete
     if (!this.isEditable) return;
 
     // Add Inventory Item
@@ -426,7 +427,7 @@ export class MEGSActorSheet extends ActorSheet {
     html.on('click', '.item-roll', this._onRoll.bind(this));
 
       // Active Effect management
-    // TODO delete
+    // TODO active effects
     // html.on('click', '.effect-control', (ev) => {
     //   const row = ev.currentTarget.closest('li');
     //   const document =

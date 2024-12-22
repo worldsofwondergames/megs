@@ -94,31 +94,32 @@ export class MEGSItem extends Item {
     let opposingValue = 0;
     let resistanceValue = 0;
 
-    let targetActor = MegsTableRolls.getTargetActor();
-    console.error(targetActor); // TODO delete
-
-    if (this.type === MEGS.itemTypes.power) {
-      // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
-
-      let key;
-
-      // Physical powers - OV and RV are DEX and BODY
-      if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
-        key = MEGS.attributeAbbreviations.str;
-      }
-      // Mental powers - OV and RV are INT and MIND
-      if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
-        key = MEGS.attributeAbbreviations.int;
-      }
-      // Mystical powers - OV and RV are INFL and SPIRIT
-      if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
-        key = MEGS.attributeAbbreviations.infl;
-      }
-
+    if (this.system.link) {
+      let targetActor = MegsTableRolls.getTargetActor();
+      console.error(targetActor); // TODO delete
       if (targetActor) {
+        let key;
+
+        // Physical powers - OV and RV are DEX and BODY
+        if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
+          key = MEGS.attributeAbbreviations.str;
+        }
+        // Mental powers - OV and RV are INT and MIND
+        if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
+          key = MEGS.attributeAbbreviations.int;
+        }
+        // Mystical powers - OV and RV are INFL and SPIRIT
+        if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
+          key = MEGS.attributeAbbreviations.infl;
+        }
+
         opposingValue = this._getOpposingValueForPower(key, targetActor);
         resistanceValue = this._getResistanceValueForPower(key, targetActor);
       }
+    }
+
+    if (this.type === MEGS.itemTypes.power) {
+      // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
     }
 
     // values of skills and subskills

@@ -10,8 +10,6 @@ import { Utils } from "../utils.js"
  */
 export class MEGSItemSheet extends ItemSheet {
 
-  isEditable = true;
-
   /** @override */
   static get defaultOptions() {
     let newOptions = super.defaultOptions;

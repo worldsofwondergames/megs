@@ -36,11 +36,6 @@ export class MEGSActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  isEditable() {
-    return true; // TODO
-  }
-
-  /** @override */
   getData () {
     console.error("TEST999: "+game.user.id); // TODO delete
     console.error(this.actor.ownership);

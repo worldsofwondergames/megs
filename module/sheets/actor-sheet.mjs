@@ -36,8 +36,8 @@ export class MEGSActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  isEditable = this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-      || this.actor.ownership.default > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
+  // isEditable = this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+  //     || this.actor.ownership.default > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
 
   /** @override */
   getData () {

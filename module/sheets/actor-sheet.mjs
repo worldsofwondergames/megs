@@ -36,15 +36,12 @@ export class MEGSActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  isEditable() {
-    console,error("TEST: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER+" : "+this.actor.ownership[game.user.id]+" : "+this.actor.ownership.default);
-
-    return this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-      || this.actor.ownership.default > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-  }
+  isEditable = this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+      || this.actor.ownership.default > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
 
   /** @override */
   getData () {
+    console,error("TEST: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER+" : "+this.actor.ownership[game.user.id]+" : "+this.actor.ownership.default);
     console.error("TEST999: "+game.user.id); // TODO delete
     console.error(this.actor.ownership);
 

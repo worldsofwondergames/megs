@@ -141,7 +141,6 @@ export class MEGSItem extends Item {
 
     if (this.system.link) {
       let targetActor = MegsTableRolls.getTargetActor();
-      console.error(targetActor); // TODO delete
       if (targetActor) {
         let key;
 
@@ -169,7 +168,7 @@ export class MEGSItem extends Item {
 
     // values of skills and subskills
     if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill) {
-      console.error(this); // TODO delete
+      // TDOO anything skill-specific
     }
 
     let label = this.name;

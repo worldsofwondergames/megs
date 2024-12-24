@@ -218,7 +218,6 @@ export class MEGSItemSheet extends ItemSheet {
      super.activateListeners(html);
 
     // Everything below here is only needed if the sheet is editable
-    console.error("TEST: isEditable = " + this.isEditable);
     if (!this.isEditable) return;
   
     // Render the item sheet for viewing/editing prior to the editable check.
@@ -249,7 +248,6 @@ export class MEGSItemSheet extends ItemSheet {
 
     // MEGS roll
     html.on('click', '.d10.rollable', (event) => {
-      console.error("TEST: item-sheet MEGS roll 1");
       // TODO defer roll to item object
 
       const element = event.currentTarget;
@@ -306,9 +304,6 @@ export class MEGSItemSheet extends ItemSheet {
       rollTables.roll(event, this.object.parent.system.heroPoints.value).then((response) => {
       })
     });
-
-    console.error("TEST: checking parent and isOwner");
-    console.error(this.object.parent);
 
     if (this.object.parent && this.object.parent.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
@@ -571,8 +566,6 @@ export class MEGSItemSheet extends ItemSheet {
 
   /** @inheritdoc */
   _onDragStart(event) {
-    console.error(event); // TODO delete
-
     const li = event.currentTarget;
 
     if ( event.target.classList.contains("content-link") ) return;

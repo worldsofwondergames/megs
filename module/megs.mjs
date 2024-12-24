@@ -333,6 +333,12 @@ Hooks.once('ready', function () {
   Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
 });
 
+/**
+ * interceptMegsRoll makes a basic 2d10 roll
+ * @param message
+ * @param data
+ * @returns {boolean}
+ */
 function interceptMegsRoll(message, data) {
   if (message === "/r megs" || message === "/megs") {
     const rollValues = new RollValues("", '', 100, 0, 0,0, 0, '1d10 + 1d10', false);
@@ -349,8 +355,7 @@ function interceptMegsRoll(message, data) {
 /* -------------------------------------------- */
 
 /**
- * Create the MEGS tables from JSON data.
- * Grab the JSON and place it in an object.
+ * Grab the JSON from a file and place it in an object.
  * @param {Object} jsonPath     The path in the Foundry Data directory to the JSON asset
  * @returns {Promise}
  */
@@ -372,7 +377,11 @@ async function _loadData(jsonPath) {
  * @returns {Promise}
  */
 async function createMegsMacro(item, slot) {
+
+  console.error(data); // TODO delete
+
   const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS RPG System Macros');
+
   // Create the macro command
   const command = `game.megs.rollItemMacro("${item.uuid}");`;
   let macro = game.macros.find(

@@ -12,16 +12,6 @@ export class MEGSActorSheet extends ActorSheet {
 
   constructor (data, options) {
     super(data, context);
-
-    console.error("TEST995: "+game.user.id); // TODO delete
-    console.error(CONST.DOCUMENT_OWNERSHIP_LEVELS);
-    console.error("TEST996: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER);
-    console.error("TEST997: "+this.actor.ownership[game.user.id]);
-    console.error("TEST998: "+this.actor.ownership.default);
-
-    this.isEditable = this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-         || this.actor.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
-    console.error("TEST999: "+this.isEditable);
   }
 
     /** @override */
@@ -116,7 +106,6 @@ export class MEGSActorSheet extends ActorSheet {
                 // store linked vehicle item
                 if (element._id === context.system.linkedItemId) {
                   context.system.linkedItem = element;
-                  console.error(context.system.linkedItem); // TODO
                 }
 
                 // add to list for header
@@ -668,10 +657,8 @@ export class MEGSActorSheet extends ActorSheet {
     return effectValue;
   }
 
+  /** @override **/
   async _onDrop(event) {
-    const data = TextEditor.getDragEventData(event);
-    console.error(data); // TODO delete
-    console.error(this.actor.items);
     super._onDrop(event);
   }
 

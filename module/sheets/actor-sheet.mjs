@@ -9,7 +9,22 @@ import { MegsTableRolls, RollValues } from '../dice.mjs'
  * @extends {ActorSheet}
  */
 export class MEGSActorSheet extends ActorSheet {
-  /** @override */
+
+  constructor (data, options) {
+    super(data, context);
+
+    console.error("TEST995: "+game.user.id); // TODO delete
+    console.error(CONST.DOCUMENT_OWNERSHIP_LEVELS);
+    console.error("TEST996: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER);
+    console.error("TEST997: "+this.actor.ownership[game.user.id]);
+    console.error("TEST998: "+this.actor.ownership.default);
+
+    this.isEditable = this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+         || this.actor.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
+    console.error("TEST999: "+this.isEditable);
+  }
+
+    /** @override */
   static get defaultOptions () {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'actor'];
@@ -34,17 +49,6 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   /* -------------------------------------------- */
-
-  isEditable() {
-    console.error("TEST995: "+game.user.id); // TODO delete
-    console.error(CONST.DOCUMENT_OWNERSHIP_LEVELS);
-    console.error("TEST996: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER);
-    console.error("TEST997: "+this.actor.ownership[game.user.id]);
-    console.error("TEST998: "+this.actor.ownership.default);
-
-    return this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-    //     || this.actor.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
-  }
 
   /** @override */
   getData () {

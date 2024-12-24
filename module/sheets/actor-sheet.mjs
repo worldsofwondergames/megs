@@ -41,9 +41,11 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override */
   getData () {
-    console,error("TEST: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER+" : "+this.actor.ownership[game.user.id]+" : "+this.actor.ownership.default);
-    console.error("TEST999: "+game.user.id); // TODO delete
+    console.error("TEST995: "+game.user.id); // TODO delete
+    console,error("TEST996: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER);
     console.error(this.actor.ownership);
+    console,error("TEST997: "+this.actor.ownership[game.user.id]);
+    console,error("TEST998: "+this.actor.ownership.default);
 
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for

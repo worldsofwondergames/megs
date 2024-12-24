@@ -35,17 +35,19 @@ export class MEGSActorSheet extends ActorSheet {
 
   /* -------------------------------------------- */
 
-  /** @override */
-  // isEditable = this.actor.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
-  //     || this.actor.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
-
-  /** @override */
-  getData () {
+  isEditable() {
     console.error("TEST995: "+game.user.id); // TODO delete
     console.error(CONST.DOCUMENT_OWNERSHIP_LEVELS);
     console.error("TEST996: "+CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER);
     console.error("TEST997: "+this.actor.ownership[game.user.id]);
     console.error("TEST998: "+this.actor.ownership.default);
+
+    return this.actor.ownership[game.user.id] > CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER
+    //     || this.actor.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
+  }
+
+  /** @override */
+  getData () {
 
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for

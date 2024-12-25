@@ -32,11 +32,11 @@ export class Utils {
      */
     static getResistanceValue(key, targetActor) {
         let resistanceValue;
-        if (key === MEGS.attributeAbbreviations.str) {
+        if (key === MEGS.attributeAbbreviations.str || key === MEGS.attributeAbbreviations.dex) {
             resistanceValue = targetActor.system.attributes.body.value;
-        } else if (key === MEGS.attributeAbbreviations.will) {
+        } else if (key === MEGS.attributeAbbreviations.will || key === MEGS.attributeAbbreviations.int) {
             resistanceValue = targetActor.system.attributes.mind.value;
-        } else if (key === MEGS.attributeAbbreviations.aura) {
+        } else if (key === MEGS.attributeAbbreviations.aura || key === MEGS.attributeAbbreviations.infl) {
             resistanceValue = targetActor.system.attributes.spirit.value;
         } else {
             ui.notifications.error("Utils.getResistanceValue(): Invalid attribute selection '"+key+"'");

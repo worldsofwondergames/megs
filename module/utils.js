@@ -3,9 +3,9 @@ import { MEGS } from "./helpers/config.mjs";
 export class Utils {
     /**
      *
-     * @param {*} key
-     * @param {*} targetActor
-     * @returns
+     * @param key
+     * @param targetActor
+     * @returns {*}
      * @oublic
      */
     static getOpposingValue(key, targetActor) {
@@ -17,7 +17,7 @@ export class Utils {
         } else if (key === MEGS.attributeAbbreviations.aura) {
             opposingValue = targetActor.system.attributes.infl.value;
         } else {
-            ui.notifications.error("Utils.getOpposingValue(): Invalid attribute selection");
+            ui.notifications.error("Utils.getOpposingValue(): Invalid attribute selection '"+key+"'");
             return;
         }
         return opposingValue;
@@ -32,16 +32,39 @@ export class Utils {
      */
     static getResistanceValue(key, targetActor) {
         let resistanceValue;
-        if (key === "str") {
+        if (key === MEGS.attributeAbbreviations.str) {
             resistanceValue = targetActor.system.attributes.body.value;
-        } else if (key === "will") {
+        } else if (key === MEGS.attributeAbbreviations.will) {
             resistanceValue = targetActor.system.attributes.mind.value;
-        } else if (key === "aura") {
+        } else if (key === MEGS.attributeAbbreviations.aura) {
             resistanceValue = targetActor.system.attributes.spirit.value;
         } else {
-            ui.notifications.error("Utils.getResistanceValue(): Invalid attribute selection");
+            ui.notifications.error("Utils.getResistanceValue(): Invalid attribute selection '"+key+"'");
             return;
         }
         return resistanceValue;
     }
+
+    /**
+     *
+     * @param key
+     * @param actor
+     * @returns {*}
+     * @public
+     */
+    static getEffectValue(key, actor) {
+        let effectValue;
+        if (key === MEGS.attributeAbbreviations.dex) {
+            effectValue = actor.system.attributes.str.value;
+        } else if (key === MEGS.attributeAbbreviations.int) {
+            effectValue = actor.system.attributes.will.value;
+        } else if (key === MEGS.attributeAbbreviations.infl) {
+            effectValue = actor.system.attributes.aura.value;
+        } else {
+            ui.notifications.error("Utils.getEffectValue(): Invalid attribute selection '"+key+"'");
+            return;
+        }
+        return effectValue;
+    }
+
 }

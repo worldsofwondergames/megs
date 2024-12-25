@@ -43,6 +43,7 @@ export class MEGSItem extends Item {
     }
 
     // calculate gadget bonus
+    // TODO cost
     if (this.type === MEGS.itemTypes.gadget) {
       if (itemData.canBeTakenAway) {
         this.gadgetBonus = 4;
@@ -87,7 +88,6 @@ export class MEGSItem extends Item {
 
   /**
    * Handle clickable rolls.
-   * @param {Event} event   The originating click event
    * @private
    */
   async roll() {

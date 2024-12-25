@@ -3,16 +3,13 @@ import {
   prepareActiveEffectCategories,
 } from '../helpers/effects.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs'
+import {Utils} from "../utils.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
 export class MEGSActorSheet extends ActorSheet {
-
-  constructor (data, options) {
-    super(data, context);
-  }
 
     /** @override */
   static get defaultOptions () {
@@ -170,11 +167,10 @@ export class MEGSActorSheet extends ActorSheet {
    */
   _sortArray(array) {
     const sortedKeys = Object.keys(array).sort();
-    const sortedObject = sortedKeys.reduce((acc, key) => {
+    return sortedKeys.reduce((acc, key) => {
       acc[key] = array[key];
       return acc;
     }, {});
-    return sortedObject;
   }
 
   /**
@@ -319,12 +315,11 @@ export class MEGSActorSheet extends ActorSheet {
     const gadgets = [];
 
     // TODO delete this by 1.0
-    const list = context.items.filter(i => (
+    context.items = context.items.filter(i => (
         (i.system.type !== MEGS.itemTypes.bonus
             && i.system.type !== MEGS.itemTypes.limitation
             && i.system.type !== MEGS.itemTypes.subskill)
         || i.system.parent !== ""));
-    context.items = list;
 
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {
@@ -509,11 +504,11 @@ export class MEGSActorSheet extends ActorSheet {
     if (targetActor) {
       if (dataset.type === MEGS.rollTypes.attribute) {
         opposingValue = targetActor.system.attributes[dataset.key].value;
-        resistanceValue = this._getResistanceValueForAttribute(dataset.key, targetActor);
+        resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
       } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill) {
         if (dataset.link) {
           opposingValue = targetActor.system.attributes[dataset.link].value;
-          resistanceValue = this._getResistanceValueForAttribute(dataset.link, targetActor);
+          resistanceValue = Utils.getResistanceValue(dataset.link, targetActor);
         } else {
           console.error("No linked attribute for "+dataset.name);
         }
@@ -522,7 +517,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     if (dataset.type === MEGS.rollTypes.attribute) {
 
-      effectValue = this._getEffectValueForAttribute(dataset.key);
+      effectValue = Utils.getEffectValue(dataset.key, this.actor);
 
     } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill
         || dataset.type === MEGS.itemTypes.subskill) {
@@ -609,52 +604,6 @@ export class MEGSActorSheet extends ActorSheet {
       }
     }
     return ownedItem;
-  }
-
-  /**
-   *
-   * @param key
-   * @param targetActor
-   * @returns {*}
-   * @private
-   */
-  _getResistanceValueForAttribute(key, targetActor) {
-    // TODO use rolls attribute?
-    let resistanceValue;
-    if (key === MEGS.attributeAbbreviations.dex) {
-      resistanceValue = targetActor.system.attributes.body.value;
-    } else if (key === MEGS.attributeAbbreviations.int) {
-      resistanceValue = targetActor.system.attributes.mind.value;
-    } else if (key === MEGS.attributeAbbreviations.infl) {
-      resistanceValue = targetActor.system.attributes.spirit.value;
-    } else {
-      ui.notifications.error("Invalid attribute selection");
-      return;
-    }
-    return resistanceValue;
-  }
-
-  /**
-   *
-   * @param key
-   * @returns {string}
-   * @private
-   */
-  _getEffectValueForAttribute(key) {
-    // TODO use rolls attribute?
-    // TODO use target actor as well?
-    let effectValue;
-    if (key === MEGS.attributeAbbreviations.dex) {
-      effectValue = this.actor.system.attributes.str.value;
-    } else if (key === MEGS.attributeAbbreviations.int) {
-      effectValue = this.actor.system.attributes.will.value;
-    } else if (key === MEGS.attributeAbbreviations.infl) {
-      effectValue = this.actor.system.attributes.aura.value;
-    } else {
-      ui.notifications.error("Invalid attribute selection");
-      return;
-    }
-    return effectValue;
   }
 
   /** @override **/

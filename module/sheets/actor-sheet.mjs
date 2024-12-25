@@ -583,6 +583,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
         effectValue, resistanceValue, dataset.roll, dataset.unskilled);
+    console.error(rollValues); // TODO remove
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {
     })

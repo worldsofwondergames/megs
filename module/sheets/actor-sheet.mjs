@@ -3,13 +3,15 @@ import {
   prepareActiveEffectCategories,
 } from '../helpers/effects.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs'
+import {Utils} from "../utils.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
 export class MEGSActorSheet extends ActorSheet {
-  /** @override */
+
+    /** @override */
   static get defaultOptions () {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'actor'];
@@ -37,6 +39,7 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override */
   getData () {
+
     // Retrieve the data structure from the base sheet. You can inspect or log
     // the context variable to see the structure, but some key properties for
     // sheets are the actor object, the data object, whether or not it's
@@ -100,7 +103,6 @@ export class MEGSActorSheet extends ActorSheet {
                 // store linked vehicle item
                 if (element._id === context.system.linkedItemId) {
                   context.system.linkedItem = element;
-                  console.error(context.system.linkedItem); // TODO
                 }
 
                 // add to list for header
@@ -165,11 +167,10 @@ export class MEGSActorSheet extends ActorSheet {
    */
   _sortArray(array) {
     const sortedKeys = Object.keys(array).sort();
-    const sortedObject = sortedKeys.reduce((acc, key) => {
+    return sortedKeys.reduce((acc, key) => {
       acc[key] = array[key];
       return acc;
     }, {});
-    return sortedObject;
   }
 
   /**
@@ -314,12 +315,11 @@ export class MEGSActorSheet extends ActorSheet {
     const gadgets = [];
 
     // TODO delete this by 1.0
-    const list = context.items.filter(i => (
+    context.items = context.items.filter(i => (
         (i.system.type !== MEGS.itemTypes.bonus
             && i.system.type !== MEGS.itemTypes.limitation
             && i.system.type !== MEGS.itemTypes.subskill)
         || i.system.parent !== ""));
-    context.items = list;
 
     // Iterate through items, allocating to containers
     context.items.forEach((i) => {
@@ -423,8 +423,10 @@ export class MEGSActorSheet extends ActorSheet {
       li.slideUp(200, () => this.render(false));
     });
 
-    // Active Effect management
-    // TODO delete
+    html.on('click', '.item-roll', this._onRoll.bind(this));
+
+      // Active Effect management
+    // TODO active effects
     // html.on('click', '.effect-control', (ev) => {
     //   const row = ev.currentTarget.closest('li');
     //   const document =
@@ -502,11 +504,11 @@ export class MEGSActorSheet extends ActorSheet {
     if (targetActor) {
       if (dataset.type === MEGS.rollTypes.attribute) {
         opposingValue = targetActor.system.attributes[dataset.key].value;
-        resistanceValue = this._getResistanceValueForAttribute(dataset.key, targetActor);
+        resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
       } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill) {
         if (dataset.link) {
           opposingValue = targetActor.system.attributes[dataset.link].value;
-          resistanceValue = this._getResistanceValueForAttribute(dataset.link, targetActor);
+          resistanceValue = Utils.getResistanceValue(dataset.link, targetActor);
         } else {
           console.error("No linked attribute for "+dataset.name);
         }
@@ -515,7 +517,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     if (dataset.type === MEGS.rollTypes.attribute) {
 
-      effectValue = this._getEffectValueForAttribute(dataset.key);
+      effectValue = Utils.getEffectValue(dataset.key, this.actor);
 
     } else if (dataset.type === MEGS.itemTypes.power || dataset.type === MEGS.itemTypes.skill
         || dataset.type === MEGS.itemTypes.subskill) {
@@ -604,56 +606,8 @@ export class MEGSActorSheet extends ActorSheet {
     return ownedItem;
   }
 
-  /**
-   *
-   * @param key
-   * @param targetActor
-   * @returns {*}
-   * @private
-   */
-  _getResistanceValueForAttribute(key, targetActor) {
-    // TODO use rolls attribute?
-    let resistanceValue;
-    if (key === MEGS.attributeAbbreviations.dex) {
-      resistanceValue = targetActor.system.attributes.body.value;
-    } else if (key === MEGS.attributeAbbreviations.int) {
-      resistanceValue = targetActor.system.attributes.mind.value;
-    } else if (key === MEGS.attributeAbbreviations.infl) {
-      resistanceValue = targetActor.system.attributes.spirit.value;
-    } else {
-      ui.notifications.error("Invalid attribute selection");
-      return;
-    }
-    return resistanceValue;
-  }
-
-  /**
-   *
-   * @param key
-   * @returns {string}
-   * @private
-   */
-  _getEffectValueForAttribute(key) {
-    // TODO use rolls attribute?
-    // TODO use target actor as well?
-    let effectValue;
-    if (key === MEGS.attributeAbbreviations.dex) {
-      effectValue = this.actor.system.attributes.str.value;
-    } else if (key === MEGS.attributeAbbreviations.int) {
-      effectValue = this.actor.system.attributes.will.value;
-    } else if (key === MEGS.attributeAbbreviations.infl) {
-      effectValue = this.actor.system.attributes.aura.value;
-    } else {
-      ui.notifications.error("Invalid attribute selection");
-      return;
-    }
-    return effectValue;
-  }
-
+  /** @override **/
   async _onDrop(event) {
-    const data = TextEditor.getDragEventData(event);
-    console.error(data); // TODO delete
-    console.error(this.actor.items);
     super._onDrop(event);
   }
 

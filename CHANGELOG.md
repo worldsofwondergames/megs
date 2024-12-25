@@ -7,3 +7,8 @@
 - Added generic skill tree
 - Various bug fixes
 
+## 0.5.1 (December 25, 2024)
+- Added direct roll macro capability for skills
+- Fixed bug with unskilled rolls when targeting
+- Minor code cleanup and simplification
+

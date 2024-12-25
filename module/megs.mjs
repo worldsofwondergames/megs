@@ -13,7 +13,6 @@ import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
 import MEGSCombatant from './combat/combatant.js';
 import { MegsTableRolls, RollValues } from './dice.mjs';
-//import MEGSCombatTracker from './combat/combatTracker';
 
 // Turn on hooks logging for debugging
 // CONFIG.debug.hooks = true;
@@ -324,10 +323,22 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
 
 Hooks.once('ready', function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on('hotbarDrop', (bar, data, slot) => createItemMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => {
+    let item = fromUuidSync(data.uuid);
+    if (item && item.system) {
+      createMegsMacro(item, slot);
+      return false;
+    }
+  });
   Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
 });
 
+/**
+ * interceptMegsRoll makes a basic 2d10 roll
+ * @param message
+ * @param data
+ * @returns {boolean}
+ */
 function interceptMegsRoll(message, data) {
   if (message === "/r megs" || message === "/megs") {
     const rollValues = new RollValues("", '', 100, 0, 0,0, 0, '1d10 + 1d10', false);
@@ -344,8 +355,7 @@ function interceptMegsRoll(message, data) {
 /* -------------------------------------------- */
 
 /**
- * Create the MEGS tables from JSON data.
- * Grab the JSON and place it in an object.
+ * Grab the JSON from a file and place it in an object.
  * @param {Object} jsonPath     The path in the Foundry Data directory to the JSON asset
  * @returns {Promise}
  */
@@ -366,28 +376,21 @@ async function _loadData(jsonPath) {
  * @param {number} slot     The hotbar slot to use
  * @returns {Promise}
  */
-async function createItemMacro(data, slot) {
+async function createMegsMacro(item, slot) {
 
-  console.error("createItemMacro")
   console.error(data); // TODO delete
 
-  // First, determine if this is a valid owned item.
-  if (data.type !== 'Item') return;
-  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-    return ui.notifications.warn(
-      'You can only create macro buttons for owned Items'
-    );
-  }
+  const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS RPG System Macros');
 
-
-  // If it is, retrieve it based on the uuid.
-  const item = await Item.fromDropData(data);
-
-  // Create the macro command using the uuid.
-  const command = `game.megs.rollItemMacro("${data.uuid}");`;
-
+  // Create the macro command
+  const command = `game.megs.rollItemMacro("${item.uuid}");`;
   let macro = game.macros.find(
-    (m) => m.name === item.name && m.command === command
+      (m) =>
+          m.name === item.name &&
+          m.command === command &&
+          (m.author === game.user.id ||
+              m.ownership.default >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER ||
+              m.ownership[game.user.id] >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER)
   );
   if (!macro) {
     macro = await Macro.create({
@@ -396,38 +399,35 @@ async function createItemMacro(data, slot) {
       img: item.img,
       command: command,
       flags: { 'megs.itemMacro': true },
+      folder: folder?.id,
+      'ownership.default': CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER,
     });
   }
   game.user.assignHotbarMacro(macro, slot);
-  return false;
 }
 
 /**
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemUuid
+ * @param {string} itemName
+ * @return {Promise}
  */
-function rollItemMacro(itemUuid) {
-  // Reconstruct the drop data so that we can load the item.
-  const dropData = {
-    type: 'Item',
-    uuid: itemUuid,
-  };
-  // Load the item from the uuid.
-  Item.fromDropData(dropData).then((item) => {
-    // Determine if the item loaded and if it's an owned item.
-    if (!item || !item.parent) {
-      const itemName = item?.name ?? itemUuid;
-      return ui.notifications.warn(
-        `Could not find item ${itemName}. You may need to delete and recreate this macro.`
-      );
-    }
+function rollItemMacro(uuid) {
+  const speaker = ChatMessage.getSpeaker();
 
-    console.error(item); // TODO delete
+  let actor;
+  if (speaker.token) actor = game.actors.tokens[speaker.token];
+  if (!actor) actor = game.actors.get(speaker.actor);
+  if (!actor) {
+    const actorId = uuid.match(/^Actor\.([A-Za-z0-9]+)\.Item\..+/)[1];
+    actor = game.actors.get(actorId);
+  }
 
-    // Trigger the item roll
-    item.roll();
-  });
+  const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
+  if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
+
+  // Trigger the item roll
+  return item.roll();
 }
 
 function registerSystemSettings() {

@@ -1,4 +1,6 @@
 import { MEGS } from "../helpers/config.mjs";
+import { MegsTableRolls, RollValues } from "../dice.mjs";
+import { Utils } from "../utils.js"
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -41,6 +43,7 @@ export class MEGSItem extends Item {
     }
 
     // calculate gadget bonus
+    // TODO cost
     if (this.type === MEGS.itemTypes.gadget) {
       if (itemData.canBeTakenAway) {
         this.gadgetBonus = 4;
@@ -85,7 +88,6 @@ export class MEGSItem extends Item {
 
   /**
    * Handle clickable rolls.
-   * @param {Event} event   The originating click event
    * @private
    */
   async roll() {
@@ -94,10 +96,14 @@ export class MEGSItem extends Item {
     // Initialize chat data.
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
-    const label = `[${item.type}] ${item.name}`;
+    const label = `[${item.actor.name}] ${item.name}`;
+
+    if (!this.system.formula && (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) ) {
+      this.rollMegs();
+    }
 
     // If there's no roll data, send a chat message.
-    if (!this.system.formula) {
+    else if (!this.system.formula) {
       ChatMessage.create({
         speaker: speaker,
         rollMode: rollMode,
@@ -121,6 +127,61 @@ export class MEGSItem extends Item {
       });
       return roll;
     }
+  }
+
+  /**
+   *
+   */
+  rollMegs() {
+    // for powers, AV and EV are typically APs of power
+    let actionValue = parseInt(this.system.aps);
+    let effectValue = parseInt(this.system.aps);
+    let opposingValue = 0;
+    let resistanceValue = 0;
+
+    if (this.system.link) {
+      let targetActor = MegsTableRolls.getTargetActor();
+      if (targetActor) {
+        let key;
+
+        // Physical powers - OV and RV are DEX and BODY
+        if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
+          key = MEGS.attributeAbbreviations.str;
+        }
+        // Mental powers - OV and RV are INT and MIND
+        if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
+          key = MEGS.attributeAbbreviations.int;
+        }
+        // Mystical powers - OV and RV are INFL and SPIRIT
+        if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
+          key = MEGS.attributeAbbreviations.infl;
+        }
+
+        opposingValue = Utils.getOpposingValue(key, targetActor);
+        resistanceValue = Utils.getResistanceValue(key, targetActor);
+      }
+    }
+
+    if (this.type === MEGS.itemTypes.power) {
+      // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
+    }
+
+    // values of skills and subskills
+    if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill) {
+      // TDOO anything skill-specific
+    }
+
+    let label = this.name;
+    if (this.parent && this.parent.name) {
+      label = this.parent.name + " - " + label;
+    }
+
+    const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
+        effectValue, resistanceValue, "1d10 + 1d10", this.system.unskilled);
+    const rollTables = new MegsTableRolls(rollValues);
+    rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
+      // no handling happens
+    })
   }
 
   /** @override */

@@ -140,13 +140,15 @@ export class MegsTableRolls {
     const template = "systems/megs/templates/dialogs/rollDialog.hbs";
     const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
     const data = {
+      "valueOrAps": this.valueOrAps,
       "maxHpToSpend": maxHpToSpend,
       "isTargeted": true,
       "combatManeuvers": CONFIG.combatManeuvers,
       "actionValue": this.actionValue,
       "opposingValue": this.opposingValue,
       "effectValue": this.effectValue,
-      "resistanceValue": this.resistanceValue
+      "resistanceValue": this.resistanceValue,
+      "isUnskilled": this.isUnskilled
     };
     const dialogHtml = await this._renderTemplate(template, data);
 

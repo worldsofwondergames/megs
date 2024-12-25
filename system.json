@@ -20,7 +20,7 @@
       "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
     }
   ],
-  "version": "0.4.1",
+  "version": "0.5.1",
   "compatibility": {
     "minimum": 11,
     "verified": "11.315"

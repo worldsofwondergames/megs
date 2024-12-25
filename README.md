@@ -83,21 +83,19 @@ There are a few because of technical and/or design constraints of the platform:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 0.5.0**.
+Do I ever! MEGS for Foundry is currently sitting at **version 0.5.1**.
 
 (Note that everything below is subject to change.)
 
-**Version 0.5.1** (aiming for end of year 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.
-- Tracking all 3 Current attribute fields on a token (Foundry forces you to a max of 2; there's a module called [Bar Brawl](https://foundryvtt.com/packages/barbrawl) that can be installed as a workaround until then)
-- Making pets and vehicles fully work
+**Version 0.5.2** (aiming for end of year 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.
 - Adding an edit lock feature for the page
-- UI fixes to reduce the number of clicks you have to make to take an action
+- Several miscellaneous upgrades and fixes
 
 Issues are tracked [here](https://github.com/codemonkey1972/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Acodemonkey1972%2F4).
 
 Then... **version 1.0.0**, probably around March 2025. Incorporating any feedback I've gotten and:
 - Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
-- Character Builder/Calculator
+- Adding character builder/creator view for characters
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
 And then I rest for a very, very long time. At least until...

@@ -22,7 +22,8 @@
       "Temporary": "Temporary Effects",
       "Passive": "Passive Effects",
       "Inactive": "Inactive Effects"
-    }
+    },
+    "Edit" : "Edit"
   },
 
   "TYPES": {
@@ -54,7 +55,6 @@
       "name": "Show active effects",
       "label": "Check to show active effects"
     }
-  },
+  }
 
-  "Edit" : "Edit"
 }

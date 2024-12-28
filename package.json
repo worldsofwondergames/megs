@@ -56,7 +56,7 @@
     "scss": "sass styles/dcc.scss styles/dcc.css"
   },
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.5.1",
   "dependencies": {
     "handlebars-helpers": "^0.10.0"
   }

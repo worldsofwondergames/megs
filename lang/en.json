@@ -54,5 +54,7 @@
       "name": "Show active effects",
       "label": "Check to show active effects"
     }
-  }
+  },
+
+  "Edit" : "Edit"
 }

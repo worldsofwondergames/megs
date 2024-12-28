@@ -635,7 +635,7 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   _toggleEditMode(_e) {
-    const currentValue = this.actpr.getFlag("megs", "edit-mode");
+    const currentValue = this.actor.getFlag("megs", "edit-mode");
     this.actor.setFlag("megs", "edit-mode", !currentValue);
   }
 

@@ -620,20 +620,18 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override **/
   _getHeaderButtons() {
-    if (this.hasEditMode) {
-      return [
-        {
-          class: "ironsworn-toggle-edit-mode",
-          label: game.i18n.localize("MEGS.Edit"),
-          icon: "fas fa-edit",
-          onclick: (e) => {
-            this._toggleEditMode(e);
-          }
-        },
-        ...super._getHeaderButtons()
-      ];
-    }
-    return super._getHeaderButtons();
+    console.error("TEST1");
+    return [
+      {
+        class: "megs-toggle-edit-mode",
+        label: game.i18n.localize("MEGS.Edit"),
+        icon: "fas fa-edit",
+        onclick: (e) => {
+          this._toggleEditMode(e);
+        }
+      },
+      ...super._getHeaderButtons()
+    ];
   }
 
   _toggleEditMode(_e) {

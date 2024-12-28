@@ -1,7 +1,9 @@
 {
   "author": "Jeff Barnes <codemonkey1972@gmail.com>",
   "babel": {
-    "presets": ["@babel/preset-env"]
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "bugs": {
     "url": "https://github.com/codemonkey1972/megs/issues"
@@ -53,6 +55,9 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --silent=false",
     "scss": "sass styles/dcc.scss styles/dcc.css"
   },
-  "type":"module",
-  "version": "0.2.1"
+  "type": "module",
+  "version": "0.2.1",
+  "dependencies": {
+    "handlebars-helpers": "^0.10.0"
+  }
 }

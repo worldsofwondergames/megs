@@ -620,11 +620,11 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override **/
   _getHeaderButtons() {
-    console.error(CONFIG.MEGS); // TODO delete
+    console.error(MEGS); // TODO delete
     return [
       {
         class: "megs-toggle-edit-mode",
-        label: game.i18n.localize(CONFIG.MEGS.Edit),
+        label: game.i18n.localize(MEGS.Edit),
         icon: "fas fa-edit",
         onclick: (e) => {
           this._toggleEditMode(e);

@@ -11,7 +11,14 @@ import {Utils} from "../utils.js";
  */
 export class MEGSActorSheet extends ActorSheet {
 
-    /** @override */
+  /** @override */
+  constructor(object, options) {
+    super(object, options);
+    console.error(this);
+    this.actor.setFlag("megs", "edit-mode", true);
+  }
+
+  /** @override */
   static get defaultOptions () {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'actor'];
@@ -610,5 +617,29 @@ export class MEGSActorSheet extends ActorSheet {
   async _onDrop(event) {
     super._onDrop(event);
   }
+
+  /** @override **/
+  _getHeaderButtons() {
+    if (this.hasEditMode) {
+      return [
+        {
+          class: "ironsworn-toggle-edit-mode",
+          label: game.i18n.localize("MEGS.Edit"),
+          icon: "fas fa-edit",
+          onclick: (e) => {
+            this._toggleEditMode(e);
+          }
+        },
+        ...super._getHeaderButtons()
+      ];
+    }
+    return super._getHeaderButtons();
+  }
+
+  _toggleEditMode(_e) {
+    const currentValue = this.actpr.getFlag("megs", "edit-mode");
+    this.actpr.setFlag("megs", "edit-mode", !currentValue);
+  }
+
 
 }

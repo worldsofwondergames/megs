@@ -621,7 +621,6 @@ export class MEGSActorSheet extends ActorSheet {
 
   /** @override **/
   _getHeaderButtons() {
-    console.error(MEGS); // TODO delete
     if (this.actor.isOwner) {
       return [
         {

@@ -126,7 +126,7 @@ export class MEGSActorSheet extends ActorSheet {
     // TODO does this do anything in current model?
     context.rollData = context.actor.getRollData();
 
-    // Prepare active effects
+    // TODO Prepare active effects
     context.effects = prepareActiveEffectCategories(
         // A generator that returns all effects stored on the actor
         // as well as any items
@@ -406,6 +406,8 @@ export class MEGSActorSheet extends ActorSheet {
   activateListeners (html) {
     super.activateListeners(html);
 
+    html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
+
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '.item-edit', (ev) => {
       const li = $(ev.currentTarget).parents('.item');
@@ -638,8 +640,6 @@ export class MEGSActorSheet extends ActorSheet {
 
   _toggleEditMode(_e) {
     const currentValue = this.actor.getFlag("megs", "edit-mode");
-    console.error("TEST1: "+currentValue);
-    console.error(this.actor.flags);
     this.actor.setFlag("megs", "edit-mode", !currentValue);
   }
 

@@ -23,7 +23,8 @@
       "Passive": "Passive Effects",
       "Inactive": "Inactive Effects"
     },
-    "Edit" : "Edit"
+    "Edit" : "Edit",
+    "Name": "Name"
   },
 
   "TYPES": {

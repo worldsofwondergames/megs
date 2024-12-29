@@ -7,7 +7,7 @@
         {{else}}
           <div>{{actor.name}}</div>
         {{/if}}
-        {{if !actor.isOwner}} <!-- TODO-->
+        {{#if !actor.isOwner}} <!-- TODO-->
           <button type="button" title="Click to toggle locked status of page" class="lockPageIcon
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
           "></button>

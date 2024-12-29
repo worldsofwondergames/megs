@@ -624,7 +624,7 @@ export class MEGSActorSheet extends ActorSheet {
     return [
       {
         class: "megs-toggle-edit-mode",
-        label: game.i18n.localize(MEGS.Edit),
+        label: game.i18n.localize(MEGS.Edit) ?? "Edit",
         icon: "fas fa-edit",
         onclick: (e) => {
           this._toggleEditMode(e);
@@ -637,6 +637,7 @@ export class MEGSActorSheet extends ActorSheet {
   _toggleEditMode(_e) {
     const currentValue = this.actor.getFlag("megs", "edit-mode");
     console.error("TEST1: "+currentValue);
+    console.error(this.actor.flags);
     this.actor.setFlag("megs", "edit-mode", !currentValue);
   }
 

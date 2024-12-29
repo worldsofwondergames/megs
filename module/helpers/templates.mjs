@@ -6,6 +6,7 @@
 export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
     // Actor partials.
+    'systems/megs/templates/actor/parts/actor-attributes.hbs',
     'systems/megs/templates/actor/parts/actor-header.hbs',
     'systems/megs/templates/actor/parts/actor-init-hp.hbs',
     'systems/megs/templates/actor/parts/actor-navigation.hbs',

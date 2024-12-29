@@ -13,8 +13,8 @@ export class MEGSItemSheet extends ItemSheet {
   /** @override */
   constructor(object, options) {
     super(object, options);
-    console.error(this);
-   // this.actor.setFlag("megs", "edit-mode", true);
+    console.error(this); // TODO remove
+    this.actor.setFlag("megs", "edit-mode", true);
   }
 
   /** @override */

@@ -23,8 +23,12 @@
       "Passive": "Passive Effects",
       "Inactive": "Inactive Effects"
     },
+    "Abilities": "Abilities",
+    "APs": "APs",
     "Edit" : "Edit",
-    "Name": "Name"
+    "Name": "Name",
+    "Roll": "Roll",
+    "TotalCost": "Total Cost"
   },
 
   "TYPES": {

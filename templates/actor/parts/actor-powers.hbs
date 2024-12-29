@@ -1,9 +1,9 @@
 <ol class='items-list'>
   <li class='item flexrow items-header'>
     <div class='item-name'>{{localize 'MEGS.Name'}}</div>
-    <div class='item-aps'>{{localize 'APs'}}</div>
+    <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
     {{#if showHeroPointCosts}}
-    <div class='item-total-cost'>{{localize 'Total Cost'}}</div>
+    <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
     {{/if}}
     <div class='item-controls'>
       <a
@@ -48,7 +48,7 @@
       {{/if}}
       <div class='item-controls'>
         <a
-          class='item-control d10 rollable' title='{{localize "Roll"}} {{item.name}}'
+          class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}}'
           data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{item.system.aps}}" data-type="power"
           data-link="{{item.system.link}}" 
         >

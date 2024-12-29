@@ -340,7 +340,7 @@
   padding: 0;
   border-bottom: 0;
 }
-.megs .sheet-header h1.charname input {
+.megs .sheet-header h1.charname input[name="name"], .megs .sheet-header h1.charname div[name="name"] {
   float: left;
   flex-grow: 1;
   height: 50px;

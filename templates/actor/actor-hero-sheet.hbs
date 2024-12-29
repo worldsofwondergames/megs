@@ -13,6 +13,7 @@
     <div class="tab abilities" data-group="primary" data-tab="abilities">
 
     {{> "systems/megs/templates/actor/parts/actor-init-hp.hbs"}}
+        {{flags.megs.edit-mode}}
 
     {{#each system.attributes as |attribute key|}}
       {{#if (isDivisor 3 @index)}}

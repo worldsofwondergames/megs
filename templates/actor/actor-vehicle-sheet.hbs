@@ -38,7 +38,7 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
+          <label for="system.currentBody.value" class="resource-label">{{system.currentBody.label}}</label>
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{> plusMinusInput id='currentBody' classes='current-input' value=system.linkedItem.system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}

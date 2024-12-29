@@ -11,13 +11,6 @@ import { Utils } from "../utils.js"
 export class MEGSItemSheet extends ItemSheet {
 
   /** @override */
-  constructor(object, options) {
-    super(object, options);
-    console.error(this);
-   // this.actor.setFlag("megs", "edit-mode", true);
-  }
-
-  /** @override */
   static get defaultOptions() {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'item'];

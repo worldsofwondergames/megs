@@ -15,20 +15,24 @@
         "currentBody": {
           "value": 0,
           "min": 0,
-          "max": 60
+          "max": 60,
+          "label": "Current Body"
         },
         "currentMind": {
           "value": 0,
           "min": 0,
-          "max": 60
+          "max": 60,
+          "label": "Current Mind"
         },
         "currentSpirit": {
           "value": 0,
           "min": 0,
-          "max": 60
+          "max": 60,
+          "label": "Current Spirit"
         },
         "heroPoints": {
-          "value": 0
+          "value": 0,
+          "label": "Hero Points"
         },
         "settings": {
           "hideZeroAPSkills": true
@@ -221,17 +225,20 @@
         "currentBody": {
           "value": 0,
           "min": 0,
-          "max": 60
+          "max": 60,
+          "label": "Current Body"
         },
         "currentMind": {
           "value": 0,
           "min": 0,
-          "max": 60
+          "max": 60,
+          "label": "Current Mind"
         },
         "currentSpirit": {
           "value": 0,
           "min": 0,
-          "max": 60
+          "max": 60,
+          "label": "Current Spirit"
         }
       },
       "abilities": {

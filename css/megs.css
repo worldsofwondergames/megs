@@ -346,6 +346,11 @@
   height: 50px;
   margin: 5px 5px 0 0;
 }
+.megs .sheet-header h1.charname div[name="name"] {
+  padding: 5px 0 0 3px;
+  background-color: #1f5079;
+  color: #fff;
+}
 .megs .sheet-header h1.charname button {
   background-size: cover;
   float: right;

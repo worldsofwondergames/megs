@@ -343,6 +343,9 @@
 .megs .sheet-header h1.charname.isLocked {
   background-color: #1f5079;
 }
+.megs .sheet-header h1.charname.isUnlocked {
+  background-color: #fff;
+}
 .megs .sheet-header h1.charname input[name="name"], .megs .sheet-header h1.charname div[name="name"] {
   float: left;
   flex-grow: 1;
@@ -351,7 +354,6 @@
 }
 .megs .sheet-header h1.charname div[name="name"] {
   padding: 5px 0 0 3px;
-  background-color: #1f5079;
   color: #fff;
 }
 .megs .sheet-header h1.charname button {

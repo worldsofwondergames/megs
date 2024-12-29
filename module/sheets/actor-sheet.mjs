@@ -14,7 +14,6 @@ export class MEGSActorSheet extends ActorSheet {
   /** @override */
   constructor(object, options) {
     super(object, options);
-    console.error(this);
     this.actor.setFlag("megs", "edit-mode", true);
   }
 
@@ -621,17 +620,20 @@ export class MEGSActorSheet extends ActorSheet {
   /** @override **/
   _getHeaderButtons() {
     console.error(MEGS); // TODO delete
-    return [
-      {
-        class: "megs-toggle-edit-mode",
-        label: game.i18n.localize(MEGS.Edit) ?? "Edit",
-        icon: "fas fa-edit",
-        onclick: (e) => {
-          this._toggleEditMode(e);
-        }
-      },
-      ...super._getHeaderButtons()
-    ];
+    if (this.actor.isOwner) {
+      return [
+        {
+          class: "megs-toggle-edit-mode",
+          label: game.i18n.localize(MEGS.Edit) ?? "Edit",
+          icon: "fas fa-edit",
+          onclick: (e) => {
+            this._toggleEditMode(e);
+          }
+        },
+        ...super._getHeaderButtons()
+      ];
+    }
+    return super._getHeaderButtons();
   }
 
   _toggleEditMode(_e) {

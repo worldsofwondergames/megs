@@ -16,7 +16,7 @@
 
         <p>TEST1: {{flags.megs.edit-mode}}</p>
     {{#each system.attributes as |attribute key|}}
-        <p>TEST2: {{flags.megs.edit-mode}}</p>
+        <p>TEST2: {{../flags.megs.edit-mode}}</p>
       {{#if (isDivisor 3 @index)}}
        <section class="attributes grid grid-3col attributeRow">
       {{/if}}
@@ -28,7 +28,7 @@
               {{attribute.label}}
             </label>
 <!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
-        {{#if flags.megs.edit-mode}}
+        {{#if ../flags.megs.edit-mode}}
             <div class="quantity attribute-input">
               <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
               <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>

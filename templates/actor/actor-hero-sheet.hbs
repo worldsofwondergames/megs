@@ -14,9 +14,7 @@
 
     {{> "systems/megs/templates/actor/parts/actor-init-hp.hbs"}}
 
-        <p>TEST1: {{flags.megs.edit-mode}}</p>
     {{#each system.attributes as |attribute key|}}
-        <p>TEST2: {{../flags.megs.edit-mode}}</p>
       {{#if (isDivisor 3 @index)}}
        <section class="attributes grid grid-3col attributeRow">
       {{/if}}

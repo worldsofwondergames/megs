@@ -27,7 +27,7 @@
               {{attribute.label}}
             </label>
 <!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
-        {{flags.megs.edit-mode}}
+        TEST: {{flags.megs.edit-mode}}
         {{#if flags.megs.edit-mode}}
             <div class="quantity attribute-input">
               <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>

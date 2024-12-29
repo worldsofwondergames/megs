@@ -809,6 +809,7 @@ details summary.no-arrow {
 
 .quantity.attribute-input {
   border: 0;
+  text-align: center;
 }
 
 .quantity.attribute-input button {

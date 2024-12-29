@@ -44,7 +44,7 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.currentSpirit.value" class="resource-label">{{system.currentSpirit.label}}</label>
+          <label for="system.currentSpirit.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Spirit"}}</label>
           <div>
            <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}

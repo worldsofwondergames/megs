@@ -15,6 +15,7 @@ export class MEGSActorSheet extends ActorSheet {
   constructor(object, options) {
     super(object, options);
     this.actor.setFlag("megs", "edit-mode", true);
+    console.error(this); // TODO delete
   }
 
   /** @override */

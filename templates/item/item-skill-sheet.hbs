@@ -59,7 +59,7 @@
       <section class="attributes grid grid-3col">
 
         <div class="attribute flex-group-center">
-          <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'Linked Attribute'}}">{{localize 'Link'}}</label>
+          <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedAttribute'}}">{{localize 'MEGS.Link'}}</label>
           <div>
         {{#unless hasActor}}
             <select  class="resource-select"  name="system.link" data-type="String">
@@ -77,42 +77,41 @@
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'Is Linked?'}}">{{localize 'Is Linked?'}}</label>
+          <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsLinked'}}">{{localize 'MEGS.IsLinked'}}</label>
           <div>
         {{#if hasActor}}
             <select  class="resource-select"  name="system.isLinked" data-type="String">
               {{#select system.isLinked}}
-                  <option  value="false">{{localize 'No'}}</option>
-                  <option  value="true">{{localize 'Yes'}}</option>
+                  <option  value="false">{{localize 'MEGS.No'}}</option>
+                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
+        {{else}}
+          {{localize MEGS.'No'}}
         {{/if}}
-        {{#unless hasActor}}
-          {{localize 'No'}}
-        {{/unless}}
           </div>
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'Use Unskilled?'}}">{{localize 'Use Unskilled?'}}</label>
+          <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.UseUnskilled'}}">{{localize 'MEGS.UseUnskilled'}}</label>
           <div>
         {{#unless hasActor}}
             <select  class="resource-select"  name="system.useUnskilled" data-type="String">
               {{#select system.useUnskilled}}
-                  <option  value="true">{{localize 'Yes'}}</option>
-                  <option  value="false">{{localize 'No'}}</option>
+                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
+                  <option  value="false">{{localize 'MEGS.No'}}</option>
               {{/select}}
             </select>
         {{/unless}}
         {{#if hasActor}}
-          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'Yes'}}{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'No'}}{{/if}}
+          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
+          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
         {{/if}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'Range'}}</label>
+          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
           <div>
         {{#unless hasActor}}
             <select  class="resource-select"  name="system.range" data-type="String">
@@ -130,7 +129,7 @@
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'Type'}}">{{localize 'Type'}}</label>
+          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize MEGS.'Type'}}</label>
            <div>
         {{#unless hasActor}}
             <select  class="resource-select"  name="system.type" data-type="String">
@@ -166,10 +165,10 @@
     <div class="tab subskills" data-group="primary" data-tab="subskills">
       <ol class='items-list'>
         <li class='item flexrow items-header grid-8col'>
-          <div class='item-name grid-span-5'>{{localize 'Name'}}</div>
-          <div class='item-aps grid-span-1'>{{localize 'APs'}}</div>
+          <div class='item-name grid-span-5'>{{localize 'MEGS.Name'}}</div>
+          <div class='item-aps grid-span-1'>{{localize 'MEGS.APs'}}</div>
           {{#if showHeroPointCosts}}
-          <div class='item-total-cost grid-span-1'>{{localize 'Total Cost'}}</div>
+          <div class='item-total-cost grid-span-1'>{{localize 'MEGS.TotalCost'}}</div>
           {{/if}}
           <div class='item-controls grid-span-1'>&nbsp;</div>
         </li>
@@ -209,7 +208,7 @@
           <div class='item-controls'>
             {{#if subskill.isRollable}}
             <a
-              class='item-control d10 rollable' title='{{localize "Roll"}} {{subskill.name}}
+              class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{subskill.name}}
               {{#if isUnskilled}}Unskilled{{/if}}
               '
               data-label="{{subskill.name}}" data-roll="1d10 + 1d10" data-value="{{subskill.effectiveAPs}}" data-type="subskill"

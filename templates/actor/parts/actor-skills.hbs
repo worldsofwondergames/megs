@@ -9,10 +9,10 @@
 
 <ol class='items-list'>
   <li class='item flexrow items-header'>
-    <div class='item-name'>{{localize 'Name'}}</div>
-    <div class='item-aps'>{{localize 'APs'}}</div>
+    <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+    <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
     {{#if showHeroPointCosts}}
-    <div class='item-total-cost'>{{localize 'Total Cost'}}</div>
+    <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
     {{/if}}
     <div class='item-controls'></div>
   </li>
@@ -73,7 +73,7 @@
           {{#unless item.system.aps}}
             {{#if (compare item.system.useUnskilled '===' 'true')}}
         <a
-          class='item-control d10 rollable' title='{{localize "Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}'
+          class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}'
           data-label="{{item.name}}" data-roll="1d10 + 1d10"
               {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
               {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}
@@ -89,7 +89,7 @@
           {{/unless}}
           {{#if item.system.aps}}
         <a
-          class='item-control d10 rollable' title='{{localize "Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}'
+          class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}'
           data-label="{{item.name}}" data-roll="1d10 + 1d10" 
         {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}}
         {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}}

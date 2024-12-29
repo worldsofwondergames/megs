@@ -4,11 +4,11 @@
       {{!-- Gadget values --}}
       <section class="gadget-properties grid grid-2coll border-bottom">
         <div class="gadget-property flex-group-center">
-          <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'Action Value'}}">{{localize 'Action Value'}}</label>
+          <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
           {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
         </div>
         <div class="gadget-property flex-group-center">
-          <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'Effect Value'}}">{{localize 'Effect Value'}}</label>
+          <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.EffectValue'}}">{{localize 'MEGS.EffectValue'}}</label>
           {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
         </div>
 
@@ -48,7 +48,7 @@
         <section class="gadget-properties grid grid-3col">
 
           <div class="gadget-property flex-group-center">
-            <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'Quantity'}}">{{localize 'Quantity'}}</label>
+            <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Quantity'}}">{{localize 'MEGS.Quantity'}}</label>
             <div>
             {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
             </div>
@@ -56,14 +56,14 @@
 
         {{#if (compare system.weapon.isWeapon "eq" "true")}}
           <div class="gadget-property flex-group-center">
-            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'Range'}}">{{localize 'Range'}}</label>
+            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Range'}}">{{localize 'MEGS.Range'}}</label>
             <div>
             {{> plusMinusInput id='range' classes='attribute-input' min=1 value=system.weapon.range}}
             </div>
           </div>
 
           <div class="gadget-property flex-group-center">
-            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'Ammo'}}">{{localize 'Ammo'}}</label>
+            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Ammo'}}">{{localize 'MEGS.Ammo'}}</label>
             <div>
             {{> plusMinusInput id='ammo' classes='attribute-input' min=0 value=system.weapon.ammo}}
             </div>
@@ -71,36 +71,36 @@
         {{/if}}
           
           <div class="gadget-property flex-group-center">
-            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Is Carried?'}}</label>
+            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsCarried'}}">{{localize 'MEGS.IsCarried'}}</label>
             <div>
             <select  class="resource-select"  name="system.isCarried" data-type="String">
               {{#select system.isCarried}}
-                  <option value="true">{{localize 'Yes'}}</option>
-                  <option value="false">{{localize 'No'}}</option>
+                  <option value="true">{{localize 'MEGS.Yes'}}</option>
+                  <option value="false">{{localize 'MEGS.No'}}</option>
               {{/select}}
             </select>
             </div>
           </div>
           
           <div class="gadget-property flex-group-center">
-            <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'Can Be Taken Away?'}}">{{localize 'Can Be Taken Away?'}}</label>
+            <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.CanBeTakenAway'}}">{{localize 'MEGS.CanBeTakenAway'}}</label>
             <div>
             <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
               {{#select system.canBeTakenAway}}
-                  <option value="false">{{localize 'No'}}</option>
-                  <option value="true">{{localize 'Yes'}}</option>
+                  <option value="false">{{localize 'MEGS.No'}}</option>
+                  <option value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
             </div>
           </div>
           
           <div class="gadget-property flex-group-center">
-            <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'Has Hardened Defenses?'}}">{{localize 'Has Hardened Defenses?'}}</label>
+            <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.HasHardenedDefenses'}}">{{localize 'MEGS.HasHardenedDefenses'}}</label>
             <div>
             <select  class="resource-select"  name="system.hasHardenedDefenses" data-type="String">
               {{#select system.hasHardenedDefenses}}
-                <option  value="false">{{localize 'No'}}</option>
-                <option  value="true">{{localize 'Yes'}}</option>
+                <option  value="false">{{localize 'MEGS.No'}}</option>
+                <option  value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
             </div>
@@ -108,17 +108,17 @@
 
           {{!-- Gadget reliability --}}
           <div class="gadget-property flex-group-center">
-            <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Reliability'}}">{{localize 'Reliability'}}</label>
+            <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
             {{> plusMinusInput id='reliability' classes='attribute-input' min=0 value=system.reliability}}
           </div>
 
           <div class="gadget-property flex-group-center">
-            <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'Is Broken?'}}">{{localize 'Is Broken?'}}</label>
+            <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsBroken'}}">{{localize 'MEGS.IsBroken'}}</label>
             <div>
             <select  class="resource-select"  name="system.isBroken" data-type="String">
               {{#select system.isBroken}}
-                  <option  value="false">{{localize 'No'}}</option>
-                  <option  value="true">{{localize 'Yes'}}</option>
+                  <option  value="false">{{localize 'MEGS.No'}}</option>
+                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
             </div>

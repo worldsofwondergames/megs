@@ -13,7 +13,7 @@ const COLUMN_SHIFT_THRESHOLD = 11;
 export class MegsRoll extends Roll {
   async toMessage(dialogHtml={}, {rollMode, create=true}={}) {
 
-    const msg = await ChatMessage.create(
+    return await ChatMessage.create(
       {
         user: game.user.id,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
@@ -21,8 +21,6 @@ export class MegsRoll extends Roll {
         sound: CONFIG.sounds.dice
       }
     );
-    
-    return msg;
   }
 }
 
@@ -103,11 +101,11 @@ export class MegsTableRolls {
         content: dialogHtml,
         buttons: {
           button2: {
-            label: game.i18n.localize("Close"),
+            label: game.i18n.localize("MEGS.Close"),
             callback: () => {},
           },
           button1: {
-            label: game.i18n.localize("Submit"),
+            label: game.i18n.localize("MEGS.Submit"),
             callback: (html) => {
               const response = this._processOpposingValuesEntry(html[0].querySelector('form'));
               this.actionValue = response.actionValue;
@@ -124,7 +122,7 @@ export class MegsTableRolls {
       }).render(true);
 
     } else if (game.user.targets.size > 1) {
-      ui.notifications.warn(localize("You can only target one token."));
+      ui.notifications.warn(localize("MEGS.ErrorMessages.OnlyOneTarget"));
     } else {
       // use target token for OV and RV values
       await this._handleTargetedRolls(label);
@@ -391,6 +389,8 @@ export class MegsTableRolls {
   /**
    *
    * @param data
+   * @param roll
+   * @param callingPoint
    * @returns {Promise<void>}
    * @private
    */

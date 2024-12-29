@@ -25,17 +25,17 @@
       {{/unless}}
 
         <div class="resource flex-group-center">
-          <label for="system.baseCost" class="resource-label">{{localize 'Base'}}</label>
+          <label for="system.baseCost" class="resource-label">{{localize 'MEGS.Base'}}</label>
           {{> plusMinusInput id='baseCost' classes='current-input' min=0 value=system.baseCost}}
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.factorCost" class="resource-label">{{localize 'Factor'}}</label>
+          <label for="system.factorCost" class="resource-label">{{localize 'MEGS.Factor'}}</label>
           {{> plusMinusInput id='factorCost' classes='current-input' min=0 value=system.factorCost}}
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.aps" class="resource-label">{{localize 'APs'}}</label>
+          <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
           {{#if hasActor}}
           {{> plusMinusInput id='aps' classes='current-input' min=0 value=system.aps}}
           {{/if}}
@@ -48,7 +48,7 @@
 
       {{#if showHeroPointCosts}}
         <div class="resource flex-group-center">
-          <label for="system.totalCost" class="resource-label">{{localize 'Total'}}</label>
+          <label for="system.totalCost" class="resource-label">{{localize 'MEGS.Total'}}</label>
           <div class="resource-content flexrow flex-center flex-between">
           {{#if hasActor}}
             <span>{{system.totalCost}}</span>
@@ -81,7 +81,7 @@
       <section class="attributes grid grid-3col">
 
         <div class="attribute flex-group-center">
-          <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'Linked Attribute'}}">{{localize 'Link'}}</label>
+          <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedAttribute'}}">{{localize 'MEGS.Link'}}</label>
           <div>
             <select  class="resource-select"  name="system.link" data-type="String">
               {{#select system.link}}
@@ -96,7 +96,7 @@
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'Is Linked?'}}">{{localize 'Is Linked?'}}</label>
+          <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsLinked'}}">{{localize 'MEGS.IsLinked'}}</label>
           <div>
           {{#if hasActor}}
           <select  class="resource-select"  name="system.isLinked" data-type="String">
@@ -107,13 +107,13 @@
           </select>
           {{/if}}
           {{#unless hasActor}}
-          {{localize 'No'}}
+          {{localize 'MEGS.No'}}
           {{/unless}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'Range'}}</label>
+          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
           <div>
             {{#if (compare system.range "eq" "numeric")}}
             <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
@@ -133,7 +133,7 @@
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'Type'}}">{{localize 'Type'}}</label>
+          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
            <div>
           <select  class="resource-select"  name="system.type" data-type="String">
             {{#select system.type}}
@@ -146,7 +146,7 @@
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'Source'}}">{{localize 'Source'}}</label>
+          <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Source'}}">{{localize 'MEGS.Source'}}</label>
            <div>
           <select  class="resource-select"  name="system.source" data-type="String">
             {{#select system.source}}
@@ -159,18 +159,18 @@
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'Activate Free?'}}">{{localize 'Activate Free?'}}</label>
+          <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActivateFree'}}">{{localize 'MEGS.ActivateFree'}}</label>
           <div>
           {{#if hasActor}}
           <select  class="resource-select"  name="system.activateFree" data-type="String">
             {{#select system.activateFree}}
-                <option  value="false">{{localize 'No'}}</option>
-                <option  value="true">{{localize 'Yes'}}</option>
+                <option  value="false">{{localize 'MEGS.No'}}</option>
+                <option  value="true">{{localize 'MEGS.Yes'}}</option>
             {{/select}}
           </select>
           {{/if}}
           {{#unless hasActor}}
-          {{localize 'No'}}
+          {{localize 'MEGS.No'}}
           {{/unless}}
           </div>
         </div>
@@ -194,11 +194,11 @@
             <div class="grid-2col-header">Bonuses</div>
             <ol class='items-list'>
               <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                 <div class='item-controls'>
                   <a
                     class='item-control item-create'
-                    title='{{localize "DOCUMENT.Create" type='Bonus'}}'
+                    title='{{localize "DOCUMENT.Create" type='MEGS.Bonus'}}'
                     data-type='bonus'
                   >
                     <i class='fas fa-plus'></i>
@@ -249,11 +249,11 @@
             <div class="grid-2col-header">Limitations</div>
             <ol class='items-list'>
               <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                 <div class='item-controls'>
                   <a
                     class='item-control item-create'
-                    title='{{localize "DOCUMENT.New" type='Limitation'}}'
+                    title='{{localize "DOCUMENT.New" type='MEGS.Limitation'}}'
                     data-type='limitation'
                   >
                     <i class='fas fa-plus'></i>

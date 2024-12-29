@@ -43,17 +43,17 @@ export function prepareActiveEffectCategories(effects) {
   const categories = {
     temporary: {
       type: 'temporary',
-      label: game.i18n.localize('MEGS.Effect.Temporary'),
+      label: game.i18n.localize('MEGS.Effects.Temporary'),
       effects: [],
     },
     passive: {
       type: 'passive',
-      label: game.i18n.localize('MEGS.Effect.Passive'),
+      label: game.i18n.localize('MEGS.Effects.Passive'),
       effects: [],
     },
     inactive: {
       type: 'inactive',
-      label: game.i18n.localize('MEGS.Effect.Inactive'),
+      label: game.i18n.localize('MEGS.Effects.Inactive'),
       effects: [],
     },
   };

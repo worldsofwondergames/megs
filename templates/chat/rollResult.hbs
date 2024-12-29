@@ -6,15 +6,15 @@
 <details class="grid-span-2 megs-chat-roll">
     <div class="grid grid-2col megs-chat">
         <div class="flex-group-center chat-value">
-            <label class="flexlarge align-left">{{localize 'Action Value'}}</label>
+            <label class="flexlarge align-left">{{localize 'MEGS.ActionValue'}}</label>
             <div>{{actionValue}}</div>        
         </div>
         <div class="flex-group-center chat-value">
-            <label class="flexlarge align-left">{{localize 'Opposing Value'}}</label>
+            <label class="flexlarge align-left">{{localize 'MEGS.OpposingValue'}}</label>
             <div>{{opposingValue}}</div>        
         </div>
         <div class="flex-group-center grid-span-2 chat-result">
-            {{localize 'Difficulty'}}: {{difficulty}}
+            {{localize 'MEGS.Difficulty'}}: {{difficulty}}
         </div>
         <div class="flex-group-center grid-span-2 chat-result inverse">
             {{#each dice}}
@@ -25,22 +25,22 @@
         <div class="flex-group-center grid-span-2 chat-result">
             {{columnShifts}} 
             {{#if isOneColumnShift}}
-            {{localize 'Column Shift'}}
+            {{localize 'MEGS.ColumnShift'}}
             {{/if}}
             {{#unless isOneColumnShift}}
-            {{localize 'Column Shifts'}}
+            {{localize 'MEGS.ColumnShifts'}}
             {{/unless}}
         </div>
         <div class="flex-group-center chat-value">
-            <label class="flexlarge align-left">{{localize 'Effect Value'}}</label>
+            <label class="flexlarge align-left">{{localize 'MEGS.EffectValue'}}</label>
             <div>{{effectValue}}</div>        
         </div>
         <div class="flex-group-center chat-value">
-            <label class="flexlarge align-left">{{localize 'Resistance Value'}}</label>
+            <label class="flexlarge align-left">{{localize 'MEGS.ResistanceValue'}}</label>
             <div>{{resistanceValue}}</div>        
         </div>
         <div class="flex-group-center grid-span-2 chat-result inverse">
-            {{localize 'Effect table result'}}: {{evResult}}
+            {{localize 'MEGS.EffectTableResult'}}: {{evResult}}
         </div>
         {{/if}}
     </div>

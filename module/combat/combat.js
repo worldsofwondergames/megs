@@ -137,8 +137,9 @@ export default class MEGSCombat extends Combat {
   }
 
   /**
-   * 
-   * @param {*} maxHpToSpend 
+   *
+   * @param combatantName
+   * @param {*} maxHpToSpend
    */
   async getHeroPointsForInitiative(combatantName, maxHpToSpend) {
     const template = "systems/megs/templates/actor/dialogs/initiativeDialog.hbs";
@@ -146,22 +147,22 @@ export default class MEGSCombat extends Combat {
       "maxHpToSpend": maxHpToSpend,
     };
     let dialogHtml = await renderTemplate(template, data);
-    let label = game.i18n.localize("Hero Points") + " - " + game.i18n.localize("Initiative");
+    let label = game.i18n.localize("MEGS.HeroPoints") + " - " + game.i18n.localize("MEGS.Initiative");
     if (combatantName) {
-      label = combatantName  + " - " + game.i18n.localize("Initiative");
+      label = combatantName  + " - " + game.i18n.localize("MEGS.Initiative");
     }
-    
-    let promise = await new Promise((resolve, reject) => {
+
+    return await new Promise((resolve, reject) => {
       const d = new Dialog({
         title: label,
         content: dialogHtml,
         buttons: {
           button2: {
-            label: game.i18n.localize("Close"),
+            label: game.i18n.localize("MEGS.Close"),
             callback: (html) => {},
           },
           button1: {
-            label: game.i18n.localize("Submit"),
+            label: game.i18n.localize("MEGS.Submit"),
             callback: (html) => {
               const response = this._processHeroPointsEntry(html[0].querySelector('form'));
               resolve(response.hpSpentInitiative);
@@ -172,8 +173,6 @@ export default class MEGSCombat extends Combat {
       }).render(true);
     })
   .catch(err => {throw err});
-
-  return promise
 }
 
   

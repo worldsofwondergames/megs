@@ -2,11 +2,17 @@
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
     <div class="header-fields">
       <h1 class="charname">
+        {{#if flags.megs.edit-mode}}
           <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+        {{else}}
+          <div>{{actor.name}}</div>
+        {{/if}}
+        {{if !actor.isOwner}} <!-- TODO-->
           <button type="button" title="Click to toggle locked status of page" class="lockPageIcon
-          {{#if flags.megs.edit-mode}}isLocked{{else}}isUnlocked{{/if}}
+        {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
           "></button>
-          {{isOwner}}
+        {{/if}}
+        {{actor.isOwner}}<!-- TODO-->
       </h1>
       {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
       use both the "grid" and "grid-Ncol" class where "N" can be any number

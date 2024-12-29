@@ -4,8 +4,9 @@
       <h1 class="charname">
           <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
           <button type="button" title="Click to toggle locked status of page" class="lockPageIcon
-          {{#if lags.megs.edit-mode}}isLocked{{else}}isUnlocked{{/if}}
+          {{#if flags.megs.edit-mode}}isLocked{{else}}isUnlocked{{/if}}
           "></button>
+
       </h1>
       {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
       use both the "grid" and "grid-Ncol" class where "N" can be any number

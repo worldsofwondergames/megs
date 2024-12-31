@@ -6,11 +6,11 @@
       <div class="resources grid grid-4col">
       {{#if isRollable}}
         <div class="grid-span-3">
-      {{/if}}
-      {{#unless isRollable}}
+      {{else}}
         <div class="grid-span-4">
-      {{/unless}}
-          <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      {{/if}}
+      {{!-- Item name --}}
+      {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
         </div>
       {{#if isRollable}}
         <div class="d10 grid-span-1 rollable" data-type="Roll" data-uuid="{{item.uuid}}" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{system.aps}}" data-link="{{system.link}}">&nbsp;</div>

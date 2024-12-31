@@ -13,7 +13,6 @@ export class MEGSItemSheet extends ItemSheet {
   /** @override */
   constructor(object, options) {
     super(object, options);
-    console.error(this.object.isOwner); // TODO remove
     this.object.setFlag("megs", "edit-mode", true);
   }
 
@@ -743,7 +742,7 @@ export class MEGSItemSheet extends ItemSheet {
 
   _toggleEditMode(_e) {
     const currentValue = this.object.getFlag("megs", "edit-mode");
-    this.actor.setFlag("megs", "edit-mode", !currentValue);
+    this.object.setFlag("megs", "edit-mode", !currentValue);
   }
 
 }

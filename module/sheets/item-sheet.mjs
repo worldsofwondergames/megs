@@ -13,6 +13,7 @@ export class MEGSItemSheet extends ItemSheet {
   /** @override */
   constructor(object, options) {
     super(object, options);
+    console.error(this); // TODO delete
     this.object.setFlag("megs", "edit-mode", true);
   }
 

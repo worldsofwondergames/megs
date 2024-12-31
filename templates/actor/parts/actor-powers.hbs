@@ -36,8 +36,9 @@
           </a>
         </div>
         <a
-          class='item-control item-edit'
-          title='{{localize "DOCUMENT.Update" type=item.name}}'
+          class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}}'
+          data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{item.system.aps}}" data-type="power"
+          data-link="{{item.system.link}}"
         >
           {{item.name}}
         </a>

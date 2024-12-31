@@ -13,8 +13,10 @@ export class MEGSItemSheet extends ItemSheet {
   /** @override */
   constructor(object, options) {
     super(object, options);
-    console.error(this); // TODO delete
-    this.object.setFlag("megs", "edit-mode", true);
+    console.error(this.object.isOwner); // TODO delete
+    // default to uneditable if user is not owner or from a compendium
+    const isUnlocked = this.object.isOwner && !this.object._stats.compendiumSource;
+    this.object.setFlag("megs", "edit-mode", isUnlocked);
   }
 
   /** @override */

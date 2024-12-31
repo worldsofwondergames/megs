@@ -22,7 +22,11 @@
     ' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>
-          <a class='rollable' data-roll-type='item'>
+            <a
+              class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}}'
+              data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{item.system.aps}}" data-type="power"
+              data-link="{{item.system.link}}"
+            >
             <img
               src='{{item.img}}'
               title='{{item.name}}'

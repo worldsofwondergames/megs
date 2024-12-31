@@ -378,8 +378,6 @@ async function _loadData(jsonPath) {
  */
 async function createMegsMacro(item, slot) {
 
-  console.error(data); // TODO delete
-
   const folder = game.folders.filter((f) => f.type === 'Macro').find((f) => f.name === 'MEGS RPG System Macros');
 
   // Create the macro command

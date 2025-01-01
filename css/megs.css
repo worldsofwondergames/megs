@@ -443,6 +443,10 @@
   font-size: 22px;
 }
 
+.megs .resource div {
+  font-size: 24px;
+}
+
 .megs .sheet-header .attribute label,
 .megs .sheet-body .initiative-and-hp label,
 .megs .sheet-body .gadget-properties label,

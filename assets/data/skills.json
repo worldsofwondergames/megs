@@ -165,7 +165,7 @@
                     "type": "dice"
                 },
                 {
-                    "name": "Riding",
+                    "name": "Persuasion",
                     "range": "self",
                     "useUnskilled": false,
                     "type": "dice"

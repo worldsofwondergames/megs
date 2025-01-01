@@ -30,7 +30,11 @@
           <div class="gadget-property flex-group-center">
             <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Quantity'}}">{{localize 'MEGS.Quantity'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
+          {{else}}
+            {{system.quantity}}
+          {{/if}}
             </div>
           </div>
 

@@ -10,12 +10,7 @@
         <div class="grid-span-4">
       {{/unless}}
           <h1 class="charname">
-        {{#if system.parent}}
-          {{item.name}}
-        {{/if}}
-        {{#unless system.parent}}
             <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
-        {{/unless}}
           </h1>
         </div>
       {{#if isRollable}}

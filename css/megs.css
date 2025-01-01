@@ -872,5 +872,6 @@ details summary.no-arrow {
 }
 
 .megs .indentLeft {
-  padding-left: 5px;
+  padding-left: 15px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
 }

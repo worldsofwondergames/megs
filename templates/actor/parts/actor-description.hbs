@@ -1,22 +1,32 @@
       <section class="grid-1col description-item">
         <div class="flex-group-left">
           <label for="system.alterEgo" class="resource-label flexlarge align-left" data-label="{{system.alterEgo}}">{{localize 'MEGS.AlterEgo'}}</label>
-         {{#if flags.megs.edit-mode}}
-         <input type="text" name="system.alterEgo" value="{{system.alterEgo}}" data-dtype="string"/>
-         {{else}}
-         <div class="indentLeft">{{system.alterEgo}}</div>
-         {{/if}}
+          {{#if flags.megs.edit-mode}}
+          <input type="text" name="system.alterEgo" value="{{system.alterEgo}}" data-dtype="string"/>
+          {{else}}
+          <div class="indentLeft">
+            {{#if system.alterEgo}}
+            {{system.alterEgo}}
+            {{else}}
+            ({{localize 'MEGS.None'}})
+            {{/if}}
+          </div>
+          {{/if}}
         </div>
       </section>
 
       <section class="grid-1col description-item">
         <div class="flex-group-left">
           <label for="system.motivation" class="resource-label flexlarge align-left" data-label="{{system.motivation}}">{{localize 'MEGS.Motivation'}}</label>
-         {{#if flags.megs.edit-mode}}
+          {{#if flags.megs.edit-mode}}
           <input type="text" name="system.motivation" value="{{system.motivation}}" data-dtype="string"/>
-         {{else}}
-         <div class="indentLeft">{{system.motivation}}</div>
-         {{/if}}
+          {{else}}
+            {{#if system.motivation}}
+            {{system.motivation}}
+            {{else}}
+            ({{localize 'MEGS.None'}})
+            {{/if}}
+          {{/if}}
         </div>
       </section>
 
@@ -26,7 +36,11 @@
          {{#if flags.megs.edit-mode}}
           <input type="text" name="system.occupation" value="{{system.occupation}}" data-dtype="string"/>
          {{else}}
-         <div class="indentLeft">{{system.occupation}}</div>
+            {{#if system.occupation}}
+            {{system.occupation}}
+            {{else}}
+            ({{localize 'MEGS.None'}})
+            {{/if}}
          {{/if}}
         </div>
       </section>
@@ -37,7 +51,11 @@
          {{#if flags.megs.edit-mode}}
           <input type="text" name="system.wealth" value="{{system.wealth}}" data-dtype="number"/>
          {{else}}
-         <div class="indentLeft">{{system.wealth}}</div>
+            {{#if system.wealth}}
+            {{system.wealth}}
+            {{else}}
+            ({{localize 'MEGS.None'}})
+            {{/if}}
          {{/if}}
         </div>
       </section>
@@ -46,5 +64,9 @@
       {{#if flags.megs.edit-mode}}
       {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
       {{else}}
-      <div class="indentLeft">{{system.biography}}</div>
+        {{#if system.biography}}
+        {{system.biography}}
+        {{else}}
+        ({{localize 'MEGS.None'}})
+        {{/if}}
       {{/if}}

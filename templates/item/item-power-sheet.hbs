@@ -127,13 +127,13 @@
        <div class="attribute flex-group-center">
           <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
           <div>
+          {{#if flags.megs.edit-mode}}
             {{#if (compare system.range "eq" "numeric")}}
             <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
             <select class="resource-select numericSelected" name="system.range" data-type="string">
-            {{/if}}
-            {{#unless (compare system.range "eq" "numeric")}}
+            {{else}}
             <select class="resource-select" name="system.range" data-type="string">
-            {{/unless}}
+            {{/if}}
               {{#select system.range}}
                   {{#each system.ranges as |range key|}}
                   <option  value="{{key}}">{{range}}</option>
@@ -141,49 +141,59 @@
                   <option value="varies">Varies</option>
               {{/select}}
             </select>
+          {{else}}
+            <span>{{system.range}}</span>
+          {{/if}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
           <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
-           <div>
-          <select  class="resource-select"  name="system.type" data-type="String">
-            {{#select system.type}}
-              {{#each system.powerTypes as |powerType key|}}
-            <option value="{{key}}">{{powerType}}</option>
-              {{/each}}
-            {{/select}}
-          </select>
-          </div>
+          <div>
+        {{#if flags.megs.edit-mode}}
+            <select  class="resource-select"  name="system.type" data-type="String">
+                {{#select system.type}}
+                  {{#each system.powerTypes as |powerType key|}}
+                <option value="{{key}}">{{powerType}}</option>
+                  {{/each}}
+                {{/select}}
+            </select>
+        {{else}}
+            <span>{{system.type}}</span>
+        {{/if}}
         </div>
+      </div>
 
         <div class="attribute flex-group-center">
           <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Source'}}">{{localize 'MEGS.Source'}}</label>
            <div>
-          <select  class="resource-select"  name="system.source" data-type="String">
-            {{#select system.source}}
-              {{#each system.powerSources as |powerSource key|}}
-            <option value="{{key}}">{{powerSource}}</option>
-              {{/each}}
-            {{/select}}
-          </select>
+        {{#if flags.megs.edit-mode}}
+               <select  class="resource-select"  name="system.source" data-type="String">
+                {{#select system.source}}
+                  {{#each system.powerSources as |powerSource key|}}
+                <option value="{{key}}">{{powerSource}}</option>
+                  {{/each}}
+                {{/select}}
+              </select>
+        {{else}}
+            <span>{{system.source}}</span>
+        {{/if}}
           </div>
         </div>
 
         <div class="attribute flex-group-center">
           <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActivateFree'}}">{{localize 'MEGS.ActivateFree'}}</label>
           <div>
-          {{#if hasActor}}
+        {{#if hasActor}}
           <select  class="resource-select"  name="system.activateFree" data-type="String">
             {{#select system.activateFree}}
                 <option  value="false">{{localize 'MEGS.No'}}</option>
                 <option  value="true">{{localize 'MEGS.Yes'}}</option>
             {{/select}}
           </select>
-          {{/if}}
-          {{#unless hasActor}}
+        {{else}}
           {{localize 'MEGS.No'}}
-          {{/unless}}
+        {{/if}}
           </div>
         </div>
               

@@ -185,6 +185,7 @@
         <div class="attribute flex-group-center">
           <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActivateFree'}}">{{localize 'MEGS.ActivateFree'}}</label>
           <div>
+      {{#if flags.megs.edit-mode}}
         {{#if hasActor}}
           <select  class="resource-select"  name="system.activateFree" data-type="String">
             {{#select system.activateFree}}
@@ -195,6 +196,9 @@
         {{else}}
           {{localize 'MEGS.No'}}
         {{/if}}
+      {{else}}
+        <span>{{system.activateFree}}</span>
+      {{/if}}
           </div>
         </div>
               
@@ -219,6 +223,7 @@
               <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                 <div class='item-controls'>
+             {{#if flags.megs.edit-mode}}
                   <a
                     class='item-control item-create'
                     title='{{localize "DOCUMENT.Create" type='MEGS.Bonus'}}'
@@ -228,6 +233,7 @@
                     {{localize 'DOCUMENT.New' type='item'}}
                   </a>
                 </div>
+             {{/if}}
               </li>
               {{#each bonuses as |item id|}}
                 <li class='item flexrow item-row' data-item-id='{{item._id}}'>
@@ -256,12 +262,14 @@
                     >
                       <i class='fas fa-edit'></i>
                     </a>
+             {{#if ../flags.megs.edit-mode}}
                     <a
                       class='item-control item-delete'
                       title='{{localize "DOCUMENT.Delete" type='Item'}}'
                     >
                       <i class='fas fa-trash'></i>
                     </a>
+              {{/if}}
                   </div>
                 </li>
               {{/each}}
@@ -274,6 +282,7 @@
               <li class='item flexrow items-header'>
                 <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                 <div class='item-controls'>
+             {{#if flags.megs.edit-mode}}
                   <a
                     class='item-control item-create'
                     title='{{localize "DOCUMENT.New" type='MEGS.Limitation'}}'
@@ -282,6 +291,7 @@
                     <i class='fas fa-plus'></i>
                     {{localize 'DOCUMENT.New' type='item'}}
                   </a>
+              {{/if}}
                 </div>
               </li>
               {{#each limitations as |item id|}}
@@ -311,12 +321,14 @@
                     >
                       <i class='fas fa-edit'></i>
                     </a>
+             {{#if ../flags.megs.edit-mode}}
                     <a
                       class='item-control item-delete'
                       title='{{localize "DOCUMENT.Delete" type='Item'}}'
                     >
                       <i class='fas fa-trash'></i>
                     </a>
+              {{/if}}
                   </div>
                 </li>
               {{/each}}

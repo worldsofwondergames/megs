@@ -17,6 +17,7 @@
   </li>
   {{#each gadgets as |item id|}}
     <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+
       <div class='item-name'>
         <div class='item-image'>
           <a class="item-control item-edit">
@@ -42,10 +43,13 @@
           <span style="font-weight: normal">&nbsp;x{{item.system.quantity}}</span>
         {{/if}}
       </div>
+
       <div class="item-description">
         {{getGadgetDescription item}}
       </div>
+
       <div class='item-controls'>
+    <!--
         {{#if item.rollable}}
         <a class="item-control d10 rollable" 
             title="Roll {{item.name}}" 
@@ -65,6 +69,7 @@
         >
           <i class='fas fa-edit'></i>
         </a>
+
         {{#if flags.megs.edit-mode}}
         <a
           class='item-control item-delete'
@@ -72,8 +77,8 @@
         >
           <i class='fas fa-trash'></i>
         </a>
-    TEST
         {{/if}}
+        -->
       </div>
     </li>
   {{/each}}

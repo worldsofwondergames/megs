@@ -14,7 +14,8 @@ export class MEGSActorSheet extends ActorSheet {
   /** @override */
   constructor(object, options) {
     super(object, options);
-    this.actor.setFlag("megs", "edit-mode", this.actor.isOwner);
+    const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
+    this.actor.setFlag("megs", "edit-mode", isUnlocked);
   }
 
   /** @override */

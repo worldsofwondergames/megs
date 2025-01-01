@@ -21,11 +21,13 @@
           {{#if flags.megs.edit-mode}}
           <input type="text" name="system.motivation" value="{{system.motivation}}" data-dtype="string"/>
           {{else}}
+          <div class="indentLeft">
             {{#if system.motivation}}
             {{system.motivation}}
             {{else}}
             ({{localize 'MEGS.None'}})
             {{/if}}
+          </div>
           {{/if}}
         </div>
       </section>
@@ -36,11 +38,13 @@
          {{#if flags.megs.edit-mode}}
           <input type="text" name="system.occupation" value="{{system.occupation}}" data-dtype="string"/>
          {{else}}
+          <div class="indentLeft">
             {{#if system.occupation}}
             {{system.occupation}}
             {{else}}
             ({{localize 'MEGS.None'}})
             {{/if}}
+          </div>
          {{/if}}
         </div>
       </section>
@@ -51,11 +55,13 @@
          {{#if flags.megs.edit-mode}}
           <input type="text" name="system.wealth" value="{{system.wealth}}" data-dtype="number"/>
          {{else}}
+          <div class="indentLeft">
             {{#if system.wealth}}
             {{system.wealth}}
             {{else}}
             ({{localize 'MEGS.None'}})
             {{/if}}
+          </div>
          {{/if}}
         </div>
       </section>
@@ -64,9 +70,11 @@
       {{#if flags.megs.edit-mode}}
       {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
       {{else}}
+        <div class="indentLeft">
         {{#if system.biography}}
         {{system.biography}}
         {{else}}
         ({{localize 'MEGS.None'}})
         {{/if}}
+        </div>
       {{/if}}

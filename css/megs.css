@@ -870,3 +870,7 @@ details summary.no-arrow {
 .megs div.tab.readableText label {
   font-family: 'Helvetica', 'Arial', sans-serif;
 }
+
+.megs .indentLeft {
+  padding-left: 5px;
+}

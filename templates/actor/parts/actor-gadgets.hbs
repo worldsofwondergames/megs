@@ -3,6 +3,7 @@
     <div class='item-name'>{{localize 'MEGS.Name'}}</div>
     <div class='item-description'>{{localize 'MEGS.Description'}}</div>
     <div class='item-controls'>
+      {{#if flags.megs.edit-mode}}
       <a
         class='item-control item-create'
         title='{{localize "DOCUMENT.Create" type='Gadget'}}'
@@ -11,6 +12,7 @@
         <i class='fas fa-plus'></i>
         {{localize 'DOCUMENT.New' type='Item'}}
       </a>
+    {{/if}}
     </div>
   </li>
   {{#each gadgets as |item id|}}
@@ -63,12 +65,14 @@
         >
           <i class='fas fa-edit'></i>
         </a>
+        {{#if flags.megs.edit-mode}}
         <a
           class='item-control item-delete'
           title='{{localize "DOCUMENT.Delete" type='Item'}}'
         >
           <i class='fas fa-trash'></i>
         </a>
+        {{/if}}
       </div>
     </li>
   {{/each}}

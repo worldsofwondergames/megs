@@ -6,6 +6,7 @@
     <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
     {{/if}}
     <div class='item-controls'>
+      {{#if flags.megs.edit-mode}}
       <a
         class='item-control item-create'
         title='{{localize "DOCUMENT.Create" type='Power'}}'
@@ -14,6 +15,7 @@
         <i class='fas fa-plus'></i>
         {{localize 'DOCUMENT.New' type='power'}}
       </a>
+      {{/if}}
     </div>
   </li>
   {{#each powers as |item id|}}
@@ -39,11 +41,11 @@
         </a>
       </div>
       <div class='item-aps'>
-          {{item.system.aps}}
+        {{item.system.aps}}
       </div>
       {{#if showHeroPointCosts}}
       <div class='item-total-cost'>
-          {{item.system.totalCost}}
+        {{item.system.totalCost}}
       </div>
       {{/if}}
       <div class='item-controls'>

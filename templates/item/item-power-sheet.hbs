@@ -9,6 +9,7 @@
       {{else}}
         <div class="grid-span-4">
       {{/if}}
+
       {{!-- Item name --}}
       {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
         </div>
@@ -28,7 +29,7 @@
         {{#if flags.megs.edit-mode}}
           {{> plusMinusInput id='baseCost' classes='current-input' min=0 value=system.baseCost}}
         {{else}}
-          <span>{{system.baseCost}}</span>
+          <div>{{system.baseCost}}</div>
         {{/if}}
         </div>
 
@@ -37,7 +38,7 @@
         {{#if flags.megs.edit-mode}}
           {{> plusMinusInput id='factorCost' classes='current-input' min=0 value=system.factorCost}}
         {{else}}
-          <span>{{system.factorCost}}</span>
+          <div>{{system.factorCost}}</div>
         {{/if}}
         </div>
 

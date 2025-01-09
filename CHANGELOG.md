@@ -12,3 +12,7 @@
 - Fixed bug with unskilled rolls when targeting
 - Minor code cleanup and simplification
 
+## 0.5.2 (January 11, 2025)
+ - Edit lock capability for actors and items
+ - Macro fixes and simplification for skills/subskills
+ - Bug fixes from user submissions

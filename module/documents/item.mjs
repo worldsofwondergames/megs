@@ -91,13 +91,15 @@ export class MEGSItem extends Item {
    * @private
    */
   async roll() {
+    console.error("TEST: item.roll()"); // TDOO delete 
     const item = this;
 
     // Initialize chat data.
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
     const label = `[${item.actor.name}] ${item.name}`;
-
+;
+    console.error("TEST1: "+this.system.formula); // TODO delete
     if (!this.system.formula && (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) ) {
       this.rollMegs();
     }
@@ -133,6 +135,8 @@ export class MEGSItem extends Item {
    *
    */
   rollMegs() {
+    console.error("TEST: item.rollMegs()"); // TDOO delete 
+
     // for powers, AV and EV are typically APs of power
     let actionValue = parseInt(this.system.aps);
     let effectValue = parseInt(this.system.aps);

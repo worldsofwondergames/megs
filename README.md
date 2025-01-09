@@ -69,7 +69,7 @@ You got it. Let's move on.
 
 It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
-The current version (0.5.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
+The current version (0.5.1) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get out of beta.
 

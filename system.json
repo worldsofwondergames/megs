@@ -37,8 +37,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/73-steal-edit-capability-from-ironsworn-1/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/73-steal-edit-capability-from-ironsworn-1/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/main/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/main/",
   "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {
     "distance": 5,

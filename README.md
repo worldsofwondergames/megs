@@ -11,7 +11,7 @@
 
 ### Wait: 3.5 or 4 editions?
 
-[The Batman Role-Playing Game](https://en.wikipedia.org/wiki/Batman_Role-Playing_Game) was a simplified DC Heroes rules set with a few new rules put out in 1989, between the 2nd and 3rd editions of DC Heroes and coincidentally at the same time as the first Tim Burton Batman movie came out.
+[The Batman Role-Playing Game](https://en.wikipedia.org/wiki/Batman_Role-Playing_Game) was a simplified DC Heroes rules set with a few new rules put out in 1989, between the 1st and 2nd editions of DC Heroes and coincidentally at the same time as the first Tim Burton Batman movie came out.
 
 ### What does it have to do with West End Games' DC Universe RPG or Green Ronin's DC Adventures?
 

@@ -69,7 +69,7 @@ You got it. Let's move on.
 
 It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
-The current version (0.5.1) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
+The current version (0.5.2) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get out of beta.
 
@@ -83,11 +83,11 @@ There are a few because of technical and/or design constraints of the platform:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 0.5.1**.
+Do I ever! MEGS for Foundry is currently sitting at **version 0.5.2**.
 
 (Note that everything below is subject to change.)
 
-**Version 0.5.2** (aiming for end of year 2024) deals with a lot of Foundry technical implementation details you won't care about. Suffice it to say some of the code is... not great, either because I didn't know the best way to do it in Foundry, or because it was 3 AM and I just needed whatever I was working on done so I could get a few hours of sleep before work.
+**Version 0.6.0** (aiming for March 2025) deals with a lot of Foundry technical implementation details you won't care about. Also:
 - Adding an edit lock feature for the page
 - Several miscellaneous upgrades and fixes
 

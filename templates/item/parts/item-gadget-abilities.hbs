@@ -4,42 +4,30 @@
       {{!-- Gadget values --}}
       <section class="gadget-properties grid grid-2coll border-bottom">
         <div class="gadget-property flex-group-center">
-          <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'Action Value'}}">{{localize 'Action Value'}}</label>
+          <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
+          {{#if flags.megs.edit-mode}}
           {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
+          {{else}}
+            {{system.actionValue}}
+          {{/if}}
         </div>
         <div class="gadget-property flex-group-center">
-          <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'Effect Value'}}">{{localize 'Effect Value'}}</label>
+          <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.EffectValue'}}">{{localize 'MEGS.EffectValue'}}</label>
+          {{#if flags.megs.edit-mode}}
           {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
+          {{else}}
+            {{system.effectValue}}
+          {{/if}}
         </div>
 
       </section>
 
       {{!-- Gadget attributes --}}
-      <details open>
+      <details open> <!-- TODO use flags for open -->
         <summary class="item-summary">Attributes {{gadgetAttributesDetailsOpen}}</summary>
 
-      {{#each system.attributes as |attribute key|}}
-        {{#if (isDivisor 3 @index)}}
-        <section class="attributes grid grid-3col attributeRow">
-        {{/if}}
-            <div class="attribute flex-group-center">
-              <label for="system.attributes.{{key}}.value" 
-                  class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
-                  data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
-                  data-value="{{attribute.value}}" data-key="{{key}}">
-                {{attribute.label}}
-              </label>
-  <!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
-              <div class="quantity attribute-input">
-                <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
-                <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>
-                <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
-              </div>
-            </div>
-        {{#if (isDivisor 3 (sum @index 1))}}
-          </section>
-      {{/if}}
-    {{/each}}
+    {{> "systems/megs/templates/actor/parts/actor-attributes.hbs"}}
+
       </details>
 
       {{!-- Gadget misc properties --}}
@@ -48,79 +36,111 @@
         <section class="gadget-properties grid grid-3col">
 
           <div class="gadget-property flex-group-center">
-            <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'Quantity'}}">{{localize 'Quantity'}}</label>
+            <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Quantity'}}">{{localize 'MEGS.Quantity'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
+          {{else}}
+            {{system.quantity}}
+          {{/if}}
             </div>
           </div>
 
         {{#if (compare system.weapon.isWeapon "eq" "true")}}
           <div class="gadget-property flex-group-center">
-            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'Range'}}">{{localize 'Range'}}</label>
+            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Range'}}">{{localize 'MEGS.Range'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             {{> plusMinusInput id='range' classes='attribute-input' min=1 value=system.weapon.range}}
+          {{else}}
+            {{system.weapon.range}}
+          {{/if}}
             </div>
           </div>
 
           <div class="gadget-property flex-group-center">
-            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'Ammo'}}">{{localize 'Ammo'}}</label>
+            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Ammo'}}">{{localize 'MEGS.Ammo'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             {{> plusMinusInput id='ammo' classes='attribute-input' min=0 value=system.weapon.ammo}}
+          {{else}}
+            {{system.weapon.ammo}}
+          {{/if}}
             </div>
           </div>
         {{/if}}
           
           <div class="gadget-property flex-group-center">
-            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'Is Carried?'}}">{{localize 'Is Carried?'}}</label>
+            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsCarried'}}">{{localize 'MEGS.IsCarried'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.isCarried" data-type="String">
               {{#select system.isCarried}}
-                  <option value="true">{{localize 'Yes'}}</option>
-                  <option value="false">{{localize 'No'}}</option>
+                  <option value="true">{{localize 'MEGS.Yes'}}</option>
+                  <option value="false">{{localize 'MEGS.No'}}</option>
               {{/select}}
             </select>
+          {{else}}
+            {{system.isCarried}}
+          {{/if}}
             </div>
           </div>
           
           <div class="gadget-property flex-group-center">
-            <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'Can Be Taken Away?'}}">{{localize 'Can Be Taken Away?'}}</label>
+            <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.CanBeTakenAway'}}">{{localize 'MEGS.CanBeTakenAway'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
               {{#select system.canBeTakenAway}}
-                  <option value="false">{{localize 'No'}}</option>
-                  <option value="true">{{localize 'Yes'}}</option>
+                  <option value="false">{{localize 'MEGS.No'}}</option>
+                  <option value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
+          {{else}}
+            {{system.canBeTakenAway}}
+          {{/if}}
             </div>
           </div>
           
           <div class="gadget-property flex-group-center">
-            <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'Has Hardened Defenses?'}}">{{localize 'Has Hardened Defenses?'}}</label>
+            <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.HasHardenedDefenses'}}">{{localize 'MEGS.HasHardenedDefenses'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.hasHardenedDefenses" data-type="String">
               {{#select system.hasHardenedDefenses}}
-                <option  value="false">{{localize 'No'}}</option>
-                <option  value="true">{{localize 'Yes'}}</option>
+                <option  value="false">{{localize 'MEGS.No'}}</option>
+                <option  value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
+          {{else}}
+            {{system.hasHardenedDefenses}}
+          {{/if}}
             </div>
           </div>
 
           {{!-- Gadget reliability --}}
           <div class="gadget-property flex-group-center">
-            <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'Reliability'}}">{{localize 'Reliability'}}</label>
+            <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
+          {{#if flags.megs.edit-mode}}
             {{> plusMinusInput id='reliability' classes='attribute-input' min=0 value=system.reliability}}
+          {{else}}
+            {{system.reliability}}
+          {{/if}}
           </div>
 
           <div class="gadget-property flex-group-center">
-            <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'Is Broken?'}}">{{localize 'Is Broken?'}}</label>
+            <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsBroken'}}">{{localize 'MEGS.IsBroken'}}</label>
             <div>
+          {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.isBroken" data-type="String">
               {{#select system.isBroken}}
-                  <option  value="false">{{localize 'No'}}</option>
-                  <option  value="true">{{localize 'Yes'}}</option>
+                  <option  value="false">{{localize 'MEGS.No'}}</option>
+                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
+          {{else}}
+            {{system.isBroken}}
+          {{/if}}
             </div>
           </div>
         </section>

@@ -6,7 +6,7 @@
       {{/unless}}
 
         <div class="resource flex-group-center">
-          <label for="system.baseCost" class="resource-label">{{localize 'Base'}}</label>
+          <label for="system.baseCost" class="resource-label">{{localize 'MEGS.Base'}}</label>
           {{#if hasActor}}
           <div class="resource-content flexrow flex-center flex-between">
             <span>{{system.baseCost}}</span>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.factorCost" class="resource-label">{{localize 'Factor'}}</label>
+          <label for="system.factorCost" class="resource-label">{{localize 'MEGS.Factor'}}</label>
             {{#if hasActor}}
             <div class="resource-content flexrow flex-center flex-between">
               <span>{{system.factorCost}}</span>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.aps" class="resource-label">{{localize 'APs'}}</label>
+          <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
           {{#if hasActor}}
           {{> plusMinusInput id='aps' classes='current-input' min=minAPs max=maxAPs value=system.aps}}
           {{/if}}
@@ -53,7 +53,7 @@
 
       {{#if showHeroPointCosts}}
         <div class="resource flex-group-center">
-          <label for="system.totalCost" class="resource-label">{{localize 'Total'}}</label>
+          <label for="system.totalCost" class="resource-label">{{localize 'MEGS.Total'}}</label>
           <div class="resource-content flexrow flex-center flex-between">
           {{#if hasActor}}
             {{#if (compare system.aps "===" 0)}}

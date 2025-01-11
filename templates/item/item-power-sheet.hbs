@@ -6,11 +6,12 @@
       <div class="resources grid grid-4col">
       {{#if isRollable}}
         <div class="grid-span-3">
-      {{/if}}
-      {{#unless isRollable}}
+      {{else}}
         <div class="grid-span-4">
-      {{/unless}}
-          <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      {{/if}}
+
+      {{!-- Item name --}}
+      {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
         </div>
       {{#if isRollable}}
         <div class="d10 grid-span-1 rollable" data-type="Roll" data-uuid="{{item.uuid}}" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{system.aps}}" data-link="{{system.link}}">&nbsp;</div>
@@ -19,43 +20,48 @@
  
       {{#if showHeroPointCosts}}
       <div class="resources grid grid-4col">
-      {{/if}}
-      {{#unless showHeroPointCosts}}
+      {{else}}
       <div class="resources grid grid-3col">
-      {{/unless}}
+      {{/if}}
 
         <div class="resource flex-group-center">
-          <label for="system.baseCost" class="resource-label">{{localize 'Base'}}</label>
+          <label for="system.baseCost" class="resource-label">{{localize 'MEGS.Base'}}</label>
+        {{#if flags.megs.edit-mode}}
           {{> plusMinusInput id='baseCost' classes='current-input' min=0 value=system.baseCost}}
+        {{else}}
+          <div>{{system.baseCost}}</div>
+        {{/if}}
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.factorCost" class="resource-label">{{localize 'Factor'}}</label>
+          <label for="system.factorCost" class="resource-label">{{localize 'MEGS.Factor'}}</label>
+        {{#if flags.megs.edit-mode}}
           {{> plusMinusInput id='factorCost' classes='current-input' min=0 value=system.factorCost}}
+        {{else}}
+          <div>{{system.factorCost}}</div>
+        {{/if}}
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.aps" class="resource-label">{{localize 'APs'}}</label>
-          {{#if hasActor}}
+          <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
+        {{#if hasActor}}
           {{> plusMinusInput id='aps' classes='current-input' min=0 value=system.aps}}
-          {{/if}}
-          {{#unless hasActor}}
+        {{else}}
           <div class="resource-content flexrow flex-center flex-between">
             <span>&mdash;</span>
           </div>
-          {{/unless}}
+        {{/if}}
         </div>
 
       {{#if showHeroPointCosts}}
         <div class="resource flex-group-center">
-          <label for="system.totalCost" class="resource-label">{{localize 'Total'}}</label>
+          <label for="system.totalCost" class="resource-label">{{localize 'MEGS.Total'}}</label>
           <div class="resource-content flexrow flex-center flex-between">
           {{#if hasActor}}
             <span>{{system.totalCost}}</span>
-          {{/if}}
-          {{#unless hasActor}}
+          {{else}}
             <span>&mdash;</span>
-          {{/unless}}
+          {{/if}}
           </div>
         </div>
       {{/if}}
@@ -81,47 +87,54 @@
       <section class="attributes grid grid-3col">
 
         <div class="attribute flex-group-center">
-          <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'Linked Attribute'}}">{{localize 'Link'}}</label>
+          <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedAttribute'}}">{{localize 'MEGS.Link'}}</label>
           <div>
+        {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.link" data-type="String">
               {{#select system.link}}
                   {{#each system.attributes as |attribute key|}}
                   <option  value="{{key}}">{{attribute.label}}</option>
                   {{/each}}
-                  <option  value="special">Special</option>                  
-                  <option  value="none">None</option>                  
+                  <option  value="special">{{localize 'MEGS.Special'}}</option>
+                  <option  value="none">{{localize 'MEGS.None'}}</option>
               {{/select}}
             </select>
+        {{else}}
+          <span>{{system.link}}</span>
+        {{/if}}
           </div>
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'Is Linked?'}}">{{localize 'Is Linked?'}}</label>
+          <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsLinked'}}">{{localize 'MEGS.IsLinked'}}</label>
           <div>
-          {{#if hasActor}}
+        {{#if hasActor}}
+          {{#if flags.megs.edit-mode}}
           <select  class="resource-select"  name="system.isLinked" data-type="String">
             {{#select system.isLinked}}
                 <option  value="false">{{localize 'No'}}</option>
                 <option  value="true">{{localize 'Yes'}}</option>
             {{/select}}
           </select>
-          {{/if}}
-          {{#unless hasActor}}
-          {{localize 'No'}}
-          {{/unless}}
+            {{else}}
+                <span>{{system.isLinked}}</span>
+            {{/if}}
+        {{else}}
+          {{localize 'MEGS.No'}}
+        {{/if}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'Range'}}</label>
+          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
           <div>
+          {{#if flags.megs.edit-mode}}
             {{#if (compare system.range "eq" "numeric")}}
             <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
             <select class="resource-select numericSelected" name="system.range" data-type="string">
-            {{/if}}
-            {{#unless (compare system.range "eq" "numeric")}}
+            {{else}}
             <select class="resource-select" name="system.range" data-type="string">
-            {{/unless}}
+            {{/if}}
               {{#select system.range}}
                   {{#each system.ranges as |range key|}}
                   <option  value="{{key}}">{{range}}</option>
@@ -129,49 +142,63 @@
                   <option value="varies">Varies</option>
               {{/select}}
             </select>
+          {{else}}
+            <span>{{system.range}}</span>
+          {{/if}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'Type'}}">{{localize 'Type'}}</label>
-           <div>
-          <select  class="resource-select"  name="system.type" data-type="String">
-            {{#select system.type}}
-              {{#each system.powerTypes as |powerType key|}}
-            <option value="{{key}}">{{powerType}}</option>
-              {{/each}}
-            {{/select}}
-          </select>
-          </div>
-        </div>
-
-        <div class="attribute flex-group-center">
-          <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'Source'}}">{{localize 'Source'}}</label>
-           <div>
-          <select  class="resource-select"  name="system.source" data-type="String">
-            {{#select system.source}}
-              {{#each system.powerSources as |powerSource key|}}
-            <option value="{{key}}">{{powerSource}}</option>
-              {{/each}}
-            {{/select}}
-          </select>
-          </div>
-        </div>
-
-        <div class="attribute flex-group-center">
-          <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'Activate Free?'}}">{{localize 'Activate Free?'}}</label>
+          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
           <div>
-          {{#if hasActor}}
+        {{#if flags.megs.edit-mode}}
+            <select  class="resource-select"  name="system.type" data-type="String">
+                {{#select system.type}}
+                  {{#each system.powerTypes as |powerType key|}}
+                <option value="{{key}}">{{powerType}}</option>
+                  {{/each}}
+                {{/select}}
+            </select>
+        {{else}}
+            <span>{{system.type}}</span>
+        {{/if}}
+        </div>
+      </div>
+
+        <div class="attribute flex-group-center">
+          <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Source'}}">{{localize 'MEGS.Source'}}</label>
+           <div>
+        {{#if flags.megs.edit-mode}}
+               <select  class="resource-select"  name="system.source" data-type="String">
+                {{#select system.source}}
+                  {{#each system.powerSources as |powerSource key|}}
+                <option value="{{key}}">{{powerSource}}</option>
+                  {{/each}}
+                {{/select}}
+              </select>
+        {{else}}
+            <span>{{system.source}}</span>
+        {{/if}}
+          </div>
+        </div>
+
+        <div class="attribute flex-group-center">
+          <label for="system.activateFree" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActivateFree'}}">{{localize 'MEGS.ActivateFree'}}</label>
+          <div>
+      {{#if flags.megs.edit-mode}}
+        {{#if hasActor}}
           <select  class="resource-select"  name="system.activateFree" data-type="String">
             {{#select system.activateFree}}
-                <option  value="false">{{localize 'No'}}</option>
-                <option  value="true">{{localize 'Yes'}}</option>
+                <option  value="false">{{localize 'MEGS.No'}}</option>
+                <option  value="true">{{localize 'MEGS.Yes'}}</option>
             {{/select}}
           </select>
-          {{/if}}
-          {{#unless hasActor}}
-          {{localize 'No'}}
-          {{/unless}}
+        {{else}}
+          {{localize 'MEGS.No'}}
+        {{/if}}
+      {{else}}
+        <span>{{system.activateFree}}</span>
+      {{/if}}
           </div>
         </div>
               
@@ -194,17 +221,19 @@
             <div class="grid-2col-header">Bonuses</div>
             <ol class='items-list'>
               <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                 <div class='item-controls'>
+             {{#if flags.megs.edit-mode}}
                   <a
                     class='item-control item-create'
-                    title='{{localize "DOCUMENT.Create" type='Bonus'}}'
+                    title='{{localize "DOCUMENT.Create" type='MEGS.Bonus'}}'
                     data-type='bonus'
                   >
                     <i class='fas fa-plus'></i>
                     {{localize 'DOCUMENT.New' type='item'}}
                   </a>
                 </div>
+             {{/if}}
               </li>
               {{#each bonuses as |item id|}}
                 <li class='item flexrow item-row' data-item-id='{{item._id}}'>
@@ -233,12 +262,14 @@
                     >
                       <i class='fas fa-edit'></i>
                     </a>
+             {{#if ../flags.megs.edit-mode}}
                     <a
                       class='item-control item-delete'
                       title='{{localize "DOCUMENT.Delete" type='Item'}}'
                     >
                       <i class='fas fa-trash'></i>
                     </a>
+              {{/if}}
                   </div>
                 </li>
               {{/each}}
@@ -249,16 +280,18 @@
             <div class="grid-2col-header">Limitations</div>
             <ol class='items-list'>
               <li class='item flexrow items-header'>
-                <div class='item-name'>{{localize 'Name'}}</div>
+                <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                 <div class='item-controls'>
+             {{#if flags.megs.edit-mode}}
                   <a
                     class='item-control item-create'
-                    title='{{localize "DOCUMENT.New" type='Limitation'}}'
+                    title='{{localize "DOCUMENT.New" type='MEGS.Limitation'}}'
                     data-type='limitation'
                   >
                     <i class='fas fa-plus'></i>
                     {{localize 'DOCUMENT.New' type='item'}}
                   </a>
+              {{/if}}
                 </div>
               </li>
               {{#each limitations as |item id|}}
@@ -288,12 +321,14 @@
                     >
                       <i class='fas fa-edit'></i>
                     </a>
+             {{#if ../flags.megs.edit-mode}}
                     <a
                       class='item-control item-delete'
                       title='{{localize "DOCUMENT.Delete" type='Item'}}'
                     >
                       <i class='fas fa-trash'></i>
                     </a>
+              {{/if}}
                   </div>
                 </li>
               {{/each}}

@@ -12,10 +12,9 @@
           <h1 class="charname">
         {{#if system.parent}}
           {{item.name}}
-        {{/if}}
-        {{#unless system.parent}}
+        {{else}}
             <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
-        {{/unless}}
+        {{/if}}
           </h1>
         </div>
       {{#if isRollable}}
@@ -52,8 +51,8 @@
       <section class="attributes grid grid-3col">
 
        <div class="attribute flex-group-center">
-          <label for="system.linkedSkill" class="resource-label flexlarge align-left" data-label="{{localize 'Linked Skill'}}">
-            {{localize 'Linked Skill'}}
+          <label for="system.linkedSkill" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedSkill'}}">
+            {{localize 'MEGS.LinkedSkill'}}
           </label>
           <div>
           {{#if system.parent}}
@@ -72,38 +71,38 @@
        </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.link}}">{{localize 'Linked Attribute'}}</label>
+          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.link}}">{{localize 'MEGS.LinkedAttribute'}}</label>
           <div>
               {{getSelectedSkillLink system.linkedSkill}}
           </div>
         </div>
 
        <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'Range'}}</label>
+          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
           <div>
               {{getSelectedSkillRange system.linkedSkill}}
           </div>
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'Type'}}">{{localize 'Type'}}</label>
+          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
            <div>
               {{getSelectedSkillType system.linkedSkill}}
           </div>
         </div>
 
         <div class="attribute flex-group-center">
-          <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'Use Unskilled?'}}">{{localize 'Use Unskilled?'}}</label>
+          <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.UseUnskilled'}}">{{localize 'MEGS.UseUnskilled'}}</label>
           <div>
         {{#if system.parent}}
-          {{#if (compare system.useUnskilled "===" "true")}}Yes{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}No{{/if}}
+          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
+          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
         {{/if}}
         {{#unless system.parent}}
             <select  class="resource-select"  name="system.useUnskilled" data-type="String">
               {{#select system.useUnskilled}}
-                  <option  value="true">{{localize 'Yes'}}</option>
-                  <option  value="false">{{localize 'No'}}</option>
+                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
+                  <option  value="false">{{localize 'MEGS.No'}}</option>
               {{/select}}
             </select>
         {{/unless}}

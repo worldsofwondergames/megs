@@ -11,7 +11,14 @@ import {Utils} from "../utils.js";
  */
 export class MEGSActorSheet extends ActorSheet {
 
-    /** @override */
+  /** @override */
+  constructor(object, options) {
+    super(object, options);
+    const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
+    this.actor.setFlag("megs", "edit-mode", isUnlocked);
+  }
+
+  /** @override */
   static get defaultOptions () {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'actor'];
@@ -120,7 +127,7 @@ export class MEGSActorSheet extends ActorSheet {
     // TODO does this do anything in current model?
     context.rollData = context.actor.getRollData();
 
-    // Prepare active effects
+    // TODO Prepare active effects
     context.effects = prepareActiveEffectCategories(
         // A generator that returns all effects stored on the actor
         // as well as any items
@@ -400,6 +407,8 @@ export class MEGSActorSheet extends ActorSheet {
   activateListeners (html) {
     super.activateListeners(html);
 
+    html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
+
     // Render the item sheet for viewing/editing prior to the editable check.
     html.on('click', '.item-edit', (ev) => {
       const li = $(ev.currentTarget).parents('.item');
@@ -609,6 +618,29 @@ export class MEGSActorSheet extends ActorSheet {
   /** @override **/
   async _onDrop(event) {
     super._onDrop(event);
+  }
+
+  /** @override **/
+  _getHeaderButtons() {
+    if (this.actor.isOwner) {
+      return [
+        {
+          class: "megs-toggle-edit-mode",
+          label: game.i18n.localize(MEGS.Edit) ?? "Edit",
+          icon: "fas fa-edit",
+          onclick: (e) => {
+            this._toggleEditMode(e);
+          }
+        },
+        ...super._getHeaderButtons()
+      ];
+    }
+    return super._getHeaderButtons();
+  }
+
+  _toggleEditMode(_e) {
+    const currentValue = this.actor.getFlag("megs", "edit-mode");
+    this.actor.setFlag("megs", "edit-mode", !currentValue);
   }
 
 }

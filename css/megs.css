@@ -25,7 +25,7 @@
 /*------------------------------------------------------------------------*/
 
 .megs {
-  font-family: "DecoturaICG";
+  font-family: "DecoturaICG", sans-serif;
   background-image: none;
   letter-spacing: 0.05em;
 }
@@ -335,14 +335,40 @@
   flex: 1;
 }
 .megs .sheet-header h1.charname {
+  display: flex;
   font-size: 32px;
   padding: 0;
   border-bottom: 0;
 }
-.megs .sheet-header h1.charname input {
-  width: 100%;
+.megs .sheet-header h1.charname.isLocked {
+  background-color: #1f5079;
+}
+.megs .sheet-header h1.charname.isUnlocked {
+  background-color: #fff;
+}
+.megs .sheet-header h1.charname input[name="name"], .megs .sheet-header h1.charname div[name="name"] {
+  float: left;
+  flex-grow: 1;
   height: 50px;
-  margin: 5px 0 0 0;
+  margin: 5px 5px 0 0;
+}
+.megs .sheet-header h1.charname div[name="name"] {
+  padding: 5px 0 0 3px;
+  color: #fff;
+}
+.megs .sheet-header h1.charname button {
+  background-size: cover;
+  float: right;
+  width: 50px;
+  height: 50px;
+  border: none;
+  margin-top: 5px;
+}
+.megs .sheet-header h1.charname button.isLocked {
+  background-image: url(/systems/megs/assets/images/icons/locked.png);
+}
+.megs .sheet-header h1.charname button.isUnlocked {
+  background-image: url(/systems/megs/assets/images/icons/unlocked.png);
 }
 
 .megs header.sheet-header .attribute-container {
@@ -415,6 +441,10 @@
 .megs .attributes .attribute {
   border: 2px solid #1f5079;
   font-size: 22px;
+}
+
+.megs .resource div {
+  font-size: 24px;
 }
 
 .megs .sheet-header .attribute label,
@@ -787,6 +817,7 @@ details summary.no-arrow {
 
 .quantity.attribute-input {
   border: 0;
+  text-align: center;
 }
 
 .quantity.attribute-input button {
@@ -842,4 +873,11 @@ details summary.no-arrow {
 
 .megs div.tab.readableText label {
   font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.megs .indentLeft {
+  padding-left: 15px;
+  padding-top: 5px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 16px;
 }

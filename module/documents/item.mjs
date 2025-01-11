@@ -97,8 +97,8 @@ export class MEGSItem extends Item {
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
     const label = `[${item.actor.name}] ${item.name}`;
-
-    if (!this.system.formula && (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) ) {
+;
+    if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) {
       this.rollMegs();
     }
 

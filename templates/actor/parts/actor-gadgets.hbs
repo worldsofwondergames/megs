@@ -1,8 +1,9 @@
 <ol class='items-list'>
   <li class='item flexrow items-header'>
-    <div class='item-name'>{{localize 'Name'}}</div>
-    <div class='item-description'>{{localize 'Description'}}</div>
+    <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+    <div class='item-description'>{{localize 'MEGS.Description'}}</div>
     <div class='item-controls'>
+      {{#if flags.megs.edit-mode}}
       <a
         class='item-control item-create'
         title='{{localize "DOCUMENT.Create" type='Gadget'}}'
@@ -11,10 +12,12 @@
         <i class='fas fa-plus'></i>
         {{localize 'DOCUMENT.New' type='Item'}}
       </a>
+    {{/if}}
     </div>
   </li>
   {{#each gadgets as |item id|}}
     <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+
       <div class='item-name'>
         <div class='item-image'>
           <a class="item-control item-edit">
@@ -40,10 +43,13 @@
           <span style="font-weight: normal">&nbsp;x{{item.system.quantity}}</span>
         {{/if}}
       </div>
+
       <div class="item-description">
         {{getGadgetDescription item}}
       </div>
+
       <div class='item-controls'>
+
         {{#if item.rollable}}
         <a class="item-control d10 rollable" 
             title="Roll {{item.name}}" 
@@ -63,12 +69,16 @@
         >
           <i class='fas fa-edit'></i>
         </a>
+
+        {{#if ../flags.megs.edit-mode}}
         <a
           class='item-control item-delete'
           title='{{localize "DOCUMENT.Delete" type='Item'}}'
         >
           <i class='fas fa-trash'></i>
         </a>
+
+        {{/if}}
       </div>
     </li>
   {{/each}}

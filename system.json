@@ -16,11 +16,11 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
-      "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/73-steal-edit-capability-from-ironsworn-1/system.json",
+      "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
     }
   ],
-  "version": "0.5.1",
+  "version": "0.5.2",
   "compatibility": {
     "minimum": 11,
     "verified": "11.315"
@@ -37,9 +37,9 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/main/",
-  "background": "systems/megs/assets/images/megs-logo-multiversal.jpg",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/73-steal-edit-capability-from-ironsworn-1/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/73-steal-edit-capability-from-ironsworn-1/",
+  "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {
     "distance": 5,
     "units": "ft"

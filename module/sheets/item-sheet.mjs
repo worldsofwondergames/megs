@@ -11,6 +11,14 @@ import { Utils } from "../utils.js"
 export class MEGSItemSheet extends ItemSheet {
 
   /** @override */
+  constructor(object, options) {
+    super(object, options);
+    // default to uneditable if user is not owner or from a compendium
+    const isUnlocked = this.object.isOwner && !this.object._stats.compendiumSource;
+    this.object.setFlag("megs", "edit-mode", isUnlocked);
+  }
+
+  /** @override */
   static get defaultOptions() {
     let newOptions = super.defaultOptions;
     newOptions.classes = ['megs', 'sheet', 'item'];
@@ -716,41 +724,27 @@ export class MEGSItemSheet extends ItemSheet {
     return this.object.parent.updateEmbeddedDocuments("Item", updateData);
   }
 
-  /* -------------------------------------------- */
-  
-  /**
-   * Add lock to 
-   * @inheritdoc
-   */
-  // _getHeaderButtons() {
-  //   let buttons = super._getHeaderButtons();
+  /** @override **/
+  _getHeaderButtons() {
+    if (this.object.isOwner) {
+      return [
+        {
+          class: "megs-toggle-edit-mode",
+          label: game.i18n.localize(MEGS.Edit) ?? "Edit",
+          icon: "fas fa-edit",
+          onclick: (e) => {
+            this._toggleEditMode(e);
+          }
+        },
+        ...super._getHeaderButtons()
+      ];
+    }
+    return super._getHeaderButtons();
+  }
 
-  //   if (this.isLocked) {
-  //     buttons.unshift({
-  //       "label": "Locked",
-  //       "icon": "fa-solid fa-lock",
-  //       "class": "window-header-lock",
-  //       onclick: ev => this._unlockSheet(ev)
-  //     })
-  //   } else {
-  //     buttons.unshift({
-  //       "label": "Unlocked",
-  //       "icon": "fa-solid fa-lock-open",
-  //       "class": "window-header-unlock",
-  //       onclick: ev => this._lockSheet(ev)
-  //     })
-  //   }
-  //   return buttons;
-  // }
-
-  // async _lockSheet(ev) {
-  //   this.isLocked = true;
-  //   this.render(true);
-  // }
-
-  // async _unlockSheet(ev) {
-  //   this.isLocked = false;
-  //   this.render(true);
-  // }
+  _toggleEditMode(_e) {
+    const currentValue = this.object.getFlag("megs", "edit-mode");
+    this.object.setFlag("megs", "edit-mode", !currentValue);
+  }
 
 }

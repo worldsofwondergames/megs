@@ -144,6 +144,8 @@ export class MEGSItem extends Item {
       if (targetActor) {
         let key;
 
+        console.error("TEST: "+this.system.link); // TODO delete
+        
         // Physical powers - OV and RV are DEX and BODY
         if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
           key = MEGS.attributeAbbreviations.str;

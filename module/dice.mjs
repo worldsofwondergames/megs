@@ -183,6 +183,17 @@ export class MegsTableRolls {
   async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
     combatManeuverKey, resultColumnShifts, isUnskilled) {
 
+      console.info("dice._handleRolls: currentHeroPoints="+currentHeroPoints
+        + " maxHpToSpend=" + maxHpToSpend
+        + " hpSpentAV=" + hpSpentAV
+        + " hpSpentEV=" + hpSpentEV
+        + " hpSpentOV=" + hpSpentOV
+        + " hpSpentRV=" + hpSpentRV
+        + " combatManeuverKey=" + combatManeuverKey
+        + " resultColumnShifts=" + resultColumnShifts
+        + " isUnskilled=" + isUnskilled
+      );
+
     // TODO deduct spent Hero Points
 //      await this.object.update({"system.heroPoints.value": currentHeroPoints - (hpSpentAV + hpSpentEV)});
 

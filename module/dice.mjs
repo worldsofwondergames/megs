@@ -452,7 +452,6 @@ export class MegsTableRolls {
             // The roll must be greater than the Success Number
             if (avRollTotal > actionTable[avIndex][i]) {
               columnShifts++;
-              console.error("TEST: "+avRollTotal+" : "+actionTable[avIndex][i] + " : " + columnShifts); // TODO delete
             } else {
               break;
             }

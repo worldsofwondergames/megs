@@ -154,8 +154,7 @@ export class MEGSItem extends Item {
         let linkedType = this.system[this.system.link];
         console.error("TEST3: "+linkedType); // TODO  delete
         if (!linkedType && this.parent) {
-          linkedType = this.parent.system.attributes[this.system.link]?.type;
-          console.error(linkedType); // TODO delete
+          linkedType = this.parent.system.attributes[this.system.link];
         }
 
         if (linkedType) {
@@ -175,12 +174,10 @@ export class MEGSItem extends Item {
           opposingValue = Utils.getOpposingValue(key, targetActor);
           resistanceValue = Utils.getResistanceValue(key, targetActor);
         } else {
-          // TODO
+          console.error("No linked type for this item");
         }
       } else {
-        // TODO
         console.error("No linked attribute for this item");
-        console.error(this);
       }
     }
 

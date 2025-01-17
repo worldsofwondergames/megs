@@ -133,6 +133,8 @@ export class MEGSItem extends Item {
    *
    */
   rollMegs() {
+    console.error("TEST1"); // TODO delete
+
     // for powers, AV and EV are typically APs of power
     let actionValue = parseInt(this.system.aps);
     let effectValue = parseInt(this.system.aps);
@@ -147,21 +149,30 @@ export class MEGSItem extends Item {
         console.error("TEST: "+this.system.link); // TODO delete
         console.error(this); // TODO delete
 
-        // Physical powers - OV and RV are DEX and BODY
-        if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
-          key = MEGS.attributeAbbreviations.str;
-        }
-        // Mental powers - OV and RV are INT and MIND
-        if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
-          key = MEGS.attributeAbbreviations.int;
-        }
-        // Mystical powers - OV and RV are INFL and SPIRIT
-        if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
-          key = MEGS.attributeAbbreviations.infl;
+        const linkedType = this.system[this.system.link];
+        if (!linkedType) {
+          
         }
 
-        opposingValue = Utils.getOpposingValue(key, targetActor);
-        resistanceValue = Utils.getResistanceValue(key, targetActor);
+        if (linkedType) {
+          // Physical powers - OV and RV are DEX and BODY
+          if (linkedType.type === MEGS.powerSources.physical.toLowerCase()) {
+            key = MEGS.attributeAbbreviations.str;
+          }
+          // Mental powers - OV and RV are INT and MIND
+          if (linkedType.type === MEGS.powerSources.mental.toLowerCase()) {
+            key = MEGS.attributeAbbreviations.int;
+          }
+          // Mystical powers - OV and RV are INFL and SPIRIT
+          if (linkedType.type === MEGS.powerSources.mystical.toLowerCase()) {
+            key = MEGS.attributeAbbreviations.infl;
+          }
+
+          opposingValue = Utils.getOpposingValue(key, targetActor);
+          resistanceValue = Utils.getResistanceValue(key, targetActor);
+        } else {
+          
+        }
       }
     }
 

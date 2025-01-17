@@ -308,6 +308,7 @@ export class MEGSItemSheet extends ItemSheet {
 
       const rollValues = new RollValues(label, dataset.type, dataset.value, actionValue, opposingValue,
           effectValue, resistanceValue, dataset.roll, dataset.unskilled);
+      console.info("Rolling from item-sheet click");
       const rollTables = new MegsTableRolls(rollValues);
       rollTables.roll(event, this.object.parent.system.heroPoints.value).then((response) => {
       })

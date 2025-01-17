@@ -590,6 +590,7 @@ export class MEGSActorSheet extends ActorSheet {
       }
     }
 
+    console.info("Rolling from actor-sheet._onRoll()");
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
         effectValue, resistanceValue, dataset.roll, dataset.unskilled);
     const rollTables = new MegsTableRolls(rollValues);

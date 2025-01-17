@@ -341,6 +341,7 @@ Hooks.once('ready', function () {
  */
 function interceptMegsRoll(message, data) {
   if (message === "/r megs" || message === "/megs") {
+    console.info("Rolling from megs.interceptMegsRoll");
     const rollValues = new RollValues("", '', 100, 0, 0,0, 0, '1d10 + 1d10', false);
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(undefined, 100).then((response) => {

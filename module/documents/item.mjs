@@ -141,22 +141,14 @@ export class MEGSItem extends Item {
 
     let targetActor = MegsTableRolls.getTargetActor();
 
-    console.error("TEST1: "); // TODO  delete
-    console.error(targetActor); // TODO  delete
-
     if (targetActor) {
       let key;
 
-      console.error("TEST2: "+this.system.link); // TODO delete
-      console.error(this); // TODO delete
-
       if (this.system.link) {
         let linkedType = this.system[this.system.link];
-        console.error("TEST3: "+linkedType); // TODO  delete
         if (!linkedType && this.parent) {
           linkedType = this.parent.system.attributes[this.system.link];
         }
-        console.error("TEST4: "+linkedType); // TODO  delete
 
         if (linkedType) {
           // Physical powers - OV and RV are DEX and BODY
@@ -171,7 +163,6 @@ export class MEGSItem extends Item {
           if (linkedType.type === MEGS.powerSources.mystical.toLowerCase()) {
             key = MEGS.attributeAbbreviations.infl;
           }
-          console.error("TEST4: "+key); // TODO  delete
 
           opposingValue = Utils.getOpposingValue(key, targetActor);
           resistanceValue = Utils.getResistanceValue(key, targetActor);

@@ -133,24 +133,26 @@ export class MEGSItem extends Item {
    *
    */
   rollMegs() {
-    console.error("TEST3"); // TODO delete
-
     // for powers, AV and EV are typically APs of power
     let actionValue = parseInt(this.system.aps);
     let effectValue = parseInt(this.system.aps);
     let opposingValue = 0;
     let resistanceValue = 0;
 
-    if (this.system.link) {
-      let targetActor = MegsTableRolls.getTargetActor();
-      console.error(targetActor);
-      if (targetActor) {
-        let key;
+    let targetActor = MegsTableRolls.getTargetActor();
 
-        console.error("TEST5: "+this.system.link); // TODO delete
-        console.error(this); // TODO delete
+    console.error("TEST1: "); // TODO  delete
+    console.error(targetActor); // TODO  delete
 
+    if (targetActor) {
+      let key;
+
+      console.error("TEST2: "+this.system.link); // TODO delete
+      console.error(this); // TODO delete
+
+      if (this.system.link) {
         let linkedType = this.system[this.system.link];
+        console.error("TEST3: "+linkedType); // TODO  delete
         if (!linkedType && this.parent) {
           linkedType = this.parent.system.attributes[this.system.link]?.type;
           console.error(linkedType); // TODO delete
@@ -173,8 +175,12 @@ export class MEGSItem extends Item {
           opposingValue = Utils.getOpposingValue(key, targetActor);
           resistanceValue = Utils.getResistanceValue(key, targetActor);
         } else {
-          
+          // TODO
         }
+      } else {
+        // TODO
+        console.error("No linked attribute for this item");
+        console.error(this);
       }
     }
 

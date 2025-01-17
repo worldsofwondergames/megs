@@ -57,6 +57,9 @@ export class MegsTableRolls {
       event.preventDefault();
     }
 
+    console.error("TEST1: "); // TODO delete
+    console.error(event);
+
     // Handle rolls that supply the formula directly.
     if (this.rollFormula) {
        await  this._handleRoll(currentHeroPoints);
@@ -70,6 +73,9 @@ export class MegsTableRolls {
    * @private
    */
   async _handleRoll(currentHeroPoints) {
+
+    console.error("TEST2: "); // TODO delete
+
 
     // what's being rolled (used for display)
     let label = this.label ? `${this.label}` : '';

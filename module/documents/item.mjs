@@ -133,7 +133,7 @@ export class MEGSItem extends Item {
    *
    */
   rollMegs() {
-    console.error("TEST1"); // TODO delete
+    console.error("TEST3"); // TODO delete
 
     // for powers, AV and EV are typically APs of power
     let actionValue = parseInt(this.system.aps);
@@ -146,7 +146,7 @@ export class MEGSItem extends Item {
       if (targetActor) {
         let key;
 
-        console.error("TEST: "+this.system.link); // TODO delete
+        console.error("TEST4: "+this.system.link); // TODO delete
         console.error(this); // TODO delete
 
         const linkedType = this.system[this.system.link];

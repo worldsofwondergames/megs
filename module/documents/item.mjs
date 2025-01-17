@@ -156,6 +156,7 @@ export class MEGSItem extends Item {
         if (!linkedType && this.parent) {
           linkedType = this.parent.system.attributes[this.system.link];
         }
+        console.error("TEST4: "+linkedType); // TODO  delete
 
         if (linkedType) {
           // Physical powers - OV and RV are DEX and BODY
@@ -170,6 +171,7 @@ export class MEGSItem extends Item {
           if (linkedType.type === MEGS.powerSources.mystical.toLowerCase()) {
             key = MEGS.attributeAbbreviations.infl;
           }
+          console.error("TEST4: "+key); // TODO  delete
 
           opposingValue = Utils.getOpposingValue(key, targetActor);
           resistanceValue = Utils.getResistanceValue(key, targetActor);

@@ -189,6 +189,7 @@ export class MEGSItem extends Item {
     }
 
     console.info("Rolling from item.rollMegs()");
+    console.error(this); // TODO delete
     const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
         effectValue, resistanceValue, "1d10 + 1d10", this.system.unskilled);
     const rollTables = new MegsTableRolls(rollValues);

@@ -69,6 +69,7 @@
       <div class="form-group">
         <label>{{localize "MEGS.ResultTableShifts"}}</label>
         <div class="flexrow">
+          {{isUnskilled}} <!-- TODO delete -->
           {{#if isUnskilled}}
             {{> plusMinusInput id='resultColumnShifts' value="-2"}}
           {{else}}

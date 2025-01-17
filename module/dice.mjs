@@ -80,6 +80,7 @@ export class MegsTableRolls {
 
     // Manually enter OV and RV for target
     if (game.user.targets.size === 0) {
+      console.info("Showing roll dialog from MegsTableRolls_handleRoll() without a target");
       const template = "systems/megs/templates/dialogs/rollDialog.hbs";
       const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
       const data = {
@@ -133,6 +134,8 @@ export class MegsTableRolls {
    * @param {*} currentHeroPoints 
    */
   async _handleTargetedRolls(currentHeroPoints) {
+
+    console.info("Showing roll dialog from MegsTableRolls._handleTargetedRolls()");
 
     const template = "systems/megs/templates/dialogs/rollDialog.hbs";
     const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);

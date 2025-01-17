@@ -150,9 +150,10 @@ export class MEGSItem extends Item {
         console.error("TEST5: "+this.system.link); // TODO delete
         console.error(this); // TODO delete
 
-        const linkedType = this.system[this.system.link];
-        if (!linkedType) {
-          
+        let linkedType = this.system[this.system.link];
+        if (!linkedType && this.parent) {
+          linkedType = this.parent.system.attributes[this.system.link]?.type;
+          console.error(linkedType); // TODO delete
         }
 
         if (linkedType) {

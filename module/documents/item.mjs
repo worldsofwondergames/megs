@@ -143,10 +143,11 @@ export class MEGSItem extends Item {
 
     if (this.system.link) {
       let targetActor = MegsTableRolls.getTargetActor();
+      console.error(targetActor);
       if (targetActor) {
         let key;
 
-        console.error("TEST4: "+this.system.link); // TODO delete
+        console.error("TEST5: "+this.system.link); // TODO delete
         console.error(this); // TODO delete
 
         const linkedType = this.system[this.system.link];

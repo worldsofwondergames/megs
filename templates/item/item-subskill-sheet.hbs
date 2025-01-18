@@ -5,15 +5,14 @@
       <div class="resources grid grid-4col">
       {{#if isRollable}}
         <div class="grid-span-3">
-      {{/if}}
-      {{#unless isRollable}}
+      {{else}}
         <div class="grid-span-4">
-      {{/unless}}
+      {{/if}}
           <h1 class="charname">
-        {{#if system.parent}}
-          {{item.name}}
-        {{else}}
+        {{#if flags.megs.edit-mode}}
             <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
+        {{else}}
+          {{item.name}}
         {{/if}}
           </h1>
         </div>
@@ -55,10 +54,7 @@
             {{localize 'MEGS.LinkedSkill'}}
           </label>
           <div>
-          {{#if system.parent}}
-            {{system.linkedSkill}}
-          {{/if}}
-          {{#unless system.parent}}
+          {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.linkedSkill" data-type="String">
               {{#select system.linkedSkill}}
                   {{#each allSkills as |skill key|}}
@@ -66,7 +62,9 @@
                   {{/each}}
               {{/select}}
             </select>
-          {{/unless}}
+          {{else}}
+            {{system.linkedSkill}}
+          {{/if}}
           </div>
        </div>
 
@@ -94,18 +92,17 @@
         <div class="attribute flex-group-center">
           <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.UseUnskilled'}}">{{localize 'MEGS.UseUnskilled'}}</label>
           <div>
-        {{#if system.parent}}
-          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
-        {{/if}}
-        {{#unless system.parent}}
+        {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.useUnskilled" data-type="String">
               {{#select system.useUnskilled}}
                   <option  value="true">{{localize 'MEGS.Yes'}}</option>
                   <option  value="false">{{localize 'MEGS.No'}}</option>
               {{/select}}
             </select>
-        {{/unless}}
+        {{else}}
+          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
+          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
+        {{/if}}
           </div>
         </div>
 
@@ -115,13 +112,11 @@
 
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
-        {{#if system.parent}}
+        {{#if flags.megs.edit-mode}}
+          {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+        {{else}}
           <div class="description-text">{{{system.description}}}</div>
         {{/if}}
-        {{#unless system.parent}}
-      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-        {{/unless}}
     </div>
   </section>
 </form>

@@ -162,7 +162,20 @@
           {{#if showHeroPointCosts}}
           <div class='item-total-cost grid-span-1'>{{localize 'MEGS.TotalCost'}}</div>
           {{/if}}
-          <div class='item-controls grid-span-1'>&nbsp;</div>
+          <div class='item-controls grid-span-1'>
+          {{#if flags.megs.edit-mode}}
+            <a
+              class='item-control item-create'
+              title='{{localize "DOCUMENT.Create" type='MEGS.Subskill'}}'
+              data-type='gadget'
+            >
+              <i class='fas fa-plus'></i>
+              {{localize 'DOCUMENT.New' type='MEGS.Item'}}
+            </a>
+          {{else}}
+            &nbsp;
+          {{/if}}
+          </div>
         </li>
       
       {{#each subskills as |subskill|}}

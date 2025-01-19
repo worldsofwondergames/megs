@@ -475,10 +475,8 @@ export class MEGSActorSheet extends ActorSheet {
   async _onItemCreate (event) {
     event.preventDefault();
     const header = event.currentTarget;
-console.error(header); // TODO delete
     // Get the type of item to create.
     const type = header.dataset.type;
-    console.error(type); // TODO delete
     // Grab any data associated with this control.
     const data = duplicate(header.dataset);
     // Initialize a default name.

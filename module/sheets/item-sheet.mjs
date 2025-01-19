@@ -511,18 +511,14 @@ export class MEGSItemSheet extends ItemSheet {
    * @private
    */
   async _onSubItemCreate(event) {
-    console.error("TEST1"); // TODO delete
     event.preventDefault();
     const header = event.currentTarget;
-    console.error(header);// TODO delete
     // Get the type of item to create.
     const type = header.dataset.type;
-    console.error(type);// TODO delete
     // Grab any data associated with this control.
     const data = duplicate(header.dataset);
     // Initialize a default name.
     const name = `New ${type.capitalize()}`;
-    console.error(name);// TODO delete
     // Prepare the item object.
     const itemData = {
       name: name,

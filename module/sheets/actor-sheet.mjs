@@ -219,7 +219,6 @@ export class MEGSActorSheet extends ActorSheet {
     // TODO replace this with active effects
 
     // calculate initiativeBonus
-    console.error("TEST8");
     let initiativeBonus = context.document.system.attributes.dex.value + context.document.system.attributes.int.value
         + context.document.system.attributes.infl.value;
 
@@ -342,7 +341,6 @@ export class MEGSActorSheet extends ActorSheet {
         i.subskills = [];
         if (i.system.aps === 0) {
           i.unskilled = true;
-          console.error("TESI9"); // TODO delete
           i.linkedAPs = this.object.system.attributes[i.system.link].value;
         } else {
           i.unskilled = false;

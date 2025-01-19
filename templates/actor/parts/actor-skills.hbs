@@ -14,7 +14,20 @@
     {{#if showHeroPointCosts}}
     <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
     {{/if}}
-    <div class='item-controls'></div>
+    <div class='item-controls'>
+    {{#if flags.megs.edit-mode}}
+      <a
+        class='item-control item-create'
+        title='{{localize "DOCUMENT.Create" type='Skill'}}'
+        data-type='skill'
+      >
+        <i class='fas fa-plus'></i>
+        {{localize 'DOCUMENT.New' type=""}}
+      </a>
+    {{else}}
+      &nbsp;
+    {{/if}}
+    </div>
   </li>
   {{#each filteredSkills as |item id|}}
     <li class='item flexrow item-row
@@ -80,10 +93,18 @@
         >
           <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="Roll" />
         </a>
-          {{/if}}
+        {{/if}}
         <a class='item-control item-edit' title='{{localize "DOCUMENT.Edit" type=item.name}}'>
             <img src="/systems/megs/assets/images/icons/edit.png" class="svg-icon" alt="{{localize "DOCUMENT.Edit" type=item.name}}"/>
         </a>
+        {{#if ../flags.megs.edit-mode}}
+        <a
+          class='item-control item-delete'
+          title='{{localize "DOCUMENT.Delete" type='Item'}}'
+        >
+          <i class='fas fa-trash'></i>
+        </a>
+        {{/if}}
       </div>
     </li>
   {{/each}}

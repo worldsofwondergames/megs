@@ -15,18 +15,6 @@
     <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
     {{/if}}
     <div class='item-controls'>
-    {{#if flags.megs.edit-mode}}
-      <a
-        class='item-control item-create'
-        title='{{localize "DOCUMENT.Create" type='Skill'}}'
-        data-type='skill'
-      >
-        <i class='fas fa-plus'></i>
-        {{localize 'DOCUMENT.New' type=""}}
-      </a>
-    {{else}}
-      &nbsp;
-    {{/if}}
     </div>
   </li>
   {{#each filteredSkills as |item id|}}

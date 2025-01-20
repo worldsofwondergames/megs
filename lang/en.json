@@ -107,7 +107,8 @@
       "npc": "NPC",
       "villain": "Villain",
       "pet": "Pet",
-      "vehicle": "Vehicle"
+      "vehicle": "Vehicle",
+      "base": "base"
     },
     "Item": {
       "gadget": "Gadget",

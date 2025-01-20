@@ -149,6 +149,15 @@
         <label for="system.vehicle.isVehicle"> Is a vehicle?</label>
       </div>
 
+      <div>
+        <input type="checkbox" id="system.base.isBase" name="system.base.isBase" value="true"
+        {{#if (compare system.base.isBase "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.base.isBase"> Is a base?</label>
+      </div>
+
       <hr/>
 
       <div>

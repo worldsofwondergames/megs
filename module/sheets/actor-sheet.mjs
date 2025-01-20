@@ -81,21 +81,22 @@ export class MEGSActorSheet extends ActorSheet {
       this._prepareInitiative(context);
     }
 
-    if (actorData.type === MEGS.characterTypes.vehicle) {
+    if (actorData.type === MEGS.characterTypes.vehicle  || actorData.type === MEGS.characterTypes.base) {
       this._prepareCharacterData(context);
 
       // get list of potential actors to own
       context.characters = [];
       game.actors.forEach((element) => {
-        if (element.type !== MEGS.characterTypes.vehicle)
+        if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.base)
         {
           context.characters[element.name] = element._id;
         }
       });
       context.characters = this._sortArray(context.characters);
 
-      context.vehicles = [];
-      if (context.system.ownerId) {
+      // TODO generalize this into a function and make it work for bases as well
+      context.vehicles = this._getGadgetsForActor();
+/*      if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
 
@@ -119,7 +120,7 @@ export class MEGSActorSheet extends ActorSheet {
             context.vehicles = this._sortArray(context.vehicles);
           }
         }
-      }
+      }*/
 
     }
 
@@ -151,6 +152,35 @@ export class MEGSActorSheet extends ActorSheet {
     return context;
   }
 
+  _getGadgetsForActor() {
+    const gadgetArray = [];
+    if (context.system.ownerId) {
+      const owner = game.actors.get(context.system.ownerId);
+      if (owner) {
+
+        // get list of vehicle items from owner actor to link
+        if (!owner) {
+          console.error("Owner actor not returned for ID " + gadget.ownerId);
+        } else if (owner.items) {
+          context.system.linkedItem = undefined;
+          owner.items.forEach((element) => {
+            if (element.type === MEGS.itemTypes.gadget) {
+
+              // store linked vehicle item
+              if (element._id === context.system.linkedItemId) {
+                context.system.linkedItem = element;
+              }
+
+              // add to list for header
+              gadgetArray[element.name] = element._id;
+            }
+          });
+          gadgetArray = this._sortArray(gadgetArray);
+        }
+      }
+    }
+    return gadgetArray;
+  }
 
   /**
    *

@@ -1,0 +1,102 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+  {{!-- Sheet Header --}}
+   <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+
+      <div class="resources grid grid-3col">
+
+        <div class="resource flex-group-center">
+          <label for="system.ownerId" class="resource-label">Owner</label>
+          <div>
+            <select  class="resource-select"  name="system.ownerId" data-type="String">
+            {{#select system.ownerId}}
+              {{#each characters as |id name|}}
+              <option value="{{id}}">{{name}}</option>
+              {{/each}}
+            {{/select}}
+            </select>
+          </div>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label for="system.linkedItemId" class="resource-label">Linked Item</label>
+          <div>
+        {{#if bases}}
+            <select  class="resource-select"  name="system.linkedItemId" data-type="String">
+                <option value="">{{localize 'MEGS.None'}}</option>
+        {{#select system.linkedItemId}}
+            {{#each bases as |id name|}}
+              <option value="{{id}}">{{name}}</option>
+            {{/each}}
+        {{/select}}
+            </select>
+        {{/if}}
+          </div>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
+          <div>
+            <div class="resource-content flexrow flex-center flex-between attribute-container">
+              {{> plusMinusInput id='currentBody' classes='current-input' value=system.linkedItem.system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+            </div>
+            <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+{{#if system.linkedItem}}
+  {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+    {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="item" data-tab="abilities">{{localize 'MEGS.Abilities'}}</a>
+    <a class="item" data-tab="powers">{{localize 'MEGS.Powers'}}</a>
+    <a class="item" data-tab="skills">{{localize 'MEGS.Skills'}}</a>
+    <a class="item" data-tab="traits">{{localize 'MEGS.Traits'}}</a>
+    <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
+    <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Abilities Tab --}}
+    <div class="tab abilities" data-group="primary" data-tab="abilities">
+
+    {{#each system.linkedItem.system.attributes as |attribute key|}}
+      {{#if (isDivisor 3 @index)}}
+       <section class="attributes grid grid-3col attributeRow">
+      {{/if}}
+          <div class="attribute flex-group-center">
+            <label for="system.linkedItem.system.attributes.{{key}}.value" 
+                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
+                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
+                data-value="{{attribute.value}}" data-key="{{key}}">
+              {{attribute.label}}
+            </label>
+            <div class="quantity attribute-input align-center">
+              {{attribute.value}}
+             </div>
+          </div>
+      {{#if (isDivisor 3 (sum @index 1))}}
+        </section>
+     {{/if}}
+   {{/each}}
+    </div>
+
+    {{!-- Description Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'MEGS..Description'}}</label>
+      <div>{{system.linkedItem.system.biography}}</div>
+    </div>
+
+  </section>
+{{/if}}
+</form>
+

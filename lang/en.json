@@ -34,7 +34,6 @@
     "AlterEgo": "Alter Ego",
     "Ammo": "Ammo",
     "APs": "APs",
-    "Base": "Base",
     "Biography": "Biography",
     "Body": "Body",
     "Bonus": "Bonus",
@@ -55,6 +54,7 @@
     "FactorCostMod": "Factor Cost Mod",
     "Gadgets": "Gadgets",
     "HasHardenedDefenses": "Has Hardened Defenses?",
+    "Headquarters": "Headquarters",
     "HeroPoints": "Hero Points",
     "HPSpent": "HP Spent",
     "InitialBonus": "Initial Bonus",
@@ -108,7 +108,7 @@
       "villain": "Villain",
       "pet": "Pet",
       "vehicle": "Vehicle",
-      "headquarters": "Base"
+      "headquarters": "Headquarters"
     },
     "Item": {
       "gadget": "Gadget",

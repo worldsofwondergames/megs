@@ -95,7 +95,8 @@ export class MEGSActorSheet extends ActorSheet {
       context.characters = this._sortArray(context.characters);
 
       // TODO generalize this into a function and make it work for bases as well
-      context.vehicles = this._getGadgetsForActor(context);
+      const owner = game.actors.get(context.system.ownerId);
+      context.vehicles = this._getGadgetsForActor(owner);
 /*      if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
@@ -152,37 +153,30 @@ export class MEGSActorSheet extends ActorSheet {
     return context;
   }
 
-  _getGadgetsForActor(context) {
+  _getGadgetsForActor(owner) {
     const gadgetArray = [];
     console.error("TEST1: _getGadgetsForActor"); // TODO delete
     console.error(context); // TODO delete
-;    if (context.system && context.system.ownerId) {
-      const owner = game.actors.get(context.system.ownerId);
-      if (owner) {
+    if (owner) {
 
-        // get list of vehicle items from owner actor to link
-        if (!owner) {
-          console.error("Owner actor not returned for ID " + gadget.ownerId);
-        } else if (owner.items) {
-          context.system.linkedItem = undefined;
-          owner.items.forEach((element) => {
-            if (element.type === MEGS.itemTypes.gadget) {
+      // get list of vehicle items from owner actor to link
+      if (owner.items) {
+        context.system.linkedItem = undefined;
+        owner.items.forEach((element) => {
+          if (element.type === MEGS.itemTypes.gadget) {
 
-              // store linked vehicle item
-              if (element._id === context.system.linkedItemId) {
-                context.system.linkedItem = element;
-              }
-
-              // add to list for header
-              gadgetArray[element.name] = element._id;
+            // store linked vehicle item
+            if (element._id === context.system.linkedItemId) {
+              context.system.linkedItem = element;
             }
-          });
-          gadgetArray = this._sortArray(gadgetArray);
-        }
-      }
-    } else {
-      console.error("TEST2"); // TDOO delete
-    }
+
+            // add to list for header
+            gadgetArray[element.name] = element._id;
+          }
+        });
+        gadgetArray = this._sortArray(gadgetArray);
+      } 
+    } 
     return gadgetArray;
   }
 

@@ -124,6 +124,7 @@ export class MEGSActorSheet extends ActorSheet {
             context.vehicles = this._sortArray(context.vehicles);
           }
         }
+      }
 
     }
 
@@ -154,7 +155,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     return context;
   }
-
+/*
   _getGadgetsForActor(owner) {
     const gadgetArray = [];
     console.error("TEST1: _getGadgetsForActor"); // TODO delete
@@ -183,7 +184,7 @@ export class MEGSActorSheet extends ActorSheet {
     } 
     return gadgetArray;
   }
-
+*/
   /**
    *
    * @param {*} skill

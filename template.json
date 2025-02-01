@@ -117,6 +117,10 @@
         "ownerId": ""
       }
     },
+    "base": {
+      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
+      "linkedItemId" : ""
+    },
     "hero": {
       "templates": ["baseCharacter", "attributes", "hasInitiative", "hasGadgets", "identity"]
     },
@@ -130,10 +134,6 @@
       "templates": ["baseCharacter", "attributes", "owned"]
     },
     "vehicle": {
-      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
-      "linkedItemId" : ""
-    },
-    "base": {
       "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
       "linkedItemId" : ""
     }

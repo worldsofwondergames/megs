@@ -95,12 +95,12 @@ export class MEGSActorSheet extends ActorSheet {
       context.characters = this._sortArray(context.characters);
 
       // TODO generalize this into a function and make it work for bases as well
-      const owner = game.actors.get(context.system.ownerId);
-      console.error(owner); // TODO delete
-      context.vehicles = this._getGadgetsForActor(owner);
-      context.vehicles = this._sortArray(context.vehicles);
+      // const owner = game.actors.get(context.system.ownerId);
+      // console.error(owner); // TODO delete
+      // context.vehicles = this._getGadgetsForActor(owner);
+      // context.vehicles = this._sortArray(context.vehicles);
 
-/*      if (context.system.ownerId) {
+      if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
 
@@ -124,7 +124,6 @@ export class MEGSActorSheet extends ActorSheet {
             context.vehicles = this._sortArray(context.vehicles);
           }
         }
-      }*/
 
     }
 

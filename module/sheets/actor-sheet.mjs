@@ -81,13 +81,13 @@ export class MEGSActorSheet extends ActorSheet {
       this._prepareInitiative(context);
     }
 
-    if (actorData.type === MEGS.characterTypes.vehicle  || actorData.type === MEGS.characterTypes.base) {
+    if (actorData.type === MEGS.characterTypes.vehicle  || actorData.type === MEGS.characterTypes.headquarters) {
       this._prepareCharacterData(context);
 
       // get list of potential actors to own
       context.characters = [];
       game.actors.forEach((element) => {
-        if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.base)
+        if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.headquarters)
         {
           context.characters[element.name] = element._id;
         }

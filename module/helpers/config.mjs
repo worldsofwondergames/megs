@@ -34,7 +34,7 @@ MEGS.characterTypes = {
   villain: 'villain',
   pet: "pet",
   vehicle: "vehicle",
-  base: "base"
+  headquarters: "headquarters"
 }
 
 MEGS.rollTypes = {

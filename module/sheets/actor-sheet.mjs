@@ -98,6 +98,8 @@ export class MEGSActorSheet extends ActorSheet {
       const owner = game.actors.get(context.system.ownerId);
       console.error(owner); // TODO delete
       context.vehicles = this._getGadgetsForActor(owner);
+      context.vehicles = this._sortArray(context.vehicles);
+
 /*      if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
@@ -178,7 +180,6 @@ export class MEGSActorSheet extends ActorSheet {
           }
         });
         console.error("TEST5"); // TODO delete
-        gadgetArray = this._sortArray(gadgetArray);
       } 
     } 
     return gadgetArray;

@@ -10,11 +10,11 @@ export class Utils {
      */
     static getOpposingValue(key, targetActor) {
         let opposingValue;
-        if (key === MEGS.attributeAbbreviations.str) {
+        if (key === MEGS.attributeAbbreviations.str || key === MEGS.attributeAbbreviations.dex) {
             opposingValue = targetActor.system.attributes.dex.value;
-        } else if (key === MEGS.attributeAbbreviations.will) {
+        } else if (key === MEGS.attributeAbbreviations.will || key === MEGS.attributeAbbreviations.int) {
             opposingValue = targetActor.system.attributes.int.value;
-        } else if (key === MEGS.attributeAbbreviations.aura) {
+        } else if (key === MEGS.attributeAbbreviations.aura || key === MEGS.attributeAbbreviations.infl) {
             opposingValue = targetActor.system.attributes.infl.value;
         } else {
             ui.notifications.error("Utils.getOpposingValue(): Invalid attribute selection '"+key+"'");

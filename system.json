@@ -16,14 +16,14 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/main/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/99-allow-skills-and-subskills-to-be-editable/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
     }
   ],
   "version": "0.5.3",
   "compatibility": {
     "minimum": 11,
-    "verified": "11.315"
+    "verified": "12.331"
   },
   "esmodules": ["module/megs.mjs"],
   "styles": ["css/megs.css"],
@@ -37,8 +37,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/main/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/main/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/99-allow-skills-and-subskills-to-be-editable/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/99-allow-skills-and-subskills-to-be-editable/",
   "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {
     "distance": 5,

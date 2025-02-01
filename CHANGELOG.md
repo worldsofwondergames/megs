@@ -22,4 +22,3 @@
  - Fixed bug that had all rolls from Item object defaulting to unskilled (-2 column shifts)
  - Allow skills and subskills to be editable
  - Updated README to conform to requests by Foundry devs
- - 

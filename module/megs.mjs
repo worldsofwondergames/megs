@@ -341,6 +341,7 @@ Hooks.once('ready', function () {
  */
 function interceptMegsRoll(message, data) {
   if (message === "/r megs" || message === "/megs") {
+    console.info("Rolling from megs.interceptMegsRoll");
     const rollValues = new RollValues("", '', 100, 0, 0,0, 0, '1d10 + 1d10', false);
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(undefined, 100).then((response) => {
@@ -411,16 +412,8 @@ async function createMegsMacro(item, slot) {
  * @return {Promise}
  */
 function rollItemMacro(uuid) {
-  const speaker = ChatMessage.getSpeaker();
-
-  let actor;
-  if (speaker.token) actor = game.actors.tokens[speaker.token];
-  if (!actor) actor = game.actors.get(speaker.actor);
-  if (!actor) {
-    const actorId = uuid.match(/^Actor\.([A-Za-z0-9]+)\.Item\..+/)[1];
-    actor = game.actors.get(actorId);
-  }
-
+  const actorId = uuid.match(/^Actor\.([A-Za-z0-9]+)\.Item\..+/)[1];
+  const actor = game.actors.get(actorId);
   const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
   if (!item) return ui.notifications.warn(`Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`);
 

@@ -95,6 +95,7 @@ export class MEGSActorSheet extends ActorSheet {
       context.characters = this._sortArray(context.characters);
 
       // TODO generalize this into a function and make it work for bases as well
+      console.error("TEST2"); // TODO delete
       context.vehicles = this._getGadgetsForActor();
 /*      if (context.system.ownerId) {
         const owner = game.actors.get(context.system.ownerId);
@@ -154,6 +155,8 @@ export class MEGSActorSheet extends ActorSheet {
 
   _getGadgetsForActor() {
     const gadgetArray = [];
+    console.error("TEST1: _getGadgetsForActor"); // TODO delete
+    console.error(context.system.ownerId);
     if (context.system.ownerId) {
       const owner = game.actors.get(context.system.ownerId);
       if (owner) {

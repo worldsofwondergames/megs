@@ -9,9 +9,9 @@
       <div class="resources grid grid-3col">
 
         <div class="resource flex-group-center">
+          {{#if system.ownerId}}
           <label for="system.ownerId" class="resource-label">Owner</label>
           <div>
-          {{#if system.ownerId}}
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
               {{#each characters as |id name|}}
@@ -19,8 +19,8 @@
               {{/each}}
             {{/select}}
             </select>
-          {{/if}}
           </div>
+          {{/if}}
         </div>
 
         <div class="resource flex-group-center">

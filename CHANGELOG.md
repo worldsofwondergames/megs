@@ -16,3 +16,7 @@
  - Edit lock capability for actors and items
  - Macro fixes and simplification for skills/subskills
  - Bug fixes from user submissions
+
+ ## 0.5.3 (February 2, 2025)
+ - Updated README to conform to requests by Foundry devs
+ - 

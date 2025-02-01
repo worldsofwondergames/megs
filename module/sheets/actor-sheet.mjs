@@ -163,17 +163,21 @@ export class MEGSActorSheet extends ActorSheet {
       if (owner.items) {
         context.system.linkedItem = undefined;
         owner.items.forEach((element) => {
+          console.error("TEST2"); // TODO delete
           if (element.type === MEGS.itemTypes.gadget) {
 
             // store linked vehicle item
+            console.error("TEST3"); // TODO delete
             if (element._id === context.system.linkedItemId) {
               context.system.linkedItem = element;
             }
 
             // add to list for header
+            console.error("TEST4"); // TODO delete
             gadgetArray[element.name] = element._id;
           }
         });
+        console.error("TEST5"); // TODO delete
         gadgetArray = this._sortArray(gadgetArray);
       } 
     } 

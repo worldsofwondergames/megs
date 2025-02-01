@@ -21,7 +21,7 @@ There are a few because of technical and/or design constraints of the platform:
 - Advantages and Drawbacks are grouped as "Traits" for ease of reference.
 - Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
 - Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
-- Vehicles and Bases should be created as both Items and Actors. More on this as we approach 1.0.
+- Vehicles should be created as both Items and Actors. More on this as we approach 1.0.
 
 ### Do you have future plans?
 

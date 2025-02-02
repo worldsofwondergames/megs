@@ -8,7 +8,6 @@
 
       <div class="resources grid grid-3col">
 
-      {{#if system.ownerId}}
         <div class="resource flex-group-center">
           <label for="system.ownerId" class="resource-label">Owner</label>
           <div>
@@ -22,6 +21,7 @@
           </div>
         </div>
 
+      {{#if system.ownerId}}
         <div class="resource flex-group-center">
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>

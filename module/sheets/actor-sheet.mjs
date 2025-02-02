@@ -158,24 +158,20 @@ export class MEGSActorSheet extends ActorSheet {
 
   _getGadgetsForActor(owner) {
     const gadgetArray = [];
-    console.error("TEST1: _getGadgetsForActor"); // TODO delete
     if (owner) {
 
       // get list of vehicle items from owner actor to link
       if (owner.items) {
-        console.error("TEST1a"); // TODO delete
         owner.items.forEach((element) => {
-          console.error("TEST2"); // TODO delete
           if (element.type === MEGS.itemTypes.gadget) {
+            console.error(element); // TODO delete
 
             // store linked vehicle item
-            console.error("TEST3"); // TODO delete
             // if (element._id === context.system.linkedItemId) {
             //   context.system.linkedItem = element;
             // }
 
             // add to list for header
-            console.error("TEST4"); // TODO delete
             gadgetArray[element.name] = element._id;
           }
         });

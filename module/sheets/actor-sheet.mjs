@@ -131,7 +131,6 @@ export class MEGSActorSheet extends ActorSheet {
     const gadgetArray = [];
     if (owner) {
 
-      // get list of vehicle items from owner actor to link
       if (owner.items) {
         owner.items.forEach((element) => {
           if (element.type === MEGS.itemTypes.gadget) {

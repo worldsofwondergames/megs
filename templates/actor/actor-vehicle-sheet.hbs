@@ -8,8 +8,8 @@
 
       <div class="resources grid grid-3col">
 
+      {{#if system.ownerId}}
         <div class="resource flex-group-center">
-          {{#if system.ownerId}}
           <label for="system.ownerId" class="resource-label">Owner</label>
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
@@ -20,11 +20,10 @@
             {{/select}}
             </select>
           </div>
-          {{/if}}
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.linkedItemId" class="resource-label">Linked Item</label>
+          <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
         {{#if vehicles}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
@@ -38,6 +37,7 @@
         {{/if}}
           </div>
         </div>
+      {{/if}}
 
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>

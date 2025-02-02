@@ -96,6 +96,7 @@ export class MEGSActorSheet extends ActorSheet {
 
       const owner = game.actors.get(context.system.ownerId);
       context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
+      context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
     }
 
     // Add roll data for TinyMCE editors.

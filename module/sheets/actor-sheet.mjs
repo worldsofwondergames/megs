@@ -94,38 +94,8 @@ export class MEGSActorSheet extends ActorSheet {
       });
       context.characters = this._sortArray(context.characters);
 
-      // TODO generalize this into a function and make it work for bases as well
       const owner = game.actors.get(context.system.ownerId);
-      console.error(owner); // TODO delete
-      context.vehicles = this._getGadgetsForActor(owner);
-      context.vehicles = this._sortArray(context.vehicles);
-
-/*      if (context.system.ownerId) {
-        const owner = game.actors.get(context.system.ownerId);
-        if (owner) {
-
-          // get list of vehicle items from owner actor to link
-          if (!owner) {
-            console.error("Owner actor not returned for ID " + gadget.ownerId);
-          } else if (owner.items) {
-            context.system.linkedItem = undefined;
-            owner.items.forEach((element) => {
-              if (element.type === MEGS.itemTypes.gadget) {
-
-                // store linked vehicle item
-                if (element._id === context.system.linkedItemId) {
-                  context.system.linkedItem = element;
-                }
-
-                // add to list for header
-                context.vehicles[element.name] = element._id;
-              }
-            });
-            context.vehicles = this._sortArray(context.vehicles);
-          }
-        }
-      }
-*/
+      context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
     }
 
     // Add roll data for TinyMCE editors.
@@ -156,7 +126,7 @@ export class MEGSActorSheet extends ActorSheet {
     return context;
   }
 
-  _getGadgetsForActor(owner) {
+  _getGadgetsForActor(owner, gadgetType) {
     const gadgetArray = [];
     if (owner) {
 
@@ -166,16 +136,17 @@ export class MEGSActorSheet extends ActorSheet {
           if (element.type === MEGS.itemTypes.gadget) {
             console.error(element); // TODO delete
 
-            // store linked vehicle item
-            // if (element._id === context.system.linkedItemId) {
-            //   context.system.linkedItem = element;
-            // }
-
-            // add to list for header
-            gadgetArray[element.name] = element._id;
+            if (gadgetType) {
+              if (gadgetType === MEGS.characterType.vehicle && element.isVehicle) {
+                gadgetArray[element.name] = element._id;
+              } else if (gadgetType === MEGS.characterType.headquarters && element.isHeadquarters) {
+                gadgetArray[element.name] = element._id;
+              }
+            } else {
+              gadgetArray[element.name] = element._id;
+            }
           }
         });
-        console.error("TEST5"); // TODO delete
       } 
     } 
     return gadgetArray;

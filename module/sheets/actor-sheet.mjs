@@ -124,6 +124,8 @@ export class MEGSActorSheet extends ActorSheet {
 
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
 
+    console.error(context); // TODO delete
+
     return context;
   }
 

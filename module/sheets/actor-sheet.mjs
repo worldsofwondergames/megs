@@ -134,13 +134,15 @@ export class MEGSActorSheet extends ActorSheet {
       if (owner.items) {
         owner.items.forEach((element) => {
           if (element.type === MEGS.itemTypes.gadget) {
-            console.error(element); // TODO delete
 
             if (gadgetType) {
               if (gadgetType === MEGS.characterTypes.vehicle && element.system.vehicle?.isVehicle) {
                 gadgetArray[element.name] = element._id;
               } 
+              console.error(element); // TODO delete
+              console.error(gadgetType + " : " + MEGS.characterTypes.headquarters + " : " + element.system.headquarters?.isHeadquarters); // TODO delete
               if (gadgetType === MEGS.characterTypes.headquarters && element.system.headquarters?.isHeadquarters) {
+                console.error("TEST1"); // TODO delete
                 gadgetArray[element.name] = element._id;
               }
             } else {

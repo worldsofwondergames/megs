@@ -95,8 +95,21 @@ export class MEGSActorSheet extends ActorSheet {
       context.characters = this._sortArray(context.characters);
 
       const owner = game.actors.get(context.system.ownerId);
-      context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
-      context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
+      if (actorData.type === MEGS.characterTypes.vehicle) {
+        context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
+        context.vehicles.forEach((element) => {
+          //if (context.system.linkedItemId === element.)
+          console.error(element);
+        }
+      }
+      if (element.type !== MEGS.characterTypes.headquarters) {
+        context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
+      }
+
+
+
+      // TODO context.system.linkedItemId
+      // context.system.linkedItem
     }
 
     // Add roll data for TinyMCE editors.
@@ -139,13 +152,13 @@ export class MEGSActorSheet extends ActorSheet {
 
             if (gadgetType) {
               if (gadgetType === MEGS.characterTypes.vehicle && element.system.vehicle?.isVehicle) {
-                gadgetArray[element.name] = element._id;
+                gadgetArray[element.name] = element;
               } 
               if (gadgetType === MEGS.characterTypes.headquarters && element.system.headquarters?.isHeadquarters) {
-                gadgetArray[element.name] = element._id;
+                gadgetArray[element.name] = element;
               }
             } else {
-              gadgetArray[element.name] = element._id;
+              gadgetArray[element.name] = element;
             }
           }
         });

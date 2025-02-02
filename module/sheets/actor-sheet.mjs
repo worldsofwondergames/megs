@@ -137,15 +137,12 @@ export class MEGSActorSheet extends ActorSheet {
             console.error(element); // TODO delete
 
             if (gadgetType) {
-              console.error("TEST1");
-              if (gadgetType === MEGS.characterType.vehicle && element.isVehicle) {
+              if (gadgetType === MEGS.characterTypes.vehicle && element.isVehicle) {
                 gadgetArray[element.name] = element._id;
               } 
-              console.error("TEST2");
-              if (gadgetType === MEGS.characterType.headquarters && element.isHeadquarters) {
+              if (gadgetType === MEGS.characterTypes.headquarters && element.isHeadquarters) {
                 gadgetArray[element.name] = element._id;
               }
-              console.error("TEST3");
             } else {
               gadgetArray[element.name] = element._id;
             }

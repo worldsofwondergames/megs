@@ -99,11 +99,9 @@ export class MEGSActorSheet extends ActorSheet {
       if (actorData.type === MEGS.characterTypes.vehicle) {
         context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
       }
-      console.error("TEST3: " + actorData.type); 
       if (actorData.type === MEGS.characterTypes.headquarters) {
         context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
       }
-      console.error("TEST4"); 
     }
 
     // Add roll data for TinyMCE editors.
@@ -116,8 +114,6 @@ export class MEGSActorSheet extends ActorSheet {
     //     // as well as any items
     //     this.actor.allApplicableEffects()
     // );
-    console.error("TEST5"); 
-
 
     // Filter skills
     context.filteredSkills = [];
@@ -131,17 +127,12 @@ export class MEGSActorSheet extends ActorSheet {
       });
     }
 
-    console.error("TEST9"); 
-
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
-
-    console.error(context); // TODO delete
 
     return context;
   }
 
   _getGadgetsForActor(owner, gadgetType) {
-    console.error("TEST1");
     const gadgetArray = [];
     if (owner) {
 
@@ -163,7 +154,6 @@ export class MEGSActorSheet extends ActorSheet {
         });
       } 
     } 
-    console.error("TEST2");
     return gadgetArray;
   }
 

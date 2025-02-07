@@ -109,11 +109,13 @@ export class MEGSActorSheet extends ActorSheet {
     context.rollData = context.actor.getRollData();
 
     // TODO Prepare active effects
-    context.effects = prepareActiveEffectCategories(
-        // A generator that returns all effects stored on the actor
-        // as well as any items
-        this.actor.allApplicableEffects()
-    );
+    // context.effects = prepareActiveEffectCategories(
+    //     // A generator that returns all effects stored on the actor
+    //     // as well as any items
+    //     this.actor.allApplicableEffects()
+    // );
+
+    console.error("TEST3"); 
 
     // Filter skills
     context.filteredSkills = [];
@@ -126,6 +128,8 @@ export class MEGSActorSheet extends ActorSheet {
         }
       });
     }
+
+    console.error("TEST9"); 
 
     context.showHeroPointCosts = game.settings.get("megs", "showHeroPointCosts");
 

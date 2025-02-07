@@ -135,6 +135,7 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   _getGadgetsForActor(owner, gadgetType) {
+    console.error("TEST1");
     const gadgetArray = [];
     if (owner) {
 
@@ -156,6 +157,7 @@ export class MEGSActorSheet extends ActorSheet {
         });
       } 
     } 
+    console.error("TEST2");
     return gadgetArray;
   }
 

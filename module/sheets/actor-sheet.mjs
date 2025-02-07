@@ -102,6 +102,8 @@ export class MEGSActorSheet extends ActorSheet {
       if (actorData.type === MEGS.characterTypes.headquarters) {
         context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
       }
+
+      console.error(context); // TODO looking for system.linkedItem
     }
 
     // Add roll data for TinyMCE editors.

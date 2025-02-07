@@ -99,12 +99,12 @@ export class MEGSActorSheet extends ActorSheet {
       if (actorData.type === MEGS.characterTypes.vehicle) {
         context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
       }
-      console.error("TEST3"); 
+      console.error("TEST3: " + element.type); 
       if (element.type === MEGS.characterTypes.headquarters) {
         context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
       }
+      console.error("TEST4"); 
     }
-    console.error("TEST4"); 
 
     // Add roll data for TinyMCE editors.
     // TODO does this do anything in current model?

@@ -80,7 +80,7 @@
                 class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
                 data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
                 data-value="{{attribute.value}}" data-key="{{key}}">
-              {{system.attributes[key]}}
+              {{system.attributes[key].label}}
             </label>
             <div class="quantity attribute-input align-center">
               {{attribute.value}}

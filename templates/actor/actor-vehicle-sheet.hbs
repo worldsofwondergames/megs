@@ -19,36 +19,6 @@
   {{!-- Sheet Body --}}
   <section class="sheet-body">
 
-    {{!-- Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
-
-    {{#each system.linkedItem.system.attributes as |attribute key|}}
-      {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
-      {{/if}}
-          <div class="attribute flex-group-center">
-            <label for="system.linkedItem.system.attributes.{{key}}.value" 
-                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
-                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
-                data-value="{{attribute.value}}" data-key="{{key}}">
-              {{system.attributes[key].label}}
-            </label>
-            <div class="quantity attribute-input align-center">
-              {{attribute.value}}
-             </div>
-          </div>
-      {{#if (isDivisor 3 (sum @index 1))}}
-        </section>
-     {{/if}}
-   {{/each}}
-    </div>
-
-    {{!-- Description Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="description">
-      <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'MEGS..Description'}}</label>
-      <div>{{system.linkedItem.system.biography}}</div>
-    </div>
-
   </section>
 {{/if}}
 </form>

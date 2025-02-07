@@ -143,6 +143,7 @@ export class MEGSActorSheet extends ActorSheet {
           if (element.type === MEGS.itemTypes.gadget) {
 
             if (gadgetType) {
+console.error(element);
               if (gadgetType === MEGS.characterTypes.vehicle && element.system.vehicle?.isVehicle) {
                 gadgetArray[element.name] = element;
               } 

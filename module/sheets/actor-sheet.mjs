@@ -100,7 +100,7 @@ export class MEGSActorSheet extends ActorSheet {
         context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
       }
       console.error("TEST3"); 
-      if (element.type !== MEGS.characterTypes.headquarters) {
+      if (element.type === MEGS.characterTypes.headquarters) {
         context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
       }
     }

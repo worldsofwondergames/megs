@@ -14,7 +14,7 @@
         <div class="gadget-property flex-group-center">
           <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.EffectValue'}}">{{localize 'MEGS.EffectValue'}}</label>
           {{#if flags.megs.edit-mode}}
-          { {> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
+            {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
           {{else}}
             {{system.effectValue}}
           {{/if}}
@@ -51,7 +51,11 @@
             <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Range'}}">{{localize 'MEGS.Range'}}</label>
             <div>
           {{#if flags.megs.edit-mode}}
-            {{> plusMinusInput id='weapon.range' classes='attribute-input' min=0 value=system.weapon.range}}
+            <div class="quantity attribute-input">
+              <button class="minus" aria-label="Decrease" onClick="weapon.rangeInput.value = parseInt(weapon.rangeInput.value) - 1">&minus;</button>
+    <input id="weapon.rangeInput" name="system.weapon.range.valueTag" type="number" class="input-box" value="weapon.range" min="0" max="100" data-dtype="Number">
+    <button class="plus" aria-label="Increase" onClick="weapon.rangeInput.value = parseInt(weapon.rangeInput.value)+ 1 ">&plus;</button>
+    </div>
           {{else}}
             {{system.weapon.range}}
           {{/if}}

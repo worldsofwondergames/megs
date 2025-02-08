@@ -37,7 +37,7 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/main/system.json",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/refs/heads/main/system.json",
   "download": "https://github.com/codemonkey1972/megs/zipball/main/",
   "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {

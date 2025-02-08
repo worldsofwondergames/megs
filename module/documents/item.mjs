@@ -45,11 +45,6 @@ export class MEGSItem extends Item {
     // calculate gadget bonus
     // TODO cost
     if (this.type === MEGS.itemTypes.gadget) {
-      console.error(this);
-      console.error(systemData);
-  
-  
-
       if (itemData.canBeTakenAway) {
         this.gadgetBonus = 4;
       } else {

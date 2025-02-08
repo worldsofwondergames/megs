@@ -52,9 +52,10 @@
             <div>
           {{#if flags.megs.edit-mode}}
             <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="rangeInput.value = parseInt(rangeInput.value) - 1">&minus;</button>
+              <input type="text" name="system.weapon.range" value="{{system.weapon.range}}" data-dtype="number"/>
+<!--              <button class="minus" aria-label="Decrease" onClick="rangeInput.value = parseInt(rangeInput.value) - 1">&minus;</button>
     <input id="rangeInput" name="system.weapon.range" type="number" class="input-box" value="weapon.range" min="0" max="100" data-dtype="Number">
-    <button class="plus" aria-label="Increase" onClick="rangeInput.value = parseInt(rangeInput.value) + 1">&plus;</button>
+    <button class="plus" aria-label="Increase" onClick="rangeInput.value = parseInt(rangeInput.value) + 1">&plus;</button>-->
     </div>
           {{else}}
             {{system.weapon.range}}

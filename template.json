@@ -318,7 +318,7 @@
       "img": "icons/svg/degen.svg"
     },
     "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni"],
+      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni", "weapon"],
       "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
       "actionValue": 0,

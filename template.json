@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": [ "headquarters", "hero", "villain", "npc", "pet", "vehicle"],
+    "types": [ "hero", "villain", "npc", "pet", "vehicle", "location"],
     "templates": {
       "identity": {
         "biography": "",
@@ -117,7 +117,7 @@
         "ownerId": ""
       }
     },
-    "headquarters": {
+    "location": {
       "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
       "linkedItemId" : ""
     },
@@ -355,8 +355,8 @@
         "isVehicle": true,
         "linkedActorId" : ""
       },
-      "headquarters": {
-        "isHeadquarters": true,
+      "location": {
+        "isLocation": true,
         "linkedActorId" : ""
       }
     }

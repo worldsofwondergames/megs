@@ -81,14 +81,14 @@ export class MEGSActorSheet extends ActorSheet {
       this._prepareInitiative(context);
     }
 
-    if (actorData.type === MEGS.characterTypes.vehicle  || actorData.type === MEGS.characterTypes.headquarters) {
+    if (actorData.type === MEGS.characterTypes.vehicle  || actorData.type === MEGS.characterTypes.location) {
       this._prepareCharacterData(context);
 
       // get list of potential actors to own
       context.characters = [];
  
       game.actors.forEach(element => {
-        if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.headquarters)
+        if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.location)
         {
           context.characters[element.name] = element._id;
         }
@@ -99,8 +99,8 @@ export class MEGSActorSheet extends ActorSheet {
       if (actorData.type === MEGS.characterTypes.vehicle) {
         context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
       }
-      if (actorData.type === MEGS.characterTypes.headquarters) {
-        context.headquarters = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.headquarters));
+      if (actorData.type === MEGS.characterTypes.location) {
+        context.location = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.location));
       }
 
       console.error(context); // TODO looking for system.linkedItem
@@ -143,11 +143,10 @@ export class MEGSActorSheet extends ActorSheet {
           if (element.type === MEGS.itemTypes.gadget) {
 
             if (gadgetType) {
-console.error(element);
               if (gadgetType === MEGS.characterTypes.vehicle && element.system.vehicle?.isVehicle) {
                 gadgetArray[element.name] = element;
               } 
-              if (gadgetType === MEGS.characterTypes.headquarters && element.system.headquarters?.isHeadquarters) {
+              if (gadgetType === MEGS.characterTypes.location && element.system.location?.isLocation) {
                 gadgetArray[element.name] = element;
               }
             } else {

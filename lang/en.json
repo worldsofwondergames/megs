@@ -55,7 +55,7 @@
     "FactorCostMod": "Factor Cost Mod",
     "Gadgets": "Gadgets",
     "HasHardenedDefenses": "Has Hardened Defenses?",
-    "Headquarters": "Headquarters",
+    "Location": "Location",
     "HeroPoints": "Hero Points",
     "HPSpent": "HP Spent",
     "InitialBonus": "Initial Bonus",
@@ -110,7 +110,7 @@
       "villain": "Villain",
       "pet": "Pet",
       "vehicle": "Vehicle",
-      "headquarters": "Headquarters"
+      "location": "Location"
     },
     "Item": {
       "gadget": "Gadget",

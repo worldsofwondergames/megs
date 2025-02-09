@@ -98,7 +98,6 @@ export class MEGSActor extends Actor {
    */
   prepareDerivedData() {
     super.prepareDerivedData();
-console.error("TEST1");
     this.system.currentBody.max = this.system.attributes.body.value;
     this.system.currentMind.max = this.system.attributes.mind.value;
     this.system.currentSpirit.max = this.system.attributes.spirit.value;
@@ -110,7 +109,6 @@ console.error("TEST1");
    */
   _calculateInitiativeBonus() {
     // TODO replace all of this with effects?
-    console.error("TEST2");
 
     // calculate initiativeBonus
     let initiativeBonus = this.system.attributes.dex.value + this.system.attributes.int.value

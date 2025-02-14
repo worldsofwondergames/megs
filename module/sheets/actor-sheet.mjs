@@ -151,14 +151,14 @@ export class MEGSActorSheet extends ActorSheet {
 
             if (gadgetType) {
               if (gadgetType === MEGS.characterTypes.vehicle && element.system.vehicle?.isVehicle) {
-                gadgetArray[element.name] = element;
+                gadgetArray[element._id] = element.name;
               } 
               if (gadgetType === MEGS.characterTypes.location && element.system.location?.isLocation) {
                 console.error("_getGadgetsForActor", element); // TODO delete
-                gadgetArray[element.name] = element;
+                gadgetArray[element._id] = element.name;
               }
             } else {
-              gadgetArray[element.name] = element;
+              gadgetArray[element._id] = element.name;
             }
           }
         });

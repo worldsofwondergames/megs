@@ -97,13 +97,19 @@ export class MEGSActorSheet extends ActorSheet {
 
       const owner = game.actors.get(context.system.ownerId);
       if (actorData.type === MEGS.characterTypes.vehicle) {
-        context.vehicles = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
+        context.linkableGadgets = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
+        if (context.system.linkedItemId) {
+          context.system.linkedItem = context.linkableGadgets[context.system.linkedItemId];
+        }
       }
       if (actorData.type === MEGS.characterTypes.location) {
-        context.location = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.location));
+        context.linkableGadgets = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.location));
+        if (context.system.linkedItemId) {
+          context.system.linkedItem = context.linkableGadgets[context.system.linkedItemId];
+        }
       }
 
-      console.error(context); // TODO looking for system.linkedItem
+      console.error("context: ", context); // TODO looking for system.linkedItem
     }
 
     // Add roll data for TinyMCE editors.

@@ -25,11 +25,11 @@
         <div class="resource flex-group-center">
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
-        {{#if vehicles}}
+        {{#if linkableGadgets}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
                 <option value="">{{localize 'MEGS.None'}}</option>
         {{#select system.linkedItemId}}
-            {{#each vehicles as |id name|}}
+            {{#each linkableGadgets as |id name|}}
               <option value="{{id}}">{{name}}</option>
             {{/each}}
         {{/select}}

@@ -28,8 +28,8 @@
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
                 <option value="">{{localize 'MEGS.None'}}</option>
         {{#select system.linkedItemId}}
-            {{#each linkableGadgets as |name id|}}
-              <option value="{{id}}">{{name}}</option>
+            {{#each linkableGadgets as |value key|}}
+              <option value="{{key}}">{{value}}</option>
             {{/each}}
         {{/select}}
             </select>

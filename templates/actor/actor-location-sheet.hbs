@@ -38,6 +38,7 @@
         </div>
 
         <div class="resource flex-group-center">
+<!--
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
@@ -45,6 +46,7 @@
             </div>
             <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
           </div>
+          -->
         </div>
 
       </div>
@@ -65,18 +67,6 @@
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-
-    {{!-- Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
-
-    </div>
-
-    {{!-- Description Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="description">
-      <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'MEGS..Description'}}</label>
-      <div>{{system.linkedItem.system.biography}}</div>
-    </div>
-
   </section>
 {{/if}}
 </form>

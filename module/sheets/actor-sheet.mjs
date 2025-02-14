@@ -164,6 +164,7 @@ export class MEGSActorSheet extends ActorSheet {
         });
       } 
     } 
+    console.error("_getGadgetsForActor", gadgetArray); // TODO delete
     return gadgetArray;
   }
 

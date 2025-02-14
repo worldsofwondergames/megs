@@ -24,12 +24,12 @@
         <div class="resource flex-group-center">
           <label for="system.linkedItemId" class="resource-label">Linked Item</label>
           <div>
-        {{#if linkableGadgets}}
+        {{#if locations}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
                 <option value="">{{localize 'MEGS.None'}}</option>
         {{#select system.linkedItemId}}
-            {{#each linkableGadgets as |value key|}}
-              <option value="{{key}}">{{value}}</option>
+            {{#each locations as |id name|}}
+              <option value="{{id}}">{{name}}</option>
             {{/each}}
         {{/select}}
             </select>
@@ -38,7 +38,6 @@
         </div>
 
         <div class="resource flex-group-center">
-<!--
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
@@ -46,7 +45,6 @@
             </div>
             <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
           </div>
-          -->
         </div>
 
       </div>
@@ -67,6 +65,37 @@
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
+
+    {{!-- Abilities Tab --}}
+    <div class="tab abilities" data-group="primary" data-tab="abilities">
+
+    {{#each system.attributes as |attribute key|}}
+      {{#if (isDivisor 3 @index)}}
+       <section class="attributes grid grid-3col attributeRow">
+      {{/if}}
+          <div class="attribute flex-group-center">
+            <label for="system.attributes.{{key}}.value" 
+                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
+                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
+                data-value="{{attribute.value}}" data-key="{{key}}">
+              {{attribute.label}}
+            </label>
+            <div class="quantity attribute-input align-center">
+              {{attribute.value}}
+             </div>
+          </div>
+      {{#if (isDivisor 3 (sum @index 1))}}
+        </section>
+     {{/if}}
+   {{/each}}
+    </div>
+
+    {{!-- Description Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'MEGS..Description'}}</label>
+      <div>{{system.linkedItem.system.biography}}</div>
+    </div>
+
   </section>
 {{/if}}
 </form>

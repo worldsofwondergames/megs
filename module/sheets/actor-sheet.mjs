@@ -95,8 +95,34 @@ export class MEGSActorSheet extends ActorSheet {
       });
       context.characters = this._sortArray(context.characters);
 
-      const owner = game.actors.get(context.system.ownerId);
-      console.error("owner:" + context.system.ownerId, owner); // TODO delete
+      context.locations = [];
+      if (context.system.ownerId) {
+        const owner = game.actors.get(context.system.ownerId);
+        if (owner) {
+
+          // get list of vehicle items from owner actor to link
+          if (!owner) {
+            console.error("Owner actor not returned for ID " + gadget.ownerId);
+          } else if (owner.items) {
+            context.system.linkedItem = undefined;
+            owner.items.forEach((element) => {
+              if (element.type === MEGS.itemTypes.gadget) {
+
+                // store linked vehicle item
+                if (element._id === context.system.linkedItemId) {
+                  context.system.linkedItem = element;
+                }
+
+                // add to list for header
+                context.locations[element.name] = element._id;
+              }
+            });
+            context.locations = this._sortArray(context.locations);
+          }
+        }
+      }
+
+/*      console.error("owner:" + context.system.ownerId, owner); // TODO delete
       if (actorData.type === MEGS.characterTypes.vehicle) {
         context.linkableGadgets = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
         if (context.system.linkedItemId) {
@@ -111,6 +137,7 @@ export class MEGSActorSheet extends ActorSheet {
       }
 
       console.error("context: ", context); // TODO looking for system.linkedItem
+      */
     }
 
     // Add roll data for TinyMCE editors.

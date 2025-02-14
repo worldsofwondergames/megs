@@ -96,6 +96,7 @@ export class MEGSActorSheet extends ActorSheet {
       context.characters = this._sortArray(context.characters);
 
       const owner = game.actors.get(context.system.ownerId);
+      console.error("owner:" + context.system.ownerId, owner); // TODO delete
       if (actorData.type === MEGS.characterTypes.vehicle) {
         context.linkableGadgets = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.vehicle));
         if (context.system.linkedItemId) {
@@ -105,7 +106,7 @@ export class MEGSActorSheet extends ActorSheet {
       if (actorData.type === MEGS.characterTypes.location) {
         context.linkableGadgets = this._sortArray(this._getGadgetsForActor(owner, MEGS.characterTypes.location));
         if (context.system.linkedItemId) {
-          context.system.linkedItem = context.linkableGadgets[context.system.linkedItemId];
+          context.system.linkedItem = context.linkableDadgets[context.system.linkedItemId];
         }
       }
 
@@ -162,6 +163,7 @@ export class MEGSActorSheet extends ActorSheet {
         });
       } 
     } 
+    console.error("_getGadgetsForActor", gadgetArray); // TODO delete
     return gadgetArray;
   }
 

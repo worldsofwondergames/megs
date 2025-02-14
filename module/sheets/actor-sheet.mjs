@@ -154,6 +154,7 @@ export class MEGSActorSheet extends ActorSheet {
                 gadgetArray[element.name] = element;
               } 
               if (gadgetType === MEGS.characterTypes.location && element.system.location?.isLocation) {
+                console.error("_getGadgetsForActor", element); // TODO delete
                 gadgetArray[element.name] = element;
               }
             } else {
@@ -163,7 +164,6 @@ export class MEGSActorSheet extends ActorSheet {
         });
       } 
     } 
-    console.error("_getGadgetsForActor", gadgetArray); // TODO delete
     return gadgetArray;
   }
 

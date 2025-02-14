@@ -116,6 +116,7 @@ export class MEGSActorSheet extends ActorSheet {
                   context.system.linkedItem = element;
                   context.name = element.name;
                   context.img = element.img;
+                  console.error("element", element); // TODO delete
                 }
 
                 // add to list for header
@@ -169,7 +170,6 @@ export class MEGSActorSheet extends ActorSheet {
                 gadgetArray[element._id] = element.name;
               } 
               if (gadgetType === MEGS.characterTypes.location && element.system.location?.isLocation) {
-                console.error("_getGadgetsForActor", element); // TODO delete
                 gadgetArray[element._id] = element.name;
               }
             } else {
@@ -179,7 +179,6 @@ export class MEGSActorSheet extends ActorSheet {
         });
       } 
     } 
-    console.error("_getGadgetsForActor", gadgetArray); // TODO delete
     return gadgetArray;
   }
 

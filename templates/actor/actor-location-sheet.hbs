@@ -2,7 +2,7 @@
 
   {{!-- Sheet Header --}}
    <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{system.linkedItem.name}}" height="120" width="120"/>
     <div class="header-fields">
       <h1 class="charname">
         {{system.linkedItem.name}}
@@ -24,7 +24,7 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label for="system.linkedItemId" class="resource-label">Linked Item</label>
+          <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
         {{#if locations}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">

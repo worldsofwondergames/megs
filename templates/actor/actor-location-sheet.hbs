@@ -29,6 +29,7 @@
           </div>
         </div>
 
+      {{#if system.ownerId}}
         <div class="resource flex-group-center">
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
@@ -46,7 +47,7 @@
         {{/if}}
           </div>
         </div>
-
+      {{/if}}
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>

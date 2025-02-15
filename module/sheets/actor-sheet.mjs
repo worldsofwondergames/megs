@@ -93,8 +93,6 @@ export class MEGSActorSheet extends ActorSheet {
         }
       });
       context.characters = this._sortArray(context.characters);
-      console.error("characters", context.characters); // TODO delete
-      console.error(context.characters[context.system.ownerId]); // TODO delete
 
       context.locations = [];
       if (context.system.ownerId) {

@@ -4,7 +4,15 @@
    <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/></h1>
+      <h1 class="charname
+        {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
+      ">
+        {{#if flags.megs.edit-mode}}
+          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
+        {{else}}
+          <div name="name">{{actor.name}}</div>
+        {{/if}}
+      </h1>
 
       <div class="resources grid grid-3col">
 
@@ -13,7 +21,7 @@
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
-              {{#each characters as |id name|}}
+              {{#each characters as |name id|}}
               <option value="{{id}}">{{name}}</option>
               {{/each}}
             {{/select}}
@@ -34,11 +42,12 @@
             {{/each}}
         {{/select}}
             </select>
+        {{else}}
+          &mdash;
         {{/if}}
           </div>
         </div>
       {{/if}}
-
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>

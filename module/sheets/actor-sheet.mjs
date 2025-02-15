@@ -86,7 +86,6 @@ export class MEGSActorSheet extends ActorSheet {
 
       // get list of potential actors to own
       context.characters = [];
- 
       game.actors.forEach(element => {
         if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.location)
         {
@@ -94,6 +93,7 @@ export class MEGSActorSheet extends ActorSheet {
         }
       });
       context.characters = this._sortArray(context.characters);
+      console.error("characters", characters); // TODO delete
 
       context.locations = [];
       if (context.system.ownerId) {

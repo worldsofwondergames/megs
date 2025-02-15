@@ -6,7 +6,7 @@
     <div class="header-fields">
       <h1 class="charname">
       {{#if flags.megs.edit-mode}}
-        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
+        <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
       {{else}}
           <div name="name">{{actor.name}}</div>
       {{/if}}
@@ -24,8 +24,6 @@
               <option value="{{id}}">{{name}}</option>
               {{/each}}
             {{/select}}
-      {{else}}
-        {{system.ownerId}}
       {{/if}}
             </select>
           </div>
@@ -44,9 +42,6 @@
               {{/each}}
             {{/select}}
               </select>
-          {{else}}
-            {{system.linkedItemId}}
-          {{/if}}
         {{else}}
           &mdash;
         {{/if}}

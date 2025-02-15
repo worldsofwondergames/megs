@@ -94,6 +94,7 @@ export class MEGSActorSheet extends ActorSheet {
       });
       context.characters = this._sortArray(context.characters);
       console.error("characters", context.characters); // TODO delete
+      console.error(characters[context.system]); // TODO delete
 
       context.locations = [];
       if (context.system.ownerId) {
@@ -102,7 +103,7 @@ export class MEGSActorSheet extends ActorSheet {
 
           // get list of vehicle items from owner actor to link
           if (!owner) {
-            console.error("Owner actor not returned for ID " + gadget.ownerId);
+            console.error("Owner actor not returned for ID " + context.system.ownerId);
           } else if (owner.items) {
             context.system.linkedItem = undefined;
 

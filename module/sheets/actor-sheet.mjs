@@ -111,6 +111,7 @@ export class MEGSActorSheet extends ActorSheet {
                 // store linked vehicle item
                 if (element._id === context.system.linkedItemId) {
                   context.system.linkedItem = element;
+                  console.error(element); // TODO delete
                 }
 
                 // add to list for header

@@ -4,12 +4,14 @@
    <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
     <div class="header-fields">
-      <h1 class="charname">
-      {{#if flags.megs.edit-mode}}
-        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
-      {{else}}
+      <h1 class="charname
+        {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
+      ">
+        {{#if flags.megs.edit-mode}}
+          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
+        {{else}}
           <div name="name">{{actor.name}}</div>
-      {{/if}}
+        {{/if}}
       </h1>
 
       <div class="resources grid grid-3col">

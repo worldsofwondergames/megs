@@ -42,7 +42,6 @@
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{system.linkedItem.system.currentBody.value}}
-              {{> plusMinusInput id='currentBody' classes='current-input' value=system.linkedItem.system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
             </div>
           </div>
         </div>
@@ -74,7 +73,7 @@
        <section class="attributes grid grid-3col attributeRow">
       {{/if}}
           <div class="attribute flex-group-center">
-            <label for="system.attributes.{{key}}.value" 
+            <label for="system.linkedItem.system.attributes.{{key}}.value" 
                 class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
                 data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
                 data-value="{{attribute.value}}" data-key="{{key}}">

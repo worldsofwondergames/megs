@@ -105,8 +105,6 @@ export class MEGSActorSheet extends ActorSheet {
             console.error("Owner actor not returned for ID " + gadget.ownerId);
           } else if (owner.items) {
             context.system.linkedItem = undefined;
-            context.name = game.i18n.localize(CONFIG.MEGS.unlinkedLocation);
-            context.img = "";
 
             owner.items.forEach((element) => {
               if (element.type === MEGS.itemTypes.gadget) {
@@ -114,9 +112,6 @@ export class MEGSActorSheet extends ActorSheet {
                 // store linked vehicle item
                 if (element._id === context.system.linkedItemId) {
                   context.system.linkedItem = element;
-                  context.name = element.name;
-                  context.img = element.img;
-                  console.error("element", element); // TODO delete
                 }
 
                 // add to list for header
@@ -124,6 +119,34 @@ export class MEGSActorSheet extends ActorSheet {
               }
             });
             context.locations = this._sortArray(context.locations);
+          }
+        }
+      }
+
+      context.vehicles = [];
+      if (context.system.ownerId) {
+        const owner = game.actors.get(context.system.ownerId);
+        if (owner) {
+
+          // get list of vehicle items from owner actor to link
+          if (!owner) {
+            console.error("Owner actor not returned for ID " + gadget.ownerId);
+          } else if (owner.items) {
+            context.system.linkedItem = undefined;
+
+            owner.items.forEach((element) => {
+              if (element.type === MEGS.itemTypes.gadget) {
+
+                // store linked vehicle item
+                if (element._id === context.system.linkedItemId) {
+                  context.system.linkedItem = element;
+                }
+
+                // add to list for header
+                context.vehicles[element.name] = element._id;
+              }
+            });
+            context.vehicles = this._sortArray(context.vehicles);
           }
         }
       }

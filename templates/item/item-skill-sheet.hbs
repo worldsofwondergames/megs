@@ -10,7 +10,7 @@
       {{/if}}
           <h1 class="charname">
         {{#if flags.megs.edit-mode}}
-            <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
+            <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
         {{else}}
           {{item.name}}
         {{/if}}

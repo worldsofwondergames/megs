@@ -89,7 +89,7 @@ export class MEGSActorSheet extends ActorSheet {
       game.actors.forEach(element => {
         if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.location)
         {
-          context.characters[element.name] = element._id;
+          context.characters[element._id] = element.name;
         }
       });
       context.characters = this._sortArray(context.characters);

@@ -22,7 +22,7 @@
       {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
-              {{#each characters as |id name|}}
+              {{#each characters as |name id|}}
               <option value="{{id}}">{{name}}</option>
               {{/each}}
             {{/select}}

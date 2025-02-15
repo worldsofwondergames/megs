@@ -17,7 +17,7 @@
       <div class="resources grid grid-3col">
 
         <div class="resource flex-group-center">
-          <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
+          <label for="system.ownerId" class="resource-label">Owner</label>
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
@@ -33,15 +33,15 @@
         <div class="resource flex-group-center">
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
-        {{#if vehicles}}
-            <select  class="resource-select"  name="system.linkedItemId" data-type="String">
-                <option value="">{{localize 'MEGS.None'}}</option>
-        {{#select system.linkedItemId}}
-            {{#each vehicles as |id name|}}
-              <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        {{/select}}
-            </select>
+        {{#if locations}}
+              <select  class="resource-select"  name="system.linkedItemId" data-type="String">
+                  <option value="">{{localize 'MEGS.None'}}</option>
+            {{#select system.linkedItemId}}
+              {{#each locations as |id name|}}
+                <option value="{{id}}">{{name}}</option>
+              {{/each}}
+            {{/select}}
+              </select>
         {{else}}
           &mdash;
         {{/if}}
@@ -132,7 +132,7 @@
         </div>
       </div>
     </section>
- 
+
   </section>
 {{/if}}
 </form>

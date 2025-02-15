@@ -139,26 +139,38 @@ export class MEGSItem extends Item {
     let opposingValue = 0;
     let resistanceValue = 0;
 
-    if (this.system.link) {
-      let targetActor = MegsTableRolls.getTargetActor();
-      if (targetActor) {
-        let key;
+    let targetActor = MegsTableRolls.getTargetActor();
 
-        // Physical powers - OV and RV are DEX and BODY
-        if (this.system[this.system.link].type === MEGS.powerSources.physical.toLowerCase()) {
-          key = MEGS.attributeAbbreviations.str;
-        }
-        // Mental powers - OV and RV are INT and MIND
-        if (this.system[this.system.link].type === MEGS.powerSources.mental.toLowerCase()) {
-          key = MEGS.attributeAbbreviations.int;
-        }
-        // Mystical powers - OV and RV are INFL and SPIRIT
-        if (this.system[this.system.link].type === MEGS.powerSources.mystical.toLowerCase()) {
-          key = MEGS.attributeAbbreviations.infl;
+    if (targetActor) {
+      let key;
+
+      if (this.system.link) {
+        let linkedType = this.system[this.system.link];
+        if (!linkedType && this.parent) {
+          linkedType = this.parent.system.attributes[this.system.link];
         }
 
-        opposingValue = Utils.getOpposingValue(key, targetActor);
-        resistanceValue = Utils.getResistanceValue(key, targetActor);
+        if (linkedType) {
+          // Physical powers - OV and RV are DEX and BODY
+          if (linkedType.type === MEGS.powerSources.physical.toLowerCase()) {
+            key = MEGS.attributeAbbreviations.str;
+          }
+          // Mental powers - OV and RV are INT and MIND
+          if (linkedType.type === MEGS.powerSources.mental.toLowerCase()) {
+            key = MEGS.attributeAbbreviations.int;
+          }
+          // Mystical powers - OV and RV are INFL and SPIRIT
+          if (linkedType.type === MEGS.powerSources.mystical.toLowerCase()) {
+            key = MEGS.attributeAbbreviations.infl;
+          }
+
+          opposingValue = Utils.getOpposingValue(key, targetActor);
+          resistanceValue = Utils.getResistanceValue(key, targetActor);
+        } else {
+          console.error("No linked type for this item");
+        }
+      } else {
+        console.error("No linked attribute for this item");
       }
     }
 
@@ -176,8 +188,10 @@ export class MEGSItem extends Item {
       label = this.parent.name + " - " + label;
     }
 
+    console.info("Rolling from item.rollMegs()");
+    const isUnskilled = this.system.aps === 0;
     const rollValues = new RollValues(label, this.type, this.system.aps, actionValue, opposingValue,
-        effectValue, resistanceValue, "1d10 + 1d10", this.system.unskilled);
+        effectValue, resistanceValue, "1d10 + 1d10", isUnskilled);
     const rollTables = new MegsTableRolls(rollValues);
     rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
       // no handling happens

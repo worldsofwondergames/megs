@@ -81,18 +81,47 @@ export class MEGSActorSheet extends ActorSheet {
       this._prepareInitiative(context);
     }
 
-    if (actorData.type === MEGS.characterTypes.vehicle) {
+    if (actorData.type === MEGS.characterTypes.vehicle  || actorData.type === MEGS.characterTypes.location) {
       this._prepareCharacterData(context);
 
       // get list of potential actors to own
       context.characters = [];
-      game.actors.forEach((element) => {
-        if (element.type !== MEGS.characterTypes.vehicle)
+      game.actors.forEach(element => {
+        if (element.type !== MEGS.characterTypes.vehicle && element.type !== MEGS.characterTypes.location)
         {
-          context.characters[element.name] = element._id;
+          context.characters[element._id] = element.name;
         }
       });
       context.characters = this._sortArray(context.characters);
+
+      context.locations = [];
+      if (context.system.ownerId) {
+        const owner = game.actors.get(context.system.ownerId);
+        if (owner) {
+
+          // get list of vehicle items from owner actor to link
+          if (!owner) {
+            console.error("Owner actor not returned for ID " + context.system.ownerId);
+          } else if (owner.items) {
+            context.system.linkedItem = undefined;
+
+            owner.items.forEach((element) => {
+              if (element.type === MEGS.itemTypes.gadget) {
+
+                // store linked vehicle item
+                if (element._id === context.system.linkedItemId) {
+                  context.system.linkedItem = element;
+                  console.error(element); // TODO delete
+                }
+
+                // add to list for header
+                context.locations[element.name] = element._id;
+              }
+            });
+            context.locations = this._sortArray(context.locations);
+          }
+        }
+      }
 
       context.vehicles = [];
       if (context.system.ownerId) {
@@ -104,6 +133,7 @@ export class MEGSActorSheet extends ActorSheet {
             console.error("Owner actor not returned for ID " + gadget.ownerId);
           } else if (owner.items) {
             context.system.linkedItem = undefined;
+
             owner.items.forEach((element) => {
               if (element.type === MEGS.itemTypes.gadget) {
 
@@ -120,7 +150,6 @@ export class MEGSActorSheet extends ActorSheet {
           }
         }
       }
-
     }
 
     // Add roll data for TinyMCE editors.
@@ -128,11 +157,11 @@ export class MEGSActorSheet extends ActorSheet {
     context.rollData = context.actor.getRollData();
 
     // TODO Prepare active effects
-    context.effects = prepareActiveEffectCategories(
-        // A generator that returns all effects stored on the actor
-        // as well as any items
-        this.actor.allApplicableEffects()
-    );
+    // context.effects = prepareActiveEffectCategories(
+    //     // A generator that returns all effects stored on the actor
+    //     // as well as any items
+    //     this.actor.allApplicableEffects()
+    // );
 
     // Filter skills
     context.filteredSkills = [];
@@ -151,6 +180,30 @@ export class MEGSActorSheet extends ActorSheet {
     return context;
   }
 
+  _getGadgetsForActor(owner, gadgetType) {
+    const gadgetArray = [];
+    if (owner) {
+
+      if (owner.items) {
+        owner.items.forEach((element) => {
+          if (element.type === MEGS.itemTypes.gadget) {
+
+            if (gadgetType) {
+              if (gadgetType === MEGS.characterTypes.vehicle && element.system.vehicle?.isVehicle) {
+                gadgetArray[element._id] = element.name;
+              } 
+              if (gadgetType === MEGS.characterTypes.location && element.system.location?.isLocation) {
+                gadgetArray[element._id] = element.name;
+              }
+            } else {
+              gadgetArray[element._id] = element.name;
+            }
+          }
+        });
+      } 
+    } 
+    return gadgetArray;
+  }
 
   /**
    *
@@ -475,7 +528,6 @@ export class MEGSActorSheet extends ActorSheet {
   async _onItemCreate (event) {
     event.preventDefault();
     const header = event.currentTarget;
-
     // Get the type of item to create.
     const type = header.dataset.type;
     // Grab any data associated with this control.
@@ -590,6 +642,7 @@ export class MEGSActorSheet extends ActorSheet {
       }
     }
 
+    console.info("Rolling from actor-sheet._onRoll()");
     const rollValues = new RollValues(this.object.name + " - " + dataset.label, dataset.type, dataset.value, actionValue, opposingValue,
         effectValue, resistanceValue, dataset.roll, dataset.unskilled);
     const rollTables = new MegsTableRolls(rollValues);

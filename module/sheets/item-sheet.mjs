@@ -716,7 +716,7 @@ export class MEGSItemSheet extends ItemSheet {
       return [
         {
           class: "megs-toggle-edit-mode",
-          label: game.i18n.localize(MEGS.Edit) ?? "Edit",
+          label: game.i18n.localize("MEGS.Edit") ?? "Edit",
           icon: "fas fa-edit",
           onclick: (e) => {
             this._toggleEditMode(e);

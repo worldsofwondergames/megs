@@ -69,7 +69,7 @@
     {{!-- Abilities Tab --}}
     <div class="tab abilities" data-group="primary" data-tab="abilities">
 
-    {{#each system.attributes as |attribute key|}}
+    {{#each system.linkedItem.system.attributes as |attribute key|}}
       {{#if (isDivisor 3 @index)}}
        <section class="attributes grid grid-3col attributeRow">
       {{/if}}

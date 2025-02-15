@@ -4,19 +4,29 @@
    <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+      <h1 class="charname">
+      {{#if flags.megs.edit-mode}}
+        <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+      {{else}}
+          <div name="name">{{actor.name}}</div>
+      {{/if}}
+      </h1>
 
       <div class="resources grid grid-3col">
 
         <div class="resource flex-group-center">
           <label for="system.ownerId" class="resource-label">Owner</label>
           <div>
+      {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.ownerId" data-type="String">
             {{#select system.ownerId}}
               {{#each characters as |id name|}}
               <option value="{{id}}">{{name}}</option>
               {{/each}}
             {{/select}}
+      {{else}}
+          {{characters[system.ownerId].name}}
+      {{/if}}
             </select>
           </div>
         </div>
@@ -25,14 +35,20 @@
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
         {{#if locations}}
-            <select  class="resource-select"  name="system.linkedItemId" data-type="String">
-                <option value="">{{localize 'MEGS.None'}}</option>
-        {{#select system.linkedItemId}}
-            {{#each locations as |id name|}}
-              <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        {{/select}}
-            </select>
+          {{#if flags.megs.edit-mode}}
+              <select  class="resource-select"  name="system.linkedItemId" data-type="String">
+                  <option value="">{{localize 'MEGS.None'}}</option>
+            {{#select system.linkedItemId}}
+              {{#each locations as |id name|}}
+                <option value="{{id}}">{{name}}</option>
+              {{/each}}
+            {{/select}}
+              </select>
+          {{else}}
+            {{locations[system.linkedItemId].name}}
+          {{/if}}
+        {{else}}
+          &mdash;
         {{/if}}
           </div>
         </div>

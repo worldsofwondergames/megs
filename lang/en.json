@@ -55,6 +55,7 @@
     "FactorCostMod": "Factor Cost Mod",
     "Gadgets": "Gadgets",
     "HasHardenedDefenses": "Has Hardened Defenses?",
+    "Location": "Location",
     "HeroPoints": "Hero Points",
     "HPSpent": "HP Spent",
     "InitialBonus": "Initial Bonus",
@@ -68,6 +69,7 @@
     "Limitation": "Limitation",
     "Link": "Link",
     "LinkedAttribute": "Linked Attribute",
+    "LinkedItem": "Linked Item",
     "LinkedSkill": "Linked Skill",
     "Mind": "Mind",
     "Motivation": "Motivation",
@@ -77,6 +79,7 @@
     "Occupation": "Occupation",
     "Opposing": "Opposing",
     "OpposingValue": "Opposing Value",
+    "Owner": "Owner",
     "Powers": "Powers",
     "PurchaseCost": "Purchase Cost",
     "Quantity": "Quantity",
@@ -96,6 +99,7 @@
     "TotalCost": "Total Cost",
     "Traits": "Traits",
     "Type": "Type",
+    "UnlinkedLocation": "Unlinked Location",
     "UseUnskilled": "Use Unskilled?",
     "Wealth": "Wealth",
     "Yes": "Yes"
@@ -107,7 +111,8 @@
       "npc": "NPC",
       "villain": "Villain",
       "pet": "Pet",
-      "vehicle": "Vehicle"
+      "vehicle": "Vehicle",
+      "location": "Location"
     },
     "Item": {
       "gadget": "Gadget",

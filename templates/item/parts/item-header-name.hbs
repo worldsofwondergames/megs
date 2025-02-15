@@ -2,7 +2,7 @@
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
       ">
         {{#if flags.megs.edit-mode}}
-          <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
+          <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
         {{else}}
           <div name="name">{{item.name}}</div>
         {{/if}}

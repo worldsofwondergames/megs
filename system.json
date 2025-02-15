@@ -1,7 +1,7 @@
 {
   "id": "megs",
   "title": "MEGS (Multiversal Exponential Gaming System)",
-  "description": "A totally unofficial, fan-made implementation of the MEGS RPG system for FoundryVTT!",
+  "description": "A totally unofficial, fan-made implementation of the MEGS RPG system for Foundry VTT!",
   "authors": [
     {
       "name": "Jeff Barnes",
@@ -16,7 +16,7 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/MEGS-0.5.3-Release/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/95-vehiclebases-with-superpowers-not-requiring-link-to-character/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
     }
   ],
@@ -37,8 +37,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/MEGS-0.5.3-Release/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/MEGS-0.5.3-Release/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/refs/heads/95-vehiclebases-with-superpowers-not-requiring-link-to-character/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/95-vehiclebases-with-superpowers-not-requiring-link-to-character/",
   "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {
     "distance": 5,

@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["hero", "villain", "npc", "pet", "vehicle"],
+    "types": [ "hero", "villain", "npc", "pet", "vehicle", "location"],
     "templates": {
       "identity": {
         "biography": "",
@@ -116,6 +116,10 @@
       "owned": {
         "ownerId": ""
       }
+    },
+    "location": {
+      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
+      "linkedItemId" : ""
     },
     "hero": {
       "templates": ["baseCharacter", "attributes", "hasInitiative", "hasGadgets", "identity"]
@@ -314,7 +318,7 @@
       "img": "icons/svg/degen.svg"
     },
     "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni"],
+      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni", "weapon"],
       "img": "systems/megs/assets/images/icons/gadget.png",
       "quantity": 1,
       "actionValue": 0,
@@ -348,7 +352,11 @@
         "isArmor": false
       },
       "vehicle": {
-        "isVehicle": false,
+        "isVehicle": true,
+        "linkedActorId" : ""
+      },
+      "location": {
+        "isLocation": true,
         "linkedActorId" : ""
       }
     }

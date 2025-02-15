@@ -18,11 +18,11 @@
   </li>
   {{#each filteredSkills as |item id|}}
     <li class='item flexrow item-row
-      {{#if item.system.aps}}bold{{/if}}
+    {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>
       <div class='item-name'>
         <div class='item-image'>
-          <a class='item-control item-edit'>
+          <a class='rollable' data-roll-type='item'>
             <img
               src='{{item.img}}'
               title='{{item.name}}'
@@ -31,7 +31,7 @@
             />
           </a>
         </div>
-       <a
+        <a
           class='item-control item-edit'
           title='{{localize "DOCUMENT.Update" type=item.name}}'
         >

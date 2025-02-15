@@ -90,9 +90,29 @@
    {{/each}}
     </div>
 
+    {{!-- Owned Powers Tab --}}
+    <div class="tab powers" data-group="primary" data-tab="powers">
+       {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+    </div>
+
+    {{!-- Owned Skills Tab --}}
+    <div class="tab skills" data-group="primary" data-tab="skills">
+      {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
+    </div>
+
+    {{!-- Traits Tab --}}
+     <div class="tab traits" data-group="primary" data-tab="traits">
+       {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+    </div>
+
+    {{!-- Owned gadgets Tab --}}
+    <div class="tab gadgets" data-group="primary" data-tab="gadgets">
+       {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
+    </div>
+
     {{!-- Description Tab --}}
     <div class="tab biography" data-group="primary" data-tab="description">
-      <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'MEGS..Description'}}</label>
+      <label for="system.linkedItem.system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.linkedItem.system.biography}}">{{localize 'MEGS.Description'}}</label>
       <div>{{system.linkedItem.system.biography}}</div>
     </div>
 

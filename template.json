@@ -118,7 +118,7 @@
       }
     },
     "location": {
-      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
+      "templates": ["baseCharacter", "attributes", "hasGadgets"],
       "linkedItemId" : ""
     },
     "hero": {
@@ -353,10 +353,6 @@
       },
       "vehicle": {
         "isVehicle": true,
-        "linkedActorId" : ""
-      },
-      "location": {
-        "isLocation": true,
         "linkedActorId" : ""
       }
     }

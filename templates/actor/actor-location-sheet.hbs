@@ -1,77 +1,10 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
   {{!-- Sheet Header --}}
-   <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
-    <div class="header-fields">
-      <h1 class="charname
-        {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
-      ">
-        {{#if flags.megs.edit-mode}}
-          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
-        {{else}}
-          <div name="name">{{actor.name}}</div>
-        {{/if}}
-      </h1>
+  {{> "systems/megs/templates/actor/parts/actor-header.hbs"}}
 
-      <div class="resources grid grid-3col">
-
-        <div class="resource flex-group-center">
-          <label for="system.ownerId" class="resource-label">Owner</label>
-          <div>
-            <select  class="resource-select"  name="system.ownerId" data-type="String">
-            {{#select system.ownerId}}
-              {{#each characters as |name id|}}
-              <option value="{{id}}">{{name}}</option>
-              {{/each}}
-            {{/select}}
-            </select>
-          </div>
-        </div>
-
-      {{#if system.ownerId}}
-        <div class="resource flex-group-center">
-          <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
-          <div>
-        {{#if locations}}
-              <select  class="resource-select"  name="system.linkedItemId" data-type="String">
-                  <option value="">{{localize 'MEGS.None'}}</option>
-            {{#select system.linkedItemId}}
-              {{#each locations as |id name|}}
-                <option value="{{id}}">{{name}}</option>
-              {{/each}}
-            {{/select}}
-              </select>
-        {{else}}
-          &mdash;
-        {{/if}}
-          </div>
-        </div>
-      {{/if}}
-        <div class="resource flex-group-center">
-          <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
-          <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{system.linkedItem.system.currentBody.value}}
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </header>
-
-{{#if system.linkedItemId}}
   {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-    {{!-- Default tab is specified in actor-sheet.mjs --}}
-    <a class="item" data-tab="abilities">{{localize 'MEGS.Abilities'}}</a>
-    <a class="item" data-tab="powers">{{localize 'MEGS.Powers'}}</a>
-    <a class="item" data-tab="skills">{{localize 'MEGS.Skills'}}</a>
-    <a class="item" data-tab="traits">{{localize 'MEGS.Traits'}}</a>
-    <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
-    <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
-  </nav>
+  {{> "systems/megs/templates/actor/parts/actor-navigation.hbs"}}
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
@@ -79,25 +12,8 @@
     {{!-- Abilities Tab --}}
     <div class="tab abilities" data-group="primary" data-tab="abilities">
 
-    {{#each system.linkedItem.system.attributes as |attribute key|}}
-      {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
-      {{/if}}
-          <div class="attribute flex-group-center">
-            <label for="system.linkedItem.system.attributes.{{key}}.value" 
-                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
-                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
-                data-value="{{attribute.value}}" data-key="{{key}}">
-              {{attribute.label}}
-            </label>
-            <div class="quantity attribute-input align-center">
-              {{attribute.value}}
-             </div>
-          </div>
-      {{#if (isDivisor 3 (sum @index 1))}}
-        </section>
-     {{/if}}
-   {{/each}}
+    {{> "systems/megs/templates/actor/parts/actor-attributes.hbs"}}
+
     </div>
 
     {{!-- Owned Powers Tab --}}
@@ -121,19 +37,11 @@
     </div>
 
     {{!-- Description Tab --}}
-    <section class="grid-1col description-item">
-      <div class="flex-group-left">
-        <div class="indentLeft">
-        {{#if system.linkedItem.system.description}}
-          {{{system.linkedItem.system.description}}}
-        {{else}}
-          ({{localize 'MEGS.None'}})
-        {{/if}}
-        </div>
-      </div>
-    </section>
+    <div class="tab biography" data-group="primary" data-tab="description">
+      <!-- TODO add attitude to PCS -->
+       {{> "systems/megs/templates/actor/parts/actor-description.hbs"}}
+    </div>
 
   </section>
-{{/if}}
 </form>
 

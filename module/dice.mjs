@@ -70,7 +70,6 @@ export class MegsTableRolls {
    * @private
    */
   async _handleRoll(currentHeroPoints) {
-
     // what's being rolled (used for display)
     let label = this.label ? `${this.label}` : '';
     if (this.isUnskilled) {
@@ -81,6 +80,7 @@ export class MegsTableRolls {
 
     // Manually enter OV and RV for target
     if (game.user.targets.size === 0) {
+      console.info("Showing roll dialog from MegsTableRolls_handleRoll() without a target");
       const template = "systems/megs/templates/dialogs/rollDialog.hbs";
       const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
       const data = {
@@ -135,6 +135,8 @@ export class MegsTableRolls {
    */
   async _handleTargetedRolls(currentHeroPoints) {
 
+    console.info("Showing roll dialog from MegsTableRolls._handleTargetedRolls()");
+
     const template = "systems/megs/templates/dialogs/rollDialog.hbs";
     const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
     const data = {
@@ -183,6 +185,17 @@ export class MegsTableRolls {
    */
   async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
     combatManeuverKey, resultColumnShifts, isUnskilled) {
+
+      console.info("dice._handleRolls: currentHeroPoints="+currentHeroPoints
+        + " maxHpToSpend=" + maxHpToSpend
+        + " hpSpentAV=" + hpSpentAV
+        + " hpSpentEV=" + hpSpentEV
+        + " hpSpentOV=" + hpSpentOV
+        + " hpSpentRV=" + hpSpentRV
+        + " combatManeuverKey=" + combatManeuverKey
+        + " resultColumnShifts=" + resultColumnShifts
+        + " isUnskilled=" + isUnskilled
+      );
 
     // TODO deduct spent Hero Points
 //      await this.object.update({"system.heroPoints.value": currentHeroPoints - (hpSpentAV + hpSpentEV)});

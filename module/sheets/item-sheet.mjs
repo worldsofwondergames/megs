@@ -41,11 +41,6 @@ export class MEGSItemSheet extends ItemSheet {
   /** @override */
   get template() {
     const path = 'systems/megs/templates/item';
-    // Return a single sheet for all item types.
-    // return `${path}/item-sheet.hbs`;
-
-    // Alternatively, you could use the following return statement to do a
-    // unique item sheet by type, like `weapon-sheet.hbs`.
     return `${path}/item-${this.item.type}-sheet.hbs`;
   }
 
@@ -59,7 +54,6 @@ export class MEGSItemSheet extends ItemSheet {
     // Use a safe clone of the item data for further operations.
     const itemData = context.data;
 
-    // Retrieve the roll data for TinyMCE editors.
     context.rollData = this.item.getRollData();
 
     // Add the item's data to context.data for easier access, as well as flags.
@@ -151,15 +145,6 @@ export class MEGSItemSheet extends ItemSheet {
     context.isRollable = this._isRollable(itemData);
 
     context.hasActor = this.object.parent ? true : false;
-
-    // TODO locked
-    // if (context.hasActor == null) { // == is correct here; want null and undefined
-    //   if (context.hasActor) { 
-    //     this.isLocked = true;
-    //   } else { 
-    //     this.isLocked = false;
-    //   }
-    // }
 
     // if has actor parent, store powers that actor has; otherwise, store all powers
     if (itemData.type === MEGS.itemTypes.bonus || itemData.type === MEGS.itemTypes.limitation) {
@@ -308,6 +293,7 @@ export class MEGSItemSheet extends ItemSheet {
 
       const rollValues = new RollValues(label, dataset.type, dataset.value, actionValue, opposingValue,
           effectValue, resistanceValue, dataset.roll, dataset.unskilled);
+      console.info("Rolling from item-sheet click");
       const rollTables = new MegsTableRolls(rollValues);
       rollTables.roll(event, this.object.parent.system.heroPoints.value).then((response) => {
       })
@@ -730,7 +716,7 @@ export class MEGSItemSheet extends ItemSheet {
       return [
         {
           class: "megs-toggle-edit-mode",
-          label: game.i18n.localize(MEGS.Edit) ?? "Edit",
+          label: game.i18n.localize("MEGS.Edit") ?? "Edit",
           icon: "fas fa-edit",
           onclick: (e) => {
             this._toggleEditMode(e);

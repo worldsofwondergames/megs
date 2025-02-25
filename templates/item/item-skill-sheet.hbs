@@ -5,17 +5,15 @@
       <div class="resources grid grid-4col">
       {{#if isRollable}}
         <div class="grid-span-3">
-      {{/if}}
-      {{#unless isRollable}}
+      {{else}}
         <div class="grid-span-4">
-      {{/unless}}
+      {{/if}}
           <h1 class="charname">
-        {{#if hasActor}}
+        {{#if flags.megs.edit-mode}}
+            <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
+        {{else}}
           {{item.name}}
         {{/if}}
-        {{#unless hasActor}}
-            <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
-        {{/unless}}
           </h1>
         </div>
         {{#if hasActor}}
@@ -24,8 +22,7 @@
           <div class="d10 grid-span-1 rollable " data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}">
             &nbsp;
           </div>
-          {{/if}}
-          {{#unless system.aps}}
+          {{else}}
             {{#if isUnskilled}}
               {{#if (compare system.useUnskilled "===" "true")}}
           <div class="d10 grid-span-1 rollable unskilled" data-label="{{item.name}}" data-roll="1d10 + 1d10" 
@@ -34,7 +31,7 @@
           </div>
               {{/if}}
             {{/if}}
-          {{/unless}}
+          {{/if}}
         {{/if}}        
       </div>
 
@@ -61,9 +58,7 @@
         <div class="attribute flex-group-center">
           <label for="system.link" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedAttribute'}}">{{localize 'MEGS.Link'}}</label>
           <div>
-        {{#if hasActor}}
-          {{getSelectedSkillLink item.name}}
-        {{else}}
+        {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.link" data-type="String">
               {{#select system.link}}
                   {{#each system.attributes as |attribute key|}}
@@ -71,6 +66,8 @@
                   {{/each}}
               {{/select}}
             </select>
+        {{else}}
+          {{getSelectedSkillLink item.name}}
         {{/if}}
             <!-- TODO localize label above -->
           </div>
@@ -95,16 +92,16 @@
         <div class="attribute flex-group-center">
           <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.UseUnskilled'}}">{{localize 'MEGS.UseUnskilled'}}</label>
           <div>
-        {{#if hasActor}}
-          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
-        {{else}}
+        {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.useUnskilled" data-type="String">
               {{#select system.useUnskilled}}
                   <option  value="true">{{localize 'MEGS.Yes'}}</option>
                   <option  value="false">{{localize 'MEGS.No'}}</option>
               {{/select}}
             </select>
+        {{else}}
+          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
+          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
         {{/if}}
           </div>
         </div>
@@ -112,9 +109,7 @@
        <div class="attribute flex-group-center">
           <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
           <div>
-        {{#if hasActor}}
-          {{system.range}}
-        {{else}}
+        {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.range" data-type="String">
               {{#select system.range}}
                   {{#each system.ranges as |range key|}}
@@ -122,6 +117,8 @@
                   {{/each}}
               {{/select}}
             </select>
+        {{else}}
+          {{system.range}}
         {{/if}}
           </div>
         </div>
@@ -129,17 +126,17 @@
         <div class="attribute flex-group-center">
           <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
            <div>
-        {{#if hasActor}}
-          {{system.type}}
-        {{else}}
+        {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.type" data-type="String">
               {{#select system.type}}
                 {{#each system.powerTypes as |powerType key|}}
               <option value="{{key}}">{{powerType}}</option>
                 {{/each}}
               {{/select}}
-        {{/if}}
             </select>
+        {{else}}
+          {{system.type}}
+        {{/if}}
           </div>
         </div>
               
@@ -149,11 +146,10 @@
 
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
-        {{#if hasActor}}
-          <div class="description-text">{{{system.description}}}</div>
+        {{#if flags.megs.edit-mode}}
+          {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
         {{else}}
-      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+          <div class="description-text">{{{system.description}}}</div>
         {{/if}}
     </div>
 
@@ -166,7 +162,20 @@
           {{#if showHeroPointCosts}}
           <div class='item-total-cost grid-span-1'>{{localize 'MEGS.TotalCost'}}</div>
           {{/if}}
-          <div class='item-controls grid-span-1'>&nbsp;</div>
+          <div class='item-controls grid-span-1'>
+          {{#if flags.megs.edit-mode}}
+            <a
+              class='item-control item-create'
+              title='{{localize "DOCUMENT.Create" type='Subskill'}}'
+              data-type='subskill'
+            >
+              <i class='fas fa-plus'></i>
+              {{localize 'DOCUMENT.New' type=""}}
+            </a>
+          {{else}}
+            &nbsp;
+          {{/if}}
+          </div>
         </li>
       
       {{#each subskills as |subskill|}}
@@ -211,22 +220,33 @@
             >
               {{#if (compare subskill.system.type '===' 'auto')}}
               <img src="/systems/megs/assets/images/icons/d10grey.svg" class="svg-icon" />
-              {{/if}}
-              {{#unless (compare subskill.system.type '===' 'auto')}}
+              {{else}}
                 {{#if subskill.isUnskilled}}
               <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" />
-                {{/if}}
-                {{#unless subskill.isUnskilled}}
+                {{else}}
                   {{#if (compare subskill.effectiveAPs ">" 0)}}
               <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" />
                   {{/if}}
-                {{/unless}}
-              {{/unless}}
+                {{/if}}
+              {{/if}}
             </a>
-            {{/if}}
-            {{#unless subskill.isRollable}}
+            {{else}}
               <img src="/systems/megs/assets/images/icons/transparent.png" class="svg-icon" />
-            {{/unless}}
+            {{/if}}
+              <a
+                class='item-control item-edit'
+                title='{{localize "DOCUMENT.Update" type='Item'}}'
+              >
+                <i class='fas fa-edit'></i>
+              </a>
+             {{#if ../flags.megs.edit-mode}}
+              <a
+                class='item-control item-delete'
+                title='{{localize "DOCUMENT.Delete" type='Item'}}'
+              >
+                <i class='fas fa-trash'></i>
+              </a>
+              {{/if}}
           </div>
         </li>
       {{/each}}

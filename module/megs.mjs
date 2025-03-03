@@ -46,13 +46,6 @@ Hooks.once('init', function () {
     CONFIG.tables = response;
   });
 
-  // Load motivations
-  _loadData('systems/megs/assets/data/motivations.json').then((response) => {
-    console.log(`Received response for motivations data: ${response.status}`);
-    CONFIG.motivations = response;
-    console.error(CONFIG.motivations); // TODO delete
-  });
-
   /**
    * Set an initiative formula for the system
    * @type {String}
@@ -63,10 +56,26 @@ Hooks.once('init', function () {
   };
 
   // Combat maneuvers
-  _loadData('systems/megs/assets/data/combatManeuvers.json').then((response) => {
-    console.log(`Received response for combat maneuvers data: ${response.status}`);
-    CONFIG.combatManeuvers = response;
-  });
+  _loadData('systems/megs/assets/data/combatManeuvers.json')
+      .then((response) => {
+        console.log(`Received response for combat maneuvers data: ${response.status}`);
+        CONFIG.combatManeuvers = response;
+      })
+      .catch((error) => {
+        console.error(`Error loading combat manuevers: ${error.message}`);
+      });
+
+  _loadData('systems/megs/assets/data/motivations.json')
+      .then((response) => {
+        console.log(`Received response for motivations data: ${response.status}`);
+        CONFIG.motivations = response;
+      })
+      .catch((error) => {
+        console.error(`Error loading motivations data: ${error.message}`);
+      })
+      .then(() => {
+        console.error("TEST!!!!!!!!!!!!!!!!!!", CONFIG.combatManeuvers);
+      });
 
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item

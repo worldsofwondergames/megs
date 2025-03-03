@@ -73,9 +73,6 @@ Hooks.once('init', function () {
       .catch((error) => {
         console.error(`Error loading motivations data: ${error.message}`);
       })
-      .then(() => {
-        console.error("TEST!!!!!!!!!!!!!!!!!!", CONFIG.motivations);
-      });
 
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item

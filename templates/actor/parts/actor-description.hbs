@@ -19,6 +19,15 @@
         <div class="flex-group-left">
           <label for="system.motivation" class="resource-label flexlarge align-left" data-label="{{system.motivation}}">{{localize 'MEGS.Motivation'}}</label>
           {{#if flags.megs.edit-mode}}
+            <select  class="resource-select"  name="system.motivation" data-type="String">
+              {{#select system.motivation}}
+                  {{#each CONFIG.motivations[] as |attribute key|}}
+                  <option  value="{{key}}">{{attribute.label}}</option>
+                  {{/each}}
+                  <option  value="special">{{localize 'MEGS.Special'}}</option>
+                  <option  value="none">{{localize 'MEGS.None'}}</option>
+              {{/select}}
+            </select>
           <input type="text" name="system.motivation" value="{{system.motivation}}" data-dtype="string"/>
           {{else}}
           <div class="indentLeft">

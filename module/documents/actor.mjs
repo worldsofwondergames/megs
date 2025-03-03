@@ -86,6 +86,16 @@ export class MEGSActor extends Actor {
   prepareBaseData() {
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
+    super.prepareBaseData();
+
+
+    if (this.type !== MEGS.characterTypes.hero) {
+      system.error("TEST: hero");
+    }
+    else if (this.type !== MEGS.characterTypes.villain) {
+      system.error("TEST: villain");
+    }
+
   }
   /**
    * @override

@@ -647,11 +647,11 @@
     height: 20px;
     margin: 0;
     width: 100%;
-    display: inline-block;
+    flex: 1;
   }
 
   input[type="range"] + .range-value {
-    display: inline-block;
+    display: block;
     flex: 0 1 48px;
     text-align: center;
     border: 1px solid #1f5079;

@@ -81,9 +81,11 @@ export class MEGSActor extends Actor {
 
 
     if (this.type !== MEGS.characterTypes.hero) {
+      this.system.motivations = CONFIG.motivations.hero;
       console.error("TEST: hero", this.system);
     }
     else if (this.type !== MEGS.characterTypes.villain) {
+      this.system.motivations = CONFIG.motivations.villain;
       console.error("TEST: villain", this.system);
     }
 

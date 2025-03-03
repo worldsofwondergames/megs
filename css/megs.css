@@ -641,7 +641,7 @@
 
 .megs .sheet-body div.biography section.description-item div.wealth {
   width: 100%;
-  display: block;
+  display: flex;
 
   input[type=range] {
     height: 20px;

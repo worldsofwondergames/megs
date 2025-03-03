@@ -74,7 +74,7 @@ Hooks.once('init', function () {
         console.error(`Error loading motivations data: ${error.message}`);
       })
       .then(() => {
-        console.error("TEST!!!!!!!!!!!!!!!!!!", CONFIG.combatManeuvers);
+        console.error("TEST!!!!!!!!!!!!!!!!!!", CONFIG.motivations);
       });
 
   // Active Effects are never copied to the Actor,

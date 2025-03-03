@@ -81,10 +81,10 @@ export class MEGSActor extends Actor {
 
 
     if (this.type !== MEGS.characterTypes.hero) {
-      system.error("TEST: hero");
+      console.error("TEST: hero", this.system);
     }
     else if (this.type !== MEGS.characterTypes.villain) {
-      system.error("TEST: villain");
+      console.error("TEST: villain", this.system);
     }
 
   }

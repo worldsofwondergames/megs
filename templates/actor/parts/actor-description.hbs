@@ -19,13 +19,15 @@
         <div class="flex-group-left">
           <label for="system.motivation" class="resource-label flexlarge align-left" data-label="{{system.motivation}}">{{localize 'MEGS.Motivation'}}</label>
           {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.motivation" data-type="String">
-              {{#select system.motivation}}
-                  {{#each system.motivations as |value|}}
-                  <option  value="{{value}}">{{value}}</option>
-                  {{/each}}
-              {{/select}}
-            </select>
+            <div>
+                <select  class="resource-select"  name="system.motivation" data-type="String">
+                  {{#select system.motivation}}
+                      {{#each system.motivations as |value|}}
+                      <option value="{{value}}">{{value}}</option>
+                      {{/each}}
+                  {{/select}}
+                </select>
+            </div>
           {{else}}
           <div class="indentLeft">
             {{#if system.motivation}}

@@ -644,8 +644,6 @@
   display: block;
 
   input[type=range] {
-    -webkit-appearance: none;
-    background: transparent;
     height: 20px;
     margin: 0;
     width: 100%;
@@ -656,7 +654,7 @@
     display: inline-block;
     flex: 0 1 48px;
     text-align: center;
-    border: 1px solid var(--color-border-light-primary);
+    border: 1px solid #1f5079;
     padding: 2px;
     margin-left: 10px;
   }

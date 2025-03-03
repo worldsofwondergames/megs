@@ -61,8 +61,8 @@
         <div class="flex-group-left">
           <label for="system.wealth" class="resource-label flexlarge align-left" data-label="{{system.wealth}}">{{localize 'MEGS.Wealth'}}</label>
          {{#if flags.megs.edit-mode}}
-          <div class="wealth" style="width: 100%;">
-              <input type="range" name="system.wealth" value="{{system.wealth}}" min="0" max="30" step="1" oninput="wealthAPRangeValue.innerText = this.value"  data-dtype="number" />
+          <div class="wealth">
+              <input type="range" name="system.wealth" value="{{system.wealth}}" min="0" max="30" step="1" oninput="wealthAPRangeValue.innerText = this.value">
               <span class="range-value" id="wealthAPRangeValue">{{system.wealth}}</span>
           </div>
          {{else}}

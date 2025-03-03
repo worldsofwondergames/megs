@@ -243,8 +243,9 @@
         "isLinked": false,
         "range": "",
         "rangeAPs": 0,
-        "formula": "1d10 + 1d10"
-      }, 
+        "formula": "1d10 + 1d10",
+        "source": ""
+      },
       "purchasable": {
         "baseCost": 0,
         "totalCost": 0
@@ -285,7 +286,7 @@
       "activateFree": false
     },
     "skill": {
-      "templates": ["baseItem", "attributes", "abilities", "purchasable", "scalable", "hasParent"],
+      "templates": ["baseItem", "attributes", "abilities", "hasModifiers", "purchasable", "scalable", "hasParent"],
       "type": "skill",
       "img": "icons/svg/light.svg",
       "useUnskilled": true

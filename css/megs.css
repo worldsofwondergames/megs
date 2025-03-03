@@ -649,10 +649,11 @@
     height: 20px;
     margin: 0;
     width: 100%;
+    display: inline-block;
   }
 
   input[type="range"] + .range-value {
-    display: block;
+    display: inline-block;
     flex: 0 1 48px;
     text-align: center;
     border: 1px solid var(--color-border-light-primary);

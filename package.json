@@ -11,7 +11,7 @@
   "browserslist": [
     "last 3 versions"
   ],
-  "description": "Unofficial Multversal Exponential Game System (MEGS) RPG Support for Foundry VTT",
+  "description": "Unofficial Multiversal Exponential Game System (MEGS) RPG Support for Foundry VTT",
   "devDependencies": {
     "@babel/preset-env": "^7.23.2",
     "babel-jest": "^27.3.1",
@@ -56,7 +56,7 @@
     "scss": "sass styles/dcc.scss styles/dcc.css"
   },
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.6.0",
   "dependencies": {
     "handlebars-helpers": "^0.10.0"
   }

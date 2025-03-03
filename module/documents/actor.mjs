@@ -79,14 +79,14 @@ export class MEGSActor extends Actor {
       });
     }
 
-
-    if (this.type !== MEGS.characterTypes.hero) {
-      this.system.motivations = CONFIG.motivations.hero;
-      console.error("TEST: hero", this.system);
-    }
-    else if (this.type !== MEGS.characterTypes.villain) {
-      this.system.motivations = CONFIG.motivations.villain;
-      console.error("TEST: villain", this.system);
+    if (this.type === MEGS.characterTypes.hero || this.type === MEGS.characterTypes.villain) {
+      const merge = (a, b, predicate = (a, b) => a === b) => {
+        const c = [...a]; // copy to avoid side effects
+        // add all items from B to copy C if they're not already present
+        b.forEach((bItem) => (c.some((cItem) => predicate(bItem, cItem)) ? null : c.push(bItem)))
+        return c;
+      }
+      this.system.motivations = merge(CONFIG.motivations[this.type], CONFIG.motivations.antihero);
     }
 
   }

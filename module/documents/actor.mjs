@@ -79,15 +79,6 @@ export class MEGSActor extends Actor {
       });
     }
 
-  }
-
-
-  /** @override */
-  prepareBaseData() {
-    // Data modifications in this step occur before processing embedded
-    // documents or derived data.
-    super.prepareBaseData();
-
 
     if (this.type !== MEGS.characterTypes.hero) {
       system.error("TEST: hero");
@@ -96,6 +87,13 @@ export class MEGSActor extends Actor {
       system.error("TEST: villain");
     }
 
+  }
+
+
+  /** @override */
+  prepareBaseData() {
+    // Data modifications in this step occur before processing embedded
+    // documents or derived data.
   }
   /**
    * @override

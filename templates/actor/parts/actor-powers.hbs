@@ -54,7 +54,7 @@
                 min="0" max=""
                 disabled
                 data-dtype="Number"/>
-          <button class="plus" aria-label="Increase" onClick="{{item._id}}Input.value = parseInt({{item._id}}Input.value)+ 1 ">&plus;</button>
+          <button class="plus" aria-label="Increase" onClick="item{{item._id}}Input.value = parseInt(item{{item._id}}Input.value)+ 1 ">&plus;</button>
         </div>
       </div>
       {{#if showHeroPointCosts}}

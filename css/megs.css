@@ -488,12 +488,19 @@
   border: 0;
 }
 
-.megs input[type="text"].input-label {
+.megs input.input-label {
   border: none;
   outline: none;
   background-color: transparent;
+  width: 30px;
 }
 
+.megs button.attributeControl {
+  width: 20px;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}
 
 /*------------------------------------------------------------------------*/
 /* Items, gadgets, etc.

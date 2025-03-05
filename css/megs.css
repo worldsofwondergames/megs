@@ -491,6 +491,7 @@
 .megs input[type="text"].input-label {
   border: none;
   outline: none;
+  background-color: transparent;
 }
 
 

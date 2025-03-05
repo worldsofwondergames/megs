@@ -497,6 +497,8 @@
 
 .megs button.attributeControl {
     border-radius: 50%;
+    background-color: #1f5079;
+    color: #fff;
     width: 20px;
     height: 20px;
 }

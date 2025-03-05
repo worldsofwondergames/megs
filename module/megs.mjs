@@ -316,7 +316,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes) {
   console.error("TEST1: shouldShowRow: ", index, hasAttributes);
   var shouldShowRow = false;
-  if (index < 3 && hasAttributes.physical) {
+  if (index < 3 && hasAttributes?.physical) {
     shouldShowRow = true;
   }
   return shouldShowRow;

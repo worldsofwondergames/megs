@@ -497,8 +497,7 @@
 
 .megs .quantity.attribute-input button.attributeControl {
     border-radius: 50%;
-    border: #1f5079;
-    background-color: transparent;
+    background-color: #1f5079;
     color: #fff;
     width: 24px;
     height: 24px;
@@ -570,7 +569,7 @@
 .megs .items-list .item-aps {
   display: flex;
   justify-content: center;
-  flex: 0 0 100px;
+  flex: 0 0 130px;
 }
 .megs .items-list .item-controls {
   display: flex;

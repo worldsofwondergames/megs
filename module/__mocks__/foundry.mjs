@@ -112,35 +112,30 @@ class Actor {
           "currentBody": {
             "value": 6,
             "min": 0,
-            "max": 60,
-            "label": "Current Body"
+            "max": 60
           },
           "currentMind": {
             "value": 10,
             "min": 0,
-            "max": 60,
-            "label": "Current Mind"
+            "max": 60
           },
           "currentSpirit": {
             "value": 10,
             "min": 0,
-            "max": 60,
-            "label": "Current Spirit"
+            "max": 60
           },
           "heroPoints": {
-            "value": 150,
-            "label": "Hero Points"
+            "value": 150
           },
           "initiativeBonus": {
-            "value": 35,
-            "label": "Initiative Bonus"
+            "value": 35
           },
           "biography": "",
           "wealth": 0,
           "motivation": "",
           "occupation": "",
           "background": "",
-          "alterEgo": "Bruce Wayne",
+          "alterEgo": "",
         }
       });
     }

@@ -313,13 +313,12 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   return description;
 });
 
-Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes) {
-  console.error("TEST1: shouldShowRow: ", index, hasAttributes);
+Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
   var shouldShowRow = false;
   if (index < 3 && hasAttributes?.physical) {
-    shouldShowRow = true;
+    return options.fn(this);
   }
-  return shouldShowRow;
+  return options.inverse(this);
 });
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */

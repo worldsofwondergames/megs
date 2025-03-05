@@ -1,5 +1,5 @@
     {{#each system.attributes as |attribute key|}}
-{{#shouldShowRow @index system}}
+{{#shouldShowRow @index ../system.settings.hasAttributes}}
       {{#if (isDivisor 3 @index)}}
        <section class="attributes grid grid-3col attributeRow">
       {{/if}}

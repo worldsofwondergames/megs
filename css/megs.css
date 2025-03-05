@@ -635,6 +635,30 @@
   font-size: 14px;
 }
 
+.megs .sheet-body div.biography section.description-item select {
+  width: 100%;
+  height: 32px;
+}
+
+.megs .sheet-body div.biography section.description-item div.wealth {
+  width: 100%;
+  display: flex;
+
+  input[type=range] {
+    height: 38px;
+    margin: 0;
+    width: 100%;
+  }
+
+  input[type="range"] + .range-value {
+    flex: 0 1 48px;
+    text-align: center;
+    border: 1px solid #1f5079;
+    padding: 2px;
+    margin-left: 10px;
+  }
+}
+
 /*------------------------------------------------------------------------*/
 /* Chat messages */
 /*------------------------------------------------------------------------*/

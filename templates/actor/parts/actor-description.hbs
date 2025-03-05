@@ -19,7 +19,15 @@
         <div class="flex-group-left">
           <label for="system.motivation" class="resource-label flexlarge align-left" data-label="{{system.motivation}}">{{localize 'MEGS.Motivation'}}</label>
           {{#if flags.megs.edit-mode}}
-          <input type="text" name="system.motivation" value="{{system.motivation}}" data-dtype="string"/>
+            <div>
+                <select  class="resource-select"  name="system.motivation" data-type="String">
+                  {{#select system.motivation}}
+                      {{#each system.motivations as |value|}}
+                      <option value="{{value}}">{{value}}</option>
+                      {{/each}}
+                  {{/select}}
+                </select>
+            </div>
           {{else}}
           <div class="indentLeft">
             {{#if system.motivation}}
@@ -53,7 +61,10 @@
         <div class="flex-group-left">
           <label for="system.wealth" class="resource-label flexlarge align-left" data-label="{{system.wealth}}">{{localize 'MEGS.Wealth'}}</label>
          {{#if flags.megs.edit-mode}}
-          <input type="text" name="system.wealth" value="{{system.wealth}}" data-dtype="number"/>
+          <div class="wealth">
+              <input type="range" name="system.wealth" value="{{system.wealth}}" min="0" max="30" step="1" oninput="wealthAPRangeValue.innerText = this.value">
+              <span class="range-value" id="wealthAPRangeValue">{{system.wealth}}</span>
+          </div>
          {{else}}
           <div class="indentLeft">
             {{#if system.wealth}}

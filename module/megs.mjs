@@ -56,10 +56,23 @@ Hooks.once('init', function () {
   };
 
   // Combat maneuvers
-  _loadData('systems/megs/assets/data/combatManeuvers.json').then((response) => {
-    console.log(`Received response for combat maneuvers data: ${response.status}`);
-    CONFIG.combatManeuvers = response;
-  });
+  _loadData('systems/megs/assets/data/combatManeuvers.json')
+      .then((response) => {
+        console.log(`Received response for combat maneuvers data: ${response.status}`);
+        CONFIG.combatManeuvers = response;
+      })
+      .catch((error) => {
+        console.error(`Error loading combat manuevers: ${error.message}`);
+      });
+
+  _loadData('systems/megs/assets/data/motivations.json')
+      .then((response) => {
+        console.log(`Received response for motivations data: ${response.status}`);
+        CONFIG.motivations = response;
+      })
+      .catch((error) => {
+        console.error(`Error loading motivations data: ${error.message}`);
+      })
 
   // Active Effects are never copied to the Actor,
   // but will still apply to the Actor from within the Item
@@ -300,6 +313,17 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   return description;
 });
 
+Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
+  if (index < 3 && hasAttributes?.physical) {
+    return options.fn(this);
+  } else if (index < 6 && hasAttributes?.mental) {
+    console.log(index, hasAttributes); // TODO delete
+    return options.fn(this);
+  } else if (index < 9 && hasAttributes?.mystical) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */
 /* -------------------------------------------- */

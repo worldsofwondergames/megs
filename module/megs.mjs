@@ -317,6 +317,10 @@ Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, option
   var shouldShowRow = false;
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);
+  } else if (index < 3 && hasAttributes?.mental) {
+    return options.fn(this);
+  } else if (index < 9 && hasAttributes?.mystical) {
+    return options.fn(this);
   }
   return options.inverse(this);
 });

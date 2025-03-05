@@ -41,6 +41,20 @@
         </a>
       </div>
       <div class='item-aps'>
+
+        <div class="quantity attribute-input">
+          <button class="minus" aria-label="Decrease" onClick="if (parseInt({{item._id}}Input.value) > 0)  {{item._id}}Input.value = parseInt({{item._id}}Input.value) - 1">&minus;</button>
+          <input id="{{item._id}}Input"
+                name="system.attributes.{{item._id}}.value"
+                type="number"
+                class="input-label"
+                value="{{attribute.value}}"
+                min="0" max=""
+                disabled
+                data-dtype="Number"/>
+          <button class="plus" aria-label="Increase" onClick="{{item._id}}Input.value = parseInt({{item._id}}Input.value)+ 1 ">&plus;</button>
+        </div>
+
         {{item.system.aps}}
       </div>
       {{#if showHeroPointCosts}}

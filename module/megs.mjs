@@ -314,6 +314,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 });
 
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
+  console.log(index, hasAttributes);
   var shouldShowRow = false;
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);

@@ -314,11 +314,10 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 });
 
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
-  console.log(index, hasAttributes);
   var shouldShowRow = false;
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);
-  } else if (index < 3 && hasAttributes?.mental) {
+  } else if (index < 6 && hasAttributes?.mental) {
     return options.fn(this);
   } else if (index < 9 && hasAttributes?.mystical) {
     return options.fn(this);

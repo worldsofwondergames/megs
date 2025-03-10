@@ -35,7 +35,8 @@
   font-size: 20px;
 }
 
-.megs.window-app .window-content {
+.window-app .window-content
+{
   background-color: #fff;
   background-image: none;
 }
@@ -919,4 +920,20 @@ details summary.no-arrow {
   padding-top: 5px;
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 16px;
+}
+
+/*-----------------------------
+  Journal entries
+ ------------------------------*/
+.sheet.journal-entry .journal-entry-page h4 {
+  font-size: 1.1em;
+  border-bottom: .5px solid var(--color-underline-header);
+}
+
+/*-----------------------------
+  Macros
+ ------------------------------*/
+.hotbar .macro img.macro-icon [src*="assets/images/icons"] {
+// fix this so inverts if gets from dcheroes3e-shared #aaaaaa
+  filter: invert(100%);
 }

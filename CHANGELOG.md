@@ -28,4 +28,3 @@
 
 ## 0.6.0 (March 30, 2025)
 - Allow current scores to be negative (up to negative value of base attribute)
-- Removed reset button for current RVs when not in edit mode

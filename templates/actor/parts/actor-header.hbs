@@ -29,9 +29,7 @@
             <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value minPos=-system.attributes.mind.value max=system.attributes.mind.value hasValue=true}}
             </div>
-        {{#if flags.megs.edit-mode}}
             <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
-        {{/if}}
           </div>
         </div>
 
@@ -41,9 +39,7 @@
            <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value minPos=-system.attributes.spirit.value max=system.attributes.spirit.value hasValue=true}}
             </div>
-        {{#if flags.megs.edit-mode}}
             <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
-        {{/if}}
           </div>
         </div>
 

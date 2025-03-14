@@ -23,12 +23,14 @@
       </section>
 
       {{!-- Gadget attributes --}}
-      <details open> <!-- TODO use flags for open -->
+    {{#shouldShowGadgetAttributesDetails system.settings.hasAttributes}}
+      <details open>
         <summary class="item-summary">Attributes {{gadgetAttributesDetailsOpen}}</summary>
 
     {{> "systems/megs/templates/item/parts/item-gadget-attributes.hbs"}}
 
       </details>
+    {{/shouldShowGadgetAttributesDetails}}
 
       {{!-- Gadget misc properties --}}
       <details open>

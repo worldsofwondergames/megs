@@ -89,7 +89,7 @@
               {{/select}}
             </select>
           {{else}}
-            {{system.isCarried}}
+            {{trueFalseToYesNo system.isCarried}}
           {{/if}}
             </div>
           </div>
@@ -105,7 +105,7 @@
               {{/select}}
             </select>
           {{else}}
-            {{system.canBeTakenAway}}
+            {{trueFalseToYesNo system.canBeTakenAway}}
           {{/if}}
             </div>
           </div>
@@ -121,7 +121,7 @@
               {{/select}}
             </select>
           {{else}}
-            {{system.hasHardenedDefenses}}
+            {{trueFalseToYesNo system.hasHardenedDefenses}}
           {{/if}}
             </div>
           </div>

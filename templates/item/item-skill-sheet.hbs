@@ -77,12 +77,16 @@
           <label for="system.isLinked" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsLinked'}}">{{localize 'MEGS.IsLinked'}}</label>
           <div>
         {{#if hasActor}}
+            {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.isLinked" data-type="String">
               {{#select system.isLinked}}
                   <option  value="false">{{localize 'MEGS.No'}}</option>
                   <option  value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
+            {{else}}
+                {{trueFalseToYesNo system.isLinked}}
+            {{/if}}
         {{else}}
           {{localize 'MEGS.No'}}
         {{/if}}
@@ -100,8 +104,7 @@
               {{/select}}
             </select>
         {{else}}
-          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
+            {{trueFalseToYesNo system.useUnskilled}}
         {{/if}}
           </div>
         </div>

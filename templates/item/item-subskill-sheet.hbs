@@ -100,8 +100,7 @@
               {{/select}}
             </select>
         {{else}}
-          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
+            {{trueFalseToYesNo system.useUnskilled}}
         {{/if}}
           </div>
         </div>

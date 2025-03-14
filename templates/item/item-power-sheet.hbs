@@ -117,7 +117,7 @@
             {{/select}}
           </select>
             {{else}}
-                <span>{{system.isLinked}}</span>
+                <span>{{trueFalseToYesNo system.isLinked}}</span>
             {{/if}}
         {{else}}
           {{localize 'MEGS.No'}}

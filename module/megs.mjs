@@ -332,7 +332,7 @@ Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, option
   return options.inverse(this);
 });
 
-Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttributes) {
+Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttributes, options) {
   if (hasAttributes?.physical || hasAttributes?.mental || hasAttributes?.mystical) {
     return options.fn(this);
   }

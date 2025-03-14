@@ -334,8 +334,9 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
   let min = 0;
   if (args.min && !isNaN(args.min)) {
     min = args.min;
+  } else if (args.minPos && !isNaN(args.minPos)) {
+    min = '-1' + args.minPos;
   }
-  console.error(min, args.min); // TODO delete
 
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';

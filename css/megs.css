@@ -418,7 +418,7 @@
   font-size: 24px;
   letter-spacing: 0.1em;
 }
-.megs .resource .resource-select {
+.megs select.resource-select {
   width: 100%;
   border: 0;
   background-color: #ddebf6;

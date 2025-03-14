@@ -130,11 +130,13 @@
           <div class="gadget-property flex-group-center">
             <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
           {{#if flags.megs.edit-mode}}
+            <select  class="resource-select"  name="system.reliability" data-type="String">
               {{#select system.reliability}}
                   {{#each reliabilityScores as |value|}}
                   <option value="{{value}}">{{value}}</option>
                   {{/each}}
               {{/select}}
+            </select>
           {{else}}
             {{system.reliability}}
           {{/if}}
@@ -144,10 +146,10 @@
             <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsBroken'}}">{{localize 'MEGS.IsBroken'}}</label>
             <div>
           {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.isBroken" data-type="String">
+            <select class="resource-select"  name="system.isBroken" data-type="String">
               {{#select system.isBroken}}
-                  <option  value="false">{{localize 'MEGS.No'}}</option>
-                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
+                  <option value="false">{{localize 'MEGS.No'}}</option>
+                  <option value="true">{{localize 'MEGS.Yes'}}</option>
               {{/select}}
             </select>
           {{else}}

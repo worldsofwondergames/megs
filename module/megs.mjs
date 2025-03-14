@@ -322,12 +322,11 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 });
 
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
-console.error(index, hasAttributes); // TODO delete
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);
-  } else if (index < 6 && hasAttributes?.mental) {
+  } else if (index > 2 && index < 6 && hasAttributes?.mental) {
     return options.fn(this);
-  } else if (index < 9 && hasAttributes?.mystical) {
+  } else if (index > 5 && index < 9 && hasAttributes?.mystical) {
     return options.fn(this);
   }
   return options.inverse(this);

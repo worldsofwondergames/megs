@@ -130,7 +130,9 @@
           <div class="gadget-property flex-group-center">
             <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
           {{#if flags.megs.edit-mode}}
-            {{> plusMinusInput id='reliability' classes='attribute-input' min=0 value=system.reliability}}
+            <select name="importantChoice">
+              {{selectOptions MEGS.reliabilityScores selected=system.reliability localize=false}}
+            </select>
           {{else}}
             {{system.reliability}}
           {{/if}}

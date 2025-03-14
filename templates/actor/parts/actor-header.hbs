@@ -19,7 +19,7 @@
             <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=-system.attributes.body.value max=system.attributes.body.value hasValue=true}}
             </div>
-            <button class="reset" onClick="currentBodyInput.value = parseInt(system.attributes.body.value)" />
+            <button class="reset" onClick="currentBodyInput.value = {{system.attributes.body.value}}" />
           </div>
         </div>
 

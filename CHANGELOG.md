@@ -25,3 +25,6 @@
  - Added locations as Actors (still some cleanup to do here)
  - Portuguese language support (many thanks to @rodrigomiranda on Discord!)
  - Several minor bug and typo fixes
+
+## 0.6.0 (March 30, 2025)
+ - Allow current scores to be negative (up to negative value of base attribute)

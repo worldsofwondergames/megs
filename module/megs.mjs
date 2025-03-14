@@ -215,6 +215,10 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   return displayName;
 });
 
+Handlebars.registerHelper('trueFalseToYesNo', function (str) {
+  return str === 'true' ? "Yes" : "No";
+});
+
 Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
 
@@ -320,14 +324,22 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);
-  } else if (index < 6 && hasAttributes?.mental) {
-    console.log(index, hasAttributes); // TODO delete
+  } else if (index > 2 && index < 6 && hasAttributes?.mental) {
     return options.fn(this);
-  } else if (index < 9 && hasAttributes?.mystical) {
+  } else if (index > 5 && index < 9 && hasAttributes?.mystical) {
     return options.fn(this);
   }
   return options.inverse(this);
 });
+
+Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttributes, options) {
+  if (hasAttributes?.physical || hasAttributes?.mental || hasAttributes?.mystical) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
+
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */
 /* -------------------------------------------- */

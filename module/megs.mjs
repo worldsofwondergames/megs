@@ -110,6 +110,10 @@ Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
 
+Handlebars.registerHelper('trueFalseToYesNo', function (str) {
+  return str === 'true' ? "Yes" : "No";
+});
+
 Handlebars.registerHelper('sum', function () {
   return Array.prototype.slice.call(arguments, 0, -1).reduce((acc, num) => acc += num);
 });

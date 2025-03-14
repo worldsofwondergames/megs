@@ -16,11 +16,11 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/127-allow-all-current-scores-to-be-negative/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/124-item-reliability-has-delimited-values/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
     }
   ],
-  "version": "0.5.3",
+  "version": "0.6.0",
   "compatibility": {
     "minimum": 11,
     "verified": "12.331"
@@ -42,8 +42,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/refs/heads/127-allow-all-current-scores-to-be-negative/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/127-allow-all-current-scores-to-be-negative/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/refs/heads/124-item-reliability-has-delimited-values/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/124-item-reliability-has-delimited-values/",
   "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {
     "distance": 5,

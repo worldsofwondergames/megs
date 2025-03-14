@@ -322,6 +322,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 });
 
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
+console.error(index, hasAttributes); // TODO delete
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);
   } else if (index < 6 && hasAttributes?.mental) {

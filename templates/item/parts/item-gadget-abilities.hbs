@@ -131,7 +131,7 @@
             <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
           {{#if flags.megs.edit-mode}}
               {{#select system.reliability}}
-                  {{#each MEGS.reliabilityScores as |value|}}
+                  {{#each reliabilityScores as |value|}}
                   <option value="{{value}}">{{value}}</option>
                   {{/each}}
               {{/select}}

@@ -417,6 +417,9 @@ export class MEGSItemSheet extends ItemSheet {
       v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
     }
 
+    // set reliability numbers
+    context.reliabilityScores = [0, 2, 3, 5, 7, 9, 11];
+
     // Initialize containers.
     const powers = [];
     const skills = [];

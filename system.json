@@ -20,7 +20,7 @@
       "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
     }
   ],
-  "version": "0.5.3",
+  "version": "0.6.0",
   "compatibility": {
     "minimum": 11,
     "verified": "12.331"

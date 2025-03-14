@@ -330,7 +330,7 @@ Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, option
 Handlebars.registerPartial('plusMinusInput', function(args) {
   const classes = args.classes ? args.classes : '';
   const max = (args.max && !isNaN(args.max)) ? args.max : '';
-  const min = args.min === '0' ? 0 : (args.min && !isNaN(args.min)) ? args.min : '';
+  const min = args.min === '0' ? 0 : (args.min && !isNaN(args.min)) ? -Math.abs(args.min) : '';
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
 

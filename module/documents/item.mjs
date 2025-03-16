@@ -76,7 +76,7 @@ export class MEGSItem extends Item {
         systemData.attributesForLink[key] = systemData.attributes[key].label;
       });
     } else {
-      console.error("TEST1", systemData); // TODO delete
+      console.error("TEST1", MEGS); // TODO delete
     }
 
   }

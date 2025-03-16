@@ -354,7 +354,11 @@ Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttri
   return options.inverse(this);
 });
 
-Handlebars.registerHelper('getLinkedVehicleItem', function(vehicleId, vehicles) {
+Handlebars.registerHelper('getVehicleOwnerName', function(ownerId, characters) {
+  return Object.keys(characters).find(key => characters[key] === ownerId);
+});
+
+Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicles) {
   return Object.keys(vehicles).find(key => vehicles[key] === vehicleId);
 });
 

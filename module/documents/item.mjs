@@ -71,19 +71,10 @@ export class MEGSItem extends Item {
     systemData.yesNoOptions = MEGS.yesNoOptions;
 
     systemData.attributesForLink = {};
-    if (systemData.attributes) {
-      Object.keys(systemData.attributes).forEach(function (key) {
-        systemData.attributesForLink[key] = systemData.attributes[key].label;
-      });
-    } else {
-      console.error("TESTo", systemData); // TODO delete
-      console.error("TEST1", MEGS); // TODO delete
-
-      for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
-        console.error("TEST3", game.i18n.localize(value));
-      }
-
+    for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
+      systemData.attributesForLink[key] = game.i18n.localize(value);
     }
+    console.error("TEST1", systemData.attributesForLink); // TODO delete
 
   }
 

@@ -91,16 +91,16 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.link" data-type="String">
-              {{#select system.link}}
-                  {{#each system.attributes as |attribute key|}}
-                  <option  value="{{key}}">{{attribute.label}}</option>
-                  {{/each}}
-                  <option  value="special">{{localize 'MEGS.Special'}}</option>
-                  <option  value="none">{{localize 'MEGS.None'}}</option>
-              {{/select}}
+                {{selectOptions system.attributesForLink selected=system.link localize=true}}
+                <option  value="special"
+                    {{#if (compare item.system.link "===" "special")}}selected{{/if}}
+                >{{localize 'MEGS.Special'}}</option>
+                <option  value="none"
+                    {{#if (compare item.system.link "===" "none")}}selected{{/if}}
+                >{{localize 'MEGS.None'}}</option>
             </select>
         {{else}}
-          <span>{{system.link}}</span>
+          <span>{{getAttributeText system.link system.attributesForLink }}</span>
         {{/if}}
           </div>
         </div>

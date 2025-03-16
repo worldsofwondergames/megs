@@ -113,7 +113,7 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-  return str === 'true' ? "Yes" : "No";
+  return str === 'true' ? game.i18n.localize("Yes") : game.i18n.localize("No");
 });
 
 Handlebars.registerHelper('sum', function () {

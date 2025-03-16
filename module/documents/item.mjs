@@ -78,10 +78,11 @@ export class MEGSItem extends Item {
     } else {
       console.error("TESTo", systemData); // TODO delete
       console.error("TEST1", MEGS); // TODO delete
-      Object.entries(MEGS.attributeLabels).forEach(function (key, label) {
-        console.error("TEST2", label);
+
+      for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
+        console.log(`${key}: ${value}`);
         console.error("TEST3", game.i18n.localize(label));
-      });
+      }
 
     }
 

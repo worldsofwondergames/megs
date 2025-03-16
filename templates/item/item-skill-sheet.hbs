@@ -69,7 +69,6 @@
         {{else}}
           {{getSelectedSkillLink item.name}}
         {{/if}}
-            <!-- TODO localize label above -->
           </div>
         </div>
 
@@ -108,11 +107,7 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.range" data-type="String">
-              {{#select system.range}}
-                  {{#each system.ranges as |range key|}}
-                  <option  value="{{key}}">{{range}}</option>
-                  {{/each}}
-              {{/select}}
+              {{selectOptions system.ranges selected=system.range localize=true}}
             </select>
         {{else}}
           {{system.range}}

@@ -464,6 +464,7 @@ export class MEGSItemSheet extends ItemSheet {
         // Append to subskills
         else if (i.type === MEGS.itemTypes.subskill) {
           i.skill = context.item;
+          console.error("TEST1", i); // TODO delete
           subskills.push(i);
         }
         // Append to gadgets

@@ -113,7 +113,7 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-  return str === 'true' ? "Yes" : "No";
+  return str === 'true' ? game.i18n.localize("Yes") : game.i18n.localize("No");
 });
 
 Handlebars.registerHelper('sum', function () {
@@ -242,6 +242,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     Object.keys(gadget.system.omniClasses).forEach(key => {
       if (gadget.system.omniClasses[key]) {
         description += key.toUpperCase();
+        description += " (" + MEGS.omniRanges[key.toUpperCase()] + ")";
       }
     });
     return description;

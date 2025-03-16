@@ -412,8 +412,8 @@ export class MEGSActorSheet extends ActorSheet {
       else if (i.type === MEGS.itemTypes.subskill) {
         subskills.push(i);
       }
-      // Append to gadgets
-      else if (i.type === MEGS.itemTypes.gadget) {
+      // Append to gadgets; do not show if gadget is owned by another gadget
+      else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
         i.ownerId = this.object._id;
         i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
         gadgets.push(i);

@@ -80,8 +80,7 @@ export class MEGSItem extends Item {
       console.error("TEST1", MEGS); // TODO delete
 
       for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
-        console.log(`${key}: ${value}`);
-        console.error("TEST3", game.i18n.localize(label));
+        console.error("TEST3", game.i18n.localize(value));
       }
 
     }

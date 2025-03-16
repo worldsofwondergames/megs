@@ -76,6 +76,7 @@ export class MEGSItem extends Item {
         systemData.attributesForLink[key] = systemData.attributes[key].label;
       });
     } else {
+      console.error("TESTo", systemData); // TODO delete
       console.error("TEST1", MEGS); // TODO delete
       Object.entries(MEGS.attributeLabels).forEach(function (label) {
         console.error("TEST2", label);

@@ -120,11 +120,7 @@
            <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.type" data-type="String">
-              {{#select system.type}}
-                {{#each system.powerTypes as |powerType key|}}
-              <option value="{{key}}">{{powerType}}</option>
-                {{/each}}
-              {{/select}}
+              {{selectOptions system.powerTypes selected=system.type localize=true}}
             </select>
         {{else}}
           {{system.type}}

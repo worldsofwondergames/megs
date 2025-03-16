@@ -29,8 +29,8 @@
 ## 0.6.0 (March 30, 2025)
 - Allow current scores to be negative (up to negative value of base attribute)
 - Made some technical changes caused by Foundry changes around select components.
-- Localized several labels missed in previous efforts to selected language.
 - Limited item durability to the delimited values (0, 2, 3, 5, 7, 9, 11).
 - Fixed some yes/no labels that were showing as true/false.
 - Fixed description page to not show raw HTML when non-editable.
-
+- Localized several labels missed in previous efforts to selected language.
+- Made some fields miessed in 0.5.3 uneditable when not in edit mode

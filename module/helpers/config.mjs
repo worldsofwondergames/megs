@@ -28,6 +28,18 @@ MEGS.attributeAbbreviations = {
   spirit: 'spirit',
 };
 
+MEGS.attributeLabels = {
+  dex: 'Dexterity',
+  str: 'Strength',
+  body: 'Body',
+  int: 'Intelligence',
+  will: 'Will',
+  mind: 'Mind',
+  infl: 'Influence',
+  aura: 'Aura',
+  spirit: 'Spirit',
+};
+
 MEGS.characterTypes = {
   hero: 'hero',
   npc: 'npc',

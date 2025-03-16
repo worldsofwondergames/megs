@@ -71,11 +71,13 @@ export class MEGSItem extends Item {
     systemData.yesNoOptions = MEGS.yesNoOptions;
 
     systemData.attributesForLink = {};
-    console.error("TEST1", systemData.attributes); // TODO delete
-    Object.keys(systemData.attributes).forEach(function(key) {
-      console.error(key, systemData.attributes[key]); // TODO delete
-      systemData.attributesForLink[key] = systemData.attributes[key].label;
-    });
+    if (systemData.attributes) {
+      Object.keys(systemData.attributes).forEach(function (key) {
+        systemData.attributesForLink[key] = systemData.attributes[key].label;
+      });
+    } else {
+      console.error("TEST1", systemData); // TODO delete
+    }
 
   }
 

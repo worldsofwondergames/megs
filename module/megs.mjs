@@ -203,6 +203,7 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
 
 Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   let displayName = skill.name;
+  console.log(skill); // TODO delete
   if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
     let subskillText = " ("
     skill.subskills.forEach((subskill) => {

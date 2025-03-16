@@ -242,9 +242,6 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     Object.keys(gadget.system.omniClasses).forEach(key => {
       if (gadget.system.omniClasses[key]) {
         description += key.toUpperCase();
-        console.error(key.toUpperCase()); // TODO delete
-        console.error(MEGS.omniRanges); // TODO delete
-        console.error(MEGS.omniRanges[key.toUpperCase()]); // TODO delete
         description += " (" + MEGS.omniRanges[key.toUpperCase()] + ")";
       }
     });

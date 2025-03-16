@@ -16,7 +16,7 @@
   "media": [
     {
       "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/110-gadgets-belonging-to-gadgets-doesnt-render-correctly-on-actor-gadget-page/system.json",
+      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/MEGS-0.6.0-Release/system.json",
       "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
     }
   ],
@@ -42,8 +42,8 @@
   "packs": [],
   "packFolders": [],
   "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/refs/heads/110-gadgets-belonging-to-gadgets-doesnt-render-correctly-on-actor-gadget-page/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/110-gadgets-belonging-to-gadgets-doesnt-render-correctly-on-actor-gadget-page/",
+  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/refs/heads/MEGS-0.6.0-Release/system.json",
+  "download": "https://github.com/codemonkey1972/megs/zipball/MEGS-0.6.0-Release/",
   "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
   "grid": {
     "distance": 5,

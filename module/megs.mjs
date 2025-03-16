@@ -355,9 +355,7 @@ Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttri
 });
 
 Handlebars.registerHelper('getVehicleOwnerName', function(ownerId, characters) {
-  console.log(ownerId);
-  console.log(characters);;
-  return characters[ownerId];
+  return characters[ownerId] || "&mdash;";
 });
 
 Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicles) {

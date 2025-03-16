@@ -158,12 +158,8 @@
           <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Source'}}">{{localize 'MEGS.Source'}}</label>
            <div>
         {{#if flags.megs.edit-mode}}
-               <select  class="resource-select"  name="system.source" data-type="String">
-                {{#select system.source}}
-                  {{#each system.powerSources as |powerSource key|}}
-                <option value="{{key}}">{{powerSource}}</option>
-                  {{/each}}
-                {{/select}}
+              <select  class="resource-select"  name="system.source" data-type="String">
+              {{selectOptions system.powerSources selected=system.source localize=true}}
               </select>
         {{else}}
             <span>{{system.source}}</span>

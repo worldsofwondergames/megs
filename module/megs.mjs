@@ -105,7 +105,9 @@ Hooks.once('init', function () {
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
 
-// If you need to add Handlebars helpers, here is a useful example:
+/* -------------------------------------------- */
+// General purpose                              */
+/* -------------------------------------------- */
 Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
@@ -155,6 +157,13 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
   }
 });
 
+Handlebars.registerHelper('trueFalseToYesNo', function (str) {
+  return str === 'true' ? "Yes" : "No";
+});
+
+/* -------------------------------------------- */
+// skill-related
+/* -------------------------------------------- */
 Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
   for (let i of game.items) {
     if (i.type === MEGS.itemTypes.skill) {
@@ -189,7 +198,6 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
   } else {
     console.error(`Returned undefined for game.items!`);
   }
-
   return "N/A";
 });
 
@@ -197,7 +205,7 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   let displayName = skill.name;
   if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
     let subskillText = " ("
-    skill.subskills.forEach((subskill, index) => {
+    skill.subskills.forEach((subskill) => {
       if (subskill.system.aps > 0) {
         if (subskillText !== " (") { subskillText += " ,"; }
         // No need to show " Weapons" after every weapon type
@@ -215,10 +223,17 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   return displayName;
 });
 
-Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-  return str === 'true' ? "Yes" : "No";
+/* -------------------------------------------- */
+/* powers-related                               */
+/* -------------------------------------------- */
+Handlebars.registerHelper('getAttributeText', function(key, labels) {
+  return labels[key];
 });
 
+
+/* -------------------------------------------- */
+// gadget-related
+/* -------------------------------------------- */
 Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
 
@@ -339,6 +354,13 @@ Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttri
   return options.inverse(this);
 });
 
+Handlebars.registerHelper('getVehicleOwnerName', function(ownerId, characters) {
+  return characters[ownerId] || "-";
+});
+
+Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicles) {
+  return Object.keys(vehicles).find(key => vehicles[key] === vehicleId);
+});
 
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */

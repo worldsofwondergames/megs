@@ -245,7 +245,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
         console.error(key.toUpperCase()); // TODO delete
         console.error(MEGS.omniRanges); // TODO delete
         console.error(MEGS.omniRanges[key.toUpperCase()]); // TODO delete
-//        description += " (" + MEGS.omniRanges[key.toUpperCase()] + ")";
+        description += " (" + MEGS.omniRanges[key.toUpperCase()] + ")";
       }
     });
     return description;

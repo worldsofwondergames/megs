@@ -60,11 +60,7 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.link" data-type="String">
-              {{#select system.link}}
-                  {{#each system.attributes as |attribute key|}}
-                  <option  value="{{key}}">{{attribute.label}}</option>
-                  {{/each}}
-              {{/select}}
+              {{selectOptions system.attributesForLink selected=system.link localize=true}}
             </select>
         {{else}}
           {{getSelectedSkillLink item.name}}

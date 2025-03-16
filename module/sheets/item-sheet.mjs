@@ -131,12 +131,11 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     // store all skills for dropdown on subskill page
-    // TODO use skills and link ID instead
     if (itemData.type === MEGS.itemTypes.subskill) {
       let allSkills = {};
       for (let i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
-          allSkills[i.name] = i;
+          allSkills[i.name] = allSkills[i.name];
         }
       }
       context.allSkills = allSkills;

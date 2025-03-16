@@ -56,11 +56,7 @@
           <div>
           {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.linkedSkill" data-type="String">
-              {{#select system.linkedSkill}}
-                  {{#each allSkills as |skill key|}}
-                  <option  value="{{skill.name}}">{{skill.name}}</option>
-                  {{/each}}
-              {{/select}}
+              {{selectOptions allSkills selected=system.linkedSkill localize=true}}
             </select>
           {{else}}
             {{system.linkedSkill}}

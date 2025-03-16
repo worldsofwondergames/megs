@@ -19,9 +19,13 @@
         <div class="resource flex-group-center">
           <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
           <div>
+            {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.ownerId" data-type="String">
               {{selectOptions characters selected=system.ownerId localize=true}}
             </select>
+            {{else}}
+              {{characters[system.ownerId]}}
+            {{/if}}
           </div>
         </div>
 

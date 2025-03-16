@@ -79,10 +79,7 @@
         {{#if hasActor}}
             {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.isLinked" data-type="String">
-              {{#select system.isLinked}}
-                  <option  value="false">{{localize 'MEGS.No'}}</option>
-                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.isLinked localize=true}}
             </select>
             {{else}}
                 {{trueFalseToYesNo system.isLinked}}
@@ -98,10 +95,7 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.useUnskilled" data-type="String">
-              {{#select system.useUnskilled}}
-                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
-                  <option  value="false">{{localize 'MEGS.No'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.useUnskilled localize=true}}
             </select>
         {{else}}
             {{trueFalseToYesNo system.useUnskilled}}

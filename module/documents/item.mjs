@@ -69,6 +69,14 @@ export class MEGSItem extends Item {
     systemData.ranges = MEGS.ranges;
 
     systemData.yesNoOptions = MEGS.yesNoOptions;
+
+    systemData.attributesForLink = {};
+    console.error("TEST1", systemData.attributes); // TODO delete
+    Object.keys(systemData.attributes).forEach(function(key) {
+      console.error(key, systemData.attributes[key]); // TODO delete
+      systemData.attributesForLink[key] = systemData.attributes[key].label;
+    });
+
   }
 
   /**

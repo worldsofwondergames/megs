@@ -32,7 +32,7 @@
         {{#if vehicles}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
                 <option value="">{{localize 'MEGS.None'}}</option>
-                {{selectOptions vehicles selected=system.linkedItemId localize=true}}
+                {{selectOptions vehicles selected=system.linkedItemId localize=true inverted=true}}
             </select>
         {{else}}
           &mdash;

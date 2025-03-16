@@ -355,10 +355,7 @@ Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttri
 });
 
 Handlebars.registerHelper('getLinkedVehicleItem', function(vehicleId, vehicles) {
-  console.log(vehicleId); // TODO delete
-  console.log(vehicles); // TODO delete
-//  return Object.keys(vehicles).find(key => object[key] === vehicleId);
-  return vehicleId; // TODO delete
+  return Object.keys(vehicles).find(key => vehicles[key] === vehicleId);
 });
 
 /* -------------------------------------------- */

@@ -24,9 +24,7 @@
               {{selectOptions characters selected=system.ownerId localize=true}}
             </select>
             {{else}}
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{getVehicleOwnerName system.ownerId characters}}
-            </div>
             {{/if}}
           </div>
         </div>
@@ -42,9 +40,7 @@
                 {{selectOptions vehicles selected=system.linkedItemId localize=true inverted=true}}
             </select>
             {{else}}
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
                 {{getLinkedVehicleItemName system.linkedItemId vehicles}}
-            </div>
             {{/if}}
         {{else}}
           &mdash;
@@ -55,13 +51,11 @@
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
             {{#if system.linkedItem.system.currentBody.value}}
               {{system.linkedItem.system.currentBody.value}}
             {{else}}
               &mdash;
             {{/if}}
-           </div>
           </div>
         </div>
 

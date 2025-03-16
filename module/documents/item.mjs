@@ -74,7 +74,6 @@ export class MEGSItem extends Item {
     for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
       systemData.attributesForLink[key] = game.i18n.localize(value);
     }
-    console.error("TEST1", systemData.attributesForLink); // TODO delete
 
   }
 

@@ -77,6 +77,10 @@ export class MEGSItem extends Item {
       });
     } else {
       console.error("TEST1", MEGS); // TODO delete
+      Object.entries(MEGS.attributes[k]).forEach(function (label) {
+        console.error("TEST2", game.i18n.localize(label));
+      });
+
     }
 
   }

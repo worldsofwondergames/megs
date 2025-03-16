@@ -354,6 +354,9 @@ Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttri
   return options.inverse(this);
 });
 
+Handlebars.registerHelper('getLinkedVehicleItem', function(vehicleId, vehicles) {
+  return Object.keys(vehicles).find(key => object[key] === vehicleId);
+});
 
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */

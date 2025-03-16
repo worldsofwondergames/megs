@@ -30,10 +30,14 @@
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
         {{#if vehicles}}
+            {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
                 <option value="">{{localize 'MEGS.None'}}</option>
                 {{selectOptions vehicles selected=system.linkedItemId localize=true inverted=true}}
             </select>
+            {{else}}
+                {{getLinkedVehicleItem system.linkedItemId vehicles}}
+            {{/if}}
         {{else}}
           &mdash;
         {{/if}}

@@ -20,11 +20,7 @@
           <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
           <div>
             <select  class="resource-select"  name="system.ownerId" data-type="String">
-            {{#select system.ownerId}}
-              {{#each characters as |name id|}}
-              <option value="{{id}}">{{name}}</option>
-              {{/each}}
-            {{/select}}
+              {{selectOptions characters selected=system.ownerId localize=true}}
             </select>
           </div>
         </div>

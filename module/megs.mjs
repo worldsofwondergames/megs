@@ -227,8 +227,6 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
 /* powers-related                               */
 /* -------------------------------------------- */
 Handlebars.registerHelper('getAttributeText', function(key, labels) {
-  console.error("TEST1: "+key); // TODO delete
-  console.error("TEST1: ", labels); // TODO delete
   return labels[key];
 });
 

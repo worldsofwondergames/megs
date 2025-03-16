@@ -132,13 +132,9 @@
             {{else}}
                 <select class="resource-select" name="system.range" data-type="string">
             {{/if}}
-              {{#select system.range}}
-                  {{#each system.ranges as |range key|}}
-                  <option  value="{{key}}">{{range}}</option>
-                  {{/each}}
-                  <option value="varies">Varies</option>
-              {{/select}}
-            </select>
+                    {{selectOptions system.ranges selected=system.range localize=true}}
+                    <option value="varies">{{localize 'MEGS.Varies'}}</option>
+                </select>
           {{else}}
             <span>{{system.range}}</span>
           {{/if}}
@@ -150,11 +146,7 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.type" data-type="String">
-                {{#select system.type}}
-                  {{#each system.powerTypes as |powerType key|}}
-                <option value="{{key}}">{{powerType}}</option>
-                  {{/each}}
-                {{/select}}
+              {{selectOptions system.powerTypes selected=system.type localize=true}}
             </select>
         {{else}}
             <span>{{system.type}}</span>

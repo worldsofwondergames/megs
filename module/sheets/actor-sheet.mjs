@@ -414,12 +414,12 @@ export class MEGSActorSheet extends ActorSheet {
       }
       // Append to gadgets
       else if (i.type === MEGS.itemTypes.gadget) {
-        console.error(i); // TODO delete
         i.ownerId = this.object._id;
         i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
         gadgets.push(i);
       }
     });
+    console.error("TEST2", gadgets); // TODO delete
 
     // sort alphabetically
     const arrays = [

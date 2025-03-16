@@ -468,6 +468,7 @@ export class MEGSItemSheet extends ItemSheet {
         }
         // Append to gadgets
         else if (i.type === MEGS.itemTypes.gadget) {
+          console.error("TEST1", i); // TODO delete
           gadgets.push(i);
         }
       }

@@ -135,7 +135,7 @@ export class MEGSItemSheet extends ItemSheet {
       let allSkills = {};
       for (let i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
-          allSkills[i.name] = i;
+          allSkills[i.name] = allSkills[i.name];
         }
       }
       context.allSkills = allSkills;

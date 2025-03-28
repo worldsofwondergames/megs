@@ -379,7 +379,7 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
 
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
-  const tabindex = (args.tabindex) ? 'tablindex="' + tabindex + '"' : "";
+  const tabindex = (args.tabindex) ? 'tablindex="' + args.tabindex + '"' : "";
 
   return '<div class="quantity ' + classes + '">' +
     '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +

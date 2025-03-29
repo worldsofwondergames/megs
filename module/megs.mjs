@@ -230,7 +230,6 @@ Handlebars.registerHelper('getAttributeText', function(key, labels) {
   return labels[key];
 });
 
-
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */
@@ -364,6 +363,13 @@ Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicl
 });
 
 /* -------------------------------------------- */
+// description
+/* -------------------------------------------- */
+Handlebars.registerHelper('getMotivation', function(descriptionIndex, descriptions) {
+  return descriptions[descriptionIndex];
+});
+
+/* -------------------------------------------- */
 /*  Handlebars Partials                         */
 /* -------------------------------------------- */
 Handlebars.registerPartial('plusMinusInput', function(args) {
@@ -379,10 +385,11 @@ Handlebars.registerPartial('plusMinusInput', function(args) {
 
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
+  const tabindex = (args.tabindex) ? 'tablindex="' + args.tabindex + '"' : "";
 
   return '<div class="quantity ' + classes + '">' +
     '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
-    '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
+    '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number"' + tabindex + '>' +
     '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
     '</div>'
 });

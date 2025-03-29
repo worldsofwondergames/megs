@@ -135,7 +135,7 @@ export class MEGSItemSheet extends ItemSheet {
       let allSkills = {};
       for (let i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
-          allSkills[i.name] = allSkills[i.name];
+          allSkills[i.name] = i;
         }
       }
       context.allSkills = allSkills;
@@ -485,8 +485,8 @@ export class MEGSItemSheet extends ItemSheet {
     ];
     arrays.forEach((element) => {
       element.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
+        let textA = a.name.toUpperCase();
+        let textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
       });
     });

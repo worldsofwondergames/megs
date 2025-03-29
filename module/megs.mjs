@@ -365,8 +365,9 @@ Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicl
 /* -------------------------------------------- */
 // description
 /* -------------------------------------------- */
-Handlebars.registerHelper('getGadgetDescription', function(descriptionIndex, descriptions) {
+Handlebars.registerHelper('getDescription', function(descriptionIndex, descriptions) {
   console.log(descriptionIndex, descriptions); // TODO
+  return '';
 });
 
 /* -------------------------------------------- */

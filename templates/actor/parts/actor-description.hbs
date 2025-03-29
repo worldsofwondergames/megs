@@ -27,7 +27,7 @@
           {{else}}
           <div class="indentLeft">
             {{#if system.motivation}}
-            {{getGadgetDescription(system.motivation, system.motivations)}}
+            {{getDescription(system.motivation, system)}}
             {{else}}
             ({{localize 'MEGS.None'}})
             {{/if}}

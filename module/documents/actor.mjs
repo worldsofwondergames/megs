@@ -87,7 +87,7 @@ export class MEGSActor extends Actor {
         return c;
       }
       this.system.motivations = merge(CONFIG.motivations[this.type], CONFIG.motivations.antihero);
-      console.log(this); // TODO 
+      console.log("TEST1", this.system); // TODO 
     }
 
   }
@@ -111,6 +111,7 @@ export class MEGSActor extends Actor {
     this.system.currentBody.max = this.system.attributes.body.value;
     this.system.currentMind.max = this.system.attributes.mind.value;
     this.system.currentSpirit.max = this.system.attributes.spirit.value;
+    console.log("TEST2", this.system); // TODO 
   }
 
   /**

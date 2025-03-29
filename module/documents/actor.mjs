@@ -109,7 +109,6 @@ export class MEGSActor extends Actor {
         return c;
       }
       this.system.motivations = merge(CONFIG.motivations[this.type], CONFIG.motivations.antihero);
-      console.log("TEST1", this.system); // TODO 
     }
 
   }

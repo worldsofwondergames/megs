@@ -68,6 +68,7 @@
     "Factor": "Fator",
     "FactorCostMod": "Modificador do fator de custo",
     "Gadgets": "Equipamentos",
+    "HasAVAndEV" : "Possui AV e EV?",
     "HasGadgets": "Possui equipamentos?",
     "HasHardenedDefenses": "Possui defesas reforçadas?",
     "HasMentalAttributes": "Possui atributos mentais?",

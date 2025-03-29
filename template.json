@@ -332,18 +332,19 @@
       "hasHardenedDefenses": false,
       "settings": {
         "isDetailsOpen": {
-          "attributes": false,
-          "miscellaneous": false
+          "attributes": "false",
+          "miscellaneous": "false"
         },
+        "hasAVAndEV" : "false",
         "hasAttributes": {
-          "physical": true,
-          "mental": false,
-          "mystical": false
+          "physical": "true",
+          "mental": "false",
+          "mystical": "false"
         },
-        "hasPowers": true,
-        "hasSkills": true,
-        "hasGadgets": true,
-        "hideZeroAPSkills": true
+        "hasPowers": "true",
+        "hasSkills": "true",
+        "hasGadgets": "true",
+        "hideZeroAPSkills": "true"
       },
       "weapon" : {
         "isWeapon": false,

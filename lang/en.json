@@ -68,6 +68,7 @@
     "Factor": "Factor",
     "FactorCostMod": "Factor Cost Mod",
     "Gadgets": "Gadgets",
+    "HasAVAndEV" : "Has AV & EV?",
     "HasGadgets": "Has gadgets?",
     "HasHardenedDefenses": "Has Hardened Defenses?",
     "HasMentalAttributes": "Has mental attributes?",

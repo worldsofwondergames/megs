@@ -667,16 +667,11 @@ export class MEGSActorSheet extends ActorSheet {
     super._onDrop(event);
   }
 
-  _changeEditHeaderLink(sheetHeaderLinks) {
-    const found = sheetHeaderLinks.find((element) => element.label === "Sheet");
-    console.error(found);
-    found.icon = "fas fa-file";
-  }
-
   /** @override **/
   _getHeaderButtons() {
+    let sheetHeaderLinks = [];
     if (this.actor.isOwner) {
-      const sheetHeaderLinks =  [
+      sheetHeaderLinks =  [
         {
           class: "megs-toggle-edit-mode",
           label: game.i18n.localize("MEGS.Edit") ?? "Edit",
@@ -687,13 +682,11 @@ export class MEGSActorSheet extends ActorSheet {
         },
         ...super._getHeaderButtons()
       ];
-      console.error("TEST1a", sheetHeaderLinks);
       this._changeEditHeaderLink(sheetHeaderLinks);
-      console.error("TEST1b", sheetHeaderLinks);
-      return sheetHeaderLinks;
+    } else {
+      sheetHeaderLinks = super._getHeaderButtons();
     }
-    const sheetHeaderLinks = super._getHeaderButtons();
-    console.error("TEST2", sheetHeaderLinks);
+    sheetHeaderLinks.find((element) => element.label === "Sheet")?.icon = "fas fa-file";
     return sheetHeaderLinks;
   }
 

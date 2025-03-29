@@ -485,8 +485,8 @@ export class MEGSItemSheet extends ItemSheet {
     ];
     arrays.forEach((element) => {
       element.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
+        let textA = a.name.toUpperCase();
+        let textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
       });
     });

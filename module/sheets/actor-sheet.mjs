@@ -100,9 +100,7 @@ export class MEGSActorSheet extends ActorSheet {
         if (owner) {
 
           // get list of vehicle items from owner actor to link
-          if (!owner) {
-            console.error("Owner actor not returned for ID " + context.system.ownerId);
-          } else if (owner.items) {
+          if (owner.items) {
             context.system.linkedItem = undefined;
 
             owner.items.forEach((element) => {
@@ -127,10 +125,7 @@ export class MEGSActorSheet extends ActorSheet {
         const owner = game.actors.get(context.system.ownerId);
         if (owner) {
 
-          // get list of vehicle items from owner actor to link
-          if (!owner) {
-            console.error("Owner actor not returned for ID " + gadget.ownerId);
-          } else if (owner.items) {
+          if (owner.items) {
             context.system.linkedItem = undefined;
 
             owner.items.forEach((element) => {
@@ -225,7 +220,7 @@ export class MEGSActorSheet extends ActorSheet {
    * @returns
    */
   _sortArray(array) {
-    const sortedKeys = Object.keys(array).sort();
+    const sortedKeys = Object.keys(array).sort((a,b) => a.localeCompare(b));
     return sortedKeys.reduce((acc, key) => {
       acc[key] = array[key];
       return acc;
@@ -431,8 +426,8 @@ export class MEGSActorSheet extends ActorSheet {
     ];
     arrays.forEach((element) => {
       element.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
+        let textA = a.name.toUpperCase();
+        let textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
       });
     });

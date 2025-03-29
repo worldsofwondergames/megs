@@ -330,6 +330,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     if (description) {
       description += ", ";
     }
+    console.error("TEST1", gadget); // TODO
     description += "R # " + gadget.system.reliability;
   }
 

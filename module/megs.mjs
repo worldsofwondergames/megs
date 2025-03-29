@@ -230,7 +230,6 @@ Handlebars.registerHelper('getAttributeText', function(key, labels) {
   return labels[key];
 });
 
-
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */
@@ -361,6 +360,13 @@ Handlebars.registerHelper('getVehicleOwnerName', function(ownerId, characters) {
 
 Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicles) {
   return Object.keys(vehicles).find(key => vehicles[key] === vehicleId);
+});
+
+/* -------------------------------------------- */
+// description
+/* -------------------------------------------- */
+Handlebars.registerHelper('getGadgetDescription', function(descriptionIndex, descriptions) {
+  console.log(descriptionIndex, descriptions); // TODO
 });
 
 /* -------------------------------------------- */

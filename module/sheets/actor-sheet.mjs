@@ -670,7 +670,7 @@ export class MEGSActorSheet extends ActorSheet {
   /** @override **/
   _getHeaderButtons() {
     if (this.actor.isOwner) {
-      return [
+      const sheetHeaderLinks =  [
         {
           class: "megs-toggle-edit-mode",
           label: game.i18n.localize("MEGS.Edit") ?? "Edit",
@@ -681,8 +681,12 @@ export class MEGSActorSheet extends ActorSheet {
         },
         ...super._getHeaderButtons()
       ];
+      console.error("TEST1", sheetHeaderLinks);
+      return sheetHeaderLinks;
     }
-    return super._getHeaderButtons();
+    const sheetHeaderLinks = super._getHeaderButtons();
+    console.error("TEST2", sheetHeaderLinks);
+    return sheetHeaderLinks;
   }
 
   _toggleEditMode(_e) {

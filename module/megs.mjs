@@ -231,6 +231,7 @@ Handlebars.registerHelper('getAttributeText', function(key, labels) {
 });
 
 Handlebars.registerHelper('getPowerDisplayName', function(power) {
+  let displayName = power.name;
   if (power.system.isLinked === "true") {
     displayName += "*";
   }

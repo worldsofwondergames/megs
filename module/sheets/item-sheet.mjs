@@ -127,7 +127,6 @@ export class MEGSItemSheet extends ItemSheet {
 
     if (itemData.type === MEGS.itemTypes.gadget) {
       context.items = itemData.system.items;
-      console.error(context.system.settings); // TODO delete
       this._prepareGadgetData(context);
     }
 

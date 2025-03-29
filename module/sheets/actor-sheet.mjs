@@ -687,12 +687,10 @@ export class MEGSActorSheet extends ActorSheet {
         },
         ...super._getHeaderButtons()
       ];
-      console.error("TEST1a", sheetHeaderLinks);
-      this._changeEditHeaderLink(sheetHeaderLinks);
-      console.error("TEST1b", sheetHeaderLinks);
-      return sheetHeaderLinks;
+    } else {
+      sheetHeaderLinks = super._getHeaderButtons();
     }
-    sheetHeaderLinks = super._getHeaderButtons();
+    this._changeEditHeaderLink(sheetHeaderLinks);
     console.error("TEST2", sheetHeaderLinks);
     return sheetHeaderLinks;
   }

@@ -668,8 +668,8 @@ export class MEGSActorSheet extends ActorSheet {
   }
 
   _changeEditHeaderLink(sheetHeaderLinks) {
-    sheetHeaderLinks.find((element) => element.label === "Sheet")?.icon = "fas fa-file";
-    found.icon = "";
+    const found = sheetHeaderLinks.find((element) => element.label === "Sheet");
+    found.icon = "fas fa-file";
   }
 
   /** @override **/
@@ -687,11 +687,13 @@ export class MEGSActorSheet extends ActorSheet {
         },
         ...super._getHeaderButtons()
       ];
+      console.error("TEST1a", sheetHeaderLinks);
       this._changeEditHeaderLink(sheetHeaderLinks);
-    } else {
-      sheetHeaderLinks = super._getHeaderButtons();
+      console.error("TEST1b", sheetHeaderLinks);
+      return sheetHeaderLinks;
     }
-    _changeEditHeaderLink(sheetHeaderLinks);
+    sheetHeaderLinks = super._getHeaderButtons();
+    console.error("TEST2", sheetHeaderLinks);
     return sheetHeaderLinks;
   }
 

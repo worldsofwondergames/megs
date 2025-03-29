@@ -87,10 +87,10 @@ export class MEGSActor extends Actor {
         return c;
       }
       this.system.motivations = merge(CONFIG.motivations[this.type], CONFIG.motivations.antihero);
+      console.log(this); // TODO 
     }
 
   }
-
 
   /** @override */
   prepareBaseData() {

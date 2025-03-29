@@ -230,6 +230,13 @@ Handlebars.registerHelper('getAttributeText', function(key, labels) {
   return labels[key];
 });
 
+Handlebars.registerHelper('getPowerDisplayName', function(power) {
+  if (power.system.isLinked === "true") {
+    displayName += "*";
+  }
+  return displayName;
+});
+
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */

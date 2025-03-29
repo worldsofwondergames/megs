@@ -688,7 +688,7 @@ export class MEGSActorSheet extends ActorSheet {
         ...super._getHeaderButtons()
       ];
       console.error("TEST1a", sheetHeaderLinks);
-      _changeEditHeaderLink(sheetHeaderLinks);
+      this._changeEditHeaderLink(sheetHeaderLinks);
       console.error("TEST1b", sheetHeaderLinks);
       return sheetHeaderLinks;
     }

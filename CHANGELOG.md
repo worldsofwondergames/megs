@@ -36,4 +36,6 @@
 - Localized several labels missed in previous efforts to selected language
 - Made some fields missed in 0.5.3 uneditable when not in edit mode
 - Corrected tabbing when actor page open
+- Fixed reliability display value on gadgets
+- Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis

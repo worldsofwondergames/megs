@@ -335,6 +335,7 @@
           "attributes": false,
           "miscellaneous": false
         },
+        "hasAVAndEV" : false,
         "hasAttributes": {
           "physical": true,
           "mental": false,

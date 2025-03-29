@@ -2,6 +2,7 @@
     <div class="tab abilities" data-group="primary" data-tab="abilities">
       
       {{!-- Gadget values --}}
+    {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
       <section class="gadget-properties grid grid-2coll border-bottom">
         <div class="gadget-property flex-group-center">
           <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
@@ -19,8 +20,8 @@
             {{system.effectValue}}
           {{/if}}
         </div>
-
       </section>
+    {{/if}}
 
       {{!-- Gadget attributes --}}
     {{#shouldShowGadgetAttributesDetails system.settings.hasAttributes}}

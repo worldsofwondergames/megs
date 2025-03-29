@@ -79,6 +79,8 @@ Hooks.once('init', function () {
   // if the transfer property on the Active Effect is true.
   CONFIG.ActiveEffect.legacyTransferral = false;
 
+  CONFIG.reliabilityScores = [0, 2, 3, 5, 7, 9, 11];
+
   // Register sheet application classes
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('megs', MEGSActorSheet, {
@@ -330,8 +332,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     if (description) {
       description += ", ";
     }
-    console.error("TEST1", gadget); // TODO
-    description += "R # " + gadget.system.reliability;
+    description += "R # " + CONFIG.reliabilityScores[gadget.system.reliability];
   }
 
   return description;

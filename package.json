@@ -58,6 +58,7 @@
   "type": "module",
   "version": "0.6.0",
   "dependencies": {
+    "@changesets/cli": "^2.29.2",
     "handlebars-helpers": "^0.10.0"
   }
 }

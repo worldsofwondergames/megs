@@ -1,0 +1,33 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+      - name: Install Dependencies
+        run: bun install
+      - name: Build
+        run: bun run build
+      - name: Create Release or Version
+        uses: changesets/action@cdfd21f8180220750990b6a7924b2a990b40c87f
+        with:
+          commit: 'chore(release): Version Package'
+          title: 'Version Package'
+          version: bun run version
+          publish: bun run release
+          createGithubReleases: true
+          createGithubReleaseAsDraft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

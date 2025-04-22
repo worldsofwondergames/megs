@@ -1,7 +1,11 @@
 
   {{!-- Sheet Header --}}
   <header class="sheet-header">
+    {{#if flags.megs.edit-mode}}
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120"/>
+    {{else}}
+    <img class="profile-img" src="{{item.img}}" title="{{item.name}}" height="120" width="120"/>
+    {{/if}}
     <div class="header-fields">
       {{!-- Item name --}}
       {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
@@ -20,7 +24,7 @@
 
       {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
         <div class="resource flex-group-center">
-          <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}/label>
+          <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}</label>
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
               {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=0 max=system.attributes.mind.value hasValue=true}}

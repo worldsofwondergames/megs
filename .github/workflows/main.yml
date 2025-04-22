@@ -1,3 +1,0 @@
-- name: HTTP Request Action
-  uses: fjogeleit/http-request-action@v1.16.4
-

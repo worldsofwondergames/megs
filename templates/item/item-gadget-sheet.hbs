@@ -96,6 +96,16 @@
 
       <hr/>
       <div>
+        <input type="checkbox" id="system.settings.hasAVAndEV" name="system.settings.hasAVAndEV" value="true"
+        {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
+          checked
+        {{/if}}
+        >
+        <label for="system.settings.hasAVAndEV"> {{localize 'MEGS.HasAVAndEV'}}</label>
+      </div>
+
+      <hr/>
+      <div>
         <input type="checkbox" id="system.settings.hasAttributes.physical" name="system.settings.hasAttributes.physical" value="true"
         {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}
           checked

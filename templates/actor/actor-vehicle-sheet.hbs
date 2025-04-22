@@ -2,7 +2,11 @@
 
   {{!-- Sheet Header --}}
    <header class="sheet-header">
+    {{#if flags.megs.edit-mode}}
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
+    {{else}}
+    <img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" height="120" width="120"/>
+    {{/if}}
     <div class="header-fields">
       <h1 class="charname
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
@@ -19,13 +23,13 @@
         <div class="resource flex-group-center">
           <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
           <div>
+            {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.ownerId" data-type="String">
-            {{#select system.ownerId}}
-              {{#each characters as |name id|}}
-              <option value="{{id}}">{{name}}</option>
-              {{/each}}
-            {{/select}}
+              {{selectOptions characters selected=system.ownerId localize=true}}
             </select>
+            {{else}}
+              {{getVehicleOwnerName system.ownerId characters}}
+            {{/if}}
           </div>
         </div>
 
@@ -34,14 +38,14 @@
           <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
           <div>
         {{#if vehicles}}
+            {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.linkedItemId" data-type="String">
                 <option value="">{{localize 'MEGS.None'}}</option>
-        {{#select system.linkedItemId}}
-            {{#each vehicles as |id name|}}
-              <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        {{/select}}
+                {{selectOptions vehicles selected=system.linkedItemId localize=true inverted=true}}
             </select>
+            {{else}}
+                {{getLinkedVehicleItemName system.linkedItemId vehicles}}
+            {{/if}}
         {{else}}
           &mdash;
         {{/if}}
@@ -51,9 +55,11 @@
         <div class="resource flex-group-center">
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
+            {{#if system.linkedItem.system.currentBody.value}}
               {{system.linkedItem.system.currentBody.value}}
-            </div>
+            {{else}}
+              &mdash;
+            {{/if}}
           </div>
         </div>
 

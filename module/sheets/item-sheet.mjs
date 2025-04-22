@@ -131,7 +131,6 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     // store all skills for dropdown on subskill page
-    // TODO use skills and link ID instead
     if (itemData.type === MEGS.itemTypes.subskill) {
       let allSkills = {};
       for (let i of game.items) {
@@ -418,7 +417,7 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     // set reliability numbers
-    context.reliabilityScores = [0, 2, 3, 5, 7, 9, 11];
+    context.reliabilityScores = CONFIG.reliabilityScores;
 
     // Initialize containers.
     const powers = [];
@@ -486,8 +485,8 @@ export class MEGSItemSheet extends ItemSheet {
     ];
     arrays.forEach((element) => {
       element.sort(function(a, b) {
-        var textA = a.name.toUpperCase();
-        var textB = b.name.toUpperCase();
+        let textA = a.name.toUpperCase();
+        let textB = b.name.toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
       });
     });

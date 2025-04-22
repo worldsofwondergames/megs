@@ -2,6 +2,7 @@
     <div class="tab abilities" data-group="primary" data-tab="abilities">
       
       {{!-- Gadget values --}}
+    {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
       <section class="gadget-properties grid grid-2coll border-bottom">
         <div class="gadget-property flex-group-center">
           <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
@@ -19,8 +20,8 @@
             {{system.effectValue}}
           {{/if}}
         </div>
-
       </section>
+    {{/if}}
 
       {{!-- Gadget attributes --}}
     {{#shouldShowGadgetAttributesDetails system.settings.hasAttributes}}
@@ -85,10 +86,7 @@
             <div>
           {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.isCarried" data-type="String">
-              {{#select system.isCarried}}
-                  <option value="true">{{localize 'MEGS.Yes'}}</option>
-                  <option value="false">{{localize 'MEGS.No'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.isCarried localize=true}}
             </select>
           {{else}}
             {{trueFalseToYesNo system.isCarried}}
@@ -101,10 +99,7 @@
             <div>
           {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
-              {{#select system.canBeTakenAway}}
-                  <option value="false">{{localize 'MEGS.No'}}</option>
-                  <option value="true">{{localize 'MEGS.Yes'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.canBeTakenAway localize=true}}
             </select>
           {{else}}
             {{trueFalseToYesNo system.canBeTakenAway}}
@@ -117,10 +112,7 @@
             <div>
           {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.hasHardenedDefenses" data-type="String">
-              {{#select system.hasHardenedDefenses}}
-                <option  value="false">{{localize 'MEGS.No'}}</option>
-                <option  value="true">{{localize 'MEGS.Yes'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.hasHardenedDefenses localize=true}}
             </select>
           {{else}}
             {{trueFalseToYesNo system.hasHardenedDefenses}}
@@ -133,11 +125,7 @@
             <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
           {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.reliability" data-type="String">
-              {{#select system.reliability}}
-                  {{#each reliabilityScores as |value|}}
-                  <option value="{{value}}">{{value}}</option>
-                  {{/each}}
-              {{/select}}
+              {{selectOptions reliabilityScores selected=system.reliability localize=true}}
             </select>
           {{else}}
             {{system.reliability}}
@@ -149,10 +137,7 @@
             <div>
           {{#if flags.megs.edit-mode}}
             <select class="resource-select"  name="system.isBroken" data-type="String">
-              {{#select system.isBroken}}
-                  <option value="false">{{localize 'MEGS.No'}}</option>
-                  <option value="true">{{localize 'MEGS.Yes'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.isBroken localize=true}}
             </select>
           {{else}}
             {{trueFalseToYesNo system.isBroken}}

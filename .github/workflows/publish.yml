@@ -35,7 +35,6 @@ jobs:
           echo "::set-output name=version::${TAG_NAME//v/}"
       - name: Push to Foundry
         id: foundry
-        dry-run: true
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://api.foundryvtt.com/_api/packages/release_version/'
@@ -43,6 +42,7 @@ jobs:
           data:
             '{
               "id": "megs",
+              "dry-run": true,
               "release": {
                 "version": "${{ steps.tag.outputs.version }}",
                 "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/${{ github.event.release.tag_name }}/system.json",

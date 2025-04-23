@@ -3,7 +3,7 @@
 ![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
 
 
-![Mutiversal Exponential Gaming System](https://github.com/codemonkey1972/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
+![Mutiversal Exponential Gaming System](https://github.com/worldsofwondergames/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
 
 ## What is the Multiversal Exponential Gaming System system for Foundry Virtual Tabletop?
 
@@ -29,7 +29,7 @@ Do I ever! MEGS for Foundry is currently sitting at **version 0.6.0**.
 
 (Note that everything below is subject to change.)
 
-Issues are tracked [here](https://github.com/codemonkey1972/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Acodemonkey1972%2F4).
+Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Aworldsofwondergames%2F4).
 
 **YouTube demo videos**  are planned by the middle of May 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 

@@ -45,8 +45,8 @@ jobs:
               "dry-run": true,
               "release": {
                 "version": "${{ steps.tag.outputs.version }}",
-                "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/${{ github.event.release.tag_name }}/system.json",
-                "notes": "https://github.com/codemonkey1972/megs/releases/tag/${{ github.event.release.tag_name }}",
+                "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/${{ github.event.release.tag_name }}/system.json",
+                "notes": "https://github.com/worldsofwondergames/megs/releases/tag/${{ github.event.release.tag_name }}",
                 "compatibility": {
                   "minimum": "11",
                   "verified": "12",

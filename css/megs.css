@@ -968,6 +968,13 @@ details summary.no-arrow {
     width: 93%;
     margin: 0 8px 0 8px;
 
+    .th {
+        background-color: green;
+        color: var(--white);
+        font-weight: bold;
+        text-align: center;
+    }
+
     .label {
         text-align: left;
         width: 80%;

@@ -1,6 +1,5 @@
-import { MEGS } from "../helpers/config.mjs";
-import { prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { MegsTableRolls, RollValues } from "../dice.mjs";
+import { MEGS } from "../helpers/config.mjs";
 import { Utils } from "../utils.js";
 
 /**
@@ -324,11 +323,14 @@ export class MEGSActorSheet extends ActorSheet {
 
     _formatInitiativeExplanation(context) {
         let html = '<table class="init-table">' +
-            '    <tr>' +
-            '        <td class="label">' + game.i18n.localize("MEGS.Dexterity")  + '</td>' +
-            '        <td class="value">+' +  context.document.system.attributes.dex.value + '</td>' +
-            '    </tr>' +
-            '    <tr>' +
+        '    <tr>' +
+        '        <th colspan=2>' + game.i18n.localize("MEGS.Initiative")  + '</th>' +
+        '    </tr>' +
+        '    <tr>' +
+        '        <td class="label">' + game.i18n.localize("MEGS.Dexterity")  + '</td>' +
+        '        <td class="value">+' +  context.document.system.attributes.dex.value + '</td>' +
+        '    </tr>' +
+        '    <tr>' +
             '        <td class="label">' + game.i18n.localize("MEGS.Intelligence")  + '</td>' +
             '        <td class="value">+' +  context.document.system.attributes.int.value + '</td>' +
             '    </tr>' +

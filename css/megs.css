@@ -959,11 +959,11 @@ details summary.no-arrow {
     background-color: white;
     border: none;
     width: 95%;
+    padding-left: 5px;
 
     .label {
         text-align: left;
         width: 80%;
-        padding-left: 5px;
     }
 
     .value {

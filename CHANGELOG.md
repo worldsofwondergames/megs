@@ -39,3 +39,7 @@
 - Fixed reliability display value on gadgets
 - Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis
+
+## 0.7.0 (May 30, 2025)
+- Added a tooltip explanation on hover for the Initiative calculation
+- Minor styling changes

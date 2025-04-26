@@ -298,7 +298,7 @@ export class MEGSActorSheet extends ActorSheet {
             const martialArtistRanks = martialArtist.system.aps;
             // Martial artist gives a +2
             if (martialArtistRanks > 0) {
-                initiativeBonus = initiativeBonus + 2;
+                initiativeBonus += + 2;
             }
         }
 
@@ -309,7 +309,7 @@ export class MEGSActorSheet extends ActorSheet {
                 MEGS.advantages.LIGHTNING_REFLEXES
             )
         ) {
-            initiativeBonus = initiativeBonus + 2;
+            initiativeBonus += 2;
         }
 
         // Water Freedom applies when submerged in water
@@ -360,7 +360,7 @@ export class MEGSActorSheet extends ActorSheet {
             if (martialArtistRanks > 0) {
                 html += '    <tr>' +
                 '        <td class="label">' + game.i18n.localize("MEGS.MartialArtist")  + '</td>' +
-                '        <td class="value">+' +  martialArtistRanks + '</td>' +
+                '        <td class="value">+2</td>' +
                 '    </tr>';
             }
         }

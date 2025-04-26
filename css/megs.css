@@ -959,6 +959,14 @@ details summary.no-arrow {
 /*
 /*------------------------------------------------------------------------*/
 
+.init-table-header {
+    width: 100%;
+    background-color: green;
+    color: var(--white);
+    font-weight: bold;
+    text-align: center;
+}
+
 .init-table {
     display: table;
     font-family: "Helvetica", "Arial", sans-serif;
@@ -967,13 +975,6 @@ details summary.no-arrow {
     border: none;
     width: 93%;
     margin: 8px 8px 0 8px;
-
-    th {
-        background-color: green;
-        color: var(--white);
-        font-weight: bold;
-        text-align: center;
-    }
 
     .label {
         text-align: left;

@@ -15,7 +15,7 @@
 
 /* variables */
 :root {
-  --blue: #1f5079;
+  --darkblue: #1f5079;
   --white: #ffffff;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .megs .window-header {
-    background-color: var(--blue);
+    background-color: var(--darkblue);
     font-size: 20px;
 }
 
@@ -41,11 +41,11 @@
 
 .megs input[type="text"] {
     background-color: #ddebf6;
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
 }
 
 .megs label {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs select {

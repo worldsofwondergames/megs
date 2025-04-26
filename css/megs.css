@@ -960,6 +960,7 @@ details summary.no-arrow {
     font-size: 14px;
     background-color: white;
     border: none;
+    width: 95%;
 
     .label {
         text-align: left;

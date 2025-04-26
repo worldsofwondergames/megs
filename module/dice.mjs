@@ -222,8 +222,10 @@ export class MegsTableRolls {
      * ACTION TABLE
      **********************************/
     const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
+    const avInfo = game.i18n.localize("MEGS.HeroPoints")  + " " + game.i18n.localize("MEGS.Spent") + ":" + hpSpentAV;
 
     const ovAdjusted = this.opposingValue + hpSpentOV;
+    const ovInfo = game.i18n.localize("MEGS.HeroPoints")  + " " + game.i18n.localize("MEGS.Spent") + ":" + hpSpentOV;
 
     // consult action chart for difficulty
     const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
@@ -238,7 +240,9 @@ export class MegsTableRolls {
     let resultData = {
       "result": "",
       "actionValue": avAdjusted,
+      "actionValueInfo" : avInfo,
       "opposingValue": ovAdjusted,
+      "opposingValueInfo": ovInfo,
       "difficulty": difficulty,
       "dice": dice,
       "columnShifts": 0,

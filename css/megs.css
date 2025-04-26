@@ -50,13 +50,13 @@
 
 .megs select {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .message-panel {
     font-family: "Helvetica", "Arial", sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
@@ -67,7 +67,7 @@
 .megs .editor-content {
     font-family: "Helvetica", "Arial", sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .megs div.biography div.editor-content {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
     background-color: #ddebf6;
 }
 
@@ -93,7 +93,7 @@
 }
 
 .megs .tabs .item {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .tabs .item.active {
@@ -102,7 +102,7 @@
 
 .rollable:hover,
 .rollable:focus {
-    color: #1f5079;
+    color: var(--darkblue);
     cursor: pointer;
     text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
 }
@@ -311,7 +311,7 @@
 }
 
 .megs .item-form {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 .megs .sheet-header {
     flex: 0 auto;
@@ -341,7 +341,7 @@
     border-bottom: 0;
 }
 .megs .sheet-header h1.charname.isLocked {
-    background-color: #1f5079;
+    background-color: var(--darkblue);
 }
 .megs .sheet-header h1.charname.isUnlocked {
     background-color: #fff;

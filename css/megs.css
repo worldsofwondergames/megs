@@ -965,8 +965,8 @@ details summary.no-arrow {
     font-size: 14px;
     background-color: white;
     border: none;
-    width: 95%;
-    margin-left: 10px;
+    width: 100%;
+    margin: 0 8px 0 8px;
 
     .label {
         text-align: left;

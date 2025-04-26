@@ -323,28 +323,12 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     _formatInitiativeExplanation(context) {
-        return '<div class="init-table">' +
-        '    <div class="row">' +
-        '        <div class="col" align="center">Customer ID</div>' +
-        '        <div  class="col">Customer Name</div>' +
-        '        <div  class="col">Customer Address</div>' +
-        '     </div>' +
-        '    <div class="row">' +
-        '          <div class="col">001</div>' +
-        '        <div class="col">002</div>' +
-        '        <div class="col">003</div>' +
-        '    </div>' +
-        '    <div class="row">' +
-        '        <div class="col">xxx</div>' +
-        '        <div class="col">yyy</div>' +
-        '        <div class="col">www</div>' +
-        '   </div>' +
-        '    <div class="row">' +
-        '        <div class="col">ttt</div>' +
-        '        <div class="col">uuu</div>' +
-        '        <div class="col">Mkkk</div>' +
-        '   </div>' +
-      '</div>';
+        return '<table class="init-table">' +
+        '    <tr>' +
+        '        <td class="label">' + game.i18n.localize("MEGS.Dexterity")  + '</td>' +
+        '        <td class="value">' +  context.document.system.attributes.dex.value + '</td>' +
+        '    </tr>' +
+        '</table>';
     }
 
     /**

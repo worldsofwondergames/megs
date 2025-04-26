@@ -966,7 +966,7 @@ details summary.no-arrow {
     background-color: white;
     border: none;
     width: 93%;
-    margin: 0 8px 0 8px;
+    margin: 8px 8px 0 8px;
 
     th {
         background-color: green;

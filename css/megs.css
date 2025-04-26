@@ -921,6 +921,8 @@ details summary.no-arrow {
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
+    border: 3px;
+    border-color: #1f5079;
 
     /* Position the tooltip text - see examples below! */
     position: absolute;
@@ -954,9 +956,11 @@ details summary.no-arrow {
 
 .init-table {
     display: table;
-    width: 95%;
+    margin: 0 10px 0 5px;
     font-family: "Helvetica", "Arial", sans-serif;
-    font-size: 16px;
+    font-size: 14px;
+    background-color: white;
+    border: none;
 
     .label {
         text-align: left;

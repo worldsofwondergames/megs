@@ -136,7 +136,11 @@
     "UseUnskilled": "Uso sem perícia?",
     "Varies": "Varia",
     "Wealth": "Saúde",
-    "Yes": "Sim"
+    "Yes": "Sim",
+
+    "Superspeed": "Supervelocidade",
+    "MartialArtist": "Artista Marcial",
+    "LightningReflexes": "Reflexos de Relâmpago"
   },
 
   "TYPES": {

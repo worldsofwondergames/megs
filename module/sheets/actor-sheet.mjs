@@ -326,15 +326,15 @@ export class MEGSActorSheet extends ActorSheet {
         let html = '<table class="init-table">' +
             '    <tr>' +
             '        <td class="label">' + game.i18n.localize("MEGS.Dexterity")  + '</td>' +
-            '        <td class="value">' +  context.document.system.attributes.dex.value + '</td>' +
+            '        <td class="value">+' +  context.document.system.attributes.dex.value + '</td>' +
             '    </tr>' +
             '    <tr>' +
             '        <td class="label">' + game.i18n.localize("MEGS.Intelligence")  + '</td>' +
-            '        <td class="value">' +  context.document.system.attributes.int.value + '</td>' +
+            '        <td class="value">+' +  context.document.system.attributes.int.value + '</td>' +
             '    </tr>' +
             '    <tr>' +
             '        <td class="label">' + game.i18n.localize("MEGS.Influence")  + '</td>' +
-            '        <td class="value">' +  context.document.system.attributes.infl.value + '</td>' +
+            '        <td class="value">+' +  context.document.system.attributes.infl.value + '</td>' +
             '    </tr>';
 
         if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {
@@ -342,10 +342,12 @@ export class MEGSActorSheet extends ActorSheet {
                 context.powers,
                 MEGS.powers.SUPERSPEED
             );
-            html += '    <tr>' +
+            if (aps > 0) {
+                html += '    <tr>' +
                 '        <td class="label">' + game.i18n.localize("MEGS.Superspeed")  + '</td>' +
-                '        <td class="value">' +  aps + '</td>' +
+                '        <td class="value">+' +  aps + '</td>' +
                 '    </tr>';
+            }
         }
 
         const martialArtist = this._getAbilityFromArray(
@@ -358,11 +360,22 @@ export class MEGSActorSheet extends ActorSheet {
             if (martialArtistRanks > 0) {
                 html += '    <tr>' +
                 '        <td class="label">' + game.i18n.localize("MEGS.MartialArtist")  + '</td>' +
-                '        <td class="value">' +  martialArtistRanks + '</td>' +
+                '        <td class="value">+' +  martialArtistRanks + '</td>' +
                 '    </tr>';
             }
         }
 
+        if (
+            this._hasAbility(
+                context.advantages,
+                MEGS.advantages.LIGHTNING_REFLEXES
+            )
+        ) {
+            html += '    <tr>' +
+            '        <td class="label">' + game.i18n.localize("MEGS.LightningReflexes")  + '</td>' +
+            '        <td class="value">+2</td>' +
+            '    </tr>';
+    }
 
 
         html += '</table>';

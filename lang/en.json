@@ -136,7 +136,11 @@
     "UseUnskilled": "Use Unskilled?",
     "Varies": "Varies",
     "Wealth": "Wealth",
-    "Yes": "Yes"
+    "Yes": "Yes",
+
+    "Superspeed": "Superspeed",
+    "MartialArtist": "Martial Artist",
+    "LightningReflexes": "Lightning Reflexes"
   },
 
   "TYPES": {

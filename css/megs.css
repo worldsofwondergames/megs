@@ -955,7 +955,6 @@ details summary.no-arrow {
 
 .init-table {
     display: table;
-    margin: 0 10px 0 10px;
     font-family: "Helvetica", "Arial", sans-serif;
     font-size: 14px;
     background-color: white;

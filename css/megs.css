@@ -926,7 +926,7 @@ details summary.no-arrow {
     background-color: var(--white);
     color: black;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 12px;
     border: 3px solid green;
 
     /* Position the tooltip text - see examples below! */

@@ -322,7 +322,7 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     _formatInitiativeExplanation(context) {
-        let html = '<div class="init-table-header">' + + game.i18n.localize("MEGS.Initiative") + '</div>' +
+        let html = '<div class="init-table-header">' + game.i18n.localize("MEGS.Initiative") + '</div>' +
         '<table class="init-table">' +
         '    <tr>' +
         '        <td class="label">' + game.i18n.localize("MEGS.Dexterity")  + '</td>' +

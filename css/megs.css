@@ -919,10 +919,9 @@ details summary.no-arrow {
     background-color: white;
     color: black;
     text-align: center;
-    padding: 5px 5px;
+    padding: 5px 0;
     border-radius: 6px;
-    border: 3px;
-    border-color: #1f5079;
+    border: 2px solid red;
 
     /* Position the tooltip text - see examples below! */
     position: absolute;

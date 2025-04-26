@@ -323,10 +323,15 @@
     justify-content: flex-start;
     margin-bottom: 10px;
 }
-.megs .sheet-header .profile-img {
+.megs .sheet-header .character-image {
+    background-color: var(--darkblue);
+}
+.megs .sheet-header .profile-img,
+.megs .sheet-header .profile-img-no-click {
     flex: 0 0 120px;
     height: 120px;
     margin-right: 10px;
+    background-color: var(--white);
 }
 .megs .sheet-header .profile-img:hover {
     opacity: 0.5;
@@ -963,7 +968,6 @@ details summary.no-arrow {
     width: 100%;
     background-color: green;
     color: var(--white);
-    font-weight: bold;
     text-align: center;
 }
 
@@ -989,5 +993,6 @@ details summary.no-arrow {
 
     .total {
         border-top: 1px black solid;
+        font-weight: bold;
     }
 }

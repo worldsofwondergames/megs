@@ -963,13 +963,14 @@ details summary.no-arrow {
 
     .label {
         text-align: left;
-        width: 65%;
+        width: 80%;
+        padding-left: 5px;
     }
 
     .value {
         text-align: right;
-        width: 35%;
-        padding-right: 10px;
+        width: 20%;
+        padding-right: 5px;
     }
 
     .total {

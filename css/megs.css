@@ -920,7 +920,7 @@ details summary.no-arrow {
     color: black;
     text-align: center;
     border-radius: 6px;
-    border: 5px solid #1f5079;
+    border: 3px solid #d63a28;
 
     /* Position the tooltip text - see examples below! */
     position: absolute;
@@ -943,9 +943,9 @@ details summary.no-arrow {
     top: 100%; /* At the bottom of the tooltip */
     left: 50%;
     margin-left: -5px;
-    border-width: 5px;
+    border-width: 3px;
     border-style: solid;
-    border-color: #1f5079 transparent transparent transparent;
+    border-color: #d63a28 transparent transparent transparent;
 }
 
 /*------------------------------------------------------------------------*/

@@ -970,6 +970,7 @@ details summary.no-arrow {
     .value {
         text-align: right;
         width: 35%;
+        padding-right: 10px;
     }
 
     .total {

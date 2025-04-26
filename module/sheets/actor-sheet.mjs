@@ -379,7 +379,7 @@ export class MEGSActorSheet extends ActorSheet {
 
         html += '    <tr>' +
         '        <td class="label total">' + game.i18n.localize("MEGS.Total")  + '</td>' +
-        '        <td class="value">' + context.system.initiativeBonus.value + '</td>' +
+        '        <td class="value total">' + context.system.initiativeBonus.value + '</td>' +
         '    </tr>';
 
 

@@ -16,7 +16,7 @@ export class MegsRoll extends Roll {
     return await ChatMessage.create(
       {
         user: game.user.id,
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        type: CONST.CHAT_MESSAGE_STYLES.ROLL,
         content: dialogHtml,
         sound: CONFIG.sounds.dice
       }
@@ -186,7 +186,7 @@ export class MegsTableRolls {
   async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV, 
     combatManeuverKey, resultColumnShifts, isUnskilled) {
 
-      console.info("dice._handleRolls: currentHeroPoints="+currentHeroPoints
+      console.error("dice._handleRolls: currentHeroPoints="+currentHeroPoints
         + " maxHpToSpend=" + maxHpToSpend
         + " hpSpentAV=" + hpSpentAV
         + " hpSpentEV=" + hpSpentEV

@@ -43,3 +43,4 @@
 ## 0.7.0 (May 30, 2025)
 - Added a tooltip explanation on hover for the Initiative calculation
 - Minor styling changes
+- Changed usage of deprecated Foundry constants and functions

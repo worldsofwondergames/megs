@@ -375,7 +375,12 @@ export class MEGSActorSheet extends ActorSheet {
             '        <td class="label">' + game.i18n.localize("MEGS.LightningReflexes")  + '</td>' +
             '        <td class="value">+2</td>' +
             '    </tr>';
-    }
+        }
+
+        html += '    <tr>' +
+        '        <td class="label total">' + game.i18n.localize("MEGS.Total")  + '</td>' +
+        '        <td class="value">' + context.system.initiativeBonus.value + '</td>' +
+        '    </tr>';
 
 
         html += '</table>';

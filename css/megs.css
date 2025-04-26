@@ -948,3 +948,27 @@ details summary.no-arrow {
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
+
+
+/*------------------------------------------------------------------------*/
+/*
+/*------------------------------------------------------------------------*/
+
+.init-table {
+    display: table;         
+    width: auto;         
+    background-color: #eee;         
+    border: 1px solid #666666;         
+    border-spacing: 5px; /* cellspacing:poor IE support for  this */
+  }
+  .init-table .row {
+    display: table-row;
+    width: auto;
+    clear: both;
+  }
+  .init-table .col {
+    float: left; /* fix for  buggy browsers */
+    display: table-column;         
+    width: 200px;         
+    background-color: #ccc;  
+  }

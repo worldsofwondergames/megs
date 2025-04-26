@@ -943,7 +943,7 @@ details summary.no-arrow {
     top: 100%; /* At the bottom of the tooltip */
     left: 50%;
     margin-left: -5px;
-    border-width: 5px;
+    border-width: 25px;
     border-style: solid;
     border-color: black transparent transparent transparent;
 }

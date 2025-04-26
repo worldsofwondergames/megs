@@ -323,9 +323,6 @@
     justify-content: flex-start;
     margin-bottom: 10px;
 }
-.megs .sheet-header .character-image {
-    background-color: var(--darkblue);
-}
 .megs .sheet-header .profile-img,
 .megs .sheet-header .profile-img-no-click {
     flex: 0 0 120px;
@@ -840,7 +837,7 @@ details summary.no-arrow {
     text-align: center;
     border: none;
     padding: 8px 10px;
-    font-size: 16px;
+    font-size: 22px;
     outline: none;
 }
 

@@ -1,18 +1,18 @@
 <header class="sheet-header">
-        {{#if flags.megs.edit-mode}}
-            <img class="profile-img-no-click"
-                src="{{actor.img}}"
-                data-edit="img"
-                title="{{actor.name}}"
-                height="120"
-                width="120" />
-        {{else}}
-            <img class="profile-img"
-                src="{{actor.img}}"
-                title="{{actor.name}}"
-                height="120"
-                width="120" />
-        {{/if}}
+    {{#if flags.megs.edit-mode}}
+        <img class="profile-img-no-click"
+            src="{{actor.img}}"
+            data-edit="img"
+            title="{{actor.name}}"
+            height="120"
+            width="120" />
+    {{else}}
+        <img class="profile-img"
+            src="{{actor.img}}"
+            title="{{actor.name}}"
+            height="120"
+            width="120" />
+    {{/if}}
     <div class="header-fields">
         <h1 class="charname
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}

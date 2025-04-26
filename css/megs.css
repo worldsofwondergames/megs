@@ -929,7 +929,6 @@ details summary.no-arrow {
     bottom: 100%;
     left: 50%;
     margin-left: -100px; /* Use half of the width (120/2 = 60), to center the tooltip */
-  
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -949,12 +948,22 @@ details summary.no-arrow {
     border-color: black transparent transparent transparent;
 }
 
-
 /*------------------------------------------------------------------------*/
 /*
 /*------------------------------------------------------------------------*/
 
 .init-table {
-    display: table;         
+    display: table;
     width: 100%;
-  }
+    font-family: "Helvetica", "Arial", sans-serif;
+
+    .label {
+        text-align: left;
+        width: 65%;
+    }
+
+    .value {
+        text-align: right;
+        width: 35%;
+    }
+}

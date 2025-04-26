@@ -965,7 +965,7 @@ details summary.no-arrow {
     font-size: 14px;
     background-color: white;
     border: none;
-    width: calc(95%-8px);
+    width: 93%;
     margin: 0 8px 0 8px;
 
     .label {

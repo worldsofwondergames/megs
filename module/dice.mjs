@@ -223,6 +223,7 @@ export class MegsTableRolls {
      **********************************/
     const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
     const avInfo = game.i18n.localize("MEGS.HeroPoints")  + " " + game.i18n.localize("MEGS.Spent") + ":" + hpSpentAV;
+    console.error(avInfo);
 
     const ovAdjusted = this.opposingValue + hpSpentOV;
     const ovInfo = game.i18n.localize("MEGS.HeroPoints")  + " " + game.i18n.localize("MEGS.Spent") + ":" + hpSpentOV;

@@ -966,7 +966,7 @@ details summary.no-arrow {
     background-color: white;
     border: none;
     width: 95%;
-    padding-left: 5px;
+    margin-left: 10px;
 
     .label {
         text-align: left;

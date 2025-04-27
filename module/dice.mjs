@@ -512,6 +512,8 @@ export class MegsTableRolls {
     async _showRollResultInChat(data, roll, callingPoint) {
         const rollChatTemplate = "systems/megs/templates/chat/rollResult.hbs";
 
+console.error(data); // TODO delete
+
         // what's being rolled (used for display)
         data.title = this.label ? `${this.label}` : "";
 

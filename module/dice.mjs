@@ -354,7 +354,7 @@ export class MegsTableRolls {
 
         // if fails, output message
         if (!resultData.avRollSuccess) {
-            resultData.result = "Action failed!";
+            resultData.result = game.i18n.localize("MEGS.ActionFailed");
             await this._showRollResultInChat(
                 resultData,
                 avRoll,

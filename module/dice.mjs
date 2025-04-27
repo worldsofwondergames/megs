@@ -482,6 +482,9 @@ export class MegsTableRolls {
             // Get roll result
             const rolledDice = avRoll.result.split(" + ");
 
+            rolledDice[0] = 1; // TODO delete
+            rolledDice[1] = 1; // TODO delete
+
             dice.push(parseInt(rolledDice[0]));
             dice.push(parseInt(rolledDice[1]));
 

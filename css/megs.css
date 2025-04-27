@@ -929,14 +929,14 @@ details summary.no-arrow {
     border-radius: 12px;
     border: 3px solid green;
 
-}
-
-.tooltip .tooltiptext.wide {
-    width: 200px;
     background-color: var(--white);
 
     position: absolute;
     z-index: 1;
+}
+
+.tooltip .tooltiptext.wide {
+    width: 200px;
 
     bottom: calc(100% + 6px);
     left: 50%;
@@ -945,10 +945,6 @@ details summary.no-arrow {
 
 .tooltip .tooltiptext.narrow {
     width: 120px;
-    background-color: var(--white);
-
-    position: absolute;
-    z-index: 1;
 
     bottom: calc(100% + 6px);
     left: 50%;

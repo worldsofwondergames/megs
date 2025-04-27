@@ -336,6 +336,7 @@ export class MegsTableRolls {
             success: false,
             evResult: "",
             rvColumnShifts: rvColumnShifts,
+            rollTotal: 0
         };
         await this._rollDice(resultData).then((response) => {
             dice = response;
@@ -346,6 +347,7 @@ export class MegsTableRolls {
         dice.forEach((die) => {
             avRollTotal = avRollTotal + parseInt(die);
         });
+        resultData.rollTotal = avRollTotal;
 
         // return dice
         resultData.avRollSuccess = avRollTotal >= difficulty;

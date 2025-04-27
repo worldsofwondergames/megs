@@ -30,16 +30,16 @@
             {{#each dice}}
                 <div class="d10">{{this}}</div>
             {{/each}}
+            = {{rollTotal}}
         </div>
         {{#if avRollSuccess}}
         <div class="flex-group-center grid-span-2 chat-result">
             {{columnShifts}} 
             {{#if isOneColumnShift}}
             {{localize 'MEGS.ColumnShift'}}
-            {{/if}}
-            {{#unless isOneColumnShift}}
+            {{else}}
             {{localize 'MEGS.ColumnShifts'}}
-            {{/unless}}
+            {{/if}}
         </div>
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.EffectValue'}}</label>
@@ -60,10 +60,9 @@
             {{#if success}}
                 {{#if (compare evResult '===' 'N')}}
                 failure
-                {{/if}}
-                {{#unless (compare evResult '===' 'N')}}
+                {{else}}
                 success
-                {{/unless}}
+                {{/if}}
             {{/if}} 
             {{#unless success}}failure{{/unless}}">
                 {{result}}

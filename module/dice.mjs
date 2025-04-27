@@ -270,22 +270,24 @@ export class MegsTableRolls {
          **********************************/
         const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
 
-        let avInfo = "Base AV = " + this.actionValue;
-        avInfo +=
-            hpSpentAV > 0
-                ? "\n" +
-                  game.i18n.localize("MEGS.HeroPoints") +
-                  " " +
-                  game.i18n.localize("MEGS.Spent") +
-                  ":" +
-                  hpSpentAV
-                : "";
-        if (combatManeuverKey) {
-            if (avInfo) {
-                avInfo += "\n";
-            }
-            avInfo += combatManeuverKey + ": " + ovColumnShifts + " shifts";
+        let avInfo = '<table class="init-table">' +
+        '    <tr>' +
+        '        <td class="label">' + game.i18n.localize("MEGS.Base") + ' AV' + '</td>' +
+        '        <td class="value">' +  this.actionValue + '</td>' +
+        '    </tr>';
+        if (hpSpentAV > 0) {
+            avInfo += '    <tr>' +
+                '        <td class="label">' + game.i18n.localize("MEGS.HeroPoints") + ' ' + game.i18n.localize("MEGS.Spent") + '</td>' +
+                '        <td class="value">+' +  hpSpentAV + '</td>' +
+                '    </tr>';
         }
+        if (combatManeuverKey > 0) {
+            avInfo += '    <tr>' +
+                '        <td class="label">' + combatManeuverKey + '</td>' +
+                '        <td class="value">+' +  ovColumnShifts + ' shifts</td>' +
+                '    </tr>';
+        }
+        avInfo += '</table>';
 
         const ovAdjusted = this.opposingValue + hpSpentOV;
         const ovInfo =

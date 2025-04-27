@@ -931,12 +931,11 @@ details summary.no-arrow {
     border-radius: 12px;
     border: 3px solid green;
 
-    /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 1;
 
     bottom: calc(100% + 6px);
-    left: 25%;
+    left: 75%;
     margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 

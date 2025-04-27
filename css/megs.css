@@ -935,7 +935,7 @@ details summary.no-arrow {
     z-index: 1;
 
     bottom: calc(100% + 6px);
-    left: 75%;
+    left: 105%;
     margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 

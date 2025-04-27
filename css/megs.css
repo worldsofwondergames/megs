@@ -922,14 +922,18 @@ details summary.no-arrow {
 }
 
 /* Tooltip text */
-.tooltip .tooltiptext.wide {
+.tooltip .tooltiptext {
     visibility: hidden;
-    width: 200px;
-    background-color: var(--white);
     color: black;
     text-align: center;
     border-radius: 12px;
     border: 3px solid green;
+
+}
+
+.tooltip .tooltiptext.wide {
+    width: 200px;
+    background-color: var(--white);
 
     position: absolute;
     z-index: 1;
@@ -940,13 +944,8 @@ details summary.no-arrow {
 }
 
 .tooltip .tooltiptext.narrow {
-    visibility: hidden;
     width: 120px;
     background-color: var(--white);
-    color: black;
-    text-align: center;
-    border-radius: 12px;
-    border: 3px solid green;
 
     position: absolute;
     z-index: 1;

@@ -495,7 +495,6 @@ export class MegsTableRolls {
                 // dice are both 1s
                 data.result = "Double 1s: Automatic failure!";
                 data.dice = dice;
-                console.error("Double 1s", data, avRoll); // TODO delete
                 await this._showRollResultInChat(
                     data,
                     avRoll,
@@ -542,6 +541,8 @@ export class MegsTableRolls {
         console.log("Calling show result from point: " + callingPoint);
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
+        console.error(dialogHtml); // TODO delete
+        console.error(roll); // TODO delete
         await roll.toMessage(dialogHtml);
     }
 

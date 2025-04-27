@@ -945,9 +945,9 @@ details summary.no-arrow {
 }
 
 .tooltip .tooltiptext.narrow {
-    width: 120px;
+    width: 130px;
 
-    margin-left: -60px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
+    margin-left: -65px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -993,7 +993,6 @@ details summary.no-arrow {
 
     .value {
         text-align: right;
-        width: 20%;
         padding-right: 5px;
     }
 

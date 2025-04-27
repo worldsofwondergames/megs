@@ -991,26 +991,10 @@ details summary.no-arrow {
         text-align: left;
     }
 
-    .tooltip .tooltiptext.wide .init-table .label {
-        width: 80%;
-    }
-
-    .tooltip .tooltiptext.narrow .init-table .label {
-        width: 75%;        
-    }
-
     .value {
         text-align: right;
         width: 20%;
         padding-right: 5px;
-    }
-
-    .tooltip .tooltiptext.wide .init-table .value {
-        width: 20%;
-    }
-
-    .tooltip .tooltiptext.narrow .init-table .value {
-        width: 25%;        
     }
 
     .total {
@@ -1019,3 +1003,18 @@ details summary.no-arrow {
     }
 }
 
+.tooltip .tooltiptext.wide .init-table .label {
+    width: 80%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .label {
+    width: 75%;        
+}
+
+.tooltip .tooltiptext.wide .init-table .value {
+    width: 20%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .value {
+    width: 25%;        
+}

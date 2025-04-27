@@ -924,7 +924,6 @@ details summary.no-arrow {
 /* Tooltip text */
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 200px;
     background-color: var(--white);
     color: black;
     text-align: center;
@@ -936,7 +935,16 @@ details summary.no-arrow {
 
     bottom: calc(100% + 6px);
     left: 50%;
-    margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
+}
+
+tooltip .tooltiptext.wide {
+    width: 200px;
+    margin-left: -100px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+tooltip .tooltiptext.narrow {
+    width: 120px;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */

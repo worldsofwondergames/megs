@@ -278,7 +278,7 @@ export class MegsTableRolls {
                   ":" +
                   hpSpentAV
                 : "";
-        if (combatManeuver) {
+        if (combatManeuverKey) {
             if (avInfo) { avInfo += "\n"; }
             avInfo += combatManeuverKey + ": " + ovColumnShifts + " shifts";
         }

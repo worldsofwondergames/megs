@@ -7,7 +7,12 @@
     <div class="grid grid-2col megs-chat">
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.ActionValue'}}</label>
-            <div title="{{actionValueInfo}}">{{actionValue}}</div>        
+            <div class="tooltip">
+                {{actionValue}}
+                <span class="tooltiptext">
+                    {{{actionValueInfo}}}
+                </span>
+            </div>
         </div>
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.OpposingValue'}}</label>

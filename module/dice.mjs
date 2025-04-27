@@ -270,9 +270,11 @@ export class MegsTableRolls {
          **********************************/
         const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
 
-        let avInfo =
+        let avInfo = "Base AV = " + this.actionValue;
+        avInfo +=
             hpSpentAV > 0
-                ? game.i18n.localize("MEGS.HeroPoints") +
+                ? "\n" +
+                  game.i18n.localize("MEGS.HeroPoints") +
                   " " +
                   game.i18n.localize("MEGS.Spent") +
                   ":" +

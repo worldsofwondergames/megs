@@ -546,8 +546,6 @@ export class MegsTableRolls {
         console.log("Calling show result from point: " + callingPoint);
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-        console.error(dialogHtml); // TODO delete
-        console.error(roll); // TODO delete
         await roll.toMessage(dialogHtml);
     }
 

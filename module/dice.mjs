@@ -279,16 +279,16 @@ export class MegsTableRolls {
             '    </tr>';
             if (hpSpentAV > 0) {
                 avInfo += '    <tr>' +
-                    '        <td class="label">' + game.i18n.localize("MEGS.HeroPoints") + ' ' + game.i18n.localize("MEGS.Spent") + '</td>' +
+                    '        <td class="label">HP ' + game.i18n.localize("MEGS.Spent") + '</td>' +
                     '        <td class="value">+' +  hpSpentAV + '</td>' +
                     '    </tr>';
             }
-            if (combatManeuverKey) {
-                avInfo += '    <tr>' +
-                    '        <td class="label">' + combatManeuverKey + '</td>' +
-                    '        <td class="value">+' +  ovColumnShifts + ' shifts</td>' +
-                    '    </tr>';
-            }
+            // if (combatManeuverKey) {
+            //     avInfo += '    <tr>' +
+            //         '        <td class="label">' + combatManeuverKey + '</td>' +
+            //         '        <td class="value">+' +  ovColumnShifts + ' shifts</td>' +
+            //         '    </tr>';
+            // }
             avInfo += '</table>';
         }
 

@@ -989,7 +989,14 @@ details summary.no-arrow {
 
     .label {
         text-align: left;
+    }
+
+    .tooltip .tooltiptext.wide .init-table .label {
         width: 80%;
+    }
+
+    .tooltip .tooltiptext.narrow .init-table .label {
+        width: 75%;        
     }
 
     .value {
@@ -998,8 +1005,17 @@ details summary.no-arrow {
         padding-right: 5px;
     }
 
+    .tooltip .tooltiptext.wide .init-table .value {
+        width: 20%;
+    }
+
+    .tooltip .tooltiptext.narrow .init-table .value {
+        width: 25%;        
+    }
+
     .total {
         border-top: 1px black solid;
         font-weight: bold;
     }
 }
+

@@ -279,17 +279,21 @@ export class MegsTableRolls {
                   hpSpentAV
                 : "";
         if (combatManeuverKey) {
-            if (avInfo) { avInfo += "\n"; }
+            if (avInfo) {
+                avInfo += "\n";
+            }
             avInfo += combatManeuverKey + ": " + ovColumnShifts + " shifts";
         }
 
         const ovAdjusted = this.opposingValue + hpSpentOV;
         const ovInfo =
-            game.i18n.localize("MEGS.HeroPoints") +
-            " " +
-            game.i18n.localize("MEGS.Spent") +
-            ":" +
-            hpSpentOV;
+            hpSpentOV > 0
+                ? game.i18n.localize("MEGS.HeroPoints") +
+                  " " +
+                  game.i18n.localize("MEGS.Spent") +
+                  ":" +
+                  hpSpentOV
+                : "";
 
         // consult action chart for difficulty
         const difficulty = this._getActionTableDifficulty(
@@ -511,8 +515,6 @@ export class MegsTableRolls {
      */
     async _showRollResultInChat(data, roll, callingPoint) {
         const rollChatTemplate = "systems/megs/templates/chat/rollResult.hbs";
-
-console.error(data); // TODO delete
 
         // what's being rolled (used for display)
         data.title = this.label ? `${this.label}` : "";

@@ -933,21 +933,20 @@ details summary.no-arrow {
 
     position: absolute;
     z-index: 1;
+
+    bottom: calc(100% + 6px);
+    left: 50%;
 }
 
 .tooltip .tooltiptext.wide {
     width: 200px;
 
-    bottom: calc(100% + 6px);
-    left: 50%;
     margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 
 .tooltip .tooltiptext.narrow {
     width: 120px;
 
-    bottom: calc(100% + 6px);
-    left: 50%;
     margin-left: -60px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 

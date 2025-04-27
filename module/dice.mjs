@@ -270,34 +270,43 @@ export class MegsTableRolls {
          **********************************/
         const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
 
-        let avInfo = '<table class="init-table">' +
-        '    <tr>' +
-        '        <td class="label">' + game.i18n.localize("MEGS.Base") + ' AV' + '</td>' +
-        '        <td class="value">' +  this.actionValue + '</td>' +
-        '    </tr>';
-        if (hpSpentAV > 0) {
-            avInfo += '    <tr>' +
-                '        <td class="label">' + game.i18n.localize("MEGS.HeroPoints") + ' ' + game.i18n.localize("MEGS.Spent") + '</td>' +
-                '        <td class="value">+' +  hpSpentAV + '</td>' +
-                '    </tr>';
+        let avInfo = "";
+        if (hpSpentAV > 0 || combatManeuverKey) {
+            avInfo += '<table class="init-table">' +
+            '    <tr>' +
+            '        <td class="label">' + game.i18n.localize("MEGS.Base") + ' AV' + '</td>' +
+            '        <td class="value">' +  this.actionValue + '</td>' +
+            '    </tr>';
+            if (hpSpentAV > 0) {
+                avInfo += '    <tr>' +
+                    '        <td class="label">' + game.i18n.localize("MEGS.HeroPoints") + ' ' + game.i18n.localize("MEGS.Spent") + '</td>' +
+                    '        <td class="value">+' +  hpSpentAV + '</td>' +
+                    '    </tr>';
+            }
+            if (combatManeuverKey) {
+                avInfo += '    <tr>' +
+                    '        <td class="label">' + combatManeuverKey + '</td>' +
+                    '        <td class="value">+' +  ovColumnShifts + ' shifts</td>' +
+                    '    </tr>';
+            }
+            avInfo += '</table>';
         }
-        if (combatManeuverKey > 0) {
-            avInfo += '    <tr>' +
-                '        <td class="label">' + combatManeuverKey + '</td>' +
-                '        <td class="value">+' +  ovColumnShifts + ' shifts</td>' +
-                '    </tr>';
-        }
-        avInfo += '</table>';
 
         const ovAdjusted = this.opposingValue + hpSpentOV;
-        const ovInfo =
-            hpSpentOV > 0
-                ? game.i18n.localize("MEGS.HeroPoints") +
-                  " " +
-                  game.i18n.localize("MEGS.Spent") +
-                  ":" +
-                  hpSpentOV
-                : "";
+
+        let ovInfo = '';
+        if (hpSpentOV > 0) {
+            ovInfo += '<table class="init-table">' +
+                '    <tr>' +
+                '        <td class="label">' + game.i18n.localize("MEGS.Base") + ' OV' + '</td>' +
+                '        <td class="value">' +  this.opposingValue + '</td>' +
+                '    </tr>';
+            ovInfo += '    <tr>' +
+                        '        <td class="label">HP ' + game.i18n.localize("MEGS.Spent") + '</td>' +
+                        '        <td class="value">+' +  hpSpentOV + '</td>' +
+                        '    </tr>';
+            ovInfo += '</table>';
+        }
 
         // consult action chart for difficulty
         const difficulty = this._getActionTableDifficulty(

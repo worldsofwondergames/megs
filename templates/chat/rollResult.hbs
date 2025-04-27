@@ -7,21 +7,29 @@
     <div class="grid grid-2col megs-chat">
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.ActionValue'}}</label>
+            {{#if actionValueInfo}}
             <div class="tooltip">
                 {{actionValue}}
                 <span class="tooltiptext narrow">
                     {{{actionValueInfo}}}
                 </span>
             </div>
+            {{else}}
+            <div>{{actionValue}}</div>
+            {{/if}}
         </div>
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.OpposingValue'}}</label>
+            {{#if opposingValueInfo}}
             <div class="tooltip">
                 {{opposingValue}}
                 <span class="tooltiptext narrow">
                     {{{opposingValueInfo}}}
                 </span>
             </div>
+            {{else}}
+            <div>{{opposingValue}}</div>
+            {{/if}}
         </div>
         <div class="flex-group-center grid-span-2 chat-result">
             {{localize 'MEGS.Difficulty'}}: {{difficulty}}

@@ -939,7 +939,7 @@ details summary.no-arrow {
     margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 
-.tooltip .tooltiptext.wide {
+.tooltip .tooltiptext.narrow {
     visibility: hidden;
     width: 120px;
     background-color: var(--white);

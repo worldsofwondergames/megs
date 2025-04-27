@@ -350,9 +350,10 @@ export class MegsTableRolls {
         resultData.rollTotal = avRollTotal;
 
         if (
-            parseInt(dice[0]) === 1 &&
-            parseInt(dice[1]) === 1
+            parseInt(dice[dice.length-2]) === 1 &&
+            parseInt(dice[dice.length-1]) === 1
         ) {
+            // dice are both 1s
             resultData.result = game.i18n.localize("MEGS.Double1s");
             await this._showRollResultInChat(
                 resultData,
@@ -361,17 +362,7 @@ export class MegsTableRolls {
             );
 
             return dice;
-
-            // dice are both 1s
-            // data.result = "Double 1s: Automatic failure!";
-            // data.dice = dice;
-            // await this._showRollResultInChat(
-            //     data,
-            //     avRoll,
-            //     ShowResultCall.DOUBLE_1S
-            // );
         }
-        
 
         // return dice
         resultData.avRollSuccess = avRollTotal >= difficulty;
@@ -506,9 +497,6 @@ export class MegsTableRolls {
             // Get roll result
             const rolledDice = avRoll.result.split(" + ");
 
-            rolledDice[0] = 1; // TODO
-            rolledDice[1] = 1; // TODO
-
             dice.push(parseInt(rolledDice[0]));
             dice.push(parseInt(rolledDice[1]));
 
@@ -517,13 +505,6 @@ export class MegsTableRolls {
                 parseInt(rolledDice[1]) === 1
             ) {
                 // dice are both 1s
-                // data.result = "Double 1s: Automatic failure!";
-                // data.dice = dice;
-                // await this._showRollResultInChat(
-                //     data,
-                //     avRoll,
-                //     ShowResultCall.DOUBLE_1S
-                // );
                 stopRolling = true;
             } else if (rolledDice[0] === rolledDice[1]) {
                 // dice match but are not 1s

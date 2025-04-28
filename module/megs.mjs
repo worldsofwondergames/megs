@@ -218,7 +218,9 @@ Handlebars.registerHelper("getSkillDisplayName", function (skill) {
 console.error("TEST1");
     if (!skill.subskills) {
         skill.subskills = [];
+        console.error("TEST2");
         for (let i of this.object.parent.items) {
+            console.error("TEST3");
             if (i.type === MEGS.itemTypes.subskill) {
                 if (i.system.parent === context.item._id) { // TODO parent ID
                     skill.subskills.push(i);
@@ -226,6 +228,7 @@ console.error("TEST1");
             }
         }
     }
+    console.error("TEST4");
 
     if (
         skill.system.aps === 0 &&

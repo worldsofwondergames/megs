@@ -218,7 +218,7 @@ Handlebars.registerHelper("getSkillDisplayName", function (skill) {
 console.error("TEST1");
     if (!skill.subskills) {
         skill.subskills = [];
-        console.error("TEST2", this.object);
+        console.error("TEST2", skill);
         for (let i of this.object.parent.items) {
             console.error("TEST3");
             if (i.type === MEGS.itemTypes.subskill) {

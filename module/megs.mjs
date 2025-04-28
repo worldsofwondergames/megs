@@ -215,13 +215,13 @@ Handlebars.registerHelper("getSelectedSkillLink", function (skillName) {
 
 Handlebars.registerHelper("getSkillDisplayName", function (skill) {
     let displayName = skill.name;
-
+console.error("TEST1");
     if (!skill.subskills) {
+        skill.subskills = [];
         for (let i of this.object.parent.items) {
             if (i.type === MEGS.itemTypes.subskill) {
                 if (i.system.parent === context.item._id) { // TODO parent ID
-                    //skill.subskills
-                    console.error(i); // TODO delete
+                    skill.subskills.push(i);
                 }
             }
         }

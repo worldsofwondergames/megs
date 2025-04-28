@@ -220,7 +220,7 @@ Handlebars.registerHelper("getSkillDisplayName", function (skill) {
         console.error("TEST2", skill);
 
         const parentItem = game.items.get(skill.system.parent);
-        console.error("TEST2A", parentItem, game.items);
+        console.error("TEST2A", parentItem, game.items.filter(item => item.value.type === 'gadget'));
 
         // for (let i of this.object.parent.items) {
         //     console.error("TEST3");

@@ -416,14 +416,14 @@ export class MegsTableRolls {
             // If the result is an 'N' then there is No Effect
             if (resultAPs === 0) {
                 // TOD this does not show EV/OV - find a better way to handle
-                resultData.result = "No effect!";
+                resultData.result = game.i18n.localize("MEGS.NoEffect");
                 resultData.success = true;
                 resultData.evResult = "N";
             } else {
                 // "All" result on table - Result APs = Effect Value
                 // If the Result is an 'A,' then the RAPs are equal to the APs of the Effect Value.
                 // TODO does the ALL result include any ranks purchased with Hero Points?
-                resultData.result = "Success: " + resultAPs + " RAPs!";
+                resultData.result =  game.i18n.localize("MEGS.Success") + ": " + resultAPs + " RAPs!";
                 resultData.success = true;
                 resultData.evResult = "A (" + evAdjusted + ")";
             }
@@ -445,7 +445,7 @@ export class MegsTableRolls {
 
         // If the result is an 'N' then there is No Effect
         if (resultAPs === 0) {
-            resultData.result = "No effect!";
+            resultData.result = game.i18n.localize("MEGS.NoEffect");
             resultData.success = false;
             resultData.evResult = "N";
 
@@ -458,7 +458,7 @@ export class MegsTableRolls {
         }
 
         // results output to chat
-        resultData.result = "Success: " + resultAPs + " RAPs!";
+        resultData.result =  game.i18n.localize("MEGS.Success") + ": " + resultAPs + " RAPs!";
         resultData.success = true;
         resultData.evResult = resultAPs;
         await this._showRollResultInChat(
@@ -509,9 +509,9 @@ export class MegsTableRolls {
             } else if (rolledDice[0] === rolledDice[1]) {
                 // dice match but are not 1s
                 const confirmed = await Dialog.confirm({
-                    title: "Continue Rolling?",
+                    title: game.i18n.localize("MEGS.ContinueRolling"),
                     content:
-                        "You have rolled doubles; would you like to roll again?",
+                    game.i18n.localize("MEGS.RolledDoublesPrompt"),
                     yes: () => true,
                     no: () => false,
                 });

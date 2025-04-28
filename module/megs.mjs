@@ -220,7 +220,7 @@ console.error("TEST1");
         skill.subskills = [];
         console.error("TEST2", skill.system.parent);
 
-        const parentItem = game.items.get(skill.system.parent);
+        const parentItem = game.actors.get(skill.system.parent);
         console.error("TEST2A", parentItem);
 
         // for (let i of this.object.parent.items) {

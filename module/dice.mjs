@@ -404,7 +404,7 @@ export class MegsTableRolls {
                         '    </tr>';
             columnShiftText += '</table>';
         }
-        result.columnShiftText = columnShiftText
+        resultData.columnShiftText = columnShiftText
 
         /**********************************
          * RESULT TABLE

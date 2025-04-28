@@ -215,10 +215,9 @@ Handlebars.registerHelper("getSelectedSkillLink", function (skillName) {
 
 Handlebars.registerHelper("getSkillDisplayName", function (skill) {
     let displayName = skill.name;
-console.error("TEST1");
     if (!skill.subskills) {
         skill.subskills = [];
-        console.error("TEST2", skill.system.parent);
+        console.error("TEST2", skill.);
 
         const parentItem = game.actors.get(skill.system.parent);
         console.error("TEST2A", parentItem);

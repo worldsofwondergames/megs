@@ -42,11 +42,25 @@
         </div>
         {{#if avRollSuccess}}
         <div class="flex-group-center grid-span-2 chat-result">
-            {{columnShifts}} 
-            {{#if isOneColumnShift}}
-            {{localize 'MEGS.ColumnShift'}}
+            {{#if columnShiftText}}
+            <div class="tooltip">
+                {{columnShifts}}
+                {{#if isOneColumnShift}}
+                {{localize 'MEGS.ColumnShift'}}
+                {{else}}
+                {{localize 'MEGS.ColumnShifts'}}
+                {{/if}}
+                <span class="tooltiptext narrow">
+                    {{{columnShiftText}}}
+                </span>
+            </div>
             {{else}}
-            {{localize 'MEGS.ColumnShifts'}}
+                {{columnShifts}} 
+                {{#if (compare columnShifts '===' 1)}}
+                {{localize 'MEGS.ColumnShift'}}
+                {{else}}
+                {{localize 'MEGS.ColumnShifts'}}
+                {{/if}}
             {{/if}}
         </div>
         <div class="flex-group-center chat-value">

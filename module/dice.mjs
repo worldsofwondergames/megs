@@ -336,6 +336,7 @@ export class MegsTableRolls {
             success: false,
             evResult: "",
             rvColumnShifts: rvColumnShifts,
+            columnShiftText: '',
             rollTotal: 0
         };
         await this._rollDice(resultData).then((response) => {
@@ -380,14 +381,30 @@ export class MegsTableRolls {
         }
 
         // if succeeds, calculate column shifts for result table
-        const columnShifts =
+        const rollColumnShifts =
             this._getColumnShifts(
                 avRollTotal,
                 this._getRangeIndex(avAdjusted),
                 CONFIG.tables.actionTable
-            ) + rvColumnShifts;
+            ); 
+        const columnShifts =  rollColumnShifts + rvColumnShifts;
         resultData.columnShifts = columnShifts;
         // TODO handle totals greater than 60 on table
+
+        let columnShiftText = '';
+        if (rvColumnShifts > 0) {
+            columnShiftText += '<table class="init-table">' +
+                '    <tr>' +
+                '        <td class="label">' + game.i18n.localize("MEGS.Roll") + ' ' + game.i18n.localize("MEGS.Shifts") + '</td>' +
+                '        <td class="value">' +  rollColumnShifts + '</td>' +
+                '    </tr>';
+            columnShiftText += '    <tr>' +
+                        '        <td class="label">RV ' + game.i18n.localize("MEGS.Shifts") + '</td>' +
+                        '        <td class="value">+' +  hpSpentOV + '</td>' +
+                        '    </tr>';
+            columnShiftText += '</table>';
+        }
+        result.columnShiftText = columnShiftText
 
         /**********************************
          * RESULT TABLE

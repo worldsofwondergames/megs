@@ -400,7 +400,7 @@ export class MegsTableRolls {
                 '    </tr>';
             columnShiftText += '    <tr>' +
                         '        <td class="label">RV ' + game.i18n.localize("MEGS.Shifts") + '</td>' +
-                        '        <td class="value">+' +  hpSpentOV + '</td>' +
+                        '        <td class="value">+' +  rvColumnShifts + '</td>' +
                         '    </tr>';
             columnShiftText += '</table>';
         }

@@ -219,8 +219,8 @@ Handlebars.registerHelper("getSkillDisplayName", function (skill) {
         skill.subskills = [];
         console.error("TEST2", skill);
 
-        const parentItem = game.actors.get(skill.system.parent);
-        console.error("TEST2A", parentItem);
+        const parentItem = game.items.get(skill.system.parent);
+        console.error("TEST2A", parentItem, game.items);
 
         // for (let i of this.object.parent.items) {
         //     console.error("TEST3");

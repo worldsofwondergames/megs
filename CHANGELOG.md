@@ -41,6 +41,7 @@
 - Cleanup minor code issues from static code analysis
 
 ## 0.7.0 (May 30, 2025)
-- Added a tooltip explanation on hover for the Initiative calculation
-- Minor styling changes
+- Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Changed usage of deprecated Foundry constants and functions
+- Minor styling changes
+- Localized still more hard-coded English strings

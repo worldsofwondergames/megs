@@ -3,7 +3,7 @@
 ![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
 
 
-![Mutiversal Exponential Gaming System](https://github.com/codemonkey1972/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
+![Mutiversal Exponential Gaming System](https://github.com/worldsofwondergames/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
 
 ## What is the Multiversal Exponential Gaming System system for Foundry Virtual Tabletop?
 
@@ -25,22 +25,24 @@ There are a few because of technical and/or design constraints of the platform:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 0.5.3**.
+Do I ever! MEGS for Foundry is currently sitting at **version 0.6.0**.
 
 (Note that everything below is subject to change.)
 
-Issues are tracked [here](https://github.com/codemonkey1972/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Acodemonkey1972%2F4).
+Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Aworldsofwondergames%2F4).
 
-**Version 0.6.0** (aiming for March 2025) deals with a lot of Foundry technical implementation details you won't care about.
+**YouTube demo videos**  are planned by the middle of May 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 
-**YouTube demo videos**  are planned by the end of April 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
-
-Then... **version 1.0.0**, probably around August 2025. Incorporating any feedback I've gotten and:
+Then... **version 1.0.0**, by October 1, 2025. Incorporating any feedback I've gotten and:
 - Adding character builder/creator view for characters
 - Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
-And then I rest for a very, very long time. At least until...
+Why October 1? Because October 1s when Cryptozoic is supposed to fulfill the DC Heroes reprint Kickstarter. I anticipate a definite uptick in interest around that time.
+
+And then after the rush, I rest for a very, very long time. 
+
+At least until...
 
 ## What's "Legacy of Heroes"?
 

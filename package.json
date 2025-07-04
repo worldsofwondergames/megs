@@ -6,7 +6,7 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/codemonkey1972/megs/issues"
+    "url": "https://github.com/worldsofwondergames/megs/issues"
   },
   "browserslist": [
     "last 3 versions"
@@ -29,7 +29,7 @@
   "directories": {
     "test": "module/tests"
   },
-  "homepage": "https://github.com/codemonkey1972/megs#readme",
+  "homepage": "https://github.com/worldsofwondergames/megs#readme",
   "jest": {
     "setupFiles": [
       "<rootDir>/module/__mocks__/setup.mjs",
@@ -58,6 +58,7 @@
   "type": "module",
   "version": "0.6.0",
   "dependencies": {
+    "@changesets/cli": "^2.29.2",
     "handlebars-helpers": "^0.10.0"
   }
 }

@@ -79,6 +79,8 @@ Hooks.once('init', function () {
   // if the transfer property on the Active Effect is true.
   CONFIG.ActiveEffect.legacyTransferral = false;
 
+  CONFIG.reliabilityScores = [0, 2, 3, 5, 7, 9, 11];
+
   // Register sheet application classes
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('megs', MEGSActorSheet, {
@@ -105,9 +107,15 @@ Hooks.once('init', function () {
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
 
-// If you need to add Handlebars helpers, here is a useful example:
+/* -------------------------------------------- */
+// General purpose                              */
+/* -------------------------------------------- */
 Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
+});
+
+Handlebars.registerHelper('trueFalseToYesNo', function (str) {
+  return str === 'true' ? game.i18n.localize("Yes") : game.i18n.localize("No");
 });
 
 Handlebars.registerHelper('sum', function () {
@@ -151,6 +159,13 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
   }
 });
 
+Handlebars.registerHelper('trueFalseToYesNo', function (str) {
+  return str === 'true' ? "Yes" : "No";
+});
+
+/* -------------------------------------------- */
+// skill-related
+/* -------------------------------------------- */
 Handlebars.registerHelper('getSelectedSkillRange', function(skillName) {
   for (let i of game.items) {
     if (i.type === MEGS.itemTypes.skill) {
@@ -185,7 +200,6 @@ Handlebars.registerHelper('getSelectedSkillLink', function(skillName) {
   } else {
     console.error(`Returned undefined for game.items!`);
   }
-
   return "N/A";
 });
 
@@ -193,7 +207,7 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   let displayName = skill.name;
   if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
     let subskillText = " ("
-    skill.subskills.forEach((subskill, index) => {
+    skill.subskills.forEach((subskill) => {
       if (subskill.system.aps > 0) {
         if (subskillText !== " (") { subskillText += " ,"; }
         // No need to show " Weapons" after every weapon type
@@ -211,6 +225,24 @@ Handlebars.registerHelper('getSkillDisplayName', function(skill) {
   return displayName;
 });
 
+/* -------------------------------------------- */
+/* powers-related                               */
+/* -------------------------------------------- */
+Handlebars.registerHelper('getAttributeText', function(key, labels) {
+  return labels[key];
+});
+
+Handlebars.registerHelper('getPowerDisplayName', function(power) {
+  let displayName = power.name;
+  if (power.system.isLinked === "true") {
+    displayName += "*";
+  }
+  return displayName;
+});
+
+/* -------------------------------------------- */
+// gadget-related
+/* -------------------------------------------- */
 Handlebars.registerHelper('getGadgetDescription', function(gadget) {
   let description = "";
 
@@ -219,6 +251,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     Object.keys(gadget.system.omniClasses).forEach(key => {
       if (gadget.system.omniClasses[key]) {
         description += key.toUpperCase();
+        description += " (" + MEGS.omniRanges[key.toUpperCase()] + ")";
       }
     });
     return description;
@@ -307,7 +340,7 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
     if (description) {
       description += ", ";
     }
-    description += "R # " + gadget.system.reliability;
+    description += "R # " + CONFIG.reliabilityScores[gadget.system.reliability];
   }
 
   return description;
@@ -316,27 +349,57 @@ Handlebars.registerHelper('getGadgetDescription', function(gadget) {
 Handlebars.registerHelper('shouldShowRow', function(index, hasAttributes, options) {
   if (index < 3 && hasAttributes?.physical) {
     return options.fn(this);
-  } else if (index < 6 && hasAttributes?.mental) {
-    console.log(index, hasAttributes); // TODO delete
+  } else if (index > 2 && index < 6 && hasAttributes?.mental) {
     return options.fn(this);
-  } else if (index < 9 && hasAttributes?.mystical) {
+  } else if (index > 5 && index < 9 && hasAttributes?.mystical) {
     return options.fn(this);
   }
   return options.inverse(this);
 });
+
+Handlebars.registerHelper('shouldShowGadgetAttributesDetails', function(hasAttributes, options) {
+  if (hasAttributes?.physical || hasAttributes?.mental || hasAttributes?.mystical) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
+Handlebars.registerHelper('getVehicleOwnerName', function(ownerId, characters) {
+  return characters[ownerId] || "-";
+});
+
+Handlebars.registerHelper('getLinkedVehicleItemName', function(vehicleId, vehicles) {
+  return Object.keys(vehicles).find(key => vehicles[key] === vehicleId);
+});
+
+/* -------------------------------------------- */
+// description
+/* -------------------------------------------- */
+Handlebars.registerHelper('getMotivation', function(descriptionIndex, descriptions) {
+  return descriptions[descriptionIndex];
+});
+
 /* -------------------------------------------- */
 /*  Handlebars Partials                         */
 /* -------------------------------------------- */
 Handlebars.registerPartial('plusMinusInput', function(args) {
   const classes = args.classes ? args.classes : '';
   const max = (args.max && !isNaN(args.max)) ? args.max : '';
-  const min = args.min === '0' ? 0 : (args.min && !isNaN(args.min)) ? args.min : '';
+//  const min = args.min === '0' ? 0 : (args.min && !isNaN(args.min)) ? args.min : '';
+  let min = 0;
+  if (args.min && !isNaN(args.min)) {
+    min = args.min;
+  } else if (args.minPos && !isNaN(args.minPos)) {
+    min = '-' + args.minPos;
+  }
+
   const valueTag = args.hasValue ? ".value" : "";
   const value = (args.value && !isNaN(args.value)) ? args.value : '0';
+  const tabindex = (args.tabindex) ? 'tablindex="' + args.tabindex + '"' : "";
 
   return '<div class="quantity ' + classes + '">' +
     '<button class="minus" aria-label="Decrease" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value) - 1">&minus;</button>' +
-    '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number">' +
+    '<input id="'+args.id+'Input" name="system.'+args.id + valueTag +'" type="number" class="input-box" value="'+value+'" min="'+min+'" max="'+max+'" data-dtype="Number"' + tabindex + '>' +
     '<button class="plus" aria-label="Increase" onClick="'+args.id+'Input.value = parseInt('+args.id+'Input.value)+ 1 ">&plus;</button>' +
     '</div>'
 });

@@ -1,6 +1,10 @@
 <form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header">
+    {{#if flags.megs.edit-mode}}
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    {{else}}
+    <img class="profile-img" src="{{item.img}}" title="{{item.name}}"/>
+    {{/if}}
     <div class="header-fields">
       
       <div class="resources grid grid-4col">
@@ -91,16 +95,16 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.link" data-type="String">
-              {{#select system.link}}
-                  {{#each system.attributes as |attribute key|}}
-                  <option  value="{{key}}">{{attribute.label}}</option>
-                  {{/each}}
-                  <option  value="special">{{localize 'MEGS.Special'}}</option>
-                  <option  value="none">{{localize 'MEGS.None'}}</option>
-              {{/select}}
+                {{selectOptions system.attributesForLink selected=system.link localize=true}}
+                <option  value="special"
+                    {{#if (compare item.system.link "===" "special")}}selected{{/if}}
+                >{{localize 'MEGS.Special'}}</option>
+                <option  value="none"
+                    {{#if (compare item.system.link "===" "none")}}selected{{/if}}
+                >{{localize 'MEGS.None'}}</option>
             </select>
         {{else}}
-          <span>{{system.link}}</span>
+          <span>{{getAttributeText system.link system.attributesForLink }}</span>
         {{/if}}
           </div>
         </div>
@@ -111,13 +115,10 @@
         {{#if hasActor}}
           {{#if flags.megs.edit-mode}}
           <select  class="resource-select"  name="system.isLinked" data-type="String">
-            {{#select system.isLinked}}
-                <option  value="false">{{localize 'No'}}</option>
-                <option  value="true">{{localize 'Yes'}}</option>
-            {{/select}}
+            {{selectOptions system.yesNoOptions selected=system.isLinked localize=true}}
           </select>
             {{else}}
-                <span>{{system.isLinked}}</span>
+                <span>{{trueFalseToYesNo system.isLinked}}</span>
             {{/if}}
         {{else}}
           {{localize 'MEGS.No'}}
@@ -130,18 +131,14 @@
           <div>
           {{#if flags.megs.edit-mode}}
             {{#if (compare system.range "eq" "numeric")}}
-            <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
-            <select class="resource-select numericSelected" name="system.range" data-type="string">
+                <input name="system.rangeAPs" value="{{system.rangeAPs}}" data-dtype="number" class="numericSelected"/>
+                <select class="resource-select numericSelected" name="system.range" data-type="string">
             {{else}}
-            <select class="resource-select" name="system.range" data-type="string">
+                <select class="resource-select" name="system.range" data-type="string">
             {{/if}}
-              {{#select system.range}}
-                  {{#each system.ranges as |range key|}}
-                  <option  value="{{key}}">{{range}}</option>
-                  {{/each}}
-                  <option value="varies">Varies</option>
-              {{/select}}
-            </select>
+                    {{selectOptions system.ranges selected=system.range localize=true}}
+                    <option value="varies">{{localize 'MEGS.Varies'}}</option>
+                </select>
           {{else}}
             <span>{{system.range}}</span>
           {{/if}}
@@ -153,11 +150,7 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.type" data-type="String">
-                {{#select system.type}}
-                  {{#each system.powerTypes as |powerType key|}}
-                <option value="{{key}}">{{powerType}}</option>
-                  {{/each}}
-                {{/select}}
+              {{selectOptions system.powerTypes selected=system.type localize=true}}
             </select>
         {{else}}
             <span>{{system.type}}</span>
@@ -169,12 +162,8 @@
           <label for="system.source" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Source'}}">{{localize 'MEGS.Source'}}</label>
            <div>
         {{#if flags.megs.edit-mode}}
-               <select  class="resource-select"  name="system.source" data-type="String">
-                {{#select system.source}}
-                  {{#each system.powerSources as |powerSource key|}}
-                <option value="{{key}}">{{powerSource}}</option>
-                  {{/each}}
-                {{/select}}
+              <select  class="resource-select"  name="system.source" data-type="String">
+              {{selectOptions system.powerSources selected=system.source localize=true}}
               </select>
         {{else}}
             <span>{{system.source}}</span>
@@ -188,16 +177,13 @@
       {{#if flags.megs.edit-mode}}
         {{#if hasActor}}
           <select  class="resource-select"  name="system.activateFree" data-type="String">
-            {{#select system.activateFree}}
-                <option  value="false">{{localize 'MEGS.No'}}</option>
-                <option  value="true">{{localize 'MEGS.Yes'}}</option>
-            {{/select}}
+            {{selectOptions system.yesNoOptions selected=system.activateFree localize=true}}
           </select>
         {{else}}
           {{localize 'MEGS.No'}}
         {{/if}}
       {{else}}
-        <span>{{system.activateFree}}</span>
+        <span>{{trueFalseToYesNo system.activateFree}}</span>
       {{/if}}
           </div>
         </div>

@@ -79,13 +79,9 @@
       <div class="form-group">
         <label>{{localize "MEGS.CombatManeuver"}}</label>
         <div class="flexrow">
-          <select  class="resource-select"  name="combatManeuver" data-type="String">
+          <select  class="resource-select" name="combatManeuver" data-type="String">
             <option value="">{{localize 'MEGS.None'}}</option>
-            {{#select combatManeuver}}
-                {{#each combatManeuvers as |combatManeuverObj key|}}
-                <option  value="{{key}}">{{key}}</option>
-                {{/each}}
-            {{/select}}
+            {{selectOptions combatManeuvers selected=combatManeuver localize=true}}
           </select>
         </div>
       </div>

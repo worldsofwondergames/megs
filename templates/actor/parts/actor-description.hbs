@@ -21,17 +21,13 @@
           {{#if flags.megs.edit-mode}}
             <div>
                 <select  class="resource-select"  name="system.motivation" data-type="String">
-                  {{#select system.motivation}}
-                      {{#each system.motivations as |value|}}
-                      <option value="{{value}}">{{value}}</option>
-                      {{/each}}
-                  {{/select}}
+                    {{selectOptions system.motivations selected=system.motivation localize=true}}
                 </select>
             </div>
           {{else}}
           <div class="indentLeft">
             {{#if system.motivation}}
-            {{system.motivation}}
+            {{getMotivation system.motivation system.motivations}}
             {{else}}
             ({{localize 'MEGS.None'}})
             {{/if}}

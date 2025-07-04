@@ -1,11 +1,15 @@
  <header class="sheet-header">
+    {{#if flags.megs.edit-mode}}
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
+    {{else}}
+    <img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" height="120" width="120"/>
+    {{/if}}
     <div class="header-fields">
       <h1 class="charname
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
       ">
         {{#if flags.megs.edit-mode}}
-          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
+          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}" tabindex="100"/>
         {{else}}
           <div name="name">{{actor.name}}</div>
         {{/if}}
@@ -17,9 +21,9 @@
           <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+              {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value minPos=system.attributes.body.value max=system.attributes.body.value hasValue=true tabindex=110}}
             </div>
-            <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
+            <button class="reset" onClick="currentBodyInput.value = {{system.attributes.body.value}}" />
           </div>
         </div>
 
@@ -37,7 +41,7 @@
           <label for="system.currentSpirit.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Spirit"}}</label>
           <div>
            <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}
+              {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value minPos=-system.attributes.spirit.value max=system.attributes.spirit.value hasValue=true tabindex=130}}
             </div>
             <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
           </div>

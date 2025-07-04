@@ -67,6 +67,14 @@ export class MEGSItem extends Item {
     systemData.powerTypes = MEGS.powerTypes;
     systemData.powerSources = MEGS.powerSources;
     systemData.ranges = MEGS.ranges;
+
+    systemData.yesNoOptions = MEGS.yesNoOptions;
+
+    systemData.attributesForLink = {};
+    for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
+      systemData.attributesForLink[key] = game.i18n.localize(value);
+    }
+
   }
 
   /**
@@ -97,7 +105,7 @@ export class MEGSItem extends Item {
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
     const label = `[${item.actor.name}] ${item.name}`;
-;
+
     if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill || this.type === MEGS.itemTypes.power) {
       this.rollMegs();
     }

@@ -1,6 +1,10 @@
 <form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header">
+    {{#if flags.megs.edit-mode}}
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    {{else}}
+    <img class="profile-img" src="{{item.img}}" title="{{item.name}}"/>
+    {{/if}}
     <div class="header-fields">
       <div class="resources grid grid-4col">
       {{#if isRollable}}
@@ -56,11 +60,7 @@
           <div>
           {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.linkedSkill" data-type="String">
-              {{#select system.linkedSkill}}
-                  {{#each allSkills as |skill key|}}
-                  <option  value="{{skill.name}}">{{skill.name}}</option>
-                  {{/each}}
-              {{/select}}
+              {{selectOptions allSkills selected=system.linkedSkill localize=true}}
             </select>
           {{else}}
             {{system.linkedSkill}}
@@ -94,14 +94,10 @@
           <div>
         {{#if flags.megs.edit-mode}}
             <select  class="resource-select"  name="system.useUnskilled" data-type="String">
-              {{#select system.useUnskilled}}
-                  <option  value="true">{{localize 'MEGS.Yes'}}</option>
-                  <option  value="false">{{localize 'MEGS.No'}}</option>
-              {{/select}}
+              {{selectOptions system.yesNoOptions selected=system.useUnskilled localize=true}}
             </select>
         {{else}}
-          {{#if (compare system.useUnskilled "===" "true")}}{{localize 'MEGS.Yes'}}{{/if}}
-          {{#if (compare system.useUnskilled "===" "false")}}{{localize 'MEGS.No'}}{{/if}}
+            {{trueFalseToYesNo system.useUnskilled}}
         {{/if}}
           </div>
         </div>

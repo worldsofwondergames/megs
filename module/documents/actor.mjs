@@ -79,18 +79,7 @@ export class MEGSActor extends Actor {
       });
     }
 
-    if (this.type === MEGS.characterTypes.hero || this.type === MEGS.characterTypes.villain) {
-      const merge = (a, b, predicate = (a, b) => a === b) => {
-        const c = [...a]; // copy to avoid side effects
-        // add all items from B to copy C if they're not already present
-        b.forEach((bItem) => (c.some((cItem) => predicate(bItem, cItem)) ? null : c.push(bItem)))
-        return c;
-      }
-      this.system.motivations = merge(CONFIG.motivations[this.type], CONFIG.motivations.antihero);
-    }
-
   }
-
 
   /** @override */
   prepareBaseData() {
@@ -111,6 +100,17 @@ export class MEGSActor extends Actor {
     this.system.currentBody.max = this.system.attributes.body.value;
     this.system.currentMind.max = this.system.attributes.mind.value;
     this.system.currentSpirit.max = this.system.attributes.spirit.value;
+
+    if (this.type === MEGS.characterTypes.hero || this.type === MEGS.characterTypes.villain) {
+      const merge = (a, b, predicate = (a, b) => a === b) => {
+        const c = [...a]; // copy to avoid side effects
+        // add all items from B to copy C if they're not already present
+        b.forEach((bItem) => (c.some((cItem) => predicate(bItem, cItem)) ? null : c.push(bItem)))
+        return c;
+      }
+      this.system.motivations = merge(CONFIG.motivations[this.type], CONFIG.motivations.antihero);
+    }
+
   }
 
   /**

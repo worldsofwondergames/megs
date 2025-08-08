@@ -41,11 +41,15 @@
         </a>
       </div>
       <div class='item-aps'>
-        <div class="quantity skill-input">
-          <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
-          <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-          <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
-        </div>
+        {{#if ../flags.megs.edit-mode}}
+          <div class="quantity skill-input">
+            <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+            <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
+            <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+          </div>
+        {{else}}
+          {{item.system.aps}}
+        {{/if}}
       </div>
       {{#if showHeroPointCosts}}
       <div class='item-total-cost'>

@@ -31,7 +31,7 @@
           <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}</label>
           <div>
             <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=(-1*system.attributes.mind.value) max=system.attributes.mind.value hasValue=true}}
+              {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=-system.attributes.mind.value max=system.attributes.mind.value hasValue=true}}
             </div>
             <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
           </div>

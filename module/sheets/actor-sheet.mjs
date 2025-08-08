@@ -463,6 +463,7 @@ export class MEGSActorSheet extends ActorSheet {
       item.sheet.render(true);
     });
 
+
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
 
@@ -477,6 +478,28 @@ export class MEGSActorSheet extends ActorSheet {
       const item = this.actor.items.get(li.data('itemId'));
       item.delete();
       li.slideUp(200, () => this.render(false));
+    });
+
+    // Skill APs increment/decrement
+    html.on('click', '.skill-plus', async (ev) => {
+      ev.preventDefault();
+      const itemId = $(ev.currentTarget).data('itemId');
+      const item = this.actor.items.get(itemId);
+      if (item && item.type === 'skill') {
+        const newValue = (item.system.aps || 0) + 1;
+        await item.update({ 'system.aps': newValue });
+        this.render(false);
+      }
+    });
+    html.on('click', '.skill-minus', async (ev) => {
+      ev.preventDefault();
+      const itemId = $(ev.currentTarget).data('itemId');
+      const item = this.actor.items.get(itemId);
+      if (item && item.type === 'skill' && (item.system.aps || 0) > 0) {
+        const newValue = (item.system.aps || 0) - 1;
+        await item.update({ 'system.aps': newValue });
+        this.render(false);
+      }
     });
 
     html.on('click', '.item-roll', this._onRoll.bind(this));

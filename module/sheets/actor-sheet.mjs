@@ -481,39 +481,26 @@ export class MEGSActorSheet extends ActorSheet {
     });
 
     // Skill APs increment/decrement
-    html.on('click', '.skill-plus', async (ev) => {
+    html.on('click', '.ap-plus', async (ev) => {
       ev.preventDefault();
       const itemId = $(ev.currentTarget).data('itemId');
       const item = this.actor.items.get(itemId);
-      if (item && item.type === 'skill') {
+      if (item && (item.type === 'skill' || item.type === 'power')) {
         const newValue = (item.system.aps || 0) + 1;
         await item.update({ 'system.aps': newValue });
         this.render(false);
       }
     });
-    html.on('click', '.skill-minus', async (ev) => {
+    html.on('click', '.ap-minus', async (ev) => {
       ev.preventDefault();
       const itemId = $(ev.currentTarget).data('itemId');
       const item = this.actor.items.get(itemId);
-      if (item && item.type === 'skill' && (item.system.aps || 0) > 0) {
+      if (item && (item.type === 'skill' || item.type === 'power') && (item.system.aps || 0) > 0) {
         const newValue = (item.system.aps || 0) - 1;
         await item.update({ 'system.aps': newValue });
         this.render(false);
       }
     });
-
-    html.on('click', '.item-roll', this._onRoll.bind(this));
-
-      // Active Effect management
-    // TODO active effects
-    // html.on('click', '.effect-control', (ev) => {
-    //   const row = ev.currentTarget.closest('li');
-    //   const document =
-    //     row.dataset.parentId === this.actor.id
-    //       ? this.actor
-    //       : this.actor.items.get(row.dataset.parentId);
-    //   onManageActiveEffect(ev, document);
-    // });
 
     // Rollable attributes.
     html.on('click', '.rollable', this._onRoll.bind(this));

@@ -41,9 +41,9 @@
       <div class='item-aps'>
         {{#if ../flags.megs.edit-mode}}
           <div class="quantity skill-input">
-            <button class="skill-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+            <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
             <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-            <button class="skill-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+            <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
           </div>
         {{else}}
           {{item.system.aps}}

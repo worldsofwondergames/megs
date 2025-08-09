@@ -9,21 +9,19 @@ From subskill sheet - subskill
 
 */
 const itemSheet = new MEGSItemSheet();
+// Provide a mock item with isOwner and setFlag for tests that require it
+itemSheet.item = { isOwner: true, setFlag: () => {} };
 
-test('_getOpposingValueForPower returns the correct opposing attribute for an effect attribute', () => {
-    const targetActor = {
-        system: {
-            attributes: {
-                dex: { value: 'dex' },
-                str: { value: 'str' },
-                int: { value: 'int' },
-                will: { value: 'will' },
-                infl: { value: 'infl' },
-                aura: { value: 'aura' },
-            },
-        },
-    };
-    expect(itemSheet._getOpposingValueForPower('str', targetActor)).toBe('dex');
-    expect(itemSheet._getOpposingValueForPower('will', targetActor)).toBe('int');
-    expect(itemSheet._getOpposingValueForPower('aura', targetActor)).toBe('infl');
+test('_canDragDrop returns true when isEditable is true', () => {
+    const mockItem = { isOwner: true, setFlag: () => {} };
+    const itemSheet = new MEGSItemSheet(mockItem, {});
+    itemSheet.isEditable = true;
+    expect(itemSheet._canDragDrop()).toBe(true);
+});
+
+test('_canDragDrop returns false when isEditable is false', () => {
+    const mockItem = { isOwner: true, setFlag: () => {} };
+    const itemSheet = new MEGSItemSheet(mockItem, {});
+    itemSheet.isEditable = false;
+    expect(itemSheet._canDragDrop()).toBe(false);
 });

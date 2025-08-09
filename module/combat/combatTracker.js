@@ -1,3 +1,1 @@
-export default class MEGSCombatTracker extends CombatTracker {
-
-}
+export default class MEGSCombatTracker extends CombatTracker {}

@@ -1,129 +1,129 @@
 {
-    "Critical Blow": { 
+    "Critical Blow": {
         "ovShifts": -2,
         "rvShifts": -3
     },
-    "Devastating Attack": { 
+    "Devastating Attack": {
         "ovShifts": -4,
         "rvShifts": -6
     },
-    "Flailing Attack": { 
+    "Flailing Attack": {
         "ovShifts": 2,
         "rvShifts": 3
     },
-    "Grappling Attack": { 
+    "Grappling Attack": {
         "ovShifts": 0,
         "rvShifts": 0
     },
-    "Multi-Attack vs 2": { 
+    "Multi-Attack vs 2": {
         "ovShifts": -1,
         "rvShifts": 1
     },
-    "Multi-Attack vs 3-4": { 
+    "Multi-Attack vs 3-4": {
         "ovShifts": -2,
         "rvShifts": 2
     },
-    "Multi-Attack vs 5-8": { 
+    "Multi-Attack vs 5-8": {
         "ovShifts": -3,
         "rvShifts": 3
     },
-    "Multi-Attack vs 9-15": { 
+    "Multi-Attack vs 9-15": {
         "ovShifts": -4,
         "rvShifts": 4
     },
-    "Multi-Attack vs 16-30": { 
+    "Multi-Attack vs 16-30": {
         "ovShifts": -5,
         "rvShifts": 5
     },
-    "Multi-Attack vs 31-60": { 
+    "Multi-Attack vs 31-60": {
         "ovShifts": -6,
         "rvShifts": 6
     },
-    "Multi-Attack vs 61-125": { 
+    "Multi-Attack vs 61-125": {
         "ovShifts": -7,
         "rvShifts": 7
     },
-    "Sweep Attack": { 
+    "Sweep Attack": {
         "ovShifts": 1,
         "rvShifts": -1
     },
-    "Team Attack by 2": { 
+    "Team Attack by 2": {
         "ovShifts": 1,
         "rvShifts": 0
     },
-    "Team Attack by 3-4": { 
+    "Team Attack by 3-4": {
         "ovShifts": 2,
         "rvShifts": 0
     },
-    "Team Attack by 5-8": { 
+    "Team Attack by 5-8": {
         "ovShifts": 3,
         "rvShifts": 0
     },
-    "Team Attack by 9+": { 
+    "Team Attack by 9+": {
         "ovShifts": 4,
         "rvShifts": 0
     },
-    "Pulling a Punch": { 
+    "Pulling a Punch": {
         "ovShifts": 0,
         "rvShifts": 1
     },
-    "Planned Knockback": { 
+    "Planned Knockback": {
         "ovShifts": 0,
         "rvShifts": 0
     },
-    "Charging Attack": { 
+    "Charging Attack": {
         "ovShifts": 0,
         "rvShifts": 0
     },
-    "Take Away": { 
+    "Take Away": {
         "ovShifts": -2,
         "rvShifts": 1
     },
-    "Trick Shot": { 
+    "Trick Shot": {
         "ovShifts": -2,
         "rvShifts": 0
     },
-    "Block (Hand)": { 
+    "Block (Hand)": {
         "ovShifts": -1,
         "rvShifts": 1
     },
-    "Block (Small Shield)": { 
+    "Block (Small Shield)": {
         "ovShifts": 0,
         "rvShifts": 0
     },
-    "Block (Garbage Can Lid)": { 
+    "Block (Garbage Can Lid)": {
         "ovShifts": 1,
         "rvShifts": -1
     },
-    "Block (Desk or Small Table)": { 
+    "Block (Desk or Small Table)": {
         "ovShifts": 2,
         "rvShifts": -2
     },
-    "Block (Door)": { 
+    "Block (Door)": {
         "ovShifts": 3,
         "rvShifts": -3
     },
-    "Block (Automobile)": { 
+    "Block (Automobile)": {
         "ovShifts": 4,
         "rvShifts": -4
     },
-    "Block (Semi Truck)": { 
+    "Block (Semi Truck)": {
         "ovShifts": 5,
         "rvShifts": -5
     },
-    "Block (House)": { 
+    "Block (House)": {
         "ovShifts": 6,
         "rvShifts": -6
     },
-    "Dodge": { 
+    "Dodge": {
         "ovShifts": -1,
         "rvShifts": 0
     },
-    "Pressing the Attack": { 
+    "Pressing the Attack": {
         "ovShifts": -1,
         "rvShifts": 0
     },
-    "Laying Back": { 
+    "Laying Back": {
         "ovShifts": -1,
         "rvShifts": 0
     }

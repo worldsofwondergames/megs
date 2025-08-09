@@ -495,6 +495,21 @@
     border: 0;
 }
 
+.megs .quantity.attribute-input input[type="number"].input-label {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 30px;
+}
+
+.megs .quantity.attribute-input button.attributeControl {
+    border-radius: 50%;
+    background-color: #1f5079;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+}
+
 /*------------------------------------------------------------------------*/
 /* Items, gadgets, etc.
 /*------------------------------------------------------------------------*/

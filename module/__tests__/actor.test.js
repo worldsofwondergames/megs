@@ -1,3 +1,5 @@
+import '../__mocks__/foundry.mjs';
+import '../__mocks__/item.mjs';
 /* global CONFIG, MEGSItem, actorUpdateMock, rollToMessageMock, collectionFindMock, dccRollCreateRollMock, dccItemRollSpellCheckMock, uiNotificationsWarnMock, itemTypesMock, game, test, expect */
 /**
  * Tests for Actor.mjs using Foundry Mocks.

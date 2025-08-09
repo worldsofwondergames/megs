@@ -7,11 +7,29 @@
     <div class="grid grid-2col megs-chat">
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.ActionValue'}}</label>
-            <div>{{actionValue}}</div>        
+            {{#if actionValueInfo}}
+            <div class="tooltip">
+                {{actionValue}}
+                <span class="tooltiptext narrow">
+                    {{{actionValueInfo}}}
+                </span>
+            </div>
+            {{else}}
+            <div>{{actionValue}}</div>
+            {{/if}}
         </div>
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.OpposingValue'}}</label>
-            <div>{{opposingValue}}</div>        
+            {{#if opposingValueInfo}}
+            <div class="tooltip">
+                {{opposingValue}}
+                <span class="tooltiptext narrow">
+                    {{{opposingValueInfo}}}
+                </span>
+            </div>
+            {{else}}
+            <div>{{opposingValue}}</div>
+            {{/if}}
         </div>
         <div class="flex-group-center grid-span-2 chat-result">
             {{localize 'MEGS.Difficulty'}}: {{difficulty}}
@@ -20,16 +38,30 @@
             {{#each dice}}
                 <div class="d10">{{this}}</div>
             {{/each}}
+            = {{rollTotal}}
         </div>
         {{#if avRollSuccess}}
         <div class="flex-group-center grid-span-2 chat-result">
-            {{columnShifts}} 
-            {{#if isOneColumnShift}}
-            {{localize 'MEGS.ColumnShift'}}
+            {{#if columnShiftText}}
+            <div class="tooltip">
+                {{columnShifts}}
+                {{#if isOneColumnShift}}
+                {{localize 'MEGS.ColumnShift'}}
+                {{else}}
+                {{localize 'MEGS.ColumnShifts'}}
+                {{/if}}
+                <span class="tooltiptext narrow">
+                    {{{columnShiftText}}}
+                </span>
+            </div>
+            {{else}}
+                {{columnShifts}} 
+                {{#if (compare columnShifts '===' 1)}}
+                {{localize 'MEGS.ColumnShift'}}
+                {{else}}
+                {{localize 'MEGS.ColumnShifts'}}
+                {{/if}}
             {{/if}}
-            {{#unless isOneColumnShift}}
-            {{localize 'MEGS.ColumnShifts'}}
-            {{/unless}}
         </div>
         <div class="flex-group-center chat-value">
             <label class="flexlarge align-left">{{localize 'MEGS.EffectValue'}}</label>
@@ -50,10 +82,9 @@
             {{#if success}}
                 {{#if (compare evResult '===' 'N')}}
                 failure
-                {{/if}}
-                {{#unless (compare evResult '===' 'N')}}
+                {{else}}
                 success
-                {{/unless}}
+                {{/if}}
             {{/if}} 
             {{#unless success}}failure{{/unless}}">
                 {{result}}

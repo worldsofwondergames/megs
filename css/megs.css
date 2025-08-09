@@ -13,6 +13,13 @@
     text-transform: uppercase;
 }
 
+/* variables */
+:root {
+  --darkblue: #1f5079;
+  --white: #ffffff;
+  --red: #d63a28;
+}
+
 /*------------------------------------------------------------------------*/
 /* 
 /*------------------------------------------------------------------------*/
@@ -24,7 +31,7 @@
 }
 
 .megs .window-header {
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     font-size: 20px;
 }
 
@@ -35,22 +42,22 @@
 
 .megs input[type="text"] {
     background-color: #ddebf6;
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
 }
 
 .megs label {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs select {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .message-panel {
     font-family: "Helvetica", "Arial", sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
@@ -61,7 +68,7 @@
 .megs .editor-content {
     font-family: "Helvetica", "Arial", sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
@@ -75,19 +82,19 @@
 }
 
 .megs div.biography div.editor-content {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
     background-color: #ddebf6;
 }
 
 .megs .description-text {
     font-family: "Helvetica", "Arial", sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
 .megs .tabs .item {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .tabs .item.active {
@@ -96,9 +103,9 @@
 
 .rollable:hover,
 .rollable:focus {
-    color: #1f5079;
+    color: var(--darkblue);
     cursor: pointer;
-    text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+    text-shadow: 0 0 3px var(--red), 0 0 5px var(--red), 0 0 7px var(--red);
 }
 
 .grid,
@@ -305,7 +312,7 @@
 }
 
 .megs .item-form {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 .megs .sheet-header {
     flex: 0 auto;
@@ -316,10 +323,12 @@
     justify-content: flex-start;
     margin-bottom: 10px;
 }
-.megs .sheet-header .profile-img {
+.megs .sheet-header .profile-img,
+.megs .sheet-header .profile-img-no-click {
     flex: 0 0 120px;
     height: 120px;
     margin-right: 10px;
+    background-color: var(--white);
 }
 .megs .sheet-header .profile-img:hover {
     opacity: 0.5;
@@ -335,7 +344,7 @@
     border-bottom: 0;
 }
 .megs .sheet-header h1.charname.isLocked {
-    background-color: #1f5079;
+    background-color: var(--darkblue);
 }
 .megs .sheet-header h1.charname.isUnlocked {
     background-color: #fff;
@@ -369,7 +378,7 @@
 .megs header.sheet-header .attribute-container {
     display: inline-block;
     width: calc(100% - 40px);
-    padding-right: 5px;
+    padding-right: 0;
     padding-left: 5px;
 }
 .megs header.sheet-header button.reset {
@@ -380,7 +389,7 @@
     cursor: pointer;
     background-image: url(/systems/megs/assets/images/icons/reset.png);
     background-size: 30px auto;
-    background-color: #ffffff;
+    background-color: var(--white);
 }
 
 .megs .sheet-header .header-fields select {
@@ -392,10 +401,10 @@
 }
 .megs .sheet-tabs a.item {
     font-size: 24px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 .megs .sheet-tabs a.item:hover:not(.active) {
-    text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+    text-shadow: 0 0 3px var(--red), 0 0 5px var(--red), 0 0 7px var(--red);
 }
 .megs .sheet-body,
 .megs .sheet-body .tab,
@@ -403,7 +412,7 @@
     height: 100%;
 }
 .megs .tox .tox-editor-container {
-    background: #fff;
+    background: var(--white);
 }
 .megs .tox .tox-edit-area {
     padding: 0 8px;
@@ -429,7 +438,7 @@
 
 .megs .resource-content span {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .sheet-header .attribute,
@@ -437,7 +446,7 @@
 .megs .sheet-body .initiative-and-hp .hero-points,
 .megs .gadget-properties .gadget-property,
 .megs .attributes .attribute {
-    border: 2px solid #1f5079;
+    border: 2px solid var(--darkblue);
     font-size: 22px;
 }
 
@@ -451,7 +460,7 @@
 .megs .attributes .attribute label {
     font-size: 24px;
     display: block;
-    background: #1f5079;
+    background: var(--darkblue);
     text-align: center;
     color: #fff;
     padding-bottom: 2px;
@@ -477,7 +486,7 @@
 }
 
 .megs .sheet-body .attributeRow:hover {
-    box-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+    box-shadow: 0 0 3px var(--red), 0 0 5px var(--red), 0 0 7px var(--red);
 }
 
 .megs .attributes .attribute select {
@@ -534,7 +543,7 @@
 }
 .megs .items-list .item-row {
     font-family: "Helvetica", "Arial", sans-serif;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 .megs .items-list > li.item-row:nth-of-type(odd) {
     background: #ddebf6;
@@ -602,7 +611,7 @@
     margin: 2px 0;
     padding: 0;
     align-items: center;
-    background: #1f5079;
+    background: var(--darkblue);
     border: 2px groove #eeede0;
     color: #fff;
 }
@@ -635,7 +644,7 @@
 
 .megs .sheet-body .grid-2col-header {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .sheet-body div.biography section.description-item {
@@ -666,7 +675,7 @@
     input[type="range"] + .range-value {
         flex: 0 1 48px;
         text-align: center;
-        border: 1px solid #1f5079;
+        border: 1px solid var(--darkblue);
         padding: 2px;
         margin-left: 10px;
     }
@@ -681,25 +690,25 @@ li.chat-message .message-content {
 }
 
 li.chat-message .chat-value {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
 }
 
 li.chat-message .chat-value label {
     width: 100%;
     color: #fff;
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     display: block;
     text-align: center;
     padding: 3px;
 }
 
 li.chat-message .chat-value div {
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 3px;
 }
 
 li.chat-message .chat-result {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
     padding: 3px;
 }
 
@@ -718,7 +727,7 @@ li.chat-message .chat-result.success:hover {
 }
 
 li.chat-message .chat-result.failure {
-    background-color: #d63a28;
+    background-color: var(--red);
     color: #fff;
     transition: 0.2s background linear;
 }
@@ -741,7 +750,7 @@ li.chat-message .chat-result .d10 {
 
 li.chat-message .megs-chat-title {
     padding: 5px 0 2px 2px;
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     color: #fff;
     text-align: center;
 }
@@ -798,7 +807,7 @@ details summary.no-arrow {
 
 .sheet-header .header-fields .grid .d10:hover {
     background-image: url(/systems/megs/assets/images/icons/2d10-white.png);
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     background-size: 50px 50px;
     transition: 0.2s background linear;
 }
@@ -843,7 +852,7 @@ details summary.no-arrow {
     text-align: center;
     border: none;
     padding: 8px 10px;
-    font-size: 16px;
+    font-size: 22px;
     outline: none;
 }
 
@@ -860,8 +869,8 @@ details summary.no-arrow {
 }
 
 .quantity.attribute-input button {
-    background-color: #ffffff;
-    color: #1f5079;
+    background-color: var(--white);
+    color: var(--darkblue);
 }
 
 .quantity.attribute-input input[type="number"],
@@ -870,9 +879,9 @@ details summary.no-arrow {
 }
 
 .quantity.current-input button {
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     color: #fff;
-    border-color: #1f5079;
+    border-color: var(--darkblue);
 }
 
 .attribute-container {
@@ -887,7 +896,7 @@ details summary.no-arrow {
     color: #fff;
     margin: 9px 0 3px 0;
     padding: 3px 0 3px 5px;
-    background-color: #1f5079;
+    background-color: var(--darkblue);
 }
 
 .megs details[open] summary.item-summary {
@@ -904,7 +913,7 @@ details summary.no-arrow {
     float: left;
     font-size: 22px;
     text-align: center;
-    color: #1f5079;
+    color: var(--darkblue);
     background-color: #ddebf6;
     border: 2px solid #a9a7a7;
 }
@@ -930,21 +939,30 @@ details summary.no-arrow {
 /* Tooltip text */
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
+    color: black;
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    border-radius: 12px;
+    border: 3px solid green;
 
-    /* Position the tooltip text - see examples below! */
+    background-color: var(--white);
+
     position: absolute;
     z-index: 1;
 
-    bottom: 100%;
+    bottom: calc(100% + 6px);
     left: 50%;
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-  
+}
+
+.tooltip .tooltiptext.wide {
+    width: 200px;
+
+    margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
+}
+
+.tooltip .tooltiptext.narrow {
+    width: 130px;
+
+    margin-left: -65px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -958,8 +976,59 @@ details summary.no-arrow {
     position: absolute;
     top: 100%; /* At the bottom of the tooltip */
     left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
+    margin-left: -15px;
+    border-width: 15px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
-  }
+    border-color: green transparent transparent transparent;
+}
+
+/*------------------------------------------------------------------------*/
+/*
+/*------------------------------------------------------------------------*/
+
+.init-table-header {
+    width: 100%;
+    background-color: green;
+    color: var(--white);
+    text-align: center;
+}
+
+.init-table {
+    display: table;
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    background-color: white;
+    border: none;
+    width: 93%;
+    margin: 8px;
+
+    .label {
+        text-align: left;
+    }
+
+    .value {
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .total {
+        border-top: 1px black solid;
+        font-weight: bold;
+    }
+}
+
+.tooltip .tooltiptext.wide .init-table .label {
+    width: 80%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .label {
+    width: 75%;        
+}
+
+.tooltip .tooltiptext.wide .init-table .value {
+    width: 20%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .value {
+    width: 25%;        
+}

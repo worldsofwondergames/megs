@@ -1,143 +1,139 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
-  {{!-- Sheet Header --}}
-   <header class="sheet-header">
-    {{#if flags.megs.edit-mode}}
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
-    {{else}}
-    <img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" height="120" width="120"/>
-    {{/if}}
-    <div class="header-fields">
-      <h1 class="charname
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        {{#if flags.megs.edit-mode}}
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120" />
+        {{else}}
+            <img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" height="120" width="120" />
+        {{/if}}
+        <div class="header-fields">
+            <h1 class="charname
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
       ">
-        {{#if flags.megs.edit-mode}}
-          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
-        {{else}}
-          <div name="name">{{actor.name}}</div>
-        {{/if}}
-      </h1>
+                {{#if flags.megs.edit-mode}}
+                    <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}" />
+                {{else}}
+                    <div name="name">{{actor.name}}</div>
+                {{/if}}
+            </h1>
 
-      <div class="resources grid grid-3col">
+            <div class="resources grid grid-3col">
 
-        <div class="resource flex-group-center">
-          <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
-          <div>
-            {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.ownerId" data-type="String">
-              {{selectOptions characters selected=system.ownerId localize=true}}
-            </select>
-            {{else}}
-              {{getVehicleOwnerName system.ownerId characters}}
-            {{/if}}
-          </div>
+                <div class="resource flex-group-center">
+                    <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <select class="resource-select" name="system.ownerId" data-type="String">
+                                {{selectOptions characters selected=system.ownerId localize=true}}
+                            </select>
+                        {{else}}
+                            {{getVehicleOwnerName system.ownerId characters}}
+                        {{/if}}
+                    </div>
+                </div>
+
+                {{#if system.ownerId}}
+                    <div class="resource flex-group-center">
+                        <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
+                        <div>
+                            {{#if vehicles}}
+                                {{#if flags.megs.edit-mode}}
+                                    <select class="resource-select" name="system.linkedItemId" data-type="String">
+                                        <option value="">{{localize 'MEGS.None'}}</option>
+                                        {{selectOptions vehicles selected=system.linkedItemId localize=true inverted=true}}
+                                    </select>
+                                {{else}}
+                                    {{getLinkedVehicleItemName system.linkedItemId vehicles}}
+                                {{/if}}
+                            {{else}}
+                                &mdash;
+                            {{/if}}
+                        </div>
+                    </div>
+                {{/if}}
+                <div class="resource flex-group-center">
+                    <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
+                    <div>
+                        {{#if system.linkedItem.system.currentBody.value}}
+                            {{system.linkedItem.system.currentBody.value}}
+                        {{else}}
+                            &mdash;
+                        {{/if}}
+                    </div>
+                </div>
+
+            </div>
         </div>
+    </header>
 
-      {{#if system.ownerId}}
-        <div class="resource flex-group-center">
-          <label for="system.linkedItemId" class="resource-label">{{localize 'MEGS.LinkedItem'}}</label>
-          <div>
-        {{#if vehicles}}
-            {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.linkedItemId" data-type="String">
-                <option value="">{{localize 'MEGS.None'}}</option>
-                {{selectOptions vehicles selected=system.linkedItemId localize=true inverted=true}}
-            </select>
-            {{else}}
-                {{getLinkedVehicleItemName system.linkedItemId vehicles}}
-            {{/if}}
-        {{else}}
-          &mdash;
-        {{/if}}
-          </div>
-        </div>
-      {{/if}}
-        <div class="resource flex-group-center">
-          <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
-          <div>
-            {{#if system.linkedItem.system.currentBody.value}}
-              {{system.linkedItem.system.currentBody.value}}
-            {{else}}
-              &mdash;
-            {{/if}}
-          </div>
-        </div>
+    {{#if system.linkedItemId}}
+        <nav class="sheet-tabs tabs" data-group="primary">
+            <a class="item" data-tab="abilities">{{localize 'MEGS.Abilities'}}</a>
+            <a class="item" data-tab="powers">{{localize 'MEGS.Powers'}}</a>
+            <a class="item" data-tab="skills">{{localize 'MEGS.Skills'}}</a>
+            <a class="item" data-tab="traits">{{localize 'MEGS.Traits'}}</a>
+            <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
+            <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
+        </nav>
 
-      </div>
-    </div>
-  </header>
+        {{!-- Sheet Body --}}
+        <section class="sheet-body">
 
-{{#if system.linkedItemId}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="abilities">{{localize 'MEGS.Abilities'}}</a>
-    <a class="item" data-tab="powers">{{localize 'MEGS.Powers'}}</a>
-    <a class="item" data-tab="skills">{{localize 'MEGS.Skills'}}</a>
-    <a class="item" data-tab="traits">{{localize 'MEGS.Traits'}}</a>
-    <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
-    <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
-  </nav>
+            {{!-- Abilities Tab --}}
+            <div class="tab abilities" data-group="primary" data-tab="abilities">
 
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
-
-    {{!-- Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
-
-    {{#each system.linkedItem.system.attributes as |attribute key|}}
-      {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
-      {{/if}}
-          <div class="attribute flex-group-center">
-            <label for="system.linkedItem.system.attributes.{{key}}.value" 
-                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
-                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
-                data-value="{{attribute.value}}" data-key="{{key}}">
-              {{attribute.label}}
-            </label>
-            <div class="quantity attribute-input align-center">
-              {{attribute.value}}
-             </div>
-          </div>
-      {{#if (isDivisor 3 (sum @index 1))}}
+                {{#each system.linkedItem.system.attributes as |attribute key|}}
+                    {{#if (isDivisor 3 @index)}}
+                        <section class="attributes grid grid-3col attributeRow">
+                    {{/if}}
+                    <div class="attribute flex-group-center">
+                        <label for="system.linkedItem.system.attributes.{{key}}.value" class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute" data-value="{{attribute.value}}" data-key="{{key}}">
+                            {{attribute.label}}
+                        </label>
+                        <div class="quantity attribute-input align-center">
+                            {{attribute.value}}
+                        </div>
+                    </div>
+                    {{#if (isDivisor 3 (sum @index 1))}}
         </section>
-     {{/if}}
-   {{/each}}
+    {{/if}}
+    {{/each}}
     </div>
 
     {{!-- Owned Powers Tab --}}
     <div class="tab powers" data-group="primary" data-tab="powers">
-       {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+        {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
     </div>
 
     {{!-- Owned Skills Tab --}}
     <div class="tab skills" data-group="primary" data-tab="skills">
-      {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
+        {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
     </div>
 
     {{!-- Traits Tab --}}
-     <div class="tab traits" data-group="primary" data-tab="traits">
-       {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+    <div class="tab traits" data-group="primary" data-tab="traits">
+        {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
     </div>
 
     {{!-- Owned gadgets Tab --}}
     <div class="tab gadgets" data-group="primary" data-tab="gadgets">
-       {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
+        {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
     </div>
 
     {{!-- Description Tab --}}
     <section class="grid-1col description-item">
-      <div class="flex-group-left">
-        <div class="indentLeft">
-        {{#if system.linkedItem.system.description}}
-          {{{system.linkedItem.system.description}}}
-        {{else}}
-          ({{localize 'MEGS.None'}})
-        {{/if}}
+        <div class="flex-group-left">
+            <div class="indentLeft">
+                {{#if system.linkedItem.system.description}}
+                    {{{system.linkedItem.system.description}}}
+                {{else}}
+                    ({{localize 'MEGS.None'}})
+                {{/if}}
+            </div>
         </div>
-      </div>
     </section>
- 
-  </section>
-{{/if}}
-</form>
 
+    </section>
+    {{/if}}
+</form>

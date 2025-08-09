@@ -1,51 +1,50 @@
-
-  {{!-- Sheet Header --}}
-  <header class="sheet-header">
+{{!-- Sheet Header --}}
+<header class="sheet-header">
     {{#if flags.megs.edit-mode}}
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120"/>
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120" />
     {{else}}
-    <img class="profile-img" src="{{item.img}}" title="{{item.name}}" height="120" width="120"/>
+        <img class="profile-img" src="{{item.img}}" title="{{item.name}}" height="120" width="120" />
     {{/if}}
     <div class="header-fields">
-      {{!-- Item name --}}
-      {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+        {{!-- Item name --}}
+        {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
 
-      <div class="resources grid grid-3col">
+        <div class="resources grid grid-3col">
 
-        <div class="resource flex-group-center">
-          <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
-          <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+            <div class="resource flex-group-center">
+                <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
+                <div>
+                    <div class="resource-content flexrow flex-center flex-between attribute-container">
+                        {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value min=0 max=system.attributes.body.value hasValue=true}}
+                    </div>
+                    <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
+                </div>
             </div>
-            <button class="reset" onClick="currentBodyInput.value = parseInt(bodyInput.value)" />
-          </div>
-        </div>
 
-      {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
-        <div class="resource flex-group-center">
-          <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}</label>
-          <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=0 max=system.attributes.mind.value hasValue=true}}
-            </div>
-            <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
-          </div>
-        </div>
-      {{/if}}
+            {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
+                <div class="resource flex-group-center">
+                    <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}</label>
+                    <div>
+                        <div class="resource-content flexrow flex-center flex-between attribute-container">
+                            {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value min=0 max=system.attributes.mind.value hasValue=true}}
+                        </div>
+                        <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
+                    </div>
+                </div>
+            {{/if}}
 
-      {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
-        <div class="resource flex-group-center">
-          <label for="system.currentSpirit.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Spirit"}}</label>
-          <div>
-           <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}
-            </div>
-            <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
-          </div>
-        </div>
-      {{/if}}
+            {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
+                <div class="resource flex-group-center">
+                    <label for="system.currentSpirit.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Spirit"}}</label>
+                    <div>
+                        <div class="resource-content flexrow flex-center flex-between attribute-container">
+                            {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value min=0 max=system.attributes.spirit.value hasValue=true}}
+                        </div>
+                        <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
+                    </div>
+                </div>
+            {{/if}}
 
-      </div>
+        </div>
     </div>
-  </header>
+</header>

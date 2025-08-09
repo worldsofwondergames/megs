@@ -1,23 +1,6 @@
 <!-- TODO not being used -->
 <div class='quantity {{classes}}'>
-    <button
-        class='minus'
-        aria-label='Decrease'
-        onClick='if (parseInt({{id}}Input.value) > 0)  {{id}}Input.value = parseInt({{id}}Input.value) - 1'
-    >&minus;</button>
-    <input
-        id='{{id}}Input'
-        name='system.{{id}}'
-        type='number'
-        class='input-box'
-        value='{{value}}'
-        min='{{min}}'
-        max='{{max}}'
-        data-dtype='Number'
-    />
-    <button
-        class='plus'
-        aria-label='Increase'
-        onClick='{{id}}Input.value = parseInt({{id}}Input.value)+ 1 '
-    >&plus;</button>
+    <button class='minus' aria-label='Decrease' onClick='if (parseInt({{id}}Input.value) > 0)  {{id}}Input.value = parseInt({{id}}Input.value) - 1'>&minus;</button>
+    <input id='{{id}}Input' name='system.{{id}}' type='number' class='input-box' value='{{value}}' min='{{min}}' max='{{max}}' data-dtype='Number' />
+    <button class='plus' aria-label='Increase' onClick='{{id}}Input.value = parseInt({{id}}Input.value)+ 1 '>&plus;</button>
 </div>

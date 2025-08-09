@@ -2,7 +2,6 @@
 
 ![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
 
-
 ![Mutiversal Exponential Gaming System](https://github.com/worldsofwondergames/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
 
 ## What is the Multiversal Exponential Gaming System system for Foundry Virtual Tabletop?
@@ -18,6 +17,7 @@ It's also a work in progress. I basically tackled it on a whim to teach myself t
 ### Are there any changes to this ruleset unique to MEGS for Foundry?
 
 There are a few because of technical and/or design constraints of the platform:
+
 - Advantages and Drawbacks are grouped as "Traits" for ease of reference.
 - Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
 - Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
@@ -31,16 +31,17 @@ Do I ever! MEGS for Foundry is currently sitting at **version 0.6.0**.
 
 Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Aworldsofwondergames%2F4).
 
-**YouTube demo videos**  are planned by the middle of May 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
+**YouTube demo videos** are planned by the middle of May 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 
 Then... **version 1.0.0**, by October 1, 2025. Incorporating any feedback I've gotten and:
+
 - Adding character builder/creator view for characters
 - Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
 Why October 1? Because October 1s when Cryptozoic is supposed to fulfill the DC Heroes reprint Kickstarter. I anticipate a definite uptick in interest around that time.
 
-And then after the rush, I rest for a very, very long time. 
+And then after the rush, I rest for a very, very long time.
 
 At least until...
 

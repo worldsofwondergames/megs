@@ -1,7 +1,6 @@
 {
-    "cSpell.words": [
-        "Decotura",
-        "Português",
-        "subskills"
-    ]
+    "cSpell.words": ["Decotura", "Português", "subskills"],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false
 }

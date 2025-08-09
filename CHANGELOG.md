@@ -39,3 +39,9 @@
 - Fixed reliability display value on gadgets
 - Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis
+
+## 0.7.0 (May 30, 2025)
+- Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
+- Changed usage of deprecated Foundry constants and functions
+- Minor styling changes
+- Localized still more hard-coded English strings

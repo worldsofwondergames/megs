@@ -12,17 +12,16 @@ import { MEGSActor } from '../documents/actor.mjs';
 const actor = new MEGSActor();
 
 test('prepareData sets ability modifiers', () => {
-  expect(actor.name).toBe('Anonymous Hero')
+    expect(actor.name).toBe('Anonymous Hero');
 
-  const attributes = actor.system.attributes
-  expect(attributes.dex.value).toEqual(9)
-  expect(attributes.str.value).toEqual(5)
-  expect(attributes.body.value).toEqual(6)
-  expect(attributes.int.value).toEqual(12)
-  expect(attributes.will.value).toEqual(12)
-  expect(attributes.mind.value).toEqual(10)
-  expect(attributes.infl.value).toEqual(10)
-  expect(attributes.aura.value).toEqual(8)
-  expect(attributes.spirit.value).toEqual(10)
-})
-
+    const attributes = actor.system.attributes;
+    expect(attributes.dex.value).toEqual(9);
+    expect(attributes.str.value).toEqual(5);
+    expect(attributes.body.value).toEqual(6);
+    expect(attributes.int.value).toEqual(12);
+    expect(attributes.will.value).toEqual(12);
+    expect(attributes.mind.value).toEqual(10);
+    expect(attributes.infl.value).toEqual(10);
+    expect(attributes.aura.value).toEqual(8);
+    expect(attributes.spirit.value).toEqual(10);
+});

@@ -1,118 +1,114 @@
 <form class="{{cssClass}}" autocomplete="off">
-  <header class="sheet-header">
-    {{#if flags.megs.edit-mode}}
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-    {{else}}
-    <img class="profile-img" src="{{item.img}}" title="{{item.name}}"/>
-    {{/if}}
-    <div class="header-fields">
-      <div class="resources grid grid-4col">
-      {{#if isRollable}}
-        <div class="grid-span-3">
-      {{else}}
-        <div class="grid-span-4">
-      {{/if}}
-          <h1 class="charname">
+    <header class="sheet-header">
         {{#if flags.megs.edit-mode}}
-            <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.Name'}}"/>
+            <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
         {{else}}
-          {{item.name}}
+            <img class="profile-img" src="{{item.img}}" title="{{item.name}}" />
         {{/if}}
-          </h1>
-        </div>
-      {{#if isRollable}}
-        <div class="d10 grid-span-1 rollable
+        <div class="header-fields">
+            <div class="resources grid grid-4col">
+                {{#if isRollable}}
+                    <div class="grid-span-3">
+                {{else}}
+                    <div class="grid-span-4">
+                {{/if}}
+                <h1 class="charname">
+                    {{#if flags.megs.edit-mode}}
+                        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.Name'}}" />
+                    {{else}}
+                        {{item.name}}
+                    {{/if}}
+                </h1>
+            </div>
+            {{#if isRollable}}
+                <div class="d10 grid-span-1 rollable
           {{#if isUnskilled}}unskilled{{/if}}
-              " data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}"
-          {{#unless isUnskilled}}
-              data-unskilled="true"
-          {{/unless}}
-        >
-          &nbsp;
-        </div>
-      {{/if}}
-      </div>
-
-      {{#unless skillHasRanks}}
-        {{> "systems/megs/templates/item/parts/item-skill-calculator-header.hbs"}}
-      {{/unless}}
-
-    </div>
-  </header>
-
-  {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="characteristics">{{localize 'MEGS.Characteristics'}}</a>
-    <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
-  </nav>
-
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
-
-    <div class="tab" data-group="primary" data-tab="characteristics">
-
-      <section class="attributes grid grid-3col">
-
-       <div class="attribute flex-group-center">
-          <label for="system.linkedSkill" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedSkill'}}">
-            {{localize 'MEGS.LinkedSkill'}}
-          </label>
-          <div>
-          {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.linkedSkill" data-type="String">
-              {{selectOptions allSkills selected=system.linkedSkill localize=true}}
-            </select>
-          {{else}}
-            {{system.linkedSkill}}
-          {{/if}}
-          </div>
-       </div>
-
-       <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.link}}">{{localize 'MEGS.LinkedAttribute'}}</label>
-          <div>
-              {{getSelectedSkillLink system.linkedSkill}}
-          </div>
+              " data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}" {{#unless isUnskilled}} data-unskilled="true" {{/unless}}>
+                    &nbsp;
+                </div>
+            {{/if}}
         </div>
 
-       <div class="attribute flex-group-center">
-          <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
-          <div>
-              {{getSelectedSkillRange system.linkedSkill}}
-          </div>
+        {{#unless skillHasRanks}}
+            {{> "systems/megs/templates/item/parts/item-skill-calculator-header.hbs"}}
+        {{/unless}}
+
+        </div>
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="characteristics">{{localize 'MEGS.Characteristics'}}</a>
+        <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        <div class="tab" data-group="primary" data-tab="characteristics">
+
+            <section class="attributes grid grid-3col">
+
+                <div class="attribute flex-group-center">
+                    <label for="system.linkedSkill" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.LinkedSkill'}}">
+                        {{localize 'MEGS.LinkedSkill'}}
+                    </label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <select class="resource-select" name="system.linkedSkill" data-type="String">
+                                {{selectOptions allSkills selected=system.linkedSkill localize=true}}
+                            </select>
+                        {{else}}
+                            {{system.linkedSkill}}
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.link}}">{{localize 'MEGS.LinkedAttribute'}}</label>
+                    <div>
+                        {{getSelectedSkillLink system.linkedSkill}}
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.range" class="resource-label flexlarge align-left" data-label="{{system.range}}">{{localize 'MEGS.Range'}}</label>
+                    <div>
+                        {{getSelectedSkillRange system.linkedSkill}}
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
+                    <div>
+                        {{getSelectedSkillType system.linkedSkill}}
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.UseUnskilled'}}">{{localize 'MEGS.UseUnskilled'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <select class="resource-select" name="system.useUnskilled" data-type="String">
+                                {{selectOptions system.yesNoOptions selected=system.useUnskilled localize=true}}
+                            </select>
+                        {{else}}
+                            {{trueFalseToYesNo system.useUnskilled}}
+                        {{/if}}
+                    </div>
+                </div>
+
+            </section>
+
         </div>
 
-        <div class="attribute flex-group-center">
-          <label for="system.type" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Type'}}">{{localize 'MEGS.Type'}}</label>
-           <div>
-              {{getSelectedSkillType system.linkedSkill}}
-          </div>
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="description">
+            {{#if flags.megs.edit-mode}}
+                {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+            {{else}}
+                <div class="description-text">{{{system.description}}}</div>
+            {{/if}}
         </div>
-
-        <div class="attribute flex-group-center">
-          <label for="system.useUnskilled" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.UseUnskilled'}}">{{localize 'MEGS.UseUnskilled'}}</label>
-          <div>
-        {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.useUnskilled" data-type="String">
-              {{selectOptions system.yesNoOptions selected=system.useUnskilled localize=true}}
-            </select>
-        {{else}}
-            {{trueFalseToYesNo system.useUnskilled}}
-        {{/if}}
-          </div>
-        </div>
-
-      </section>
-
-    </div>
-
-    {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-        {{#if flags.megs.edit-mode}}
-          {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-        {{else}}
-          <div class="description-text">{{{system.description}}}</div>
-        {{/if}}
-    </div>
-  </section>
+    </section>
 </form>

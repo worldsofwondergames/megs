@@ -7,19 +7,6 @@ import { MEGSActorSheet } from '../sheets/actor-sheet.mjs';
 const actor = { isOwner: true, _stats: { compendiumSource: false }, setFlag: () => {} };
 const actorSheet = new MEGSActorSheet(actor);
 
-test('getData()', () => {
-    // TODO
-});
-
-test('_prepareCharacterData', () => {
-    const actorSheet = new MEGSActorSheet();
-    // TODO
-});
-
-test('_calculateInitiativeBonus', () => {
-    // TODO
-});
-
 test('_hasAbility', () => {
     const powers = [
         { name: 'Superspeed' },
@@ -42,4 +29,21 @@ test('_getAbilityAPs', () => {
     expect(actorSheet._getAbilityAPs(powers, 'A third power')).toStrictEqual(0);
     expect(actorSheet._getAbilityAPs(powers, 'A fourth power')).toStrictEqual(0);
     expect(actorSheet._getAbilityAPs(powers, 'Superspeed')).toStrictEqual(10);
+});
+
+test('_hasAbility returns true if power is present', () => {
+    const powers = [{ name: 'Superspeed' }, { name: 'Flight' }];
+    expect(actorSheet._hasAbility(powers, 'Superspeed')).toBe(true);
+    expect(actorSheet._hasAbility(powers, 'Flight')).toBe(true);
+    expect(actorSheet._hasAbility(powers, 'Invisibility')).toBe(false);
+});
+
+test('_getAbilityAPs returns correct APs for power', () => {
+    const powers = [
+        { name: 'Superspeed', system: { aps: 7 } },
+        { name: 'Flight', system: { aps: 3 } },
+    ];
+    expect(actorSheet._getAbilityAPs(powers, 'Superspeed')).toBe(7);
+    expect(actorSheet._getAbilityAPs(powers, 'Flight')).toBe(3);
+    expect(actorSheet._getAbilityAPs(powers, 'Invisibility')).toBe(0);
 });

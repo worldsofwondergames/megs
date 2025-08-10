@@ -27,3 +27,40 @@ test('prepareData sets ability modifiers', () => {
     expect(attributes.aura.value).toEqual(8);
     expect(attributes.spirit.value).toEqual(10);
 });
+
+test('_hasAbility returns true if ability is present', () => {
+    const actor = new MEGSActor();
+    const abilities = [{ name: 'Superspeed' }, { name: 'Martial Artist' }];
+    expect(actor._hasAbility(abilities, 'Superspeed')).toBe(true);
+    expect(actor._hasAbility(abilities, 'Martial Artist')).toBe(true);
+    expect(actor._hasAbility(abilities, 'Not Present')).toBe(false);
+});
+
+test('_getAbilityAPs returns correct APs for ability', () => {
+    const actor = new MEGSActor();
+    const abilities = [
+        { name: 'Superspeed', system: { aps: 5 } },
+        { name: 'Martial Artist', system: { aps: 2 } },
+    ];
+    expect(actor._getAbilityAPs(abilities, 'Superspeed')).toBe(5);
+    expect(actor._getAbilityAPs(abilities, 'Martial Artist')).toBe(2);
+    expect(actor._getAbilityAPs(abilities, 'Not Present')).toBe(0);
+});
+
+test('_calculateInitiativeBonus returns correct value', () => {
+    const actor = new MEGSActor();
+    actor.system = {
+        attributes: {
+            dex: { value: 2 },
+            int: { value: 3 },
+            infl: { value: 4 },
+        },
+    };
+    actor.items = [
+        { name: 'Superspeed', system: { aps: 5 } },
+        { name: 'Martial Artist', system: { aps: 0 } },
+        { name: 'Lightning Reflexes', system: { aps: 0 } },
+    ];
+    // Should be 2+3+4+5+2+2 = 18
+    expect(actor._calculateInitiativeBonus()).toBe(18);
+});

@@ -39,7 +39,10 @@
             "<rootDir>/module/__mocks__/roll.mjs"
         ],
         "transform": {},
-        "verbose": false
+        "verbose": false,
+        "testPathIgnorePatterns": [
+            "<rootDir>/.history/"
+        ]
     },
     "keywords": [
         "FoundryVTT",

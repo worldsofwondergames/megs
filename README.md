@@ -10,7 +10,7 @@ It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
 This is a fan-created implementation of the Mayfair Exponential Gaming System, whose core mechanics were used in games such as DC Heroes, Underground, and Blood of Heroes. The core mechanics of the DC Heroes / Underground / Blood of Heroes games were dubbed "MEGS" by its fans, short for ["Mayfair Eponential Gaming System."](https://en.wikipedia.org/wiki/Mayfair_Exponential_Game_System) This was an informal name, never trademarked.
 
-The current version (0.5.3) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
+The current version (0.7.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get to version 1.0.0.
 
@@ -31,15 +31,15 @@ Do I ever! MEGS for Foundry is currently sitting at **version 0.6.0**.
 
 Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Aworldsofwondergames%2F4).
 
-**YouTube demo videos** are planned by the middle of May 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
+**YouTube demo videos** are planned at some point in 2025 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 
-Then... **version 1.0.0**, by October 1, 2025. Incorporating any feedback I've gotten and:
+Then... **version 1.0.0**, by October-sh, 2025. Incorporating any feedback I've gotten and:
 
 - Adding character builder/creator view for characters
 - Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
-Why October 1? Because October 1s when Cryptozoic is supposed to fulfill the DC Heroes reprint Kickstarter. I anticipate a definite uptick in interest around that time.
+Why October? Because October is when Cryptozoic is supposed to fulfill the DC Heroes reprint Kickstarter. I anticipate an uptick in interest around that time.
 
 And then after the rush, I rest for a very, very long time.
 

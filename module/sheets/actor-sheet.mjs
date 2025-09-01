@@ -14,6 +14,8 @@ export class MEGSActorSheet extends ActorSheet {
         if (this.actor) {
             const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
             this.actor.setFlag('megs', 'edit-mode', isUnlocked);
+        } else {
+            this.actor.setFlag('megs', 'edit-mode', false);
         }
     }
 

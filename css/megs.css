@@ -30,6 +30,16 @@
     letter-spacing: 0.05em;
 }
 
+body.game .app h1,
+body.game .app h2,
+body.game .app h3,
+body.game .app h4,
+body.game .app h5,
+body.game .app h6 {
+    font-family: 'DecoturaICG', sans-serif;
+    letter-spacing: 0.05em;
+}
+
 .megs .window-header {
     background-color: var(--darkblue);
     font-size: 20px;

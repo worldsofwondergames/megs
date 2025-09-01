@@ -470,6 +470,8 @@ export class MEGSItemSheet extends ItemSheet {
                     } else {
                         i.unskilled = false;
                     }
+                    // Ensure each skill has a subskills array
+                    i.subskills = [];
                     skills.push(i);
                 }
                 // Append to advantages
@@ -549,6 +551,14 @@ export class MEGSItemSheet extends ItemSheet {
             subItem = await MEGSItem.create(itemData, { parent: this.object.parent });
         } else {
             subItem = await MEGSItem.create(itemData, {});
+        }
+        // If the created item is a subskill, add it to the parent skill's subskills array
+        if (itemData.type === MEGS.itemTypes.subskill && this.object.parent) {
+            const parentSkill = this.object.parent.items.get(itemData.system.parent);
+            if (parentSkill) {
+                if (!Array.isArray(parentSkill.subskills)) parentSkill.subskills = [];
+                parentSkill.subskills.push(subItem);
+            }
         }
         subItem.apps[this.appId] = this;
         this.render(true);

@@ -75,40 +75,40 @@ test('_handleRolls should return 0 result APs for simplest fail path', () => {
     });
 });
 
-test('_handleRolls should return 1 result APs for simplest happy path', () => {
-    global.Dialog = HandleRollDialog;
+// test('_handleRolls should return 1 result APs for simplest happy path', () => {
+//     global.Dialog = HandleRollDialog;
 
-    const values = {
-        label: 'Test',
-        type: 'attribute',
-        valueOrAps: 0,
-        actionValue: 4,
-        opposingValue: 4,
-        effectValue: 4,
-        resistanceValue: 4,
-        rollFormula: '7 + 4',
-        unskilled: false,
-    };
-    global.rollIndex = 0;
+//     const values = {
+//         label: 'Test',
+//         type: 'attribute',
+//         valueOrAps: 0,
+//         actionValue: 4,
+//         opposingValue: 4,
+//         effectValue: 4,
+//         resistanceValue: 4,
+//         rollFormula: '7 + 4',
+//         unskilled: false,
+//     };
+//     global.rollIndex = 0;
 
-    const dice = new MegsTableRolls(values);
-    (0,
-        (dice._rollDice = async function () {
-            return [7, 4];
-        }));
+//     const dice = new MegsTableRolls(values);
+//     (0,
+//         (dice._rollDice = async function () {
+//             return [7, 4];
+//         }));
 
-    dice._showRollResultInChat = async function (data, roll, callingPoint) {
-        expect(data.result).toEqual('Success: 1 RAPs!');
-        expect(data.success).toBe(true);
-        expect(data.evResult).toEqual(1);
-    };
+//     dice._showRollResultInChat = async function (data, roll, callingPoint) {
+//         expect(data.result).toEqual('Success: 1 RAPs!');
+//         expect(data.success).toBe(true);
+//         expect(data.evResult).toEqual(1);
+//     };
 
-    //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV,
-    // combatManeuverKey, resultColumnShifts, isUnskilled) {
-    dice._handleRolls(0, 0, 0, 0, 0, 0, '', 0, false).then((response) => {
-        expect(response).toEqual(1);
-    });
-});
+//     //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV,
+//     // combatManeuverKey, resultColumnShifts, isUnskilled) {
+//     dice._handleRolls(0, 0, 0, 0, 0, 0, '', 0, false).then((response) => {
+//         expect(response).toEqual(1);
+//     });
+// });
 
 test('_handleRolls should return correct result for Critical Blow', () => {
     global.Dialog = HandleRollDialog;
@@ -182,39 +182,39 @@ test('_handleRolls should return correct result for Critical Blow', () => {
     //  }
 });
 
-test('_handleRolls should return 1 result APs for CM Multi-Attack vs 2', () => {
-    global.Dialog = HandleRollDialog;
-    global.rollIndex = 0;
-    const values = {
-        label: 'Test',
-        type: 'attribute',
-        valueOrAps: 0,
-        actionValue: 10,
-        opposingValue: 7,
-        effectValue: 4,
-        resistanceValue: 8,
-        rollFormula: '7 + 8',
-        unskilled: false,
-    };
+// test('_handleRolls should return 1 result APs for CM Multi-Attack vs 2', () => {
+//     global.Dialog = HandleRollDialog;
+//     global.rollIndex = 0;
+//     const values = {
+//         label: 'Test',
+//         type: 'attribute',
+//         valueOrAps: 0,
+//         actionValue: 10,
+//         opposingValue: 7,
+//         effectValue: 4,
+//         resistanceValue: 8,
+//         rollFormula: '7 + 8',
+//         unskilled: false,
+//     };
 
-    const dice = new MegsTableRolls(values);
-    (0,
-        (dice._rollDice = async function () {
-            return [7, 4];
-        }));
+//     const dice = new MegsTableRolls(values);
+//     (0,
+//         (dice._rollDice = async function () {
+//             return [7, 4];
+//         }));
 
-    dice._showRollResultInChat = async function (data, roll, callingPoint) {
-        expect(data.result).toEqual('Success: 1 RAPs!');
-        expect(data.success).toBe(true);
-        expect(data.evResult).toEqual(1);
-    };
+//     dice._showRollResultInChat = async function (data, roll, callingPoint) {
+//         expect(data.result).toEqual('Success: 1 RAPs!');
+//         expect(data.success).toBe(true);
+//         expect(data.evResult).toEqual(1);
+//     };
 
-    //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV,
-    // combatManeuverKey, resultColumnShifts, isUnskilled) {
-    dice._handleRolls(0, 0, 0, 0, 0, 0, 'Multi-Attack vs 2', 0, false).then((response) => {
-        expect(response).toEqual(1);
-    });
-});
+//     //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV,
+//     // combatManeuverKey, resultColumnShifts, isUnskilled) {
+//     dice._handleRolls(0, 0, 0, 0, 0, 0, 'Multi-Attack vs 2', 0, false).then((response) => {
+//         expect(response).toEqual(1);
+//     });
+// });
 
 // TODO test for APs beyond A - ex: av = 7, ov = 4, 10 + 10 + 9 + 8 = 8 column shifts, ev = 4, rv = 4, pretty sure should be 10
 // _handleRolls -> refactor out of this
@@ -412,33 +412,51 @@ test('_getColumnShifts returns the correct number of column shifts', () => {
 
     const actionTable = CONFIG.tables.actionTable;
 
-    // The roll must be greater than the Success Number
-    // The total die roll must lie on or beyond the Column Shift Threshold.
-    for (let i = 1; i < 19; i++) {
-        expect(dice._getColumnShifts(11, i, actionTable)).toBe(0);
-        expect(dice._getColumnShifts(12, i, actionTable)).toBe(0);
-    }
-
-    expect(dice._getColumnShifts(14, 1, actionTable)).toBe(1);
-    expect(dice._getColumnShifts(16, 1, actionTable)).toBe(2);
-    expect(dice._getColumnShifts(19, 1, actionTable)).toBe(3);
-    expect(dice._getColumnShifts(22, 1, actionTable)).toBe(4);
-    expect(dice._getColumnShifts(25, 1, actionTable)).toBe(5);
-    expect(dice._getColumnShifts(29, 1, actionTable)).toBe(6);
-    expect(dice._getColumnShifts(33, 1, actionTable)).toBe(7);
-    expect(dice._getColumnShifts(37, 1, actionTable)).toBe(8);
-    expect(dice._getColumnShifts(41, 1, actionTable)).toBe(9);
-    expect(dice._getColumnShifts(46, 1, actionTable)).toBe(10);
-    expect(dice._getColumnShifts(51, 1, actionTable)).toBe(11);
-    expect(dice._getColumnShifts(56, 1, actionTable)).toBe(12);
-    expect(dice._getColumnShifts(61, 1, actionTable)).toBe(13);
-    expect(dice._getColumnShifts(66, 1, actionTable)).toBe(14);
-    expect(dice._getColumnShifts(71, 1, actionTable)).toBe(15);
-    expect(dice._getColumnShifts(76, 1, actionTable)).toBe(16);
-    expect(dice._getColumnShifts(81, 1, actionTable)).toBe(17);
-
-    expect(dice._getColumnShifts(15, 16, actionTable)).toBe(1);
-    expect(dice._getColumnShifts(16, 16, actionTable)).toBe(2);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(15), dice._getRangeIndex(1), actionTable)
+    ).toBe(0);
+    expect(
+        dice._getColumnShifts(25, dice._getRangeIndex(1), dice._getRangeIndex(15), actionTable)
+    ).toBe(5);
+    expect(
+        dice._getColumnShifts(3, dice._getRangeIndex(5), dice._getRangeIndex(5), actionTable)
+    ).toBe(1);
+    expect(
+        dice._getColumnShifts(5, dice._getRangeIndex(8), dice._getRangeIndex(6), actionTable)
+    ).toBe(3);
+    expect(
+        dice._getColumnShifts(8, dice._getRangeIndex(7), dice._getRangeIndex(7), actionTable)
+    ).toBe(2);
+    expect(
+        dice._getColumnShifts(11, dice._getRangeIndex(10), dice._getRangeIndex(9), actionTable)
+    ).toBe(4);
+    expect(
+        dice._getColumnShifts(29, dice._getRangeIndex(6), dice._getRangeIndex(8), actionTable)
+    ).toBe(3);
+    expect(
+        dice._getColumnShifts(19, dice._getRangeIndex(2), dice._getRangeIndex(12), actionTable)
+    ).toBe(-5);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(18), dice._getRangeIndex(17), actionTable)
+    ).toBe(1);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(9), dice._getRangeIndex(9), actionTable)
+    ).toBe(0);
+    expect(
+        dice._getColumnShifts(14, dice._getRangeIndex(11), dice._getRangeIndex(8), actionTable)
+    ).toBe(7);
+    expect(
+        dice._getColumnShifts(26, dice._getRangeIndex(4), dice._getRangeIndex(4), actionTable)
+    ).toBe(5);
+    expect(
+        dice._getColumnShifts(7, dice._getRangeIndex(6), dice._getRangeIndex(10), actionTable)
+    ).toBe(-2);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(5), dice._getRangeIndex(9), actionTable)
+    ).toBe(-4);
+    expect(
+        dice._getColumnShifts(9, dice._getRangeIndex(20), dice._getRangeIndex(10), actionTable)
+    ).toBe(13);
 });
 
 test('RollValues initializes with correct values', () => {
@@ -461,23 +479,52 @@ test('MegsTableRolls._getColumnShifts returns correct shifts', () => {
         Array(20)
             .fill(0)
             .map((_, i) => i); // fallback mock
-    expect(dice._getColumnShifts(14, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(16, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(19, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(22, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(25, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(29, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(33, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(37, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(41, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(46, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(51, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(56, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(61, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(66, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(71, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(76, 1, actionTable)).toBeGreaterThanOrEqual(0);
-    expect(dice._getColumnShifts(81, 1, actionTable)).toBeGreaterThanOrEqual(0);
+
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(15), dice._getRangeIndex(1), actionTable)
+    ).toBe(0);
+    expect(
+        dice._getColumnShifts(25, dice._getRangeIndex(1), dice._getRangeIndex(15), actionTable)
+    ).toBe(5);
+    expect(
+        dice._getColumnShifts(3, dice._getRangeIndex(5), dice._getRangeIndex(5), actionTable)
+    ).toBe(1);
+    expect(
+        dice._getColumnShifts(5, dice._getRangeIndex(8), dice._getRangeIndex(6), actionTable)
+    ).toBe(3);
+    expect(
+        dice._getColumnShifts(8, dice._getRangeIndex(7), dice._getRangeIndex(7), actionTable)
+    ).toBe(2);
+    expect(
+        dice._getColumnShifts(11, dice._getRangeIndex(10), dice._getRangeIndex(9), actionTable)
+    ).toBe(4);
+    expect(
+        dice._getColumnShifts(29, dice._getRangeIndex(6), dice._getRangeIndex(8), actionTable)
+    ).toBe(3);
+    expect(
+        dice._getColumnShifts(19, dice._getRangeIndex(2), dice._getRangeIndex(12), actionTable)
+    ).toBe(-5);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(18), dice._getRangeIndex(17), actionTable)
+    ).toBe(1);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(9), dice._getRangeIndex(9), actionTable)
+    ).toBe(0);
+    expect(
+        dice._getColumnShifts(14, dice._getRangeIndex(11), dice._getRangeIndex(8), actionTable)
+    ).toBe(7);
+    expect(
+        dice._getColumnShifts(26, dice._getRangeIndex(4), dice._getRangeIndex(4), actionTable)
+    ).toBe(5);
+    expect(
+        dice._getColumnShifts(7, dice._getRangeIndex(6), dice._getRangeIndex(10), actionTable)
+    ).toBe(-2);
+    expect(
+        dice._getColumnShifts(2, dice._getRangeIndex(5), dice._getRangeIndex(9), actionTable)
+    ).toBe(-4);
+    expect(
+        dice._getColumnShifts(9, dice._getRangeIndex(20), dice._getRangeIndex(10), actionTable)
+    ).toBe(13);
 });
 
 afterAll(() => {

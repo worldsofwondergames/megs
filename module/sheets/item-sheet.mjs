@@ -213,6 +213,15 @@ export class MEGSItemSheet extends ItemSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
+        // Handle hideZeroAPSkills checkbox change - re-render to update filtered skills
+        html.on('change', 'input[name="system.settings.hideZeroAPSkills"]', async (ev) => {
+            ev.preventDefault();
+            const checkbox = ev.currentTarget;
+            const value = checkbox.checked ? 'true' : 'false';
+            await this.object.update({ 'system.settings.hideZeroAPSkills': value });
+            this.render(false);
+        });
+
         // Render the item sheet for viewing/editing prior to the editable check.
         html.on('click', '.item-edit', (ev) => {
             const li = $(ev.currentTarget).parents('.item');

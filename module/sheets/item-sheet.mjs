@@ -213,6 +213,15 @@ export class MEGSItemSheet extends ItemSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
+        // Handle hideZeroAPSkills checkbox change - re-render to update filtered skills
+        html.on('change', 'input[name="system.settings.hideZeroAPSkills"]', async (ev) => {
+            ev.preventDefault();
+            const checkbox = ev.currentTarget;
+            const value = checkbox.checked ? 'true' : 'false';
+            await this.object.update({ 'system.settings.hideZeroAPSkills': value });
+            this.render(false);
+        });
+
         // Render the item sheet for viewing/editing prior to the editable check.
         html.on('click', '.item-edit', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
@@ -449,11 +458,13 @@ export class MEGSItemSheet extends ItemSheet {
         let items = [];
         if (context.document.parent) {
             const parentActorSheet = context.document.parent._sheet;
-            const parentActorItems = parentActorSheet.getData().data.items;
-            items = parentActorItems;
+            if (parentActorSheet) {
+                const parentActorItems = parentActorSheet.getData().data.items;
+                items = parentActorItems;
+            }
         }
 
-        // Iterate through items, allocating to containers
+        // First pass: collect items that belong to this gadget
         for (let i of items) {
             if (i.system.parent === this.document._id) {
                 i.img = i.img || Item.DEFAULT_ICON;
@@ -464,6 +475,7 @@ export class MEGSItemSheet extends ItemSheet {
                 }
                 // Append to skills
                 else if (i.type === MEGS.itemTypes.skill) {
+                    i.subskills = [];
                     if (i.system.aps === 0) {
                         i.unskilled = true;
                         i.linkedAPs = this.object.system.attributes[i.system.link].value;
@@ -480,15 +492,19 @@ export class MEGSItemSheet extends ItemSheet {
                 else if (i.type === MEGS.itemTypes.drawback) {
                     drawbacks.push(i);
                 }
-                // Append to subskills
-                else if (i.type === MEGS.itemTypes.subskill) {
-                    i.skill = context.item;
-                    subskills.push(i);
-                }
                 // Append to gadgets
                 else if (i.type === MEGS.itemTypes.gadget) {
                     gadgets.push(i);
                 }
+            }
+        }
+
+        // Second pass: collect subskills whose parent is one of the gadget's skills
+        const skillIds = skills.map(s => s._id);
+        for (let i of items) {
+            if (i.type === MEGS.itemTypes.subskill && skillIds.includes(i.system.parent)) {
+                i.skill = context.item;
+                subskills.push(i);
             }
         }
 
@@ -509,6 +525,18 @@ export class MEGSItemSheet extends ItemSheet {
             }
         });
 
+        // Filter skills based on hideZeroAPSkills setting (same as actor sheet)
+        context.filteredSkills = [];
+        if (context.system.settings?.hideZeroAPSkills !== 'true') {
+            context.filteredSkills = skills;
+        } else {
+            skills.forEach((skill) => {
+                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                    context.filteredSkills.push(skill);
+                }
+            });
+        }
+
         // Assign and return
         context.powers = powers;
         context.skills = skills;
@@ -516,6 +544,23 @@ export class MEGSItemSheet extends ItemSheet {
         context.drawbacks = drawbacks;
         context.subskills = subskills;
         context.gadgets = gadgets;
+    }
+
+    /**
+     * Check if any subskills have APs > 0
+     * @param {*} skill
+     * @returns {boolean}
+     */
+    _doSubskillsHaveAPs(skill) {
+        let doSubskillsHaveAPs = false;
+        if (skill.subskills && skill.subskills.length > 0) {
+            skill.subskills.forEach((subskill) => {
+                if (subskill.system.aps > 0) {
+                    doSubskillsHaveAPs = true;
+                }
+            });
+        }
+        return doSubskillsHaveAPs;
     }
 
     /**
@@ -618,9 +663,20 @@ export class MEGSItemSheet extends ItemSheet {
 
         const sheetTypeGadget = this.object.type === MEGS.itemTypes.gadget;
 
-        if ((!allowed || !isDroppable || !isSubItem) && !sheetTypeGadget) return;
+        // Gadgets can accept powers, skills, advantages, drawbacks, bonuses, limitations
+        const isGadgetSubItem =
+            item.type === MEGS.itemTypes.power ||
+            item.type === MEGS.itemTypes.skill ||
+            item.type === MEGS.itemTypes.advantage ||
+            item.type === MEGS.itemTypes.drawback ||
+            item.type === MEGS.itemTypes.bonus ||
+            item.type === MEGS.itemTypes.limitation;
 
-        if (sheetTypeGadget && isSubItem) return;
+        if (sheetTypeGadget && isGadgetSubItem) {
+            return this._onDropItem(event, data);
+        }
+
+        if ((!allowed || !isDroppable || !isSubItem) && !sheetTypeGadget) return;
 
         // Handle different data types
         // TODO remove this?

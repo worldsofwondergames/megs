@@ -510,6 +510,14 @@ export class MEGSItemSheet extends ItemSheet {
             }
         });
 
+        // Filter skills - show skills that have APs OR have subskills with APs
+        context.filteredSkills = [];
+        skills.forEach((skill) => {
+            if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                context.filteredSkills.push(skill);
+            }
+        });
+
         // Assign and return
         context.powers = powers;
         context.skills = skills;
@@ -517,6 +525,23 @@ export class MEGSItemSheet extends ItemSheet {
         context.drawbacks = drawbacks;
         context.subskills = subskills;
         context.gadgets = gadgets;
+    }
+
+    /**
+     * Check if any subskills have APs > 0
+     * @param {*} skill
+     * @returns {boolean}
+     */
+    _doSubskillsHaveAPs(skill) {
+        let doSubskillsHaveAPs = false;
+        if (skill.subskills && skill.subskills.length > 0) {
+            skill.subskills.forEach((subskill) => {
+                if (subskill.system.aps > 0) {
+                    doSubskillsHaveAPs = true;
+                }
+            });
+        }
+        return doSubskillsHaveAPs;
     }
 
     /**

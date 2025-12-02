@@ -8,7 +8,7 @@
         <div class='item-controls'>
         </div>
     </li>
-    {{#each skills as |item id|}}
+    {{#each filteredSkills as |item id|}}
         <li class='item flexrow item-row
     {{#if item.system.aps}}bold{{/if}}
     ' data-item-id='{{item._id}}'>
@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
-                    {{item.name}}
+                    {{getSkillDisplayName item}}
                 </a>
             </div>
             <div class='item-aps'>

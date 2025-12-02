@@ -1,3 +1,8 @@
+<div>
+    <input type="checkbox" id="system.settings.hideZeroAPSkills" name="system.settings.hideZeroAPSkills" value="true" {{#if (compare system.settings.hideZeroAPSkills "eq" "true" )}} checked {{/if}}>
+    <label for="system.settings.hideZeroAPSkills"> {{localize "MEGS.HideZeroRankSkills"}}</label>
+</div>
+
 <ol class='items-list'>
     <li class='item flexrow items-header'>
         <div class='item-name'>{{localize 'MEGS.Name'}}</div>
@@ -9,9 +14,7 @@
         </div>
     </li>
     {{#each filteredSkills as |item id|}}
-        <li class='item flexrow item-row
-    {{#if item.system.aps}}bold{{/if}}
-    ' data-item-id='{{item._id}}'>
+        <li class='item flexrow item-row {{#if (compare item.system.aps '>' 0)}}bold{{/if}}' data-item-id='{{item._id}}'>
             <div class='item-name'>
                 <div class='item-image'>
                     <a class='rollable' data-roll-type='item'>

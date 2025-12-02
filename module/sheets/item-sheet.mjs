@@ -514,9 +514,17 @@ export class MEGSItemSheet extends ItemSheet {
             }
         });
 
-        // For gadgets, always show all skills (no filtering by default)
-        // Users need to see all available skills, even with 0 APs
-        context.filteredSkills = skills;
+        // Filter skills based on hideZeroAPSkills setting (same as actor sheet)
+        context.filteredSkills = [];
+        if (context.system.settings.hideZeroAPSkills !== 'true') {
+            context.filteredSkills = skills;
+        } else {
+            skills.forEach((skill) => {
+                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                    context.filteredSkills.push(skill);
+                }
+            });
+        }
 
         // Assign and return
         context.powers = powers;

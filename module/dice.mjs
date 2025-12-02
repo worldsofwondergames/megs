@@ -387,6 +387,7 @@ export class MegsTableRolls {
         const rollColumnShifts = this._getColumnShifts(
             avRollTotal,
             this._getRangeIndex(avAdjusted),
+            this._getRangeIndex(ovAdjusted),
             CONFIG.tables.actionTable
         );
         const columnShifts = rollColumnShifts + rvColumnShifts;
@@ -581,29 +582,27 @@ export class MegsTableRolls {
      * @param {*} actionTable
      * @returns
      */
-    _getColumnShifts(avRollTotal, avIndex, actionTable) {
+    _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
         // if succeeds, calculate column shifts for result table
         let columnShifts = 0;
 
         // TODO handle totals greater than 60 on table
 
-        // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
-        if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
-            /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
-            Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
-            for (let i = 0; i < actionTable[avIndex].length; i++) {
-                if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
-                    // The roll must be greater than the Success Number
-                    if (avRollTotal > actionTable[avIndex][i]) {
-                        columnShifts++;
-                    } else {
-                        break;
-                    }
-                }
+        // Guard against undefined table or indices
+        if (!actionTable || !actionTable[avIndex] || typeof ovIndex !== 'number') {
+            return 0;
+        }
+        const row = actionTable[avIndex];
+        // Count columns to the right starting at OV index, where roll >= column value
+        let shifts = 0;
+        for (let i = ovIndex; i < row.length; i++) {
+            if (avRollTotal >= row[i]) {
+                shifts++;
+            } else {
+                break;
             }
         }
-
-        return columnShifts;
+        return shifts;
     }
 
     /**

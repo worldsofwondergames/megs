@@ -473,7 +473,15 @@ export class MEGSItemSheet extends ItemSheet {
         }
 
         // First pass: collect items that belong to this gadget
+        console.log('Looking for items with parent === gadget ID:', this.document._id);
+        let skillCount = 0;
         for (let i of items) {
+            // Debug: show skill parent values
+            if (i.type === MEGS.itemTypes.skill) {
+                console.log('Skill:', i.name, 'Parent:', i.system.parent, 'Match:', i.system.parent === this.document._id);
+                skillCount++;
+            }
+
             if (i.system.parent === this.document._id) {
                 i.img = i.img || Item.DEFAULT_ICON;
 

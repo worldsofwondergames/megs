@@ -384,41 +384,15 @@ export class MegsTableRolls {
         }
 
         // if succeeds, calculate column shifts for result table
-        const rollColumnShifts = this._getColumnShifts(
-            avRollTotal,
-            this._getRangeIndex(avAdjusted),
-            CONFIG.tables.actionTable
-        );
-        const columnShifts = rollColumnShifts + rvColumnShifts;
+        const columnShifts =
+            this._getColumnShifts(
+                avRollTotal,
+                this._getRangeIndex(avAdjusted),
+                this._getRangeIndex(ovAdjusted),
+                CONFIG.tables.actionTable
+            ) + rvColumnShifts;
         resultData.columnShifts = columnShifts;
         // TODO handle totals greater than 60 on table
-
-        let columnShiftText = '';
-        if (rvColumnShifts > 0) {
-            columnShiftText +=
-                '<table class="init-table">' +
-                '    <tr>' +
-                '        <td class="label">' +
-                game.i18n.localize('MEGS.Roll') +
-                ' ' +
-                game.i18n.localize('MEGS.Shifts') +
-                '</td>' +
-                '        <td class="value">' +
-                rollColumnShifts +
-                '</td>' +
-                '    </tr>';
-            columnShiftText +=
-                '    <tr>' +
-                '        <td class="label">RV ' +
-                game.i18n.localize('MEGS.Shifts') +
-                '</td>' +
-                '        <td class="value">+' +
-                rvColumnShifts +
-                '</td>' +
-                '    </tr>';
-            columnShiftText += '</table>';
-        }
-        resultData.columnShiftText = columnShiftText;
 
         /**********************************
          * RESULT TABLE
@@ -581,28 +555,21 @@ export class MegsTableRolls {
      * @param {*} actionTable
      * @returns
      */
-    _getColumnShifts(avRollTotal, avIndex, actionTable) {
-        // if succeeds, calculate column shifts for result table
+    _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
         let columnShifts = 0;
-
-        // TODO handle totals greater than 60 on table
-
-        // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
-        if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
-            /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
-            Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
-            for (let i = 0; i < actionTable[avIndex].length; i++) {
-                if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
-                    // The roll must be greater than the Success Number
-                    if (avRollTotal > actionTable[avIndex][i]) {
-                        columnShifts++;
-                    } else {
-                        break;
-                    }
-                }
+        const successNumber = actionTable[avIndex][ovIndex];
+        // Must meet or beat both Success Number and threshold
+        if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+            return 0;
+        }
+        // Start from the column immediately to the right of the Success Number
+        for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
+            const colValue = actionTable[avIndex][i];
+            // Only count columns with values >= threshold and < roll
+            if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
+                columnShifts++;
             }
         }
-
         return columnShifts;
     }
 

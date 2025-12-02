@@ -453,7 +453,7 @@ export class MEGSItemSheet extends ItemSheet {
             items = parentActorItems;
         }
 
-        // Iterate through items, allocating to containers
+        // First pass: collect items that belong to this gadget
         for (let i of items) {
             if (i.system.parent === this.document._id) {
                 i.img = i.img || Item.DEFAULT_ICON;
@@ -481,15 +481,19 @@ export class MEGSItemSheet extends ItemSheet {
                 else if (i.type === MEGS.itemTypes.drawback) {
                     drawbacks.push(i);
                 }
-                // Append to subskills
-                else if (i.type === MEGS.itemTypes.subskill) {
-                    i.skill = context.item;
-                    subskills.push(i);
-                }
                 // Append to gadgets
                 else if (i.type === MEGS.itemTypes.gadget) {
                     gadgets.push(i);
                 }
+            }
+        }
+
+        // Second pass: collect subskills whose parent is one of the gadget's skills
+        const skillIds = skills.map(s => s._id);
+        for (let i of items) {
+            if (i.type === MEGS.itemTypes.subskill && skillIds.includes(i.system.parent)) {
+                i.skill = context.item;
+                subskills.push(i);
             }
         }
 

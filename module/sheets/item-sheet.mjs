@@ -218,9 +218,7 @@ export class MEGSItemSheet extends ItemSheet {
             ev.preventDefault();
             const checkbox = ev.currentTarget;
             const value = checkbox.checked ? 'true' : 'false';
-            console.log('Checkbox changed! Checked:', checkbox.checked, 'Setting to:', value);
             await this.object.update({ 'system.settings.hideZeroAPSkills': value });
-            console.log('Update complete, re-rendering...');
             this.render(false);
         });
 
@@ -459,29 +457,15 @@ export class MEGSItemSheet extends ItemSheet {
 
         let items = [];
         if (context.document.parent) {
-            console.log('Gadget has parent actor:', context.document.parent.name);
             const parentActorSheet = context.document.parent._sheet;
             if (parentActorSheet) {
                 const parentActorItems = parentActorSheet.getData().data.items;
                 items = parentActorItems;
-                console.log('Collected items from actor:', items.length);
-            } else {
-                console.warn('Parent actor has no sheet!');
             }
-        } else {
-            console.log('Gadget has no parent actor - standalone item');
         }
 
         // First pass: collect items that belong to this gadget
-        console.log('Looking for items with parent === gadget ID:', this.document._id);
-        let skillCount = 0;
         for (let i of items) {
-            // Debug: show skill parent values
-            if (i.type === MEGS.itemTypes.skill) {
-                console.log('Skill:', i.name, 'Parent:', i.system.parent, 'Match:', i.system.parent === this.document._id);
-                skillCount++;
-            }
-
             if (i.system.parent === this.document._id) {
                 i.img = i.img || Item.DEFAULT_ICON;
 
@@ -517,14 +501,12 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Second pass: collect subskills whose parent is one of the gadget's skills
         const skillIds = skills.map(s => s._id);
-        console.log('Gadget skills collected:', skills.length, 'Skill IDs:', skillIds);
         for (let i of items) {
             if (i.type === MEGS.itemTypes.subskill && skillIds.includes(i.system.parent)) {
                 i.skill = context.item;
                 subskills.push(i);
             }
         }
-        console.log('Subskills collected:', subskills.length);
 
         // sort alphabetically
         const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
@@ -545,21 +527,14 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Filter skills based on hideZeroAPSkills setting (same as actor sheet)
         context.filteredSkills = [];
-        const hideZeroAPSkills = context.system.settings?.hideZeroAPSkills;
-        console.log('hideZeroAPSkills value:', hideZeroAPSkills, 'type:', typeof hideZeroAPSkills);
-
-        if (hideZeroAPSkills !== 'true') {
-            // Show all skills when unchecked or undefined
+        if (context.system.settings?.hideZeroAPSkills !== 'true') {
             context.filteredSkills = skills;
-            console.log('Showing all skills:', skills.length);
         } else {
-            // Filter to only show skills with APs when checked
             skills.forEach((skill) => {
                 if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
                     context.filteredSkills.push(skill);
                 }
             });
-            console.log('Showing filtered skills:', context.filteredSkills.length, 'of', skills.length);
         }
 
         // Assign and return
@@ -688,9 +663,20 @@ export class MEGSItemSheet extends ItemSheet {
 
         const sheetTypeGadget = this.object.type === MEGS.itemTypes.gadget;
 
-        if ((!allowed || !isDroppable || !isSubItem) && !sheetTypeGadget) return;
+        // Gadgets can accept powers, skills, advantages, drawbacks, bonuses, limitations
+        const isGadgetSubItem =
+            item.type === MEGS.itemTypes.power ||
+            item.type === MEGS.itemTypes.skill ||
+            item.type === MEGS.itemTypes.advantage ||
+            item.type === MEGS.itemTypes.drawback ||
+            item.type === MEGS.itemTypes.bonus ||
+            item.type === MEGS.itemTypes.limitation;
 
-        if (sheetTypeGadget && isSubItem) return;
+        if (sheetTypeGadget && isGadgetSubItem) {
+            return this._onDropItem(event, data);
+        }
+
+        if ((!allowed || !isDroppable || !isSubItem) && !sheetTypeGadget) return;
 
         // Handle different data types
         // TODO remove this?

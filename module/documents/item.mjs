@@ -12,6 +12,82 @@ export class MEGSItem extends Item {
         super(data, context);
     }
 
+    /** @override */
+    async _onCreate(data, options, userId) {
+        await super._onCreate(data, options, userId);
+
+        // Only add skills for new gadgets that have a parent actor
+        if (this.type !== MEGS.itemTypes.gadget) return;
+        if (!this.parent) return; // No parent actor
+        if (this._stats.compendiumSource || this._stats.duplicateSource) return;
+
+        // Check if skills already exist for this gadget (to avoid duplicates on updates)
+        const existingSkills = this.parent.items.filter(i => i.system.parent === this.id);
+        if (existingSkills.length > 0) return;
+
+        // Add skills to the parent actor with this gadget as parent
+        await this._addSkillsToGadget();
+    }
+
+    async _addSkillsToGadget() {
+        const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
+
+        let skills = [];
+        let subskills = [];
+
+        for (let i of skillsJson) {
+            i.img = i.img
+                ? 'systems/megs/assets/images/icons/skillls/' + i.img
+                : 'systems/megs/assets/images/icons/skillls/skill.png';
+            const item = { ...new MEGSItem(i) };
+            delete item.system.subskills;
+            delete item._id;
+            delete item.effects;
+            // Set parent to this gadget's ID
+            item.system.parent = this.id;
+            skills.push(item);
+
+            if (i.system.subskills) {
+                for (let j of i.system.subskills) {
+                    const subskillObj = {
+                        name: j.name,
+                        type: 'subskill',
+                        img: j.img
+                            ? 'systems/megs/assets/images/icons/subskillls/' + j.img
+                            : 'systems/megs/assets/images/icons/skillls/skill.png',
+                        system: {
+                            baseCost: 0,
+                            totalCost: 0,
+                            factorCost: 0,
+                            aps: 0,
+                            parent: '', // Will be set after skills are created
+                            type: j.type,
+                            linkedSkill: i.name,
+                            useUnskilled: j.useUnskilled,
+                        },
+                    };
+                    subskills.push(subskillObj);
+                }
+            }
+        }
+
+        // Create skills on the parent actor
+        const createdSkills = await this.parent.createEmbeddedDocuments('Item', skills);
+
+        // Now link subskills to their parent skills
+        let skillMap = {};
+        createdSkills.forEach((skill) => {
+            skillMap[skill.name] = skill.id;
+        });
+
+        for (let i of subskills) {
+            i.system.parent = skillMap[i.system.linkedSkill];
+        }
+
+        // Create subskills on the parent actor
+        await this.parent.createEmbeddedDocuments('Item', subskills);
+    }
+
     /**
      * Augment the basic Item data model with additional dynamic data.
      */

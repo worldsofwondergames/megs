@@ -1,73 +1,73 @@
-      {{#if showHeroPointCosts}}
-      <div class="resources grid grid-4col">
-      {{/if}}
-      {{#unless showHeroPointCosts}}
-      <div class="resources grid grid-3col">
-      {{/unless}}
+{{#if showHeroPointCosts}}
+    <div class="resources grid grid-4col">
+{{/if}}
+{{#unless showHeroPointCosts}}
+    <div class="resources grid grid-3col">
+{{/unless}}
 
-        <div class="resource flex-group-center">
-          <label for="system.baseCost" class="resource-label">{{localize 'Base'}}</label>
-          {{#if hasActor}}
-          <div class="resource-content flexrow flex-center flex-between">
+<div class="resource flex-group-center">
+    <label for="system.baseCost" class="resource-label">{{localize 'MEGS.Base'}}</label>
+    {{#if hasActor}}
+        <div class="resource-content flexrow flex-center flex-between">
             <span>{{system.baseCost}}</span>
-          </div>
-          {{/if}}
-          {{#unless hasActor}}
-            {{#if (compare system.type "===" "subskill")}}
-              <div class="resource-content flexrow flex-center flex-between"><span>&mdash;</span></div>
-            {{/if}}
-            {{#unless (compare system.type "===" "subskill")}}
-              {{> plusMinusInput id='baseCost' classes='current-input' min=0 value=system.baseCost}}
-            {{/unless}}
-          {{/unless}}
         </div>
+    {{/if}}
+    {{#unless hasActor}}
+        {{#if (compare system.type "===" "subskill")}}
+            <div class="resource-content flexrow flex-center flex-between"><span>&mdash;</span></div>
+        {{/if}}
+        {{#unless (compare system.type "===" "subskill")}}
+            {{> plusMinusInput id='baseCost' classes='current-input' min=0 value=system.baseCost}}
+        {{/unless}}
+    {{/unless}}
+</div>
 
-        <div class="resource flex-group-center">
-          <label for="system.factorCost" class="resource-label">{{localize 'Factor'}}</label>
+<div class="resource flex-group-center">
+    <label for="system.factorCost" class="resource-label">{{localize 'MEGS.Factor'}}</label>
+    {{#if hasActor}}
+        <div class="resource-content flexrow flex-center flex-between">
+            <span>{{system.factorCost}}</span>
+        </div>
+    {{/if}}
+    {{#unless hasActor}}
+        {{#if (compare system.type "===" "subskill")}}
+            <div class="resource-content flexrow flex-center flex-between"><span>&mdash;</span></div>
+        {{/if}}
+        {{#unless (compare system.type "===" "subskill")}}
+            {{> plusMinusInput id='factorCost' classes='current-input' min=0 value=system.factorCost}}
+        {{/unless}}
+    {{/unless}}
+</div>
+
+<div class="resource flex-group-center">
+    <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
+    {{#if hasActor}}
+        {{> plusMinusInput id='aps' classes='current-input' min=minAPs max=maxAPs value=system.aps}}
+    {{/if}}
+    {{#unless hasActor}}
+        <div class="resource-content flexrow flex-center flex-between">
+            <span>&mdash;</span>
+        </div>
+    {{/unless}}
+</div>
+
+{{#if showHeroPointCosts}}
+    <div class="resource flex-group-center">
+        <label for="system.totalCost" class="resource-label">{{localize 'MEGS.Total'}}</label>
+        <div class="resource-content flexrow flex-center flex-between">
             {{#if hasActor}}
-            <div class="resource-content flexrow flex-center flex-between">
-              <span>{{system.factorCost}}</span>
-            </div>
+                {{#if (compare system.aps "===" 0)}}
+                    <span>&mdash;</span>
+                {{/if}}
+                {{#unless (compare system.aps "===" 0)}}
+                    <span>{{system.totalCost}}</span>
+                {{/unless}}
             {{/if}}
             {{#unless hasActor}}
-              {{#if (compare system.type "===" "subskill")}}
-                <div class="resource-content flexrow flex-center flex-between"><span>&mdash;</span></div>
-              {{/if}}
-              {{#unless (compare system.type "===" "subskill")}}
-                {{> plusMinusInput id='factorCost' classes='current-input' min=0 value=system.factorCost}}
-              {{/unless}}
+                <span>&mdash;</span>
             {{/unless}}
         </div>
+    </div>
+{{/if}}
 
-        <div class="resource flex-group-center">
-          <label for="system.aps" class="resource-label">{{localize 'APs'}}</label>
-          {{#if hasActor}}
-          {{> plusMinusInput id='aps' classes='current-input' min=minAPs max=maxAPs value=system.aps}}
-          {{/if}}
-          {{#unless hasActor}}
-          <div class="resource-content flexrow flex-center flex-between">
-            <span>&mdash;</span>
-          </div>
-          {{/unless}}
-        </div>
-
-      {{#if showHeroPointCosts}}
-        <div class="resource flex-group-center">
-          <label for="system.totalCost" class="resource-label">{{localize 'Total'}}</label>
-          <div class="resource-content flexrow flex-center flex-between">
-          {{#if hasActor}}
-            {{#if (compare system.aps "===" 0)}}
-            <span>&mdash;</span>
-            {{/if}}
-            {{#unless (compare system.aps "===" 0)}}
-            <span>{{system.totalCost}}</span>
-            {{/unless}}
-          {{/if}}
-          {{#unless hasActor}}
-            <span>&mdash;</span>
-          {{/unless}}
-          </div>
-        </div>
-      {{/if}}
-
-      </div>
+</div>

@@ -1,40 +1,24 @@
-    <div class="tab abilities readableText" data-group="primary" data-tab="abilities">
+<div class="tab abilities readableText" data-group="primary" data-tab="abilities">
 
-      <div>
-        <input type="checkbox" id="system.omniClasses.a" name="system.omniClasses.a" value="true"
-        {{#if (compare system.omniClasses.a "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.omniClasses.a"> A - Physical Attributes</label>
-      </div>
-
-      <div>
-        <input type="checkbox" id="system.omniClasses.b" name="system.omniClasses.b" value="true"
-        {{#if (compare system.omniClasses.b "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.omniClasses.b"> B - Mental Attributes</label>
-      </div>
-
-      <div>
-        <input type="checkbox" id="system.omniClasses.c" name="system.omniClasses.c" value="true"
-        {{#if (compare system.omniClasses.c "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.omniClasses.c"> C - Physical and Mental Powers</label>
-      </div>
-
-      <div>
-        <input type="checkbox" id="system.omniClasses.d" name="system.omniClasses.d" value="true"
-        {{#if (compare system.omniClasses.d "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.omniClasses.d"> D - Italicized Attributes (An Omni-Gadget allowing Italicized Attributes must also have the ability to mimic Attributes - A and/or B).</label>
-      </div>
-
-
+    <div>
+        <input type="checkbox" id="system.omniClasses.a" name="system.omniClasses.a" value="true" {{#if (compare system.omniClasses.a "eq" "true" )}} checked {{/if}}>
+        <label for="system.omniClasses.a"> A - {{localize 'MEGS.PhysicalAttributes'}}</label>
     </div>
+
+    <div>
+        <input type="checkbox" id="system.omniClasses.b" name="system.omniClasses.b" value="true" {{#if (compare system.omniClasses.b "eq" "true" )}} checked {{/if}}>
+        <label for="system.omniClasses.b"> B - {{localize 'MEGS.MentalAttributes'}}</label>
+    </div>
+
+    <div>
+        <input type="checkbox" id="system.omniClasses.c" name="system.omniClasses.c" value="true" {{#if (compare system.omniClasses.c "eq" "true" )}} checked {{/if}}>
+        <label for="system.omniClasses.c"> C - {{localize 'MEGS.PhysicalAndMentalPowers'}}</label>
+    </div>
+
+    <div>
+        <input type="checkbox" id="system.omniClasses.d" name="system.omniClasses.d" value="true" {{#if (compare system.omniClasses.d "eq" "true" )}} checked {{/if}}>
+        <label for="system.omniClasses.d"> D - {{localize 'MEGS.ItalicizedAttributesText'}}</label>
+    </div>
+
+
+</div>

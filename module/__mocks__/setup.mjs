@@ -1,5 +1,5 @@
 /* global fail */
 
 process.on('unhandledRejection', (err) => {
-  fail(err)
-})
+    fail(err);
+});

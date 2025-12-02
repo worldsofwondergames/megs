@@ -1,24 +1,30 @@
-  <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120"/>
+<header class="sheet-header">
+    {{#if flags.megs.edit-mode}}
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="120" width="120" />
+    {{else}}
+        <img class="profile-img" src="{{item.img}}" title="{{item.name}}" height="120" width="120" />
+    {{/if}}
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
 
-      <div class="resources grid grid-2col">
+        {{!-- Item name --}}
+        {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
 
-        <div class="resource flex-group-center">
-          <label for="system.quantity" class="resource-label">{{localize 'Quantity'}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='quantity' classes='current-input' min=1 value=system.quantity}}
-          </div>
+        <div class="resources grid grid-2col">
+
+            <div class="resource flex-group-center">
+                <label for="system.quantity" class="resource-label">{{localize 'MEGS.Quantity'}}</label>
+                <div class="resource-content flexrow flex-center flex-between attribute-container">
+                    {{> plusMinusInput id='quantity' classes='current-input' min=1 value=system.quantity}}
+                </div>
+            </div>
+
+            <div class="resource flex-group-center">
+                <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
+                <div class="resource-content flexrow flex-center flex-between attribute-container">
+                    {{> plusMinusInput id='aps' classes='current-input' min=1 value=system.aps}}
+                </div>
+            </div>
+
         </div>
-
-        <div class="resource flex-group-center">
-          <label for="system.aps" class="resource-label">{{localize 'APs'}}</label>
-          <div class="resource-content flexrow flex-center flex-between attribute-container">
-            {{> plusMinusInput id='aps' classes='current-input' min=1 value=system.aps}}
-          </div>
-        </div>
-
-      </div>
     </div>
-  </header>
+</header>

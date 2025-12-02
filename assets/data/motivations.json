@@ -1,0 +1,18 @@
+{
+    "antihero": [
+        "Mercenary",
+        "Power Lust",
+        "Responsibility of Power",
+        "Seeking Justice",
+        "Thrill of Adventure",
+        "Unwanted Power"
+    ],
+    "villain": ["Mercenary", "Nihilist", "Power Lust", "Psychopathic", "Thrill Seeker"],
+    "hero": [
+        "Upholding the Good",
+        "Responsibility of Power",
+        "Seeking Justice",
+        "Thrill of Adventure",
+        "Unwanted Power"
+    ]
+}

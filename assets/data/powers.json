@@ -1,0 +1,22 @@
+{
+    "powers": [
+        {
+            "name": "",
+            "baseCost": 0,
+            "factorCost": 0,
+            "linkedAttribute": "",
+            "range": "self",
+            "type": "dice",
+            "source": "",
+            "specialModifiers": [
+                {
+                    "name": "",
+                    "baseCostAdjustment": 0,
+                    "factorCostAdjustment": 0,
+                    "type": "limitation"
+                }
+            ],
+            "description": ""
+        }
+    ]
+}

@@ -1,180 +1,156 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  {{#unless (compare system.isOmni "eq" "true")}}
-  {{> "systems/megs/templates/item/parts/item-gadget-header.hbs"}}
-  {{/unless}}
+    {{#unless (compare system.isOmni "eq" "true")}}
+        {{> "systems/megs/templates/item/parts/item-gadget-header.hbs"}}
+    {{/unless}}
 
-  {{#if (compare system.isOmni "eq" "true")}}
-  {{> "systems/megs/templates/item/parts/item-gadget-omni-header.hbs"}}
-  {{/if}}
-
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="abilities">{{localize 'Abilities'}}</a>
-    {{#if (compare system.isOmni "!==" "true")}}
-      {{#if (compare system.hasPowers "eq" "true")}}
-      <a class="item" data-tab="powers">{{localize 'Powers'}}</a>
-      {{/if}}
-      {{#if (compare system.hasSkills "eq" "true")}}
-      <a class="item" data-tab="skills">{{localize 'Skills'}}</a>
-      {{/if}}
-      {{#if (compare system.hasGadgets "eq" "true")}}
-      <a class="item" data-tab="gadgets">{{localize 'Gadgets'}}</a>
-      {{/if}}
-      <a class="item" data-tab="description">{{localize 'Description'}}</a>
+    {{#if (compare system.isOmni "eq" "true")}}
+        {{> "systems/megs/templates/item/parts/item-gadget-omni-header.hbs"}}
     {{/if}}
-    <a class="item" data-tab="settings">{{localize 'Settings'}}</a>
-  </nav>
 
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="abilities">{{localize 'MEGS.Abilities'}}</a>
+        {{#if (compare system.isOmni "!==" "true")}}
+            {{#if (compare system.settings.hasPowers "eq" "true")}}
+                <a class="item" data-tab="powers">{{localize 'MEGS.Powers'}}</a>
+            {{/if}}
+            {{#if (compare system.settings.hasSkills "eq" "true")}}
+                <a class="item" data-tab="skills">{{localize 'MEGS.Skills'}}</a>
+            {{/if}}
+            {{#if (compare system.settings.hasGadgets "eq" "true")}}
+                <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
+            {{/if}}
+            <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
+        {{/if}}
+        <a class="item" data-tab="settings">{{localize 'MEGS.Settings'}}</a>
+    </nav>
 
-  {{#unless (compare system.isOmni "eq" "true")}}
-  {{> "systems/megs/templates/item/parts/item-gadget-abilities.hbs"}}
-  {{/unless}}
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
 
-  {{#if (compare system.isOmni "eq" "true")}}
-  {{> "systems/megs/templates/item/parts/item-gadget-omni-abilities.hbs"}}
-  {{/if}}
+        {{#unless (compare system.isOmni "eq" "true")}}
+            {{> "systems/megs/templates/item/parts/item-gadget-abilities.hbs"}}
+        {{/unless}}
 
-    {{!-- Owned Powers Tab --}}
-    <div class="tab powers" data-group="primary" data-tab="powers">
-      {{#unless hasActor}}
-        <div class="message-panel">Due to technical limitations, Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
-      {{/unless}}
-      {{#if hasActor}}
-      {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
-      {{/if}}
-    </div>
-
-    {{!-- Owned Skills Tab --}}
-    <div class="tab skills" data-group="primary" data-tab="skills">
-      {{#unless hasActor}}
-        <div class="message-panel">Due to technical limitations, Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
-      {{/unless}}
-      {{#if hasActor}}
-      {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
-      {{/if}}
-    </div>
-
-    {{!-- Traits Tab --}}
-     <div class="tab traits" data-group="primary" data-tab="traits">
-      {{#unless hasActor}}
-        <div class="message-panel">Due to technical limitations, Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
-      {{/unless}}
-      {{#if hasActor}}
-      {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
-      {{/if}}
-    </div>
-
-    {{!-- Owned gadgets Tab --}}
-    <div class="tab gadgets" data-group="primary" data-tab="gadgets">
-       {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
-    </div>
-
-    {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-
-      {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-    </div>
-
-    {{!-- Settings Tab --}}
-    <div class="tab settings readableText" data-group="primary" data-tab="settings">
-      <div>
-        <input type="checkbox" id="system.isOmni" name="system.isOmni" value="true"
         {{#if (compare system.isOmni "eq" "true")}}
-          checked
+            {{> "systems/megs/templates/item/parts/item-gadget-omni-abilities.hbs"}}
         {{/if}}
-        >
-        <label for="system.isOmni"> Is Omni-Gadget?</label>
-      </div>
 
-      <hr/>
-      <div>
-        <input type="checkbox" id="system.hasAttributes.physical" name="system.hasAttributes.physical" value="true"
-        {{#if (compare system.hasAttributes.physical "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.hasAttributes.physical"> Has physical attributes?</label>
-      </div>
-      <div>
-        <input type="checkbox" id="system.hasAttributes.mental" name="system.hasAttributes.mental" value="true"
-        {{#if (compare system.hasAttributes.mental "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.hasAttributes.mental"> Has mental attributes?</label>
-      </div>
-      <div>
-        <input type="checkbox" id="system.hasAttributes.mystical" name="system.hasAttributes.mystical" value="true"
-        {{#if (compare system.hasAttributes.mystical "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.hasAttributes.mystical"> Has mystical attributes?</label>
-      </div>
+        {{!-- Owned Powers Tab --}}
+        <div class="tab powers" data-group="primary" data-tab="powers">
+            {{#unless hasActor}}
+                <div class="message-panel">Due to technical limitations, Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
+            {{/unless}}
+            {{#if hasActor}}
+                {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+            {{/if}}
+        </div>
 
-      <hr/>
+        {{!-- Owned Skills Tab --}}
+        <div class="tab skills" data-group="primary" data-tab="skills">
+            {{#unless hasActor}}
+                <div class="message-panel">Due to technical limitations, Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
+            {{/unless}}
+            {{#if hasActor}}
+                {{> "systems/megs/templates/item/parts/item-gadget-skills.hbs"}}
+            {{/if}}
+        </div>
 
-      <div>
-        <input type="checkbox" id="system.weapon.isWeapon" name="system.weapon.isWeapon" value="true"
-        {{#if (compare system.weapon.isWeapon "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.weapon.isWeapon"> Is a weapon?</label>
-      </div>
+        {{!-- Traits Tab --}}
+        <div class="tab traits" data-group="primary" data-tab="traits">
+            {{#unless hasActor}}
+                <div class="message-panel">Due to technical limitations, Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
+            {{/unless}}
+            {{#if hasActor}}
+                {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+            {{/if}}
+        </div>
 
-      <div>
-        <input type="checkbox" id="system.armor.isArmor" name="system.armor.isArmor" value="true"
-        {{#if (compare system.armor.isArmor "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.armor.isArmor"> Is armor?</label>
-      </div>
+        {{!-- Owned gadgets Tab --}}
+        <div class="tab gadgets" data-group="primary" data-tab="gadgets">
+            {{#unless hasActor}}
+                <div class="message-panel">Due to technical limitations, Gadgets cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
+            {{/unless}}
+            {{#if hasActor}}
+                {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
+            {{/if}}
+        </div>
 
-      <div>
-        <input type="checkbox" id="system.vehicle.isVehicle" name="system.vehicle.isVehicle" value="true"
-        {{#if (compare system.vehicle.isVehicle "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.vehicle.isVehicle"> Is a vehicle?</label>
-      </div>
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="description">
 
-      <hr/>
+            {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
+            {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+        </div>
 
-      <div>
-        <input type="checkbox" id="system.hasPowers" name="system.hasPowers" value="true"
-        {{#if (compare system.hasPowers "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.hasPowers"> Has powers?</label>
-      </div>
+        {{!-- Settings Tab --}}
+        <div class="tab settings readableText" data-group="primary" data-tab="settings">
+            <div>
+                <input type="checkbox" id="system.isOmni" name="system.isOmni" value="true" {{#if (compare system.isOmni "eq" "true" )}} checked {{/if}}>
+                <label for="system.isOmni"> {{localize 'MEGS.IsOmniGadget'}}</label>
+            </div>
 
-      <div>
-        <input type="checkbox" id="system.hasSkills" name="system.hasSkills" value="true"
-        {{#if (compare system.hasSkills "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.hasSkills"> Has skills?</label>
-      </div>
+            <hr />
+            <div>
+                <input type="checkbox" id="system.settings.hasAVAndEV" name="system.settings.hasAVAndEV" value="true" {{#if (compare system.settings.hasAVAndEV "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasAVAndEV"> {{localize 'MEGS.HasAVAndEV'}}</label>
+            </div>
 
-      <div>
-        <input type="checkbox" id="system.hasGadgets" name="system.hasGadgets" value="true"
-        {{#if (compare system.hasGadgets "eq" "true")}}
-          checked
-        {{/if}}
-        >
-        <label for="system.hasGadgets"> Has gadgets?</label>
-      </div>
+            <hr />
+            <div>
+                <input type="checkbox" id="system.settings.hasAttributes.physical" name="system.settings.hasAttributes.physical" value="true" {{#if (compare system.settings.hasAttributes.physical "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasAttributes.physical"> {{localize 'MEGS.HasPhysicalAttributes'}}</label>
+            </div>
+            <div>
+                <input type="checkbox" id="system.settings.hasAttributes.mental" name="system.settings.hasAttributes.mental" value="true" {{#if (compare system.settings.hasAttributes.mental "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasAttributes.mental"> {{localize 'MEGS.HasMentalAttributes'}}</label>
+            </div>
+            <div>
+                <input type="checkbox" id="system.settings.hasAttributes.mystical" name="system.settings.hasAttributes.mystical" value="true" {{#if (compare system.settings.hasAttributes.mystical "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasAttributes.mystical"> {{localize 'MEGS.HasMysticalAttributes'}}</label>
+            </div>
 
-    </div>
+            <hr />
 
-  </section>
+            <div>
+                <input type="checkbox" id="system.weapon.isWeapon" name="system.weapon.isWeapon" value="true" {{#if (compare system.weapon.isWeapon "eq" "true" )}} checked {{/if}}>
+                <label for="system.weapon.isWeapon"> {{localize 'MEGS.IsAWeapon'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.armor.isArmor" name="system.armor.isArmor" value="true" {{#if (compare system.armor.isArmor "eq" "true" )}} checked {{/if}}>
+                <label for="system.armor.isArmor"> {{localize 'MEGS.IsArmor'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.vehicle.isVehicle" name="system.vehicle.isVehicle" value="true" {{#if (compare system.vehicle.isVehicle "eq" "true" )}} checked {{/if}}>
+                <label for="system.vehicle.isVehicle"> {{localize 'MEGS.IsAVehicle'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.location.isLocation" name="system.location.isLocation" value="true" {{#if (compare system.location.isLocation "eq" "true" )}} checked {{/if}}>
+                <label for="system.location.isLocation"> {{localize 'MEGS.IsALocation'}}</label>
+            </div>
+
+            <hr />
+
+            <div>
+                <input type="checkbox" id="system.settings.hasPowers" name="system.settings.hasPowers" value="true" {{#if (compare system.settings.hasPowers "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasPowers"> {{localize 'MEGS.HasPowers'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.settings.hasSkills" name="system.settings.hasSkills" value="true" {{#if (compare system.settings.hasSkills "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasSkills"> {{localize 'MEGS.HasSkills'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.settings.hasGadgets" name="system.settings.hasGadgets" value="true" {{#if (compare system.settings.hasGadgets "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasGadgets"> {{localize 'MEGS.HasGadgets'}}</label>
+            </div>
+
+        </div>
+
+    </section>
 
 </form>

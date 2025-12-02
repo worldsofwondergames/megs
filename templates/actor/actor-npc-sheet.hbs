@@ -1,67 +1,48 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
-  {{!-- Sheet Header --}}
-  {{> "systems/megs/templates/actor/parts/actor-header.hbs"}}
+    {{!-- Sheet Header --}}
+    {{> "systems/megs/templates/actor/parts/actor-header.hbs"}}
 
-  {{!-- Sheet Tab Navigation --}}
-  {{> "systems/megs/templates/actor/parts/actor-navigation.hbs"}}
+    {{!-- Sheet Tab Navigation --}}
+    {{> "systems/megs/templates/actor/parts/actor-navigation.hbs"}}
 
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
 
-    {{!-- Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
+        {{!-- Abilities Tab --}}
+        <div class="tab abilities" data-group="primary" data-tab="abilities">
 
-      <!-- TODO add attitude to PCS -->
+            {{> "systems/megs/templates/actor/parts/actor-init-hp.hbs"}}
 
-    {{#each system.attributes as |attribute key|}}
-      {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
-      {{/if}}
-          <div class="attribute flex-group-center">
-            <label for="system.attributes.{{key}}.value" 
-                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" 
-                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-tyoe="attribute"
-                data-value="{{attribute.value}}" data-key="{{key}}">
-              {{attribute.label}}
-            </label>
-            <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
-              <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>
-              <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
-            </div>
-          </div>
-      {{#if (isDivisor 3 (sum @index 1))}}
-        </section>
-     {{/if}}
-   {{/each}}
-    </div>
+            {{> "systems/megs/templates/actor/parts/actor-attributes.hbs"}}
 
-    {{!-- Owned Powers Tab --}}
-    <div class="tab powers" data-group="primary" data-tab="powers">
-       {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
-    </div>
+        </div>
 
-    {{!-- Owned Skills Tab --}}
-    <div class="tab skills" data-group="primary" data-tab="skills">
-      {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
-    </div>
+        {{!-- Owned Powers Tab --}}
+        <div class="tab powers" data-group="primary" data-tab="powers">
+            {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+        </div>
 
-    {{!-- Traits Tab --}}
-     <div class="tab traits" data-group="primary" data-tab="traits">
-       {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
-    </div>
+        {{!-- Owned Skills Tab --}}
+        <div class="tab skills" data-group="primary" data-tab="skills">
+            {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
+        </div>
 
-    {{!-- Owned gadgets Tab --}}
-    <div class="tab gadgets" data-group="primary" data-tab="gadgets">
-       {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
-    </div>
+        {{!-- Traits Tab --}}
+        <div class="tab traits" data-group="primary" data-tab="traits">
+            {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+        </div>
 
-    {{!-- Description Tab --}}
-    <div class="tab biography" data-group="primary" data-tab="description">
-       {{> "systems/megs/templates/actor/parts/actor-description.hbs"}}
-    </div>
+        {{!-- Owned gadgets Tab --}}
+        <div class="tab gadgets" data-group="primary" data-tab="gadgets">
+            {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
+        </div>
 
-  </section>
+        {{!-- Description Tab --}}
+        <div class="tab biography" data-group="primary" data-tab="description">
+            <!-- TODO add attitude to PCS -->
+            {{> "systems/megs/templates/actor/parts/actor-description.hbs"}}
+        </div>
+
+    </section>
 </form>
-

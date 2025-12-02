@@ -1,47 +1,54 @@
 {
-  "id": "megs",
-  "title": "MEGS (Multiversal Exponential Gaming System)",
-  "description": "A totally unofficial, fan-made implementation of the MEGS RPG system for FoundryVTT!",
-  "authors": [
-    {
-      "name": "Jeff Barnes",
-      "discord": "murderhobo6226"
-    }
-  ],
-  "url": "https://github.com/codemonkey1972/megs",
-  "license": "LICENSE.txt",
-  "readme": "README.md",
-  "bugs": "https://github.com/codemonkey1972/megs/issues",
-  "changelog": "CHANGELOG.md",
-  "media": [
-    {
-      "type": "setup",
-      "url": "https://raw.githubusercontent.com/codemonkey1972/megs/MEGS0.4.0/system.json",
-      "thumbnail": "systems/megs/assets/images/megs-logo-multiversal.jpg"
-    }
-  ],
-  "version": "0.3.0",
-  "compatibility": {
-    "minimum": 11,
-    "verified": "11.315"
-  },
-  "esmodules": ["module/megs.mjs"],
-  "styles": ["css/megs.css"],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],
-  "packs": [],
-  "packFolders": [],
-  "socket": false,
-  "manifest": "https://raw.githubusercontent.com/codemonkey1972/megs/MEGS0.4.0/system.json",
-  "download": "https://github.com/codemonkey1972/megs/zipball/MEGS0.4.0/",
-  "background": "systems/megs/assets/images/megs-logo-multiversal.jpg",
-  "gridDistance": 5,
-  "gridUnits": "ft",
-  "primaryTokenAttribute": "",
-  "secondaryTokenAttribute": ""
+    "id": "megs",
+    "title": "MEGS (Multiversal Exponential Gaming System)",
+    "description": "A totally unofficial, fan-made implementation of the MEGS RPG system for Foundry VTT!",
+    "authors": [
+        {
+            "name": "Jeff Barnes",
+            "discord": "murderhobo6226"
+        }
+    ],
+    "url": "https://github.com/worldsofwondergames/megs",
+    "license": "LICENSE.txt",
+    "readme": "README.md",
+    "bugs": "https://github.com/worldsofwondergames/megs/issues",
+    "changelog": "CHANGELOG.md",
+    "media": [
+        {
+            "type": "setup",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-0.7.0-Release/system.json",
+            "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
+        }
+    ],
+    "version": "0.7.0",
+    "compatibility": {
+        "minimum": 11,
+        "verified": "13.346"
+    },
+    "esmodules": ["module/megs.mjs"],
+    "styles": ["css/megs.css"],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "lang/pt.json"
+        }
+    ],
+    "packs": [],
+    "packFolders": [],
+    "socket": false,
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/MEGS-0.7.0-Release/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-0.7.0-Release/",
+    "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
+    "grid": {
+        "distance": 5,
+        "units": "ft"
+    },
+    "primaryTokenAttribute": "",
+    "secondaryTokenAttribute": ""
 }

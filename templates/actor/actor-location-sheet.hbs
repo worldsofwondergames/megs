@@ -1,0 +1,46 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    {{> "systems/megs/templates/actor/parts/actor-header.hbs"}}
+
+    {{!-- Sheet Tab Navigation --}}
+    {{> "systems/megs/templates/actor/parts/actor-navigation.hbs"}}
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Abilities Tab --}}
+        <div class="tab abilities" data-group="primary" data-tab="abilities">
+
+            {{> "systems/megs/templates/actor/parts/actor-attributes.hbs"}}
+
+        </div>
+
+        {{!-- Owned Powers Tab --}}
+        <div class="tab powers" data-group="primary" data-tab="powers">
+            {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+        </div>
+
+        {{!-- Owned Skills Tab --}}
+        <div class="tab skills" data-group="primary" data-tab="skills">
+            {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
+        </div>
+
+        {{!-- Traits Tab --}}
+        <div class="tab traits" data-group="primary" data-tab="traits">
+            {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+        </div>
+
+        {{!-- Owned gadgets Tab --}}
+        <div class="tab gadgets" data-group="primary" data-tab="gadgets">
+            {{> "systems/megs/templates/actor/parts/actor-gadgets.hbs"}}
+        </div>
+
+        {{!-- Description Tab --}}
+        <div class="tab biography" data-group="primary" data-tab="description">
+            <!-- TODO add attitude to PCS -->
+            {{> "systems/megs/templates/actor/parts/actor-description.hbs"}}
+        </div>
+
+    </section>
+</form>

@@ -1,95 +1,90 @@
 <div class="megs-dialog padding-bottom-10px">
-  <form>
-    <div class="form-group">
-      <label>{{localize "Action Value"}}</label>
-      <div class="quantity">
-        <button class="minus" aria-label="Decrease" onClick="if (parseInt(actionValue.value) > 0)  actionValue.value = parseInt(actionValue.value) - 1">&minus;</button>
-        <input id="actionValue" name="actionValue" type="number" class="input-box" value="{{actionValue}}" min="0" max="">
-        <button class="plus" aria-label="Increase" onClick="actionValue.value = parseInt(actionValue.value)+ 1 ">&plus;</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>{{localize "Effect Value"}}</label>
-      <div class="quantity">
-        <button class="minus" aria-label="Decrease" onClick="if (parseInt(effectValue.value) > 0)  effectValue.value = parseInt(effectValue.value) - 1">&minus;</button>
-        <input id="effectValue" name="effectValue" type="number" class="input-box" value="{{effectValue}}" min="0" max="">
-        <button class="plus" aria-label="Increase" onClick="effectValue.value = parseInt(effectValue.value)+ 1 ">&plus;</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>{{localize "Opposing Value"}}</label>
-      <div class="quantity">
-        <button class="minus" aria-label="Decrease" onClick="if (parseInt(opposingValue.value) > 0)  opposingValue.value = parseInt(opposingValue.value) - 1">&minus;</button>
-        <input id="opposingValue" name="opposingValue" type="number" class="input-box" value="{{opposingValue}}" min="0" max="">
-        <button class="plus" aria-label="Increase" onClick="opposingValue.value = parseInt(opposingValue.value)+ 1 ">&plus;</button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>{{localize "Resistance Value"}}</label>
-      <div class="quantity">
-        <button class="minus" aria-label="Decrease" onClick="if (parseInt(resistanceValue.value) > 0) resistanceValue.value = parseInt(resistanceValue.value) - 1">&minus;</button>
-        <input id="resistanceValue" name="resistanceValue" type="number" class="input-box" value="{{resistanceValue}}" min="0" max="">
-        <button class="plus" aria-label="Increase" onClick="resistanceValue.value = parseInt(resistanceValue.value)+ 1 ">&plus;</button>
-      </div>
-    </div>
+    <form>
+        <div class="form-group">
+            <label>{{localize "MEGS.ActionValue"}}</label>
+            <div class="quantity">
+                <button class="minus" aria-label="Decrease" onClick="if (parseInt(actionValue.value) > 0)  actionValue.value = parseInt(actionValue.value) - 1">&minus;</button>
+                <input id="actionValue" name="actionValue" type="number" class="input-box" value="{{actionValue}}" min="0" max="">
+                <button class="plus" aria-label="Increase" onClick="actionValue.value = parseInt(actionValue.value)+ 1 ">&plus;</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>{{localize "MEGS.EffectValue"}}</label>
+            <div class="quantity">
+                <button class="minus" aria-label="Decrease" onClick="if (parseInt(effectValue.value) > 0)  effectValue.value = parseInt(effectValue.value) - 1">&minus;</button>
+                <input id="effectValue" name="effectValue" type="number" class="input-box" value="{{effectValue}}" min="0" max="">
+                <button class="plus" aria-label="Increase" onClick="effectValue.value = parseInt(effectValue.value)+ 1 ">&plus;</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>{{localize "MEGS.OpposingValue"}}</label>
+            <div class="quantity">
+                <button class="minus" aria-label="Decrease" onClick="if (parseInt(opposingValue.value) > 0)  opposingValue.value = parseInt(opposingValue.value) - 1">&minus;</button>
+                <input id="opposingValue" name="opposingValue" type="number" class="input-box" value="{{opposingValue}}" min="0" max="">
+                <button class="plus" aria-label="Increase" onClick="opposingValue.value = parseInt(opposingValue.value)+ 1 ">&plus;</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>{{localize "MEGS.ResistanceValue"}}</label>
+            <div class="quantity">
+                <button class="minus" aria-label="Decrease" onClick="if (parseInt(resistanceValue.value) > 0) resistanceValue.value = parseInt(resistanceValue.value) - 1">&minus;</button>
+                <input id="resistanceValue" name="resistanceValue" type="number" class="input-box" value="{{resistanceValue}}" min="0" max="">
+                <button class="plus" aria-label="Increase" onClick="resistanceValue.value = parseInt(resistanceValue.value)+ 1 ">&plus;</button>
+            </div>
+        </div>
 
-    <details>
-      <summary class="roll-dialog-summary">Hero Point options</summary>
-      <div class="form-group">
-        <label>{{localize "HP Spent - Acting"}}</label>
-        <div class="flexrow">
-          <input type="range" name="hpSpentAV" value="0" min="0" max="{{maxHpToSpend}}" step="1" oninput="hpSpentAPRangeValue.innerText = this.value">
-          <span class="range-value" id="hpSpentAPRangeValue">0</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>{{localize "HP Spent - Effect"}}</label>
-        <div class="flexrow">
-          <input type="range" name="hpSpentEV" value="0" min="0" max="{{maxHpToSpend}}" step="1" oninput="hpSpentEPRangeValue.innerText = this.value">
-          <span class="range-value" id="hpSpentEPRangeValue">0</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>{{localize "HP Spent - Opposing"}}</label>
-        <div class="flexrow">
-          <input type="range" name="hpSpentOV" value="0" min="0" max="100" step="1" oninput="hpSpentOVRangeValue.innerText = this.value">
-          <span class="range-value" id="hpSpentOVRangeValue">0</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>{{localize "HP Spent - Resistance"}}</label>
-        <div class="flexrow">
-          <input type="range" name="hpSpentRV" value="0" min="0" max="100" step="1" oninput="hpSpentRVRangeValue.innerText = this.value">
-          <span class="range-value" id="hpSpentRVRangeValue">0</span>
-        </div>
-      </div>
-    </details>
-    <details>
-      <summary class="roll-dialog-summary">Advanced options</summary>
-      <div class="form-group">
-        <label>{{localize "Result Table Shifts"}}</label>
-        <div class="flexrow">
-          {{#if isUnskilled}}
-            {{> plusMinusInput id='resultColumnShifts' value="-2"}}
-          {{/if}}
-          {{#unless isUnskilled}}
-            {{> plusMinusInput id='resultColumnShifts' value=0}}
-          {{/unless}}
-        </div>
-      </div>
-      <div class="form-group">
-        <label>{{localize "Combat Maneuver"}}</label>
-        <div class="flexrow">
-          <select  class="resource-select"  name="combatManeuver" data-type="String">
-            <option value="">{{localize 'None'}}</option>
-            {{#select combatManeuver}}
-                {{#each combatManeuvers as |combatManeuverObj key|}}
-                <option  value="{{key}}">{{key}}</option>
-                {{/each}}
-            {{/select}}
-          </select>
-        </div>
-      </div>
-    </details>
-  </form>
+        <details>
+            <summary class="roll-dialog-summary">{{localize "MEGS.HeroPointOptions"}}</summary>
+            <div class="form-group">
+                <label>{{localize "MEGS.HPSpent"}} - {{localize "MEGS.Acting"}}</label>
+                <div class="flexrow">
+                    <input type="range" name="hpSpentAV" value="0" min="0" max="{{maxHpToSpend}}" step="1" oninput="hpSpentAPRangeValue.innerText = this.value">
+                    <span class="range-value" id="hpSpentAPRangeValue">0</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "MEGS.HPSpent"}} - {{localize "MEGS.Effect"}}</label>
+                <div class="flexrow">
+                    <input type="range" name="hpSpentEV" value="0" min="0" max="{{maxHpToSpend}}" step="1" oninput="hpSpentEPRangeValue.innerText = this.value">
+                    <span class="range-value" id="hpSpentEPRangeValue">0</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "MEGS.HPSpent"}} - {{localize "MEGS.Opposing"}}</label>
+                <div class="flexrow">
+                    <input type="range" name="hpSpentOV" value="0" min="0" max="100" step="1" oninput="hpSpentOVRangeValue.innerText = this.value">
+                    <span class="range-value" id="hpSpentOVRangeValue">0</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "MEGS.HPSpent"}} - {{localize "MEGS.Resistance"}}</label>
+                <div class="flexrow">
+                    <input type="range" name="hpSpentRV" value="0" min="0" max="100" step="1" oninput="hpSpentRVRangeValue.innerText = this.value">
+                    <span class="range-value" id="hpSpentRVRangeValue">0</span>
+                </div>
+            </div>
+        </details>
+        <details>
+            <summary class="roll-dialog-summary">{{localize "MEGS.AdvancedOptions"}}</summary>
+            <div class="form-group">
+                <label>{{localize "MEGS.ResultTableShifts"}}</label>
+                <div class="flexrow">
+                    {{#if isUnskilled}}
+                        {{> plusMinusInput id='resultColumnShifts' value="-2"}}
+                    {{else}}
+                        {{> plusMinusInput id='resultColumnShifts' value=0}}
+                    {{/if}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>{{localize "MEGS.CombatManeuver"}}</label>
+                <div class="flexrow">
+                    <select class="resource-select" name="combatManeuver" data-type="String">
+                        <option value="">{{localize 'MEGS.None'}}</option>
+                        {{selectOptions combatManeuvers selected=combatManeuver localize=true}}
+                    </select>
+                </div>
+            </div>
+        </details>
+    </form>
 </div>

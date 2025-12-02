@@ -13,3 +13,5 @@ foundry
 
 # MEGS
 build/
+.history
+megs.iml

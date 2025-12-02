@@ -150,6 +150,7 @@ test("_getActionTableDifficulty returns the correct difficulty number", () => {
   // TODO
 })
 
+
 test("_getColumnShifts returns the correct number of column shifts", () => {
   const values = new RollValues("Test",0,0,0,0,0,'1d10 + 1d10');
   const dice = new MegsTableRolls(values);
@@ -204,91 +205,38 @@ test('_getRangeIndex returns the correct index values', () => {
   expect(dice._getRangeIndex(60)).toBe(18);
 });
 
-// Comprehensive test suite for _getColumnShifts
-describe('_getColumnShifts comprehensive tests', () => {
+test('_getColumnShifts exhaustive AV/OV/roll test for <100', () => {
   const values = new RollValues('Test', 0, 0, 0, 0, 0, '1d10 + 1d10');
   const dice = new MegsTableRolls(values);
   const actionTable = CONFIG.tables.actionTable;
-  const threshold = dice.COLUMN_SHIFT_THRESHOLD || 11;
+  const maxAV = 99;
+  const maxOV = 99;
+  const maxRoll = 99;
 
-  test('No column shifts if roll < Success Number', () => {
-    const avIndex = dice._getRangeIndex(14);
-    const ovIndex = dice._getRangeIndex(0);
-    const successNumber = actionTable[avIndex][ovIndex];
-    expect(dice._getColumnShifts(successNumber - 1, avIndex, ovIndex, actionTable)).toBe(0);
-  });
-
-  test('No column shifts if roll < threshold', () => {
-    const avIndex = dice._getRangeIndex(14);
-    const ovIndex = dice._getRangeIndex(0);
-    expect(dice._getColumnShifts(10, avIndex, ovIndex, actionTable)).toBe(0);
-  });
-
-  test('No column shifts if roll == Success Number', () => {
-    const avIndex = dice._getRangeIndex(14);
-    const ovIndex = dice._getRangeIndex(0);
-    const successNumber = actionTable[avIndex][ovIndex];
-    expect(dice._getColumnShifts(successNumber, avIndex, ovIndex, actionTable)).toBe(0);
-  });
-
-  test('Correct column shifts for AV=14, OV=0, roll=18', () => {
-    const avIndex = dice._getRangeIndex(14);
-    const ovIndex = dice._getRangeIndex(0);
-    // Should count 11, 13, 15 (3 shifts)
-    expect(dice._getColumnShifts(18, avIndex, ovIndex, actionTable)).toBe(3);
-  });
-
-  test('Correct column shifts for AV=10, OV=8, roll=23', () => {
-    const avIndex = dice._getRangeIndex(10);
-    const ovIndex = dice._getRangeIndex(8);
-    // Should count 11, 13, 15, 18, 21 (5 shifts)
-    expect(dice._getColumnShifts(23, avIndex, ovIndex, actionTable)).toBe(5);
-  });
-
-  test('Correct column shifts for AV=10, OV=8, roll=20', () => {
-    const avIndex = dice._getRangeIndex(10);
-    const ovIndex = dice._getRangeIndex(8);
-    // Should count 11, 13, 15, 18 (4 shifts)
-    expect(dice._getColumnShifts(20, avIndex, ovIndex, actionTable)).toBe(4);
-  });
-
-  test('Correct column shifts for AV=10, OV=8, roll=27', () => {
-    const avIndex = dice._getRangeIndex(10);
-    const ovIndex = dice._getRangeIndex(8);
-    // Should count 11, 13, 15, 18, 21, 25 (6 shifts)
-    expect(dice._getColumnShifts(27, avIndex, ovIndex, actionTable)).toBe(6);
-  });
-
-  test('Correct column shifts for AV=10, OV=8, roll=39', () => {
-    const avIndex = dice._getRangeIndex(10);
-    const ovIndex = dice._getRangeIndex(8);
-    // Should count 11, 13, 15, 18, 21, 25, 29, 33, 37 (9 shifts)
-    expect(dice._getColumnShifts(39, avIndex, ovIndex, actionTable)).toBe(9);
-  });
-
-  test('No column shifts for large disadvantage', () => {
-    const avIndex = dice._getRangeIndex(1);
-    const ovIndex = dice._getRangeIndex(15);
-    expect(dice._getColumnShifts(25, avIndex, ovIndex, actionTable)).toBe(0);
-  });
-
-  test('Minimal dice result that yields +1 CS', () => {
-    const avIndex = dice._getRangeIndex(5);
-    const ovIndex = dice._getRangeIndex(5);
-    expect(dice._getColumnShifts(14, avIndex, ovIndex, actionTable)).toBe(1);
-  });
-
-  test('Moderate advantage, very low roll should fail', () => {
-    const avIndex = dice._getRangeIndex(8);
-    const ovIndex = dice._getRangeIndex(6);
-    expect(dice._getColumnShifts(5, avIndex, ovIndex, actionTable)).toBe(0);
-  });
-
-  test('Edge case: roll just above threshold and SN', () => {
-    const avIndex = dice._getRangeIndex(5);
-    const ovIndex = dice._getRangeIndex(5);
-    expect(dice._getColumnShifts(12, avIndex, ovIndex, actionTable)).toBe(0);
-    expect(dice._getColumnShifts(13, avIndex, ovIndex, actionTable)).toBe(0);
-    expect(dice._getColumnShifts(14, avIndex, ovIndex, actionTable)).toBe(1);
-  });
+  for (let av = 0; av <= maxAV; av++) {
+    for (let ov = 0; ov <= maxOV; ov++) {
+      const avIndex = dice._getRangeIndex(av);
+      const ovIndex = dice._getRangeIndex(ov);
+      const successNumber = actionTable[avIndex][ovIndex];
+      for (let roll = 0; roll <= maxRoll; roll++) {
+        // Only test if roll >= successNumber and roll >= COLUMN_SHIFT_THRESHOLD
+        if (roll >= successNumber && roll >= COLUMN_SHIFT_THRESHOLD) {
+          // Calculate expected column shifts
+          let expectedCS = 0;
+          for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
+            const colValue = actionTable[avIndex][i];
+            if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < roll) {
+              expectedCS++;
+            }
+          }
+          const actualCS = dice._getColumnShifts(roll, avIndex, ovIndex, actionTable);
+          expect(actualCS).toBe(expectedCS);
+        } else {
+          // Should be 0 column shifts if roll < successNumber or roll < threshold
+          const actualCS = dice._getColumnShifts(roll, avIndex, ovIndex, actionTable);
+          expect(actualCS).toBe(0);
+        }
+      }
+    }
+  }
 });

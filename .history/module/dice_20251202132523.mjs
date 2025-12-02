@@ -424,16 +424,20 @@ export class MegsTableRolls {
   _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
     let columnShifts = 0;
     const successNumber = actionTable[avIndex][ovIndex];
-    // Must meet or beat both Success Number and threshold
-    if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+    if (avRollTotal < successNumber) {
       return 0;
     }
-    // Start from the column immediately to the right of the Success Number
-    for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
-      const colValue = actionTable[avIndex][i];
-      // Only count columns with values >= threshold and < roll
-      if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
-        columnShifts++;
+    // Only start counting if the roll is >= the column shift threshold
+    if (avRollTotal >= COLUMN_SHIFT_THRESHOLD) {
+      // Start from the column immediately to the right of the Success Number
+      for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
+        const colValue = actionTable[avIndex][i];
+        // Only count columns with values >= the threshold and < the roll
+        if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
+          columnShifts++;
+        }
+        // Stop at the first column value >= the roll
+        if (colValue >= avRollTotal) break;
       }
     }
     return columnShifts;

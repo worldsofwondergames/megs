@@ -422,21 +422,34 @@ export class MegsTableRolls {
    * @returns
    */
   _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
-    let columnShifts = 0;
-    const successNumber = actionTable[avIndex][ovIndex];
-    // Must meet or beat both Success Number and threshold
-    if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
-      return 0;
-    }
-    // Start from the column immediately to the right of the Success Number
-    for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
-      const colValue = actionTable[avIndex][i];
-      // Only count columns with values >= threshold and < roll
-      if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
-        columnShifts++;
+      // if succeeds, calculate column shifts for result table
+      let columnShifts = 0;
+
+      // TODO handle totals greater than 60 on table
+
+      // must meet or beat the Success Number
+      const successNumber = actionTable[avIndex][ovIndex];
+      if (avRollTotal < successNumber) {
+            return 0;
       }
-    }
-    return columnShifts;
+
+      // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
+      if (avRollTotal >= COLUMN_SHIFT_THRESHOLD) {
+
+        /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
+            Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
+        for (let i = 0; i < actionTable[avIndex].length; i++) {
+          if (actionTable[avIndex][i] >= successNumber) {
+            if (avRollTotal > actionTable[avIndex][i]) {
+              columnShifts++;
+            } else {
+              break;
+            }
+          }
+        }
+      }
+
+      return(columnShifts);
   }
 
   /**

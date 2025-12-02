@@ -425,7 +425,7 @@ export class MegsTableRolls {
     let columnShifts = 0;
     const successNumber = actionTable[avIndex][ovIndex];
     // Must meet or beat both Success Number and threshold
-    if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+    if (avRollTotal < successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
       return 0;
     }
     // Start from the column immediately to the right of the Success Number

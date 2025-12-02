@@ -1,6 +1,7 @@
 # IDE
 .idea/
 .vs/
+.history/
 
 # Node Modules
 node_modules/
@@ -13,5 +14,4 @@ foundry
 
 # MEGS
 build/
-.history
 megs.iml

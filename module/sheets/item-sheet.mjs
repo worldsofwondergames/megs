@@ -464,6 +464,7 @@ export class MEGSItemSheet extends ItemSheet {
                 }
                 // Append to skills
                 else if (i.type === MEGS.itemTypes.skill) {
+                    i.subskills = [];
                     if (i.system.aps === 0) {
                         i.unskilled = true;
                         i.linkedAPs = this.object.system.attributes[i.system.link].value;

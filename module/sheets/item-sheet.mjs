@@ -510,13 +510,9 @@ export class MEGSItemSheet extends ItemSheet {
             }
         });
 
-        // Filter skills - show skills that have APs OR have subskills with APs
-        context.filteredSkills = [];
-        skills.forEach((skill) => {
-            if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
-                context.filteredSkills.push(skill);
-            }
-        });
+        // For gadgets, always show all skills (no filtering by default)
+        // Users need to see all available skills, even with 0 APs
+        context.filteredSkills = skills;
 
         // Assign and return
         context.powers = powers;

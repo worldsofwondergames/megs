@@ -312,3 +312,9 @@ export class MEGSItem extends Item {
         return field.getCollection(this);
     }
 }
+
+async function _loadData(jsonPath) {
+    const response = await fetch(jsonPath);
+    const contents = await response.json();
+    return contents;
+}

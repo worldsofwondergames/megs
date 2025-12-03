@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-0.7.0-Release/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/137-gadgets-can-have-traits/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -42,8 +42,8 @@
     "packs": [],
     "packFolders": [],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/MEGS-0.7.0-Release/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-0.7.0-Release/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/137-gadgets-can-have-traits/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/137-gadgets-can-have-traits/",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

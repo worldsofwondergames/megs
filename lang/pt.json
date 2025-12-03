@@ -79,6 +79,7 @@
         "HasPhysicalAttributes": "Possui atributos físicos?",
         "HasPowers": "Possui poderes?",
         "HasSkills": "Possui perícias?",
+        "HasTraits": "Possui traços?",
         "HeroPoints": "Pontos Heróicos",
         "HeroPointOptions": "Opções de pontos heróicos",
         "HPSpent": "Gasto de PH (Pontos heroicos)",

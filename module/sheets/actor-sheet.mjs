@@ -81,6 +81,7 @@ export class MEGSActorSheet extends ActorSheet {
             actorData.type === MEGS.characterTypes.vehicle ||
             actorData.type === MEGS.characterTypes.location
         ) {
+            this._prepareItems(context);
             this._prepareCharacterData(context);
 
             // get list of potential actors to own

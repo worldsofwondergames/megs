@@ -222,6 +222,74 @@ export class MEGSItemSheet extends ItemSheet {
             this.render(false);
         });
 
+        // Skill APs increment/decrement
+        html.on('click', '.ap-plus', async (ev) => {
+            ev.preventDefault();
+            const button = ev.currentTarget;
+            const isVirtual = button.dataset.isVirtual === 'true';
+            const skillName = button.dataset.skillName;
+            const itemId = button.dataset.itemId;
+
+            if (isVirtual) {
+                // Update virtual skill in skillData or subskillData
+                const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
+                const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+
+                if (skillData.hasOwnProperty(skillName)) {
+                    skillData[skillName] = (skillData[skillName] || 0) + 1;
+                    await this.object.update({ 'system.skillData': skillData });
+                } else if (subskillData.hasOwnProperty(skillName)) {
+                    subskillData[skillName] = (subskillData[skillName] || 0) + 1;
+                    await this.object.update({ 'system.subskillData': subskillData });
+                }
+                this.render(false);
+            } else {
+                // Update real skill item
+                const item = this.object.parent.items.get(itemId);
+                if (item && (item.type === 'skill' || item.type === 'subskill')) {
+                    const newValue = (item.system.aps || 0) + 1;
+                    await item.update({ 'system.aps': newValue });
+                    this.render(false);
+                }
+            }
+        });
+
+        html.on('click', '.ap-minus', async (ev) => {
+            ev.preventDefault();
+            const button = ev.currentTarget;
+            const isVirtual = button.dataset.isVirtual === 'true';
+            const skillName = button.dataset.skillName;
+            const itemId = button.dataset.itemId;
+
+            if (isVirtual) {
+                // Update virtual skill in skillData or subskillData
+                const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
+                const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+
+                if (skillData.hasOwnProperty(skillName) && (skillData[skillName] || 0) > 0) {
+                    skillData[skillName] = (skillData[skillName] || 0) - 1;
+                    await this.object.update({ 'system.skillData': skillData });
+                    this.render(false);
+                } else if (subskillData.hasOwnProperty(skillName) && (subskillData[skillName] || 0) > 0) {
+                    subskillData[skillName] = (subskillData[skillName] || 0) - 1;
+                    await this.object.update({ 'system.subskillData': subskillData });
+                    this.render(false);
+                }
+            } else {
+                // Update real skill item
+                const item = this.object.parent.items.get(itemId);
+                if (
+                    item &&
+                    (item.type === 'skill' || item.type === 'subskill') &&
+                    (item.system.aps || 0) > 0
+                ) {
+                    const newValue = (item.system.aps || 0) - 1;
+                    await item.update({ 'system.aps': newValue });
+                    this.render(false);
+                }
+            }
+        });
+
         // Render the item sheet for viewing/editing prior to the editable check.
         html.on('click', '.item-edit', (ev) => {
             const li = $(ev.currentTarget).parents('.item');

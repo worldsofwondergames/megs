@@ -18,7 +18,9 @@ export class MEGSItem extends Item {
 
         // Only process new gadgets
         if (this.type !== MEGS.itemTypes.gadget) return;
-        if (this._stats.compendiumSource || this._stats.duplicateSource) return;
+
+        // Skip compendium items
+        if (this._stats.compendiumSource) return;
 
         if (this.parent) {
             // Gadget owned by actor - create actual skill items
@@ -26,8 +28,10 @@ export class MEGSItem extends Item {
             if (existingSkills.length > 0) return;
             await this._addSkillsToGadget();
         } else {
-            // Standalone gadget - initialize skillData/subskillData
-            await this._initializeSkillData();
+            // Standalone gadget - initialize skillData/subskillData only if not a duplicate
+            if (!this._stats.duplicateSource) {
+                await this._initializeSkillData();
+            }
         }
     }
 

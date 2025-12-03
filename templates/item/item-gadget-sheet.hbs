@@ -48,12 +48,7 @@
 
         {{!-- Owned Skills Tab --}}
         <div class="tab skills" data-group="primary" data-tab="skills">
-            {{#unless hasActor}}
-                <div class="message-panel">Due to technical limitations, Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
-            {{/unless}}
-            {{#if hasActor}}
-                {{> "systems/megs/templates/item/parts/item-gadget-skills.hbs"}}
-            {{/if}}
+            {{> "systems/megs/templates/item/parts/item-gadget-skills.hbs"}}
         </div>
 
         {{!-- Traits Tab --}}

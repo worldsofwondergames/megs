@@ -904,7 +904,7 @@ export class MEGSItemSheet extends ItemSheet {
     _getHeaderButtons() {
         let buttons;
         if (this.object.isOwner) {
-            buttons = [
+            const headerButtons = [
                 {
                     class: 'megs-toggle-edit-mode',
                     label: game.i18n.localize('MEGS.Edit') ?? 'Edit',
@@ -912,14 +912,33 @@ export class MEGSItemSheet extends ItemSheet {
                     onclick: (e) => {
                         this._toggleEditMode(e);
                     },
-                },
-                ...super._getHeaderButtons(),
+                }
             ];
+
+            // Add settings button for gadgets
+            if (this.object.type === 'gadget') {
+                headerButtons.push({
+                    class: 'megs-open-settings',
+                    label: game.i18n.localize('MEGS.Settings') ?? 'Settings',
+                    icon: 'fas fa-cog',
+                    onclick: (e) => {
+                        this._openSettings(e);
+                    },
+                });
+            }
+
+            buttons = [...headerButtons, ...super._getHeaderButtons()];
         } else {
             buttons = super._getHeaderButtons();
         }
         this._changeConfigureIcon(buttons);
         return buttons;
+    }
+
+    _openSettings(e) {
+        e.preventDefault();
+        // Activate the settings tab
+        this._tabs[0].activate('settings');
     }
 
     _changeConfigureIcon(buttons) {

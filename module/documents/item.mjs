@@ -24,9 +24,6 @@ export class MEGSItem extends Item {
         console.log('- duplicateSource:', this._stats.duplicateSource);
         console.log('- has parent:', !!this.parent);
 
-        // Skip compendium items
-        if (this._stats.compendiumSource) return;
-
         if (this.parent) {
             // Gadget owned by actor - create actual skill items
             const existingSkills = this.parent.items.filter(i => i.system.parent === this.id);

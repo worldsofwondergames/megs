@@ -20,6 +20,9 @@
             {{#if (compare system.settings.hasGadgets "eq" "true")}}
                 <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
             {{/if}}
+            {{#if (compare system.settings.hasTraits "eq" "true")}}
+                <a class="item" data-tab="traits">{{localize 'MEGS.Traits'}}</a>
+            {{/if}}
             <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
         {{/if}}
     </nav>
@@ -141,6 +144,11 @@
             <div>
                 <input type="checkbox" id="system.settings.hasGadgets" name="system.settings.hasGadgets" value="true" {{#if (compare system.settings.hasGadgets "eq" "true" )}} checked {{/if}}>
                 <label for="system.settings.hasGadgets"> {{localize 'MEGS.HasGadgets'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.settings.hasTraits" name="system.settings.hasTraits" value="true" {{#if (compare system.settings.hasTraits "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasTraits"> {{localize 'MEGS.HasTraits'}}</label>
             </div>
 
         </div>

@@ -30,10 +30,11 @@
     letter-spacing: 0.05em;
 }
 
-.megs .window-header {
+.window-header {
     background-color: var(--darkblue);
     font-size: 20px;
     padding: 3px 0 3px 0;
+    font-family: 'DecoturaICG', sans-serif;
 }
 
 .megs.window-app .window-content {

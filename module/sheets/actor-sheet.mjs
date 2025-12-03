@@ -156,14 +156,16 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Filter skills
         context.filteredSkills = [];
-        if (context.system.settings.hideZeroAPSkills !== 'true') {
-            context.filteredSkills = context.skills;
-        } else {
-            context.skills.forEach((skill) => {
-                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
-                    context.filteredSkills.push(skill);
-                }
-            });
+        if (context.skills) {
+            if (context.system.settings.hideZeroAPSkills !== 'true') {
+                context.filteredSkills = context.skills;
+            } else {
+                context.skills.forEach((skill) => {
+                    if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                        context.filteredSkills.push(skill);
+                    }
+                });
+            }
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');

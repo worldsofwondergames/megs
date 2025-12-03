@@ -52,3 +52,10 @@
 - Changed usage of deprecated Foundry constants and functions
 - Minor styling changes
 - Localized still more hard-coded English strings
+- Standalone gadgets can now store skill APs that transfer when added to actors
+- Increment/decrement buttons added for skills on gadgets (in edit mode)
+- Vehicle and location actors display skills from linked gadgets (read-only)
+- Owner dropdown on vehicle/location sheets now alphabetized by name
+- Changed configure sheet icon from cog to document icon
+- Settings moved from tab to header button with cog icon on gadgets
+- Gadgets can now have traits with optional Traits tab (toggle in Settings)

@@ -420,6 +420,34 @@ export class MEGSActorSheet extends ActorSheet {
             }
         });
 
+        // Add skills from linked gadget (for vehicles/locations)
+        if (context.system.linkedItemId && context.system.ownerId) {
+            const owner = game.actors.get(context.system.ownerId);
+            if (owner && owner.items) {
+                // Get all skills and subskills that belong to the linked gadget
+                owner.items.forEach((item) => {
+                    if (item.system.parent === context.system.linkedItemId) {
+                        if (item.type === MEGS.itemTypes.skill) {
+                            const linkedSkill = { ...item };
+                            linkedSkill.isFromLinkedGadget = true;
+                            linkedSkill.subskills = [];
+                            if (linkedSkill.system.aps === 0) {
+                                linkedSkill.unskilled = true;
+                                linkedSkill.linkedAPs = context.system.linkedItem?.system.attributes[linkedSkill.system.link]?.value || 0;
+                            } else {
+                                linkedSkill.unskilled = false;
+                            }
+                            skills.push(linkedSkill);
+                        } else if (item.type === MEGS.itemTypes.subskill) {
+                            const linkedSubskill = { ...item };
+                            linkedSubskill.isFromLinkedGadget = true;
+                            subskills.push(linkedSubskill);
+                        }
+                    }
+                });
+            }
+        }
+
         // sort alphabetically
         const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
         arrays.forEach((element) => {

@@ -58,6 +58,10 @@ export class MEGSItem extends Item {
     async _addSkillsToGadget() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
+        // Get virtual skill data if it exists
+        const skillData = this.system.skillData || {};
+        const subskillData = this.system.subskillData || {};
+
         let skills = [];
         let subskills = [];
 
@@ -71,6 +75,8 @@ export class MEGSItem extends Item {
             delete item.effects;
             // Set parent to this gadget's ID
             item.system.parent = this.id;
+            // Use virtual skill APs if available, otherwise default to 0
+            item.system.aps = skillData[i.name] || 0;
             skills.push(item);
 
             if (i.system.subskills) {
@@ -85,7 +91,7 @@ export class MEGSItem extends Item {
                             baseCost: 0,
                             totalCost: 0,
                             factorCost: 0,
-                            aps: 0,
+                            aps: subskillData[j.name] || 0,
                             parent: '', // Will be set after skills are created
                             type: j.type,
                             linkedSkill: i.name,

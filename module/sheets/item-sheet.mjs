@@ -435,6 +435,55 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     /**
+     * Create virtual skill/subskill items from stored skillData for standalone gadgets
+     * @param {*} context
+     * @returns {Array}
+     */
+    _createVirtualSkillsFromData(context) {
+        const virtualItems = [];
+        const skillData = context.system.skillData || {};
+        const subskillData = context.system.subskillData || {};
+
+        // Create virtual skill items
+        for (let [skillName, aps] of Object.entries(skillData)) {
+            const virtualSkill = {
+                _id: `virtual-skill-${skillName}`,
+                name: skillName,
+                type: MEGS.itemTypes.skill,
+                img: 'systems/megs/assets/images/icons/skillls/skill.png',
+                system: {
+                    aps: aps,
+                    parent: '',
+                    link: 'dex',
+                    type: 'both'
+                },
+                isVirtual: true
+            };
+            virtualItems.push(virtualSkill);
+        }
+
+        // Create virtual subskill items
+        for (let [subskillName, aps] of Object.entries(subskillData)) {
+            const virtualSubskill = {
+                _id: `virtual-subskill-${subskillName}`,
+                name: subskillName,
+                type: MEGS.itemTypes.subskill,
+                img: 'systems/megs/assets/images/icons/skillls/skill.png',
+                system: {
+                    aps: aps,
+                    parent: `virtual-skill-parent`,
+                    linkedSkill: '',
+                    useUnskilled: 'false'
+                },
+                isVirtual: true
+            };
+            virtualItems.push(virtualSubskill);
+        }
+
+        return virtualItems;
+    }
+
+    /**
      *
      * @param {*} context
      */
@@ -456,17 +505,23 @@ export class MEGSItemSheet extends ItemSheet {
         const gadgets = [];
 
         let items = [];
+        let isStandalone = !context.document.parent;
+
         if (context.document.parent) {
+            // Gadget owned by actor - get actual items
             const parentActorSheet = context.document.parent._sheet;
             if (parentActorSheet) {
                 const parentActorItems = parentActorSheet.getData().data.items;
                 items = parentActorItems;
             }
+        } else if (context.system.skillData) {
+            // Standalone gadget - create virtual skill/subskill items from stored data
+            items = this._createVirtualSkillsFromData(context);
         }
 
         // First pass: collect items that belong to this gadget
         for (let i of items) {
-            if (i.system.parent === this.document._id) {
+            if (isStandalone || i.system.parent === this.document._id) {
                 i.img = i.img || Item.DEFAULT_ICON;
 
                 // Append to powers

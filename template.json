@@ -391,6 +391,8 @@
                 "hasGadgets": "true",
                 "hideZeroAPSkills": "true"
             },
+            "skillData": {},
+            "subskillData": {},
             "weapon": {
                 "isWeapon": false,
                 "range": 0,

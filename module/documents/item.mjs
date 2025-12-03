@@ -19,22 +19,14 @@ export class MEGSItem extends Item {
         // Only process new gadgets
         if (this.type !== MEGS.itemTypes.gadget) return;
 
-        console.log('_onCreate called for gadget:', this.name);
-        console.log('- compendiumSource:', this._stats.compendiumSource);
-        console.log('- duplicateSource:', this._stats.duplicateSource);
-        console.log('- has parent:', !!this.parent);
-
         if (this.parent) {
             // Gadget owned by actor - create actual skill items
             const existingSkills = this.parent.items.filter(i => i.system.parent === this.id);
-            console.log('- existing skills for this gadget:', existingSkills.length);
             if (existingSkills.length > 0) return;
-            console.log('- calling _addSkillsToGadget');
             await this._addSkillsToGadget();
         } else {
             // Standalone gadget - initialize skillData/subskillData only if not a duplicate
             if (!this._stats.duplicateSource) {
-                console.log('- calling _initializeSkillData');
                 await this._initializeSkillData();
             }
         }
@@ -65,14 +57,11 @@ export class MEGSItem extends Item {
     }
 
     async _addSkillsToGadget() {
-        console.log('_addSkillsToGadget called for:', this.name);
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
         // Get virtual skill data if it exists
         const skillData = this.system.skillData || {};
         const subskillData = this.system.subskillData || {};
-        console.log('- skillData:', skillData);
-        console.log('- subskillData:', subskillData);
 
         let skills = [];
         let subskills = [];
@@ -115,10 +104,8 @@ export class MEGSItem extends Item {
             }
         }
 
-        console.log('- creating', skills.length, 'skills');
         // Create skills on the parent actor
         const createdSkills = await this.parent.createEmbeddedDocuments('Item', skills);
-        console.log('- created', createdSkills.length, 'skills');
 
         // Now link subskills to their parent skills
         let skillMap = {};
@@ -130,11 +117,8 @@ export class MEGSItem extends Item {
             i.system.parent = skillMap[i.system.linkedSkill];
         }
 
-        console.log('- creating', subskills.length, 'subskills');
         // Create subskills on the parent actor
-        const createdSubskills = await this.parent.createEmbeddedDocuments('Item', subskills);
-        console.log('- created', createdSubskills.length, 'subskills');
-        console.log('_addSkillsToGadget completed');
+        await this.parent.createEmbeddedDocuments('Item', subskills);
     }
 
     /**

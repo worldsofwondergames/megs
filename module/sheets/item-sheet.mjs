@@ -937,8 +937,14 @@ export class MEGSItemSheet extends ItemSheet {
 
     _openSettings(e) {
         e.preventDefault();
-        // Activate the settings tab
-        this._tabs[0].activate('settings');
+        // Find and activate the settings tab
+        const tabs = this.element.find('.tabs[data-group="primary"]');
+        const settingsTab = tabs.find('a[data-tab="settings"]');
+
+        // If the tab link doesn't exist in nav (which it doesn't), we need to manually activate
+        // Find the tab content and activate it
+        this.element.find('.tab[data-tab="settings"]').addClass('active');
+        this.element.find('.tab').not('[data-tab="settings"]').removeClass('active');
     }
 
     _changeConfigureIcon(buttons) {

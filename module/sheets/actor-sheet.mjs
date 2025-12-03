@@ -734,7 +734,15 @@ export class MEGSActorSheet extends ActorSheet {
             sheetHeaderLinks = super._getHeaderButtons();
         }
         this._changeEditHeaderLink(sheetHeaderLinks);
+        this._changeConfigureIcon(sheetHeaderLinks);
         return sheetHeaderLinks;
+    }
+
+    _changeConfigureIcon(buttons) {
+        const configButton = buttons.find(b => b.class === 'configure-sheet');
+        if (configButton) {
+            configButton.icon = 'fas fa-file-alt'; // Document icon
+        }
     }
 
     _toggleEditMode(_e) {

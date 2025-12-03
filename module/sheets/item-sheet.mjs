@@ -902,8 +902,9 @@ export class MEGSItemSheet extends ItemSheet {
 
     /** @override **/
     _getHeaderButtons() {
+        let buttons;
         if (this.object.isOwner) {
-            return [
+            buttons = [
                 {
                     class: 'megs-toggle-edit-mode',
                     label: game.i18n.localize('MEGS.Edit') ?? 'Edit',
@@ -914,8 +915,18 @@ export class MEGSItemSheet extends ItemSheet {
                 },
                 ...super._getHeaderButtons(),
             ];
+        } else {
+            buttons = super._getHeaderButtons();
         }
-        return super._getHeaderButtons();
+        this._changeConfigureIcon(buttons);
+        return buttons;
+    }
+
+    _changeConfigureIcon(buttons) {
+        const configButton = buttons.find(b => b.class === 'configure-sheet');
+        if (configButton) {
+            configButton.icon = 'fas fa-file-alt'; // Document icon
+        }
     }
 
     _toggleEditMode(_e) {

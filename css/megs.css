@@ -33,6 +33,7 @@
 .megs .window-header {
     background-color: var(--darkblue);
     font-size: 20px;
+    padding: 3px 0 3px 0;
 }
 
 .megs.window-app .window-content {

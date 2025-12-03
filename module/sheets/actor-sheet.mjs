@@ -218,7 +218,11 @@ export class MEGSActorSheet extends ActorSheet {
      * @returns
      */
     _sortArray(array) {
-        const sortedKeys = Object.keys(array).sort((a, b) => a.localeCompare(b));
+        const sortedKeys = Object.keys(array).sort((a, b) => {
+            const nameA = array[a].toUpperCase();
+            const nameB = array[b].toUpperCase();
+            return nameA.localeCompare(nameB);
+        });
         return sortedKeys.reduce((acc, key) => {
             acc[key] = array[key];
             return acc;

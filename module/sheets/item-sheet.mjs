@@ -576,12 +576,8 @@ export class MEGSItemSheet extends ItemSheet {
         let isStandalone = !context.document.parent;
 
         if (context.document.parent) {
-            // Gadget owned by actor - get actual items
-            const parentActorSheet = context.document.parent._sheet;
-            if (parentActorSheet) {
-                const parentActorItems = parentActorSheet.getData().data.items;
-                items = parentActorItems;
-            }
+            // Gadget owned by actor - get actual items from the actor
+            items = context.document.parent.items.contents;
         } else if (context.system.skillData) {
             // Standalone gadget - create virtual skill/subskill items from stored data
             items = this._createVirtualSkillsFromData(context);
@@ -925,5 +921,6 @@ export class MEGSItemSheet extends ItemSheet {
     _toggleEditMode(_e) {
         const currentValue = this.object.getFlag('megs', 'edit-mode');
         this.object.setFlag('megs', 'edit-mode', !currentValue);
+        this.render(false);
     }
 }

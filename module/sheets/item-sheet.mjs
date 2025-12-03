@@ -311,9 +311,13 @@ export class MEGSItemSheet extends ItemSheet {
         html.on('click', '.item-delete', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             li.length = 1; // make sure only returns this line
-            const item = this.object.parent.items.get(li.data('itemId'));
-            item.delete();
-            li.slideUp(200, () => this.render(false));
+            if (this.object.parent) {
+                const item = this.object.parent.items.get(li.data('itemId'));
+                if (item) {
+                    item.delete();
+                    li.slideUp(200, () => this.render(false));
+                }
+            }
         });
 
         // MEGS roll

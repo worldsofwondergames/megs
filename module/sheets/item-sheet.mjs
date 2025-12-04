@@ -411,8 +411,18 @@ export class MEGSItemSheet extends ItemSheet {
                 dataset.roll,
                 dataset.unskilled
             );
+
+            // Create speaker - use parent actor if owned, otherwise use gadget name as alias
+            let speaker;
+            if (this.object.parent) {
+                speaker = ChatMessage.getSpeaker({ actor: this.object.parent });
+            } else {
+                speaker = ChatMessage.getSpeaker();
+                speaker.alias = this.object.name;
+            }
+
             console.info('Rolling from item-sheet click');
-            const rollTables = new MegsTableRolls(rollValues);
+            const rollTables = new MegsTableRolls(rollValues, speaker);
             const heroPoints = this.object.parent?.system?.heroPoints?.value || 0;
             rollTables
                 .roll(event, heroPoints)
@@ -459,7 +469,17 @@ export class MEGSItemSheet extends ItemSheet {
                 dataset.roll,
                 false
             );
-            const rollTables = new MegsTableRolls(rollValues);
+
+            // Create speaker - use parent actor if owned, otherwise use gadget name as alias
+            let speaker;
+            if (this.object.parent) {
+                speaker = ChatMessage.getSpeaker({ actor: this.object.parent });
+            } else {
+                speaker = ChatMessage.getSpeaker();
+                speaker.alias = this.object.name;
+            }
+
+            const rollTables = new MegsTableRolls(rollValues, speaker);
             const heroPoints = this.object.parent?.system?.heroPoints?.value || 0;
             rollTables
                 .roll(event, heroPoints)

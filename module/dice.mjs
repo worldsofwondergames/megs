@@ -551,21 +551,29 @@ export class MegsTableRolls {
         let columnShifts = 0;
         const successNumber = actionTable[avIndex][ovIndex];
 
-        // Must meet or beat both Success Number and threshold
-        if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+        // Roll must be greater than Success Number
+        if (avRollTotal <= successNumber) {
             return 0;
         }
 
-        // Start from the column immediately to the right of the Success Number
-        // Count consecutive column shifts only
+        // Roll must be on or beyond the Column Shift Threshold (11)
+        if (avRollTotal <= COLUMN_SHIFT_THRESHOLD) {
+            return 0;
+        }
+
+        // Count columns "on or beyond" the threshold (>= 11), starting after the success number column
+        // "The 11's split the Action Table in two"
         for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
             const colValue = actionTable[avIndex][i];
-            // Only count columns with values >= threshold and < roll
-            if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
-                columnShifts++;
-            } else {
-                // Stop at first column we don't exceed (shifts must be consecutive)
-                break;
+            // Only count columns at or beyond the threshold
+            if (colValue >= COLUMN_SHIFT_THRESHOLD) {
+                // The roll must be greater than the value in this column
+                if (avRollTotal > colValue) {
+                    columnShifts++;
+                } else {
+                    // Stop at first column we don't exceed (shifts are consecutive)
+                    break;
+                }
             }
         }
 

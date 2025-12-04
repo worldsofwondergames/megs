@@ -46,9 +46,10 @@
 - Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis
 
-## 0.7.0 (May 30, 2025)
+## 0.7.0 (December 15, 2025)
 
 ### Enhancements
+
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets can now have traits with optional Traits tab (toggle in Settings)
@@ -61,6 +62,7 @@
 - Localized still more hard-coded English strings
 
 ### Foundry VTT V13 Compatibility
+
 - Fixed deprecation warning for `renderTemplate` - now uses `foundry.applications.handlebars.renderTemplate`
 - Fixed deprecation warning for `roll.evaluate()` - removed deprecated `async` option
 - Fixed deprecation warning for chat message creation - now uses `rolls` array instead of deprecated `CHAT_MESSAGE_STYLES.ROLL`
@@ -68,10 +70,7 @@
 - Changed usage of other deprecated Foundry constants and functions
 
 ### Bug Fixes
+
 - Fixed column shift calculation in dice roller that was producing incorrect results
 - Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
 - Added test coverage for edge case where roll is exactly on threshold
-
-### Documentation
-- Added comprehensive Application V2 migration plan for future Foundry compatibility
-- Added branch management guidelines to ensure system.json URLs are updated after branch changes

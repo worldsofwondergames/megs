@@ -491,6 +491,13 @@ test('_getColumnShifts returns the correct number of column shifts', () => {
     expect(
         dice._getColumnShifts(39, dice._getRangeIndex(10), dice._getRangeIndex(9), actionTable)
     ).toBe(8);
+
+    expect(
+        dice._getColumnShifts(15, dice._getRangeIndex(6), dice._getRangeIndex(10), actionTable)
+    ).toBe(0);
+    expect(
+        dice._getColumnShifts(18, dice._getRangeIndex(14), dice._getRangeIndex(0), actionTable)
+    ).toBe(3);
 });
 
 test('_getRangeIndex returns the correct index values', () => {

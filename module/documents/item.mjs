@@ -12,6 +12,142 @@ export class MEGSItem extends Item {
         super(data, context);
     }
 
+    /** @override */
+    async _onCreate(data, options, userId) {
+        await super._onCreate(data, options, userId);
+
+        // Only process new gadgets
+        if (this.type !== MEGS.itemTypes.gadget) return;
+
+        if (this.parent) {
+            // Gadget owned by actor - create actual skill and trait items
+            const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
+            if (existingItems.length > 0) return;
+            await this._addSkillsToGadget();
+            await this._addTraitsToGadget();
+        } else {
+            // Standalone gadget - initialize skillData/subskillData only if not a duplicate
+            if (!this._stats.duplicateSource) {
+                await this._initializeSkillData();
+            }
+        }
+    }
+
+    async _initializeSkillData() {
+        const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
+
+        const skillData = {};
+        const subskillData = {};
+
+        for (let skill of skillsJson) {
+            // Initialize skill with 0 APs
+            skillData[skill.name] = 0;
+
+            // Initialize subskills with 0 APs
+            if (skill.system.subskills) {
+                for (let subskill of skill.system.subskills) {
+                    subskillData[subskill.name] = 0;
+                }
+            }
+        }
+
+        await this.update({
+            'system.skillData': skillData,
+            'system.subskillData': subskillData
+        });
+    }
+
+    async _addSkillsToGadget() {
+        const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
+
+        // Get virtual skill data if it exists
+        const skillData = this.system.skillData || {};
+        const subskillData = this.system.subskillData || {};
+
+        let skills = [];
+        let subskills = [];
+
+        for (let i of skillsJson) {
+            i.img = i.img
+                ? 'systems/megs/assets/images/icons/skillls/' + i.img
+                : 'systems/megs/assets/images/icons/skillls/skill.png';
+            const item = { ...new MEGSItem(i) };
+            delete item.system.subskills;
+            delete item._id;
+            delete item.effects;
+            // Set parent to this gadget's ID
+            item.system.parent = this.id;
+            // Use virtual skill APs if available, otherwise default to 0
+            item.system.aps = skillData[i.name] || 0;
+            skills.push(item);
+
+            if (i.system.subskills) {
+                for (let j of i.system.subskills) {
+                    const subskillObj = {
+                        name: j.name,
+                        type: 'subskill',
+                        img: j.img
+                            ? 'systems/megs/assets/images/icons/subskillls/' + j.img
+                            : 'systems/megs/assets/images/icons/skillls/skill.png',
+                        system: {
+                            baseCost: 0,
+                            totalCost: 0,
+                            factorCost: 0,
+                            aps: subskillData[j.name] || 0,
+                            parent: '', // Will be set after skills are created
+                            type: j.type,
+                            linkedSkill: i.name,
+                            useUnskilled: j.useUnskilled,
+                        },
+                    };
+                    subskills.push(subskillObj);
+                }
+            }
+        }
+
+        // Create skills on the parent actor
+        const createdSkills = await this.parent.createEmbeddedDocuments('Item', skills);
+
+        // Now link subskills to their parent skills
+        let skillMap = {};
+        createdSkills.forEach((skill) => {
+            skillMap[skill.name] = skill.id;
+        });
+
+        for (let i of subskills) {
+            i.system.parent = skillMap[i.system.linkedSkill];
+        }
+
+        // Create subskills on the parent actor
+        await this.parent.createEmbeddedDocuments('Item', subskills);
+    }
+
+    async _addTraitsToGadget() {
+        // Get virtual trait data if it exists
+        const traitData = this.system.traitData || {};
+
+        // If no traits to add, return early
+        if (Object.keys(traitData).length === 0) return;
+
+        let traits = [];
+
+        for (let [key, trait] of Object.entries(traitData)) {
+            const traitObj = {
+                name: trait.name,
+                type: trait.type,
+                img: trait.img || Item.DEFAULT_ICON,
+                system: {
+                    ...trait.system,
+                    parent: this.id  // Set parent to this gadget's ID
+                }
+            };
+            traits.push(traitObj);
+        }
+
+        // Create traits on the parent actor
+        await this.parent.createEmbeddedDocuments('Item', traits);
+    }
+
     /**
      * Augment the basic Item data model with additional dynamic data.
      */
@@ -235,4 +371,10 @@ export class MEGSItem extends Item {
         const field = this.constructor.hierarchy[collectionName];
         return field.getCollection(this);
     }
+}
+
+async function _loadData(jsonPath) {
+    const response = await fetch(jsonPath);
+    const contents = await response.json();
+    return contents;
 }

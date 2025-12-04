@@ -389,8 +389,12 @@
                 "hasPowers": "true",
                 "hasSkills": "true",
                 "hasGadgets": "true",
+                "hasTraits": "false",
                 "hideZeroAPSkills": "true"
             },
+            "skillData": {},
+            "subskillData": {},
+            "traitData": {},
             "weapon": {
                 "isWeapon": false,
                 "range": 0,

@@ -1,3 +1,8 @@
+<div>
+    <input type="checkbox" id="system.settings.hideZeroAPSkills" name="system.settings.hideZeroAPSkills" value="true" {{#if (compare system.settings.hideZeroAPSkills "eq" "true" )}} checked {{/if}}>
+    <label for="system.settings.hideZeroAPSkills"> {{localize "MEGS.HideZeroRankSkills"}}</label>
+</div>
+
 <ol class='items-list'>
     <li class='item flexrow items-header'>
         <div class='item-name'>{{localize 'MEGS.Name'}}</div>
@@ -8,10 +13,8 @@
         <div class='item-controls'>
         </div>
     </li>
-    {{#each skills as |item id|}}
-        <li class='item flexrow item-row
-    {{#if item.system.aps}}bold{{/if}}
-    ' data-item-id='{{item._id}}'>
+    {{#each filteredSkills as |item id|}}
+        <li class='item flexrow item-row {{#if (compare item.system.aps '>' 0)}}bold{{/if}}' data-item-id='{{item._id}}'>
             <div class='item-name'>
                 <div class='item-image'>
                     <a class='rollable' data-roll-type='item'>
@@ -19,11 +22,19 @@
                     </a>
                 </div>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
-                    {{item.name}}
+                    {{getSkillDisplayName item}}
                 </a>
             </div>
             <div class='item-aps'>
-                {{item.system.aps}}
+                {{#if ../flags.megs.edit-mode}}
+                    <div class="quantity skill-input">
+                        <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}" data-skill-name="{{item.name}}" data-is-virtual="{{item.isVirtual}}">&minus;</button>
+                        <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
+                        <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}" data-skill-name="{{item.name}}" data-is-virtual="{{item.isVirtual}}">&plus;</button>
+                    </div>
+                {{else}}
+                    {{item.system.aps}}
+                {{/if}}
             </div>
             {{#if showHeroPointCosts}}
                 <div class='item-total-cost'>

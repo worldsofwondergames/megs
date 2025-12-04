@@ -28,11 +28,15 @@
             </div>
             <div class='item-aps'>
                 {{#if ../flags.megs.edit-mode}}
-                    <div class="quantity skill-input">
-                        <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
-                        <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-                        <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
-                    </div>
+                    {{#if item.isFromLinkedGadget}}
+                        {{item.system.aps}}
+                    {{else}}
+                        <div class="quantity skill-input">
+                            <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+                            <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
+                            <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+                        </div>
+                    {{/if}}
                 {{else}}
                     {{item.system.aps}}
                 {{/if}}
@@ -63,14 +67,16 @@
                         <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="Roll" />
                     </a>
                 {{/if}}
-                <a class='item-control item-edit' title='{{localize "MEGS.Edit" type=item.name}}'>
-                    <img src="/systems/megs/assets/images/icons/edit.png" class="svg-icon" alt="{{localize " MEGS.Edit" type=item.name}}" />
-                </a>
-                {{#if ../flags.megs.edit-mode}}
-                    <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
-                        <i class='fas fa-trash'></i>
+                {{#unless item.isFromLinkedGadget}}
+                    <a class='item-control item-edit' title='{{localize "MEGS.Edit" type=item.name}}'>
+                        <img src="/systems/megs/assets/images/icons/edit.png" class="svg-icon" alt="{{localize " MEGS.Edit" type=item.name}}" />
                     </a>
-                {{/if}}
+                    {{#if ../flags.megs.edit-mode}}
+                        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    {{/if}}
+                {{/unless}}
             </div>
         </li>
     {{/each}}

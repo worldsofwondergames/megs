@@ -96,7 +96,7 @@ export default class MEGSCombat extends Combat {
 
             // Produce an initiative roll for the Combatant
             const roll = combatant.getInitiativeRoll(formula, hpToAdd);
-            await roll.evaluate({ async: true });
+            await roll.evaluate();
             updates.push({ _id: id, initiative: roll.total });
 
             // Construct chat message data
@@ -156,7 +156,7 @@ export default class MEGSCombat extends Combat {
         const data = {
             maxHpToSpend: maxHpToSpend,
         };
-        let dialogHtml = await renderTemplate(template, data);
+        let dialogHtml = await foundry.applications.handlebars.renderTemplate(template, data);
         let label =
             game.i18n.localize('MEGS.HeroPoints') + ' - ' + game.i18n.localize('MEGS.Initiative');
         if (combatantName) {

@@ -20,9 +20,11 @@
             {{#if (compare system.settings.hasGadgets "eq" "true")}}
                 <a class="item" data-tab="gadgets">{{localize 'MEGS.Gadgets'}}</a>
             {{/if}}
+            {{#if (compare system.settings.hasTraits "eq" "true")}}
+                <a class="item" data-tab="traits">{{localize 'MEGS.Traits'}}</a>
+            {{/if}}
             <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
         {{/if}}
-        <a class="item" data-tab="settings">{{localize 'MEGS.Settings'}}</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -48,22 +50,12 @@
 
         {{!-- Owned Skills Tab --}}
         <div class="tab skills" data-group="primary" data-tab="skills">
-            {{#unless hasActor}}
-                <div class="message-panel">Due to technical limitations, Skills cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Skills.</div>
-            {{/unless}}
-            {{#if hasActor}}
-                {{> "systems/megs/templates/item/parts/item-gadget-skills.hbs"}}
-            {{/if}}
+            {{> "systems/megs/templates/item/parts/item-gadget-skills.hbs"}}
         </div>
 
         {{!-- Traits Tab --}}
         <div class="tab traits" data-group="primary" data-tab="traits">
-            {{#unless hasActor}}
-                <div class="message-panel">Due to technical limitations, Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
-            {{/unless}}
-            {{#if hasActor}}
-                {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
-            {{/if}}
+            {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
         </div>
 
         {{!-- Owned gadgets Tab --}}
@@ -147,6 +139,11 @@
             <div>
                 <input type="checkbox" id="system.settings.hasGadgets" name="system.settings.hasGadgets" value="true" {{#if (compare system.settings.hasGadgets "eq" "true" )}} checked {{/if}}>
                 <label for="system.settings.hasGadgets"> {{localize 'MEGS.HasGadgets'}}</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="system.settings.hasTraits" name="system.settings.hasTraits" value="true" {{#if (compare system.settings.hasTraits "eq" "true" )}} checked {{/if}}>
+                <label for="system.settings.hasTraits"> {{localize 'MEGS.HasTraits'}}</label>
             </div>
 
         </div>

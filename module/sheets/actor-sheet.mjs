@@ -81,6 +81,7 @@ export class MEGSActorSheet extends ActorSheet {
             actorData.type === MEGS.characterTypes.vehicle ||
             actorData.type === MEGS.characterTypes.location
         ) {
+            this._prepareItems(context);
             this._prepareCharacterData(context);
 
             // get list of potential actors to own
@@ -156,14 +157,16 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Filter skills
         context.filteredSkills = [];
-        if (context.system.settings.hideZeroAPSkills !== 'true') {
-            context.filteredSkills = context.skills;
-        } else {
-            context.skills.forEach((skill) => {
-                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
-                    context.filteredSkills.push(skill);
-                }
-            });
+        if (context.skills) {
+            if (context.system.settings.hideZeroAPSkills !== 'true') {
+                context.filteredSkills = context.skills;
+            } else {
+                context.skills.forEach((skill) => {
+                    if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                        context.filteredSkills.push(skill);
+                    }
+                });
+            }
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
@@ -218,7 +221,11 @@ export class MEGSActorSheet extends ActorSheet {
      * @returns
      */
     _sortArray(array) {
-        const sortedKeys = Object.keys(array).sort((a, b) => a.localeCompare(b));
+        const sortedKeys = Object.keys(array).sort((a, b) => {
+            const nameA = array[a].toUpperCase();
+            const nameB = array[b].toUpperCase();
+            return nameA.localeCompare(nameB);
+        });
         return sortedKeys.reduce((acc, key) => {
             acc[key] = array[key];
             return acc;
@@ -415,6 +422,34 @@ export class MEGSActorSheet extends ActorSheet {
                 gadgets.push(i);
             }
         });
+
+        // Add skills from linked gadget (for vehicles/locations)
+        if (context.system.linkedItemId && context.system.ownerId) {
+            const owner = game.actors.get(context.system.ownerId);
+            if (owner && owner.items) {
+                // Get all skills and subskills that belong to the linked gadget
+                owner.items.forEach((item) => {
+                    if (item.system.parent === context.system.linkedItemId) {
+                        if (item.type === MEGS.itemTypes.skill) {
+                            const linkedSkill = { ...item };
+                            linkedSkill.isFromLinkedGadget = true;
+                            linkedSkill.subskills = [];
+                            if (linkedSkill.system.aps === 0) {
+                                linkedSkill.unskilled = true;
+                                linkedSkill.linkedAPs = context.system.linkedItem?.system.attributes[linkedSkill.system.link]?.value || 0;
+                            } else {
+                                linkedSkill.unskilled = false;
+                            }
+                            skills.push(linkedSkill);
+                        } else if (item.type === MEGS.itemTypes.subskill) {
+                            const linkedSubskill = { ...item };
+                            linkedSubskill.isFromLinkedGadget = true;
+                            subskills.push(linkedSubskill);
+                        }
+                    }
+                });
+            }
+        }
 
         // sort alphabetically
         const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
@@ -699,7 +734,15 @@ export class MEGSActorSheet extends ActorSheet {
             sheetHeaderLinks = super._getHeaderButtons();
         }
         this._changeEditHeaderLink(sheetHeaderLinks);
+        this._changeConfigureIcon(sheetHeaderLinks);
         return sheetHeaderLinks;
+    }
+
+    _changeConfigureIcon(buttons) {
+        const configButton = buttons.find(b => b.class === 'configure-sheet');
+        if (configButton) {
+            configButton.icon = 'fas fa-file-alt'; // Document icon
+        }
     }
 
     _toggleEditMode(_e) {

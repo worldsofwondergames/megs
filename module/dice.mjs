@@ -14,7 +14,7 @@ export class MegsRoll extends Roll {
     async toMessage(dialogHtml = {}, { rollMode, create = true } = {}) {
         return await ChatMessage.create({
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            rolls: [this],
             content: dialogHtml,
             sound: CONFIG.sounds.dice,
         });
@@ -384,41 +384,17 @@ export class MegsTableRolls {
         }
 
         // if succeeds, calculate column shifts for result table
+        const avIndex = this._getRangeIndex(avAdjusted);
+        const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
         const rollColumnShifts = this._getColumnShifts(
             avRollTotal,
-            this._getRangeIndex(avAdjusted),
+            avIndex,
+            ovIndex,
             CONFIG.tables.actionTable
         );
         const columnShifts = rollColumnShifts + rvColumnShifts;
         resultData.columnShifts = columnShifts;
         // TODO handle totals greater than 60 on table
-
-        let columnShiftText = '';
-        if (rvColumnShifts > 0) {
-            columnShiftText +=
-                '<table class="init-table">' +
-                '    <tr>' +
-                '        <td class="label">' +
-                game.i18n.localize('MEGS.Roll') +
-                ' ' +
-                game.i18n.localize('MEGS.Shifts') +
-                '</td>' +
-                '        <td class="value">' +
-                rollColumnShifts +
-                '</td>' +
-                '    </tr>';
-            columnShiftText +=
-                '    <tr>' +
-                '        <td class="label">RV ' +
-                game.i18n.localize('MEGS.Shifts') +
-                '</td>' +
-                '        <td class="value">+' +
-                rvColumnShifts +
-                '</td>' +
-                '    </tr>';
-            columnShiftText += '</table>';
-        }
-        resultData.columnShiftText = columnShiftText;
 
         /**********************************
          * RESULT TABLE
@@ -566,39 +542,37 @@ export class MegsTableRolls {
 
     /**
      *
-     * @param {*} template
-     * @param {*} data
-     * @returns
-     */
-    async _renderTemplate(template, data) {
-        return await renderTemplate(template, data);
-    }
-
-    /**
-     *
      * @param {*} avRollTotal
      * @param {*} avIndex
      * @param {*} actionTable
      * @returns
      */
-    _getColumnShifts(avRollTotal, avIndex, actionTable) {
-        // if succeeds, calculate column shifts for result table
+    _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
         let columnShifts = 0;
+        const successNumber = actionTable[avIndex][ovIndex];
 
-        // TODO handle totals greater than 60 on table
+        // Roll must be greater than Success Number
+        if (avRollTotal <= successNumber) {
+            return 0;
+        }
 
-        // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
-        if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
-            /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
-            Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
-            for (let i = 0; i < actionTable[avIndex].length; i++) {
-                if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
-                    // The roll must be greater than the Success Number
-                    if (avRollTotal > actionTable[avIndex][i]) {
-                        columnShifts++;
-                    } else {
-                        break;
-                    }
+        // Roll must be on or beyond the Column Shift Threshold (11)
+        if (avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+            return 0;
+        }
+
+        // Count columns "on or beyond" the threshold (>= 11), starting after the success number column
+        // "The 11's split the Action Table in two"
+        for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
+            const colValue = actionTable[avIndex][i];
+            // Only count columns at or beyond the threshold
+            if (colValue >= COLUMN_SHIFT_THRESHOLD) {
+                // The roll must be greater than the value in this column
+                if (avRollTotal > colValue) {
+                    columnShifts++;
+                } else {
+                    // Stop at first column we don't exceed (shifts are consecutive)
+                    break;
                 }
             }
         }
@@ -719,5 +693,15 @@ export class MegsTableRolls {
             }
         }
         return index;
+    }
+
+    /**
+     * Render a Handlebars template
+     * @param {*} template
+     * @param {*} data
+     * @returns
+     */
+    async _renderTemplate(template, data) {
+        return await foundry.applications.handlebars.renderTemplate(template, data);
     }
 }

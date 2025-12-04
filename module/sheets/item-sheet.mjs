@@ -332,8 +332,7 @@ export class MEGSItemSheet extends ItemSheet {
                 if (traitData[key]) {
                     delete traitData[key];
                     await this.object.update({ 'system.traitData': traitData });
-                    this.render(false);
-                    ui.notifications.info('Trait deleted');
+                    this.render(true);
                 } else {
                     ui.notifications.warn(`Trait key not found: ${key}`);
                 }

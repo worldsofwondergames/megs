@@ -1,39 +1,39 @@
 <form class="{{cssClass}}" autocomplete="off">
-  <header class="sheet-header">
-    {{#if flags.megs.edit-mode}}
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-    {{else}}
-    <img class="profile-img" src="{{item.img}}" title="{{item.name}}"/>
-    {{/if}}
-    <div class="header-fields">
+    <header class="sheet-header">
+        {{#if flags.megs.edit-mode}}
+            <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        {{else}}
+            <img class="profile-img" src="{{item.img}}" title="{{item.name}}" />
+        {{/if}}
+        <div class="header-fields">
 
-      {{!-- Item name --}}
-      {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+            {{!-- Item name --}}
+            {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
 
-      <div class="resources grid grid-2col">
-        <div class="resource flex-group-center{{#unless hasActor}} grid-span-2{{/unless}}">
-          <label for="system.factorCostMod" class="resource-label">{{localize 'MEGS.FactorCostMod'}}</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.factorCostMod" value="{{system.factorCostMod}}" data-dtype="Number"/>
-          </div>
+            <div class="resources grid grid-2col">
+                <div class="resource flex-group-center{{#unless hasActor}} grid-span-2{{/unless}}">
+                    <label for="system.factorCostMod" class="resource-label">{{localize 'MEGS.FactorCostMod'}}</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <input type="text" name="system.factorCostMod" value="{{system.factorCostMod}}" data-dtype="Number" />
+                    </div>
+                </div>
+
+            </div>
+
         </div>
+    </header>
 
-      </div>
- 
-    </div>
-  </header>
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
+    </nav>
 
-  {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
-  </nav>
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
 
-  {{!-- Sheet Body --}}
-  <section class="sheet-body">
-
-    {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-    </div>
-  </section>
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="description">
+            {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+        </div>
+    </section>
 </form>

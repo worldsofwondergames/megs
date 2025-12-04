@@ -40,7 +40,7 @@ export class RollValues {
         this.opposingValue = opposingValue;
         this.effectValue = effectValue;
         this.resistanceValue = resistanceValue;
-        this.rollFormula = rollFormula ? rollFormula : "1d10 + 1d10";
+        this.rollFormula = rollFormula ? rollFormula : '1d10 + 1d10';
         this.unskilled = unskilled || false;
     }
 }
@@ -77,19 +77,17 @@ export class MegsTableRolls {
      */
     async _handleRoll(currentHeroPoints) {
         // what's being rolled (used for display)
-        let label = this.label ? `${this.label}` : "";
+        let label = this.label ? `${this.label}` : '';
         if (this.isUnskilled) {
-            label += " (Unskilled)";
+            label += ' (Unskilled)';
         }
 
         // TODO does not currently handle > 60 for either AV or OV
 
         // Manually enter OV and RV for target
         if (game.user.targets.size === 0) {
-            console.info(
-                "Showing roll dialog from MegsTableRolls_handleRoll() without a target"
-            );
-            const template = "systems/megs/templates/dialogs/rollDialog.hbs";
+            console.info('Showing roll dialog from MegsTableRolls_handleRoll() without a target');
+            const template = 'systems/megs/templates/dialogs/rollDialog.hbs';
             const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
             const data = {
                 valueOrAps: this.valueOrAps,
@@ -109,14 +107,14 @@ export class MegsTableRolls {
                 content: dialogHtml,
                 buttons: {
                     button2: {
-                        label: game.i18n.localize("MEGS.Close"),
+                        label: game.i18n.localize('MEGS.Close'),
                         callback: () => {},
                     },
                     button1: {
-                        label: game.i18n.localize("MEGS.Submit"),
+                        label: game.i18n.localize('MEGS.Submit'),
                         callback: (html) => {
                             const response = this._processOpposingValuesEntry(
-                                html[0].querySelector("form")
+                                html[0].querySelector('form')
                             );
                             this.actionValue = response.actionValue;
                             this.effectValue = response.effectValue;
@@ -137,10 +135,10 @@ export class MegsTableRolls {
                         },
                     },
                 },
-                default: "button1",
+                default: 'button1',
             }).render(true);
         } else if (game.user.targets.size > 1) {
-            ui.notifications.warn(localize("MEGS.ErrorMessages.OnlyOneTarget"));
+            ui.notifications.warn(localize('MEGS.ErrorMessages.OnlyOneTarget'));
         } else {
             // use target token for OV and RV values
             await this._handleTargetedRolls(label);
@@ -152,11 +150,9 @@ export class MegsTableRolls {
      * @param {*} currentHeroPoints
      */
     async _handleTargetedRolls(currentHeroPoints) {
-        console.info(
-            "Showing roll dialog from MegsTableRolls._handleTargetedRolls()"
-        );
+        console.info('Showing roll dialog from MegsTableRolls._handleTargetedRolls()');
 
-        const template = "systems/megs/templates/dialogs/rollDialog.hbs";
+        const template = 'systems/megs/templates/dialogs/rollDialog.hbs';
         const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
         const data = {
             valueOrAps: this.valueOrAps,
@@ -176,14 +172,14 @@ export class MegsTableRolls {
             content: dialogHtml,
             buttons: {
                 button2: {
-                    label: "Close",
+                    label: 'Close',
                     callback: () => {},
                 },
                 button1: {
-                    label: "Submit",
+                    label: 'Submit',
                     callback: (html) => {
                         const response = this._processOpposingValuesEntry(
-                            html[0].querySelector("form")
+                            html[0].querySelector('form')
                         );
                         this.actionValue = response.actionValue;
                         this.effectValue = response.effectValue;
@@ -204,7 +200,7 @@ export class MegsTableRolls {
                     },
                 },
             },
-            default: "button1",
+            default: 'button1',
         }).render(true);
     }
 
@@ -224,23 +220,23 @@ export class MegsTableRolls {
         isUnskilled
     ) {
         console.error(
-            "dice._handleRolls: currentHeroPoints=" +
+            'dice._handleRolls: currentHeroPoints=' +
                 currentHeroPoints +
-                " maxHpToSpend=" +
+                ' maxHpToSpend=' +
                 maxHpToSpend +
-                " hpSpentAV=" +
+                ' hpSpentAV=' +
                 hpSpentAV +
-                " hpSpentEV=" +
+                ' hpSpentEV=' +
                 hpSpentEV +
-                " hpSpentOV=" +
+                ' hpSpentOV=' +
                 hpSpentOV +
-                " hpSpentRV=" +
+                ' hpSpentRV=' +
                 hpSpentRV +
-                " combatManeuverKey=" +
+                ' combatManeuverKey=' +
                 combatManeuverKey +
-                " resultColumnShifts=" +
+                ' resultColumnShifts=' +
                 resultColumnShifts +
-                " isUnskilled=" +
+                ' isUnskilled=' +
                 isUnskilled
         );
 
@@ -270,17 +266,28 @@ export class MegsTableRolls {
          **********************************/
         const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
 
-        let avInfo = "";
+        let avInfo = '';
         if (hpSpentAV > 0 || combatManeuverKey) {
-            avInfo += '<table class="init-table">' +
-            '    <tr>' +
-            '        <td class="label">' + game.i18n.localize("MEGS.Base") + ' AV' + '</td>' +
-            '        <td class="value">' +  this.actionValue + '</td>' +
-            '    </tr>';
+            avInfo +=
+                '<table class="init-table">' +
+                '    <tr>' +
+                '        <td class="label">' +
+                game.i18n.localize('MEGS.Base') +
+                ' AV' +
+                '</td>' +
+                '        <td class="value">' +
+                this.actionValue +
+                '</td>' +
+                '    </tr>';
             if (hpSpentAV > 0) {
-                avInfo += '    <tr>' +
-                    '        <td class="label">HP ' + game.i18n.localize("MEGS.Spent") + '</td>' +
-                    '        <td class="value">+' +  hpSpentAV + '</td>' +
+                avInfo +=
+                    '    <tr>' +
+                    '        <td class="label">HP ' +
+                    game.i18n.localize('MEGS.Spent') +
+                    '</td>' +
+                    '        <td class="value">+' +
+                    hpSpentAV +
+                    '</td>' +
                     '    </tr>';
             }
             // if (combatManeuverKey) {
@@ -296,24 +303,31 @@ export class MegsTableRolls {
 
         let ovInfo = '';
         if (hpSpentOV > 0) {
-            ovInfo += '<table class="init-table">' +
+            ovInfo +=
+                '<table class="init-table">' +
                 '    <tr>' +
-                '        <td class="label">' + game.i18n.localize("MEGS.Base") + ' OV' + '</td>' +
-                '        <td class="value">' +  this.opposingValue + '</td>' +
+                '        <td class="label">' +
+                game.i18n.localize('MEGS.Base') +
+                ' OV' +
+                '</td>' +
+                '        <td class="value">' +
+                this.opposingValue +
+                '</td>' +
                 '    </tr>';
-            ovInfo += '    <tr>' +
-                        '        <td class="label">HP ' + game.i18n.localize("MEGS.Spent") + '</td>' +
-                        '        <td class="value">+' +  hpSpentOV + '</td>' +
-                        '    </tr>';
+            ovInfo +=
+                '    <tr>' +
+                '        <td class="label">HP ' +
+                game.i18n.localize('MEGS.Spent') +
+                '</td>' +
+                '        <td class="value">+' +
+                hpSpentOV +
+                '</td>' +
+                '    </tr>';
             ovInfo += '</table>';
         }
 
         // consult action chart for difficulty
-        const difficulty = this._getActionTableDifficulty(
-            avAdjusted,
-            ovAdjusted,
-            ovColumnShifts
-        );
+        const difficulty = this._getActionTableDifficulty(avAdjusted, ovAdjusted, ovColumnShifts);
 
         // determine whether happens
         const avRoll = new MegsRoll(this.rollFormula, {});
@@ -323,7 +337,7 @@ export class MegsTableRolls {
 
         let dice = [];
         let resultData = {
-            result: "",
+            result: '',
             actionValue: avAdjusted,
             actionValueInfo: avInfo,
             opposingValue: ovAdjusted,
@@ -334,10 +348,10 @@ export class MegsTableRolls {
             effectValue: 0,
             resistanceValue: 0,
             success: false,
-            evResult: "",
+            evResult: '',
             rvColumnShifts: rvColumnShifts,
             columnShiftText: '',
-            rollTotal: 0
+            rollTotal: 0,
         };
         await this._rollDice(resultData).then((response) => {
             dice = response;
@@ -350,17 +364,10 @@ export class MegsTableRolls {
         });
         resultData.rollTotal = avRollTotal;
 
-        if (
-            parseInt(dice[dice.length-2]) === 1 &&
-            parseInt(dice[dice.length-1]) === 1
-        ) {
+        if (parseInt(dice[dice.length - 2]) === 1 && parseInt(dice[dice.length - 1]) === 1) {
             // dice are both 1s
-            resultData.result = game.i18n.localize("MEGS.Double1s");
-            await this._showRollResultInChat(
-                resultData,
-                avRoll,
-                ShowResultCall.DOUBLE_1S
-            );
+            resultData.result = game.i18n.localize('MEGS.Double1s');
+            await this._showRollResultInChat(resultData, avRoll, ShowResultCall.DOUBLE_1S);
 
             return dice;
         }
@@ -370,12 +377,8 @@ export class MegsTableRolls {
 
         // if fails, output message
         if (!resultData.avRollSuccess) {
-            resultData.result = game.i18n.localize("MEGS.ActionFailed");
-            await this._showRollResultInChat(
-                resultData,
-                avRoll,
-                ShowResultCall.FAILURE
-            );
+            resultData.result = game.i18n.localize('MEGS.ActionFailed');
+            await this._showRollResultInChat(resultData, avRoll, ShowResultCall.FAILURE);
 
             return dice;
         }
@@ -383,31 +386,15 @@ export class MegsTableRolls {
         // if succeeds, calculate column shifts for result table
         const avIndex = this._getRangeIndex(avAdjusted);
         const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
-        const rollColumnShifts =
-            this._getColumnShifts(
-                avRollTotal,
-                avIndex,
-                ovIndex,
-                CONFIG.tables.actionTable
-            ); 
-        const columnShifts =  rollColumnShifts + rvColumnShifts;
+        const rollColumnShifts = this._getColumnShifts(
+            avRollTotal,
+            avIndex,
+            ovIndex,
+            CONFIG.tables.actionTable
+        );
+        const columnShifts = rollColumnShifts + rvColumnShifts;
         resultData.columnShifts = columnShifts;
         // TODO handle totals greater than 60 on table
-
-        let columnShiftText = '';
-        if (rvColumnShifts > 0) {
-            columnShiftText += '<table class="init-table">' +
-                '    <tr>' +
-                '        <td class="label">' + game.i18n.localize("MEGS.Roll") + ' ' + game.i18n.localize("MEGS.Shifts") + '</td>' +
-                '        <td class="value">' +  rollColumnShifts + '</td>' +
-                '    </tr>';
-            columnShiftText += '    <tr>' +
-                        '        <td class="label">RV ' + game.i18n.localize("MEGS.Shifts") + '</td>' +
-                        '        <td class="value">+' +  rvColumnShifts + '</td>' +
-                        '    </tr>';
-            columnShiftText += '</table>';
-        }
-        resultData.columnShiftText = columnShiftText
 
         /**********************************
          * RESULT TABLE
@@ -436,27 +423,23 @@ export class MegsTableRolls {
             // If the result is an 'N' then there is No Effect
             if (resultAPs === 0) {
                 // TOD this does not show EV/OV - find a better way to handle
-                resultData.result = game.i18n.localize("MEGS.NoEffect");
+                resultData.result = game.i18n.localize('MEGS.NoEffect');
                 resultData.success = true;
-                resultData.evResult = "N";
+                resultData.evResult = 'N';
             } else {
                 // "All" result on table - Result APs = Effect Value
                 // If the Result is an 'A,' then the RAPs are equal to the APs of the Effect Value.
                 // TODO does the ALL result include any ranks purchased with Hero Points?
-                resultData.result =  game.i18n.localize("MEGS.Success") + ": " + resultAPs + " RAPs!";
+                resultData.result =
+                    game.i18n.localize('MEGS.Success') + ': ' + resultAPs + ' RAPs!';
                 resultData.success = true;
-                resultData.evResult = "A (" + evAdjusted + ")";
+                resultData.evResult = 'A (' + evAdjusted + ')';
             }
             if (shiftedRvIndex !== 0) {
-                resultData.evResult =
-                    resultData.evResult + " + " + Math.abs(shiftedRvIndex);
+                resultData.evResult = resultData.evResult + ' + ' + Math.abs(shiftedRvIndex);
             }
 
-            await this._showRollResultInChat(
-                resultData,
-                avRoll,
-                ShowResultCall.ALL_RESULT
-            );
+            await this._showRollResultInChat(resultData, avRoll, ShowResultCall.ALL_RESULT);
             return resultAPs;
         }
 
@@ -465,27 +448,19 @@ export class MegsTableRolls {
 
         // If the result is an 'N' then there is No Effect
         if (resultAPs === 0) {
-            resultData.result = game.i18n.localize("MEGS.NoEffect");
+            resultData.result = game.i18n.localize('MEGS.NoEffect');
             resultData.success = false;
-            resultData.evResult = "N";
+            resultData.evResult = 'N';
 
-            await this._showRollResultInChat(
-                resultData,
-                avRoll,
-                ShowResultCall.NO_EFFECT
-            );
+            await this._showRollResultInChat(resultData, avRoll, ShowResultCall.NO_EFFECT);
             return dice;
         }
 
         // results output to chat
-        resultData.result =  game.i18n.localize("MEGS.Success") + ": " + resultAPs + " RAPs!";
+        resultData.result = game.i18n.localize('MEGS.Success') + ': ' + resultAPs + ' RAPs!';
         resultData.success = true;
         resultData.evResult = resultAPs;
-        await this._showRollResultInChat(
-            resultData,
-            avRoll,
-            ShowResultCall.SUCCESS
-        );
+        await this._showRollResultInChat(resultData, avRoll, ShowResultCall.SUCCESS);
 
         return resultAPs;
     }
@@ -500,10 +475,10 @@ export class MegsTableRolls {
         let stopRolling = false;
         if (data) {
             if (data.columnShifts) {
-                data["isOneColumnShift"] = data.columnShifts === 1;
+                data['isOneColumnShift'] = data.columnShifts === 1;
             } else {
                 data.columnShifts = 0;
-                data["isOneColumnShift"] = false;
+                data['isOneColumnShift'] = false;
             }
         }
 
@@ -515,23 +490,19 @@ export class MegsTableRolls {
             await avRoll.evaluate();
 
             // Get roll result
-            const rolledDice = avRoll.result.split(" + ");
+            const rolledDice = avRoll.result.split(' + ');
 
             dice.push(parseInt(rolledDice[0]));
             dice.push(parseInt(rolledDice[1]));
 
-            if (
-                parseInt(rolledDice[0]) === 1 &&
-                parseInt(rolledDice[1]) === 1
-            ) {
+            if (parseInt(rolledDice[0]) === 1 && parseInt(rolledDice[1]) === 1) {
                 // dice are both 1s
                 stopRolling = true;
             } else if (rolledDice[0] === rolledDice[1]) {
                 // dice match but are not 1s
                 const confirmed = await Dialog.confirm({
-                    title: game.i18n.localize("MEGS.ContinueRolling"),
-                    content:
-                    game.i18n.localize("MEGS.RolledDoublesPrompt"),
+                    title: game.i18n.localize('MEGS.ContinueRolling'),
+                    content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
                     yes: () => true,
                     no: () => false,
                 });
@@ -558,12 +529,12 @@ export class MegsTableRolls {
      * @private
      */
     async _showRollResultInChat(data, roll, callingPoint) {
-        const rollChatTemplate = "systems/megs/templates/chat/rollResult.hbs";
+        const rollChatTemplate = 'systems/megs/templates/chat/rollResult.hbs';
 
         // what's being rolled (used for display)
-        data.title = this.label ? `${this.label}` : "";
+        data.title = this.label ? `${this.label}` : '';
 
-        console.log("Calling show result from point: " + callingPoint);
+        console.log('Calling show result from point: ' + callingPoint);
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
         await roll.toMessage(dialogHtml);
@@ -577,25 +548,24 @@ export class MegsTableRolls {
      * @returns
      */
     _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
-        // if succeeds, calculate column shifts for result table
         let columnShifts = 0;
+        const successNumber = actionTable[avIndex][ovIndex];
 
-        // TODO handle totals greater than 60 on table
+        // Must meet or beat both Success Number and threshold
+        if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+            return 0;
+        }
 
-        // The total die roll must lie on or beyond the Column Shift Threshold (i.e., 11)
-        if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
-            /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
-            Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
-            // Start counting from the column AFTER the OV column (ovIndex + 1)
-            for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
-                if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
-                    // The roll must be greater than the Success Number in this column
-                    if (avRollTotal > actionTable[avIndex][i]) {
-                        columnShifts++;
-                    } else {
-                        break;
-                    }
-                }
+        // Start from the column immediately to the right of the Success Number
+        // Count consecutive column shifts only
+        for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
+            const colValue = actionTable[avIndex][i];
+            // Only count columns with values >= threshold and < roll
+            if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
+                columnShifts++;
+            } else {
+                // Stop at first column we don't exceed (shifts must be consecutive)
+                break;
             }
         }
 
@@ -631,10 +601,8 @@ export class MegsTableRolls {
             hpSpentRV: parseInt(form.hpSpentRV.value) || 0,
             hpSpentOV: parseInt(form.hpSpentOV.value) || 0,
             combatManeuver: form.combatManeuver.value,
-            resultColumnShifts:
-                parseInt(form.resultColumnShiftsInput.value) || 0,
-            isUnskilled:
-                (form.isUnskilled && form.isUnskilled.checked) || false,
+            resultColumnShifts: parseInt(form.resultColumnShiftsInput.value) || 0,
+            isUnskilled: (form.isUnskilled && form.isUnskilled.checked) || false,
         };
     }
 
@@ -658,39 +626,39 @@ export class MegsTableRolls {
 
         if (avIndex < 0) {
             console.error(
-                "ERROR: Index beyond table boundaries (AV = " +
+                'ERROR: Index beyond table boundaries (AV = ' +
                     avAdjusted +
-                    " | avIndex = " +
+                    ' | avIndex = ' +
                     avIndex +
-                    ")"
+                    ')'
             );
         } else if (ovIndex < 0) {
             console.error(
-                "ERROR: Index beyond table boundaries (OV = " +
+                'ERROR: Index beyond table boundaries (OV = ' +
                     ovAdjusted +
-                    " | ovIndex = " +
+                    ' | ovIndex = ' +
                     ovIndex +
-                    " | ovColumnShifts = " +
+                    ' | ovColumnShifts = ' +
                     ovColumnShifts +
-                    ")"
+                    ')'
             );
         } else if (avIndex >= actionTable.length) {
             console.error(
-                "ERROR: Index beyond table boundaries (avIndex = " +
+                'ERROR: Index beyond table boundaries (avIndex = ' +
                     avIndex +
-                    " | actionTable.length = " +
+                    ' | actionTable.length = ' +
                     actionTable.length +
-                    ")"
+                    ')'
             );
         } else if (ovIndex >= actionTable[avIndex].length) {
             console.error(
-                "ERROR: Index beyond table boundaries (avIndex = " +
+                'ERROR: Index beyond table boundaries (avIndex = ' +
                     avIndex +
-                    " | ovIndex = " +
+                    ' | ovIndex = ' +
                     ovIndex +
-                    " | actionTable[avIndex].length = " +
+                    ' | actionTable[avIndex].length = ' +
                     actionTable[avIndex].length +
-                    ")"
+                    ')'
             );
         }
 

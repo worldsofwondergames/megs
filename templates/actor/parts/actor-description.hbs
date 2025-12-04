@@ -1,92 +1,103 @@
-      <section class="grid-1col description-item">
-        <div class="flex-group-left">
-          <label for="system.alterEgo" class="resource-label flexlarge align-left" data-label="{{system.alterEgo}}">{{localize 'MEGS.AlterEgo'}}</label>
-          {{#if flags.megs.edit-mode}}
-          <input type="text" name="system.alterEgo" value="{{system.alterEgo}}" data-dtype="string"/>
-          {{else}}
-          <div class="indentLeft">
-            {{#if system.alterEgo}}
-            {{system.alterEgo}}
+{{#unless (eq actor.type 'location')}}
+    <section class='grid-1col description-item'>
+        <div class='flex-group-left'>
+            <label for='system.alterEgo' class='resource-label flexlarge align-left' data-label='{{system.alterEgo}}'>{{localize 'MEGS.AlterEgo'}}</label>
+            {{#if flags.megs.edit-mode}}
+                <input type='text' name='system.alterEgo' value='{{system.alterEgo}}' data-dtype='string' />
             {{else}}
-            ({{localize 'MEGS.None'}})
+                <div class='indentLeft'>
+                    {{#if system.alterEgo}}
+                        {{system.alterEgo}}
+                    {{else}}
+                        ({{localize 'MEGS.None'}})
+                    {{/if}}
+                </div>
             {{/if}}
-          </div>
-          {{/if}}
         </div>
-      </section>
+    </section>
 
-      <section class="grid-1col description-item">
-        <div class="flex-group-left">
-          <label for="system.motivation" class="resource-label flexlarge align-left" data-label="{{system.motivation}}">{{localize 'MEGS.Motivation'}}</label>
-          {{#if flags.megs.edit-mode}}
-            <div>
-                <select  class="resource-select"  name="system.motivation" data-type="String">
-                    {{selectOptions system.motivations selected=system.motivation localize=true}}
-                </select>
+    <section class='grid-1col description-item'>
+        <div class='flex-group-left'>
+            <label for='system.motivation' class='resource-label flexlarge align-left' data-label='{{system.motivation}}'>{{localize 'MEGS.Motivation'}}</label>
+            {{#if flags.megs.edit-mode}}
+                <div>
+                    <select class='resource-select' name='system.motivation' data-type='String'>
+                        {{selectOptions system.motivations selected=system.motivation localize=true}}
+                    </select>
+                </div>
+            {{else}}
+                <div class='indentLeft'>
+                    {{#if system.motivation}}
+                        {{getMotivation system.motivation system.motivations}}
+                    {{else}}
+                        ({{localize 'MEGS.None'}})
+                    {{/if}}
+                </div>
+            {{/if}}
+        </div>
+    </section>
+
+    <section class='grid-1col description-item'>
+        <div class='flex-group-left'>
+            <label for='system.occupation' class='resource-label flexlarge align-left' data-label='{{system.occupation}}'>{{localize 'MEGS.Occupation'}}</label>
+            {{#if flags.megs.edit-mode}}
+                <input type='text' name='system.occupation' value='{{system.occupation}}' data-dtype='string' />
+            {{else}}
+                <div class='indentLeft'>
+                    {{#if system.occupation}}
+                        {{system.occupation}}
+                    {{else}}
+                        ({{localize 'MEGS.None'}})
+                    {{/if}}
+                </div>
+            {{/if}}
+        </div>
+    </section>
+
+    <section class='grid-1col description-item'>
+        <div class='flex-group-left'>
+            <label for='system.wealth' class='resource-label flexlarge align-left' data-label='{{system.wealth}}'>{{localize 'MEGS.Wealth'}}</label>
+            {{#if flags.megs.edit-mode}}
+                <div class='wealth'>
+                    <input type='range' name='system.wealth' value='{{system.wealth}}' min='0' max='30' step='1' oninput='wealthAPRangeValue.innerText = this.value' />
+                    <span class='range-value' id='wealthAPRangeValue'>{{system.wealth}}</span>
+                </div>
+            {{else}}
+                <div class='indentLeft'>
+                    {{#if system.wealth}}
+                        {{system.wealth}}
+                    {{else}}
+                        ({{localize 'MEGS.None'}})
+                    {{/if}}
+                </div>
+            {{/if}}
+        </div>
+    </section>
+{{/unless}}
+
+{{#if flags.megs.edit-mode}}
+    {{#unless (eq actor.type 'location')}}
+        <label for='system.biography' class='resource-label flexlarge align-left biography-label' data-label='{{system.biography}}'>{{localize 'MEGS.Biography'}}</label>
+    {{/unless}}
+    {{editor
+        system.biography
+        target='system.biography'
+        rollData=rollData
+        button=true
+        owner=owner
+        editable=editable
+    }}
+{{else}}
+    <section class='grid-1col description-item'>
+        <div class='flex-group-left'>
+            <label for='system.biography' class='resource-label flexlarge align-left' data-label='{{system.biography}}'>{{localize 'MEGS.Biography'}}</label>
+            <div class='indentLeft'>
+                {{#if system.biography}}
+                    {{{system.biography}}}
+                {{else}}
+                    ({{localize 'MEGS.None'}})
+                {{/if}}
             </div>
-          {{else}}
-          <div class="indentLeft">
-            {{#if system.motivation}}
-            {{getMotivation system.motivation system.motivations}}
-            {{else}}
-            ({{localize 'MEGS.None'}})
-            {{/if}}
-          </div>
-          {{/if}}
         </div>
-      </section>
-
-      <section class="grid-1col description-item">
-        <div class="flex-group-left">
-          <label for="system.occupation" class="resource-label flexlarge align-left" data-label="{{system.occupation}}">{{localize 'MEGS.Occupation'}}</label>
-         {{#if flags.megs.edit-mode}}
-          <input type="text" name="system.occupation" value="{{system.occupation}}" data-dtype="string"/>
-         {{else}}
-          <div class="indentLeft">
-            {{#if system.occupation}}
-            {{system.occupation}}
-            {{else}}
-            ({{localize 'MEGS.None'}})
-            {{/if}}
-          </div>
-         {{/if}}
-        </div>
-      </section>
-
-      <section class="grid-1col description-item">
-        <div class="flex-group-left">
-          <label for="system.wealth" class="resource-label flexlarge align-left" data-label="{{system.wealth}}">{{localize 'MEGS.Wealth'}}</label>
-         {{#if flags.megs.edit-mode}}
-          <div class="wealth">
-              <input type="range" name="system.wealth" value="{{system.wealth}}" min="0" max="30" step="1" oninput="wealthAPRangeValue.innerText = this.value">
-              <span class="range-value" id="wealthAPRangeValue">{{system.wealth}}</span>
-          </div>
-         {{else}}
-          <div class="indentLeft">
-            {{#if system.wealth}}
-            {{system.wealth}}
-            {{else}}
-            ({{localize 'MEGS.None'}})
-            {{/if}}
-          </div>
-         {{/if}}
-        </div>
-      </section>
-
-      {{#if flags.megs.edit-mode}}
-      <label for="system.biography" class="resource-label flexlarge align-left biography-label" data-label="{{system.biography}}">{{localize 'MEGS.Biography'}}</label>
-      {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
-      {{else}}
-      <section class="grid-1col description-item">
-        <div class="flex-group-left">
-          <label for="system.biography" class="resource-label flexlarge align-left" data-label="{{system.biography}}">{{localize 'MEGS.Biography'}}</label>
-          <div class="indentLeft">
-          {{#if system.biography}}
-            {{{system.biography}}}
-          {{else}}
-            ({{localize 'MEGS.None'}})
-          {{/if}}
-          </div>
-        </div>
-      </section>
-      {{/if}}
+    </section>
+{{/if}}

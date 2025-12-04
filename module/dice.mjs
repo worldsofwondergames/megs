@@ -14,7 +14,7 @@ export class MegsRoll extends Roll {
     async toMessage(dialogHtml = {}, { rollMode, create = true } = {}) {
         return await ChatMessage.create({
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            rolls: [this],
             content: dialogHtml,
             sound: CONFIG.sounds.dice,
         });

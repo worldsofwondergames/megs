@@ -557,7 +557,7 @@ export class MegsTableRolls {
         }
 
         // Roll must be on or beyond the Column Shift Threshold (11)
-        if (avRollTotal <= COLUMN_SHIFT_THRESHOLD) {
+        if (avRollTotal < COLUMN_SHIFT_THRESHOLD) {
             return 0;
         }
 

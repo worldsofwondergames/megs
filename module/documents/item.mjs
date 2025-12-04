@@ -20,10 +20,11 @@ export class MEGSItem extends Item {
         if (this.type !== MEGS.itemTypes.gadget) return;
 
         if (this.parent) {
-            // Gadget owned by actor - create actual skill items
-            const existingSkills = this.parent.items.filter(i => i.system.parent === this.id);
-            if (existingSkills.length > 0) return;
+            // Gadget owned by actor - create actual skill and trait items
+            const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
+            if (existingItems.length > 0) return;
             await this._addSkillsToGadget();
+            await this._addTraitsToGadget();
         } else {
             // Standalone gadget - initialize skillData/subskillData only if not a duplicate
             if (!this._stats.duplicateSource) {
@@ -119,6 +120,32 @@ export class MEGSItem extends Item {
 
         // Create subskills on the parent actor
         await this.parent.createEmbeddedDocuments('Item', subskills);
+    }
+
+    async _addTraitsToGadget() {
+        // Get virtual trait data if it exists
+        const traitData = this.system.traitData || {};
+
+        // If no traits to add, return early
+        if (Object.keys(traitData).length === 0) return;
+
+        let traits = [];
+
+        for (let [key, trait] of Object.entries(traitData)) {
+            const traitObj = {
+                name: trait.name,
+                type: trait.type,
+                img: trait.img || Item.DEFAULT_ICON,
+                system: {
+                    ...trait.system,
+                    parent: this.id  // Set parent to this gadget's ID
+                }
+            };
+            traits.push(traitObj);
+        }
+
+        // Create traits on the parent actor
+        await this.parent.createEmbeddedDocuments('Item', traits);
     }
 
     /**

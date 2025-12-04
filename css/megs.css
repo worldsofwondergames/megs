@@ -35,6 +35,10 @@
     font-size: 20px;
 }
 
+body.game .app h4.window-title {
+    font-family: 'DecoturaICG', sans-serif;
+}
+
 .megs.window-app .window-content {
     background-color: #fff;
     background-image: none;

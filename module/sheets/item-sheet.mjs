@@ -308,12 +308,38 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Delete Sub-Item
 
-        html.on('click', '.item-delete', (ev) => {
+        html.on('click', '.item-delete', async (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+
             const li = $(ev.currentTarget).parents('.item');
-            li.length = 1; // make sure only returns this line
-            const item = this.object.parent.items.get(li.data('itemId'));
-            item.delete();
-            li.slideUp(200, () => this.render(false));
+            const itemId = li.attr('data-item-id');
+
+            if (!itemId) return;
+
+            // Check if this is a standalone gadget with virtual traits
+            const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
+            const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
+
+            if (isStandaloneGadget && isVirtualTrait) {
+                // Standalone gadget - delete virtual trait from traitData
+                const key = itemId.replace('virtual-trait-', '');
+                const traitData = this.object.system.traitData || {};
+
+                if (traitData[key]) {
+                    // Use Foundry's key deletion syntax
+                    const updateKey = `system.traitData.-=${key}`;
+                    await this.object.update({ [updateKey]: null });
+                    this.render(true);
+                }
+            } else if (this.object.parent) {
+                // Gadget owned by actor - delete real item
+                const item = this.object.parent.items.get(itemId);
+                if (item) {
+                    await item.delete();
+                    this.render(false);
+                }
+            }
         });
 
         // MEGS roll
@@ -552,6 +578,31 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     /**
+     * Create virtual trait items from stored traitData for standalone gadgets
+     * @param {*} context
+     * @returns {Array}
+     */
+    _createVirtualTraitsFromData(context) {
+        const virtualItems = [];
+        const traitData = context.system.traitData || {};
+
+        // Create virtual trait items (advantages and drawbacks)
+        for (let [key, trait] of Object.entries(traitData)) {
+            const virtualTrait = {
+                _id: `virtual-trait-${key}`,
+                name: trait.name,
+                type: trait.type,
+                img: trait.img || Item.DEFAULT_ICON,
+                system: trait.system,
+                isVirtual: true
+            };
+            virtualItems.push(virtualTrait);
+        }
+
+        return virtualItems;
+    }
+
+    /**
      *
      * @param {*} context
      */
@@ -578,9 +629,15 @@ export class MEGSItemSheet extends ItemSheet {
         if (context.document.parent) {
             // Gadget owned by actor - get actual items from the actor
             items = context.document.parent.items.contents;
-        } else if (context.system.skillData) {
-            // Standalone gadget - create virtual skill/subskill items from stored data
-            items = this._createVirtualSkillsFromData(context);
+        } else {
+            // Standalone gadget - create virtual items from stored data
+            items = [];
+            if (context.system.skillData) {
+                items = items.concat(this._createVirtualSkillsFromData(context));
+            }
+            if (context.system.traitData) {
+                items = items.concat(this._createVirtualTraitsFromData(context));
+            }
         }
 
         // First pass: collect items that belong to this gadget
@@ -706,6 +763,12 @@ export class MEGSItemSheet extends ItemSheet {
         // Remove the type from the dataset since it's in the itemData.type prop.
         delete itemData.system['type'];
 
+        // Handle standalone gadgets creating traits
+        if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget &&
+            (type === MEGS.itemTypes.advantage || type === MEGS.itemTypes.drawback)) {
+            return this._onCreateTraitOnStandaloneGadget(itemData);
+        }
+
         // Finally, create the item!
         let subItem;
         if (this.object.parent && this.object.parent instanceof MEGSActor) {
@@ -717,6 +780,28 @@ export class MEGSItemSheet extends ItemSheet {
         subItem.apps[this.appId] = this;
         this.render(true);
         return subItem;
+    }
+
+    /**
+     * Handle creating a trait on a standalone gadget
+     * @param {object} itemData The trait item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onCreateTraitOnStandaloneGadget(itemData) {
+        const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+
+        // Create a unique key using timestamp to avoid collisions
+        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
+        traitData[key] = {
+            name: itemData.name,
+            type: itemData.type,
+            img: itemData.img || 'icons/svg/item-bag.svg',
+            system: itemData.system
+        };
+
+        await this.object.update({ 'system.traitData': traitData });
+        this.render(false);
     }
 
     /* -------------------------------------------- */
@@ -833,15 +918,47 @@ export class MEGSItemSheet extends ItemSheet {
      * @protected
      */
     async _onDropItem(event, data) {
-        if (!this.object.parent || !this.object.parent.isOwner) return false;
         const item = await Item.implementation.fromDropData(data);
         const itemData = item.toObject();
+
+        // Handle standalone gadgets dropping traits
+        if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget) {
+            if (itemData.type === MEGS.itemTypes.advantage || itemData.type === MEGS.itemTypes.drawback) {
+                return this._onDropTraitToStandaloneGadget(itemData);
+            }
+            // For other item types on standalone gadgets, prevent the drop
+            return false;
+        }
+
+        if (!this.object.parent || !this.object.parent.isOwner) return false;
 
         // Handle item sorting within the same Actor
         if (this.object.parent.uuid === item.parent?.uuid) return this._onSortItem(event, itemData);
 
         // Create the owned item
         return this._onDropItemCreate(itemData);
+    }
+
+    /**
+     * Handle dropping a trait (advantage/drawback) onto a standalone gadget
+     * @param {object} itemData The trait item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onDropTraitToStandaloneGadget(itemData) {
+        const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+
+        // Store the complete item data using a unique key (name + type + timestamp)
+        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
+        traitData[key] = {
+            name: itemData.name,
+            type: itemData.type,
+            img: itemData.img,
+            system: itemData.system
+        };
+
+        await this.object.update({ 'system.traitData': traitData });
+        this.render(false);
     }
 
     /* -------------------------------------------- */
@@ -904,7 +1021,7 @@ export class MEGSItemSheet extends ItemSheet {
     _getHeaderButtons() {
         let buttons;
         if (this.object.isOwner) {
-            buttons = [
+            const headerButtons = [
                 {
                     class: 'megs-toggle-edit-mode',
                     label: game.i18n.localize('MEGS.Edit') ?? 'Edit',
@@ -912,14 +1029,39 @@ export class MEGSItemSheet extends ItemSheet {
                     onclick: (e) => {
                         this._toggleEditMode(e);
                     },
-                },
-                ...super._getHeaderButtons(),
+                }
             ];
+
+            // Add settings button for gadgets
+            if (this.object.type === 'gadget') {
+                headerButtons.push({
+                    class: 'megs-open-settings',
+                    label: game.i18n.localize('MEGS.Settings') ?? 'Settings',
+                    icon: 'fas fa-cog',
+                    onclick: (e) => {
+                        this._openSettings(e);
+                    },
+                });
+            }
+
+            buttons = [...headerButtons, ...super._getHeaderButtons()];
         } else {
             buttons = super._getHeaderButtons();
         }
         this._changeConfigureIcon(buttons);
         return buttons;
+    }
+
+    _openSettings(e) {
+        e.preventDefault();
+        // Find and activate the settings tab
+        const tabs = this.element.find('.tabs[data-group="primary"]');
+        const settingsTab = tabs.find('a[data-tab="settings"]');
+
+        // If the tab link doesn't exist in nav (which it doesn't), we need to manually activate
+        // Find the tab content and activate it
+        this.element.find('.tab[data-tab="settings"]').addClass('active');
+        this.element.find('.tab').not('[data-tab="settings"]').removeClass('active');
     }
 
     _changeConfigureIcon(buttons) {

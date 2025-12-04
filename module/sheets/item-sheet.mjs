@@ -381,15 +381,18 @@ export class MEGSItemSheet extends ItemSheet {
                 }
             }
 
-            dataset.type = this.object.type;
-
             // values of skills and subskills
             if (
-                this.object.type === MEGS.itemTypes.skill ||
-                this.object.type === MEGS.itemTypes.subskill
+                dataset.type === MEGS.itemTypes.skill ||
+                dataset.type === MEGS.itemTypes.subskill
             ) {
                 actionValue = parseInt(dataset.value);
                 effectValue = parseInt(dataset.value);
+            }
+
+            // If dataset.type is not set, use the object type (for backward compatibility)
+            if (!dataset.type) {
+                dataset.type = this.object.type;
             }
 
             let label = dataset.label;

@@ -754,6 +754,12 @@ export class MEGSItemSheet extends ItemSheet {
         // Remove the type from the dataset since it's in the itemData.type prop.
         delete itemData.system['type'];
 
+        // Handle standalone gadgets creating traits
+        if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget &&
+            (type === MEGS.itemTypes.advantage || type === MEGS.itemTypes.drawback)) {
+            return this._onCreateTraitOnStandaloneGadget(itemData);
+        }
+
         // Finally, create the item!
         let subItem;
         if (this.object.parent && this.object.parent instanceof MEGSActor) {
@@ -765,6 +771,28 @@ export class MEGSItemSheet extends ItemSheet {
         subItem.apps[this.appId] = this;
         this.render(true);
         return subItem;
+    }
+
+    /**
+     * Handle creating a trait on a standalone gadget
+     * @param {object} itemData The trait item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onCreateTraitOnStandaloneGadget(itemData) {
+        const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+
+        // Create a unique key using timestamp to avoid collisions
+        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
+        traitData[key] = {
+            name: itemData.name,
+            type: itemData.type,
+            img: itemData.img || 'icons/svg/item-bag.svg',
+            system: itemData.system
+        };
+
+        await this.object.update({ 'system.traitData': traitData });
+        this.render(false);
     }
 
     /* -------------------------------------------- */
@@ -911,8 +939,8 @@ export class MEGSItemSheet extends ItemSheet {
     async _onDropTraitToStandaloneGadget(itemData) {
         const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
 
-        // Store the complete item data using a unique key (name + type)
-        const key = `${itemData.name}-${itemData.type}`;
+        // Store the complete item data using a unique key (name + type + timestamp)
+        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
         traitData[key] = {
             name: itemData.name,
             type: itemData.type,

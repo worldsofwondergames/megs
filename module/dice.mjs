@@ -381,10 +381,13 @@ export class MegsTableRolls {
         }
 
         // if succeeds, calculate column shifts for result table
+        const avIndex = this._getRangeIndex(avAdjusted);
+        const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
         const rollColumnShifts =
             this._getColumnShifts(
                 avRollTotal,
-                this._getRangeIndex(avAdjusted),
+                avIndex,
+                ovIndex,
                 CONFIG.tables.actionTable
             ); 
         const columnShifts =  rollColumnShifts + rvColumnShifts;
@@ -573,7 +576,7 @@ export class MegsTableRolls {
      * @param {*} actionTable
      * @returns
      */
-    _getColumnShifts(avRollTotal, avIndex, actionTable) {
+    _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
         // if succeeds, calculate column shifts for result table
         let columnShifts = 0;
 
@@ -583,9 +586,10 @@ export class MegsTableRolls {
         if (avRollTotal > COLUMN_SHIFT_THRESHOLD) {
             /* The Action Table is set up so that any roll over 11 might earn the Player a Column Shift.
             Notice that the 11's split the Action Table in two. This is the Column Shift Threshold. */
-            for (let i = 0; i < actionTable[avIndex].length; i++) {
+            // Start counting from the column AFTER the OV column (ovIndex + 1)
+            for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
                 if (actionTable[avIndex][i] > COLUMN_SHIFT_THRESHOLD) {
-                    // The roll must be greater than the Success Number
+                    // The roll must be greater than the Success Number in this column
                     if (avRollTotal > actionTable[avIndex][i]) {
                         columnShifts++;
                     } else {

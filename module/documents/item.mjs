@@ -349,7 +349,8 @@ export class MEGSItem extends Item {
             '1d10 + 1d10',
             isUnskilled
         );
-        const rollTables = new MegsTableRolls(rollValues);
+        const speaker = ChatMessage.getSpeaker({ actor: this.parent });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
         rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
             // no handling happens
         });

@@ -839,14 +839,14 @@ details summary.no-arrow {
     border: none;
 }
 
-.quantity {
+.megs .quantity {
     display: flex;
     border: 2px solid #a9a7a7;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.quantity button {
+.megs .quantity button {
     background-color: #a9a7a7;
     color: #fff;
     border: none;
@@ -861,41 +861,41 @@ details summary.no-arrow {
     line-height: 0;
 }
 
-.quantity button:hover {
+.megs .quantity button:hover {
     text-shadow: none;
 }
 
-.quantity .input-box {
+.megs .quantity .input-box {
     text-align: center;
     border: none;
     padding: 8px 10px;
-    font-size: 22px;
+    font-size: 16px;
     outline: none;
 }
 
 /* Hide the number input spin buttons */
-.quantity .input-box::-webkit-inner-spin-button,
-.quantity .input-box::-webkit-outer-spin-button {
+.megs .quantity .input-box::-webkit-inner-spin-button,
+.megs .quantity .input-box::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-.quantity.attribute-input {
+.megs .quantity.attribute-input {
     border: 0;
     text-align: center;
 }
 
-.quantity.attribute-input button {
+.megs .quantity.attribute-input button {
     background-color: var(--white);
     color: var(--darkblue);
 }
 
-.quantity.attribute-input input[type='number'],
-.quantity.current-input input[type='number'] {
+.megs .quantity.attribute-input input[type='number'],
+.megs .quantity.current-input input[type='number'] {
     background-color: #ddebf6;
 }
 
-.quantity.current-input button {
+.megs .quantity.current-input button {
     background-color: var(--darkblue);
     color: #fff;
     border-color: var(--darkblue);

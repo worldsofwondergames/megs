@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/163-fix-incrementdecrement-input-box-font-size/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/165-skills-for-a-new-unowned-gadget-do-not-have-the-correct-icons/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -42,8 +42,8 @@
     "packs": [],
     "packFolders": [],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/163-fix-incrementdecrement-input-box-font-size/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/163-fix-incrementdecrement-input-box-font-size/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/165-skills-for-a-new-unowned-gadget-do-not-have-the-correct-icons/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/165-skills-for-a-new-unowned-gadget-do-not-have-the-correct-icons/",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

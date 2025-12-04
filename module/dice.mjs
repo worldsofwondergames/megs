@@ -724,4 +724,14 @@ export class MegsTableRolls {
         }
         return index;
     }
+
+    /**
+     * Render a Handlebars template
+     * @param {*} template
+     * @param {*} data
+     * @returns
+     */
+    async _renderTemplate(template, data) {
+        return await foundry.applications.handlebars.renderTemplate(template, data);
+    }
 }

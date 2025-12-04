@@ -146,7 +146,7 @@ export default class MEGSCombat extends Combat {
     const data = {
       "maxHpToSpend": maxHpToSpend,
     };
-    let dialogHtml = await renderTemplate(template, data);
+    let dialogHtml = await foundry.applications.handlebars.renderTemplate(template, data);
     let label = game.i18n.localize("MEGS.HeroPoints") + " - " + game.i18n.localize("MEGS.Initiative");
     if (combatantName) {
       label = combatantName  + " - " + game.i18n.localize("MEGS.Initiative");

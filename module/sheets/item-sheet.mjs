@@ -315,10 +315,7 @@ export class MEGSItemSheet extends ItemSheet {
             const li = $(ev.currentTarget).parents('.item');
             const itemId = li.attr('data-item-id');
 
-            if (!itemId) {
-                ui.notifications.warn('No item ID found');
-                return;
-            }
+            if (!itemId) return;
 
             // Check if this is a standalone gadget with virtual traits
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
@@ -334,8 +331,6 @@ export class MEGSItemSheet extends ItemSheet {
                     const updateKey = `system.traitData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
                     this.render(true);
-                } else {
-                    ui.notifications.warn(`Trait key not found: ${key}`);
                 }
             } else if (this.object.parent) {
                 // Gadget owned by actor - delete real item
@@ -343,11 +338,7 @@ export class MEGSItemSheet extends ItemSheet {
                 if (item) {
                     await item.delete();
                     this.render(false);
-                } else {
-                    ui.notifications.warn('Item not found');
                 }
-            } else {
-                ui.notifications.warn(`Cannot delete: isStandalone=${isStandaloneGadget}, isVirtual=${isVirtualTrait}, id=${itemId}`);
             }
         });
 

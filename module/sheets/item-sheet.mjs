@@ -410,8 +410,9 @@ export class MEGSItemSheet extends ItemSheet {
             );
             console.info('Rolling from item-sheet click');
             const rollTables = new MegsTableRolls(rollValues);
+            const heroPoints = this.object.parent?.system?.heroPoints?.value || 0;
             rollTables
-                .roll(event, this.object.parent.system.heroPoints.value)
+                .roll(event, heroPoints)
                 .then((response) => {});
         });
 

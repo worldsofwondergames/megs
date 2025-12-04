@@ -55,12 +55,7 @@
 
         {{!-- Traits Tab --}}
         <div class="tab traits" data-group="primary" data-tab="traits">
-            {{#unless hasActor}}
-                <div class="message-panel">Due to technical limitations, Traits cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Traits.</div>
-            {{/unless}}
-            {{#if hasActor}}
-                {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
-            {{/if}}
+            {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
         </div>
 
         {{!-- Owned gadgets Tab --}}

@@ -194,3 +194,4 @@ Planned features:
 Issues are tracked on GitHub: https://github.com/worldsofwondergames/megs/issues
 - When a branch is checked out, change all GitHub URL instances in system.json to point to the current branch. When prompted, change them back.
 - If I tell you to commit a change, go ahead and push it as well
+- Avoid SCSS changes if possible. If it does not seem possible, prompt me before making the change.

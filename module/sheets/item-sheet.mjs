@@ -308,13 +308,26 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Delete Sub-Item
 
-        html.on('click', '.item-delete', (ev) => {
+        html.on('click', '.item-delete', async (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             li.length = 1; // make sure only returns this line
+            const itemId = li.data('itemId');
+
             if (this.object.parent) {
-                const item = this.object.parent.items.get(li.data('itemId'));
+                // Gadget owned by actor - delete real item
+                const item = this.object.parent.items.get(itemId);
                 if (item) {
                     item.delete();
+                    li.slideUp(200, () => this.render(false));
+                }
+            } else if (itemId && itemId.startsWith('virtual-trait-')) {
+                // Standalone gadget - delete virtual trait from traitData
+                const key = itemId.replace('virtual-trait-', '');
+                const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+
+                if (traitData.hasOwnProperty(key)) {
+                    delete traitData[key];
+                    await this.object.update({ 'system.traitData': traitData });
                     li.slideUp(200, () => this.render(false));
                 }
             }
@@ -556,6 +569,31 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     /**
+     * Create virtual trait items from stored traitData for standalone gadgets
+     * @param {*} context
+     * @returns {Array}
+     */
+    _createVirtualTraitsFromData(context) {
+        const virtualItems = [];
+        const traitData = context.system.traitData || {};
+
+        // Create virtual trait items (advantages and drawbacks)
+        for (let [key, trait] of Object.entries(traitData)) {
+            const virtualTrait = {
+                _id: `virtual-trait-${key}`,
+                name: trait.name,
+                type: trait.type,
+                img: trait.img || Item.DEFAULT_ICON,
+                system: trait.system,
+                isVirtual: true
+            };
+            virtualItems.push(virtualTrait);
+        }
+
+        return virtualItems;
+    }
+
+    /**
      *
      * @param {*} context
      */
@@ -582,9 +620,15 @@ export class MEGSItemSheet extends ItemSheet {
         if (context.document.parent) {
             // Gadget owned by actor - get actual items from the actor
             items = context.document.parent.items.contents;
-        } else if (context.system.skillData) {
-            // Standalone gadget - create virtual skill/subskill items from stored data
-            items = this._createVirtualSkillsFromData(context);
+        } else {
+            // Standalone gadget - create virtual items from stored data
+            items = [];
+            if (context.system.skillData) {
+                items = items.concat(this._createVirtualSkillsFromData(context));
+            }
+            if (context.system.traitData) {
+                items = items.concat(this._createVirtualTraitsFromData(context));
+            }
         }
 
         // First pass: collect items that belong to this gadget
@@ -837,15 +881,47 @@ export class MEGSItemSheet extends ItemSheet {
      * @protected
      */
     async _onDropItem(event, data) {
-        if (!this.object.parent || !this.object.parent.isOwner) return false;
         const item = await Item.implementation.fromDropData(data);
         const itemData = item.toObject();
+
+        // Handle standalone gadgets dropping traits
+        if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget) {
+            if (itemData.type === MEGS.itemTypes.advantage || itemData.type === MEGS.itemTypes.drawback) {
+                return this._onDropTraitToStandaloneGadget(itemData);
+            }
+            // For other item types on standalone gadgets, prevent the drop
+            return false;
+        }
+
+        if (!this.object.parent || !this.object.parent.isOwner) return false;
 
         // Handle item sorting within the same Actor
         if (this.object.parent.uuid === item.parent?.uuid) return this._onSortItem(event, itemData);
 
         // Create the owned item
         return this._onDropItemCreate(itemData);
+    }
+
+    /**
+     * Handle dropping a trait (advantage/drawback) onto a standalone gadget
+     * @param {object} itemData The trait item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onDropTraitToStandaloneGadget(itemData) {
+        const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+
+        // Store the complete item data using a unique key (name + type)
+        const key = `${itemData.name}-${itemData.type}`;
+        traitData[key] = {
+            name: itemData.name,
+            type: itemData.type,
+            img: itemData.img,
+            system: itemData.system
+        };
+
+        await this.object.update({ 'system.traitData': traitData });
+        this.render(false);
     }
 
     /* -------------------------------------------- */

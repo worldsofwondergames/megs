@@ -419,6 +419,53 @@ export class MEGSItemSheet extends ItemSheet {
                 .then((response) => {});
         });
 
+        // Attribute rolls (for gadget attributes)
+        html.on('click', '.rollable:not(.d10)', (event) => {
+            event.preventDefault();
+            const element = event.currentTarget;
+            const dataset = element.dataset;
+
+            // Only handle attribute rolls
+            if (dataset.type !== 'attribute') return;
+
+            let actionValue = parseInt(dataset.value);
+            let opposingValue = 0;
+            let effectValue = 0;
+            let resistanceValue = 0;
+
+            let targetActor = MegsTableRolls.getTargetActor();
+            if (targetActor) {
+                opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
+                resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
+            }
+
+            // For attributes, effect value is based on the effective column
+            effectValue = Utils.getEffectValue(dataset.key, this.object);
+
+            let label = dataset.label;
+            if (this.object.name) {
+                label = this.object.name + ' - ' + label;
+            }
+
+            console.info('Rolling attribute from item-sheet');
+            const rollValues = new RollValues(
+                label,
+                dataset.type,
+                dataset.value,
+                actionValue,
+                opposingValue,
+                effectValue,
+                resistanceValue,
+                dataset.roll,
+                false
+            );
+            const rollTables = new MegsTableRolls(rollValues);
+            const heroPoints = this.object.parent?.system?.heroPoints?.value || 0;
+            rollTables
+                .roll(event, heroPoints)
+                .then((response) => {});
+        });
+
         if (this.object.parent && this.object.parent.isOwner) {
             let handler = (ev) => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {

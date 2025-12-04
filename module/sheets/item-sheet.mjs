@@ -310,15 +310,14 @@ export class MEGSItemSheet extends ItemSheet {
 
         html.on('click', '.item-delete', async (ev) => {
             const li = $(ev.currentTarget).parents('.item');
-            li.length = 1; // make sure only returns this line
-            const itemId = li.data('itemId');
+            const itemId = li.attr('data-item-id');
 
             if (this.object.parent) {
                 // Gadget owned by actor - delete real item
                 const item = this.object.parent.items.get(itemId);
                 if (item) {
-                    item.delete();
-                    li.slideUp(200, () => this.render(false));
+                    await item.delete();
+                    this.render(false);
                 }
             } else if (itemId && itemId.startsWith('virtual-trait-')) {
                 // Standalone gadget - delete virtual trait from traitData
@@ -328,7 +327,7 @@ export class MEGSItemSheet extends ItemSheet {
                 if (traitData.hasOwnProperty(key)) {
                     delete traitData[key];
                     await this.object.update({ 'system.traitData': traitData });
-                    li.slideUp(200, () => this.render(false));
+                    this.render(false);
                 }
             }
         });

@@ -595,4 +595,13 @@ describe('_getColumnShifts comprehensive tests', () => {
         expect(dice._getColumnShifts(13, avIndex, ovIndex, actionTable)).toBe(0);
         expect(dice._getColumnShifts(14, avIndex, ovIndex, actionTable)).toBe(1);
     });
+
+    test('Roll exactly on threshold (11) should pass threshold check but yield 0 CS', () => {
+        // AV=10 (index 5), OV=7 (index 4) gives Success Number = 9
+        // Roll = 11 is > SN and exactly on threshold
+        // Should pass both checks but still get 0 CS since 11 cannot exceed any column >= 11
+        const avIndex = dice._getRangeIndex(10);
+        const ovIndex = dice._getRangeIndex(7);
+        expect(dice._getColumnShifts(11, avIndex, ovIndex, actionTable)).toBe(0);
+    });
 });

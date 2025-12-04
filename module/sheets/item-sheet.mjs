@@ -309,26 +309,45 @@ export class MEGSItemSheet extends ItemSheet {
         // Delete Sub-Item
 
         html.on('click', '.item-delete', async (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+
             const li = $(ev.currentTarget).parents('.item');
             const itemId = li.attr('data-item-id');
 
-            if (this.object.parent) {
+            if (!itemId) {
+                ui.notifications.warn('No item ID found');
+                return;
+            }
+
+            // Check if this is a standalone gadget with virtual traits
+            const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
+            const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
+
+            if (isStandaloneGadget && isVirtualTrait) {
+                // Standalone gadget - delete virtual trait from traitData
+                const key = itemId.replace('virtual-trait-', '');
+                const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+
+                if (traitData[key]) {
+                    delete traitData[key];
+                    await this.object.update({ 'system.traitData': traitData });
+                    this.render(false);
+                    ui.notifications.info('Trait deleted');
+                } else {
+                    ui.notifications.warn(`Trait key not found: ${key}`);
+                }
+            } else if (this.object.parent) {
                 // Gadget owned by actor - delete real item
                 const item = this.object.parent.items.get(itemId);
                 if (item) {
                     await item.delete();
                     this.render(false);
+                } else {
+                    ui.notifications.warn('Item not found');
                 }
-            } else if (itemId && itemId.startsWith('virtual-trait-')) {
-                // Standalone gadget - delete virtual trait from traitData
-                const key = itemId.replace('virtual-trait-', '');
-                const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
-
-                if (traitData.hasOwnProperty(key)) {
-                    delete traitData[key];
-                    await this.object.update({ 'system.traitData': traitData });
-                    this.render(false);
-                }
+            } else {
+                ui.notifications.warn(`Cannot delete: isStandalone=${isStandaloneGadget}, isVirtual=${isVirtualTrait}, id=${itemId}`);
             }
         });
 

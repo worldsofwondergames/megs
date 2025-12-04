@@ -327,11 +327,12 @@ export class MEGSItemSheet extends ItemSheet {
             if (isStandaloneGadget && isVirtualTrait) {
                 // Standalone gadget - delete virtual trait from traitData
                 const key = itemId.replace('virtual-trait-', '');
-                const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+                const traitData = this.object.system.traitData || {};
 
                 if (traitData[key]) {
-                    delete traitData[key];
-                    await this.object.update({ 'system.traitData': traitData });
+                    // Use Foundry's key deletion syntax
+                    const updateKey = `system.traitData.-=${key}`;
+                    await this.object.update({ [updateKey]: null });
                     this.render(true);
                 } else {
                     ui.notifications.warn(`Trait key not found: ${key}`);

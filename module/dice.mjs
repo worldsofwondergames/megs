@@ -14,7 +14,7 @@ export class MegsRoll extends Roll {
     async toMessage(dialogHtml = {}, { rollMode, create = true } = {}) {
         return await ChatMessage.create({
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            rolls: [this],
             content: dialogHtml,
             sound: CONFIG.sounds.dice,
         });
@@ -384,13 +384,15 @@ export class MegsTableRolls {
         }
 
         // if succeeds, calculate column shifts for result table
-        const columnShifts =
-            this._getColumnShifts(
-                avRollTotal,
-                this._getRangeIndex(avAdjusted),
-                this._getRangeIndex(ovAdjusted),
-                CONFIG.tables.actionTable
-            ) + rvColumnShifts;
+        const avIndex = this._getRangeIndex(avAdjusted);
+        const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
+        const rollColumnShifts = this._getColumnShifts(
+            avRollTotal,
+            avIndex,
+            ovIndex,
+            CONFIG.tables.actionTable
+        );
+        const columnShifts = rollColumnShifts + rvColumnShifts;
         resultData.columnShifts = columnShifts;
         // TODO handle totals greater than 60 on table
 
@@ -540,16 +542,6 @@ export class MegsTableRolls {
 
     /**
      *
-     * @param {*} template
-     * @param {*} data
-     * @returns
-     */
-    async _renderTemplate(template, data) {
-        return await renderTemplate(template, data);
-    }
-
-    /**
-     *
      * @param {*} avRollTotal
      * @param {*} avIndex
      * @param {*} actionTable
@@ -558,18 +550,33 @@ export class MegsTableRolls {
     _getColumnShifts(avRollTotal, avIndex, ovIndex, actionTable) {
         let columnShifts = 0;
         const successNumber = actionTable[avIndex][ovIndex];
-        // Must meet or beat both Success Number and threshold
-        if (avRollTotal <= successNumber || avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+
+        // Roll must be greater than Success Number
+        if (avRollTotal <= successNumber) {
             return 0;
         }
-        // Start from the column immediately to the right of the Success Number
+
+        // Roll must be on or beyond the Column Shift Threshold (11)
+        if (avRollTotal < COLUMN_SHIFT_THRESHOLD) {
+            return 0;
+        }
+
+        // Count columns "on or beyond" the threshold (>= 11), starting after the success number column
+        // "The 11's split the Action Table in two"
         for (let i = ovIndex + 1; i < actionTable[avIndex].length; i++) {
             const colValue = actionTable[avIndex][i];
-            // Only count columns with values >= threshold and < roll
-            if (colValue >= COLUMN_SHIFT_THRESHOLD && colValue < avRollTotal) {
-                columnShifts++;
+            // Only count columns at or beyond the threshold
+            if (colValue >= COLUMN_SHIFT_THRESHOLD) {
+                // The roll must be greater than the value in this column
+                if (avRollTotal > colValue) {
+                    columnShifts++;
+                } else {
+                    // Stop at first column we don't exceed (shifts are consecutive)
+                    break;
+                }
             }
         }
+
         return columnShifts;
     }
 
@@ -686,5 +693,15 @@ export class MegsTableRolls {
             }
         }
         return index;
+    }
+
+    /**
+     * Render a Handlebars template
+     * @param {*} template
+     * @param {*} data
+     * @returns
+     */
+    async _renderTemplate(template, data) {
+        return await foundry.applications.handlebars.renderTemplate(template, data);
     }
 }

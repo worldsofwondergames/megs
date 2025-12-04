@@ -12,7 +12,7 @@ import { MEGS } from './helpers/config.mjs';
 import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
 import MEGSCombatant from './combat/combatant.js';
-import { MegsTableRolls, RollValues } from './dice.mjs';
+import { MegsRoll, MegsTableRolls, RollValues } from './dice.mjs';
 
 // Turn on hooks logging for debugging
 // CONFIG.debug.hooks = true;
@@ -39,6 +39,9 @@ Hooks.once('init', function () {
     CONFIG.Combat.documentClass = MEGSCombat;
     CONFIG.ui.combat = MEGSCombatTracker;
     CONFIG.Combatant.documentClass = MEGSCombatant;
+
+    // Register custom Roll class
+    CONFIG.Dice.rolls.push(MegsRoll);
 
     // Load MEGS tables
     _loadData('systems/megs/assets/data/tables.json').then((response) => {

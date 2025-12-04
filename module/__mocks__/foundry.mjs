@@ -498,6 +498,17 @@ global.mergeObject = function (
 global.renderTemplate = async function (template, data) {};
 
 /**
+ * Foundry namespaced APIs (V13+)
+ */
+global.foundry = {
+  applications: {
+    handlebars: {
+      renderTemplate: async function(template, data) {  }
+    }
+  }
+};
+
+/**
  * Handlebars
  */
 global.loadTemplates = jest.fn((templateList) => {}).mockName('loadTemplates');

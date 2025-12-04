@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @font-face {
     font-family: DecoturaICG;
-    src: url("../fonts/Decotura ICG Regular.ttf");
+    src: url('../fonts/Decotura ICG Regular.ttf');
 }
 
 /* Global styles */
@@ -15,9 +15,9 @@
 
 /* variables */
 :root {
-  --darkblue: #1f5079;
-  --white: #ffffff;
-  --red: #d63a28;
+    --darkblue: #1f5079;
+    --white: #ffffff;
+    --red: #d63a28;
 }
 
 /*------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@
 /*------------------------------------------------------------------------*/
 
 .megs {
-    font-family: "DecoturaICG", sans-serif;
+    font-family: 'DecoturaICG', sans-serif;
     background-image: none;
     letter-spacing: 0.05em;
 }
@@ -35,12 +35,16 @@
     font-size: 20px;
 }
 
+body.game .app h4.window-title {
+    font-family: 'DecoturaICG', sans-serif;
+}
+
 .megs.window-app .window-content {
     background-color: #fff;
     background-image: none;
 }
 
-.megs input[type="text"] {
+.megs input[type='text'] {
     background-color: #ddebf6;
     border: 1px solid var(--darkblue);
 }
@@ -55,7 +59,7 @@
 }
 
 .megs .message-panel {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
     color: var(--darkblue);
     padding: 10px 5px 0 5px;
@@ -66,7 +70,7 @@
 }
 
 .megs .editor-content {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
     color: var(--darkblue);
     padding: 10px 5px 0 5px;
@@ -87,7 +91,7 @@
 }
 
 .megs .description-text {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
     color: var(--darkblue);
     padding: 10px 5px 0 5px;
@@ -105,7 +109,10 @@
 .rollable:focus {
     color: var(--darkblue);
     cursor: pointer;
-    text-shadow: 0 0 3px var(--red), 0 0 5px var(--red), 0 0 7px var(--red);
+    text-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
 }
 
 .grid,
@@ -302,12 +309,12 @@
 }
 
 /* Styles limited to megs sheets */
-.megs input[type="checkbox"] + label {
-    font-family: "Helvetica", "Arial", sans-serif;
+.megs input[type='checkbox'] + label {
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 13px;
 }
 
-.megs input[type="checkbox"] {
+.megs input[type='checkbox'] {
     vertical-align: middle;
 }
 
@@ -349,14 +356,14 @@
 .megs .sheet-header h1.charname.isUnlocked {
     background-color: #fff;
 }
-.megs .sheet-header h1.charname input[name="name"],
-.megs .sheet-header h1.charname div[name="name"] {
+.megs .sheet-header h1.charname input[name='name'],
+.megs .sheet-header h1.charname div[name='name'] {
     float: left;
     flex-grow: 1;
     height: 50px;
     margin: 5px 5px 0 0;
 }
-.megs .sheet-header h1.charname div[name="name"] {
+.megs .sheet-header h1.charname div[name='name'] {
     padding: 5px 0 0 3px;
     color: #fff;
 }
@@ -404,7 +411,10 @@
     color: var(--darkblue);
 }
 .megs .sheet-tabs a.item:hover:not(.active) {
-    text-shadow: 0 0 3px var(--red), 0 0 5px var(--red), 0 0 7px var(--red);
+    text-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
 }
 .megs .sheet-body,
 .megs .sheet-body .tab,
@@ -486,7 +496,10 @@
 }
 
 .megs .sheet-body .attributeRow:hover {
-    box-shadow: 0 0 3px var(--red), 0 0 5px var(--red), 0 0 7px var(--red);
+    box-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
 }
 
 .megs .attributes .attribute select {
@@ -495,7 +508,7 @@
     border: 0;
 }
 
-.megs .quantity.attribute-input input[type="number"].input-label {
+.megs .quantity.attribute-input input[type='number'].input-label {
     border: none;
     outline: none;
     background-color: transparent;
@@ -542,7 +555,7 @@
     scrollbar-width: thin;
 }
 .megs .items-list .item-row {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     color: var(--darkblue);
 }
 .megs .items-list > li.item-row:nth-of-type(odd) {
@@ -653,7 +666,7 @@
 }
 
 .megs .sheet-body div.biography section.description-item input {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
 }
 
@@ -666,13 +679,13 @@
     width: 100%;
     display: flex;
 
-    input[type="range"] {
+    input[type='range'] {
         height: 38px;
         margin: 0;
         width: 100%;
     }
 
-    input[type="range"] + .range-value {
+    input[type='range'] + .range-value {
         flex: 0 1 48px;
         text-align: center;
         border: 1px solid var(--darkblue);
@@ -759,7 +772,7 @@ li.chat-message .megs-chat-roll {
     margin: 0 3px 0 3px;
 }
 
-li.directory-item img[src*="assets/images/icons"] {
+li.directory-item img[src*='assets/images/icons'] {
     filter: invert(100%);
 }
 
@@ -792,10 +805,14 @@ details summary.no-arrow {
     height: 55px;
     border-radius: 25px;
     border: solid #ccc 3px;
-    box-shadow: 0 1px 2px #fff, 0 -1px 1px #666,
+    box-shadow:
+        0 1px 2px #fff,
+        0 -1px 1px #666,
         inset 0 -1px 1px rgba(0, 0, 0, 0.5),
         inset 0 1px 1px rgba(255, 255, 255, 0.8);
-    -webkit-box-shadow: 0 1px 2px #fff, 0 -1px 1px #666,
+    -webkit-box-shadow:
+        0 1px 2px #fff,
+        0 -1px 1px #666,
         inset 0 -1px 1px rgba(0, 0, 0, 0.5),
         inset 0 1px 1px rgba(255, 255, 255, 0.8);
     transition: 0.2s background linear;
@@ -873,8 +890,8 @@ details summary.no-arrow {
     color: var(--darkblue);
 }
 
-.quantity.attribute-input input[type="number"],
-.quantity.current-input input[type="number"] {
+.quantity.attribute-input input[type='number'],
+.quantity.current-input input[type='number'] {
     background-color: #ddebf6;
 }
 
@@ -919,13 +936,13 @@ details summary.no-arrow {
 }
 
 .megs div.tab.readableText label {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
 .megs .indentLeft {
     padding-left: 15px;
     padding-top: 5px;
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 16px;
 }
 
@@ -972,7 +989,7 @@ details summary.no-arrow {
 
 /* tooltip bottom arrow */
 .tooltip .tooltiptext::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 100%; /* At the bottom of the tooltip */
     left: 50%;
@@ -995,7 +1012,7 @@ details summary.no-arrow {
 
 .init-table {
     display: table;
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
     background-color: white;
     border: none;
@@ -1022,7 +1039,7 @@ details summary.no-arrow {
 }
 
 .tooltip .tooltiptext.narrow .init-table .label {
-    width: 75%;        
+    width: 75%;
 }
 
 .tooltip .tooltiptext.wide .init-table .value {
@@ -1030,5 +1047,5 @@ details summary.no-arrow {
 }
 
 .tooltip .tooltiptext.narrow .init-table .value {
-    width: 25%;        
+    width: 25%;
 }

@@ -1,150 +1,200 @@
-    {{!-- Abilities Tab --}}
-    <div class="tab abilities" data-group="primary" data-tab="abilities">
-      
-      {{!-- Gadget values --}}
+{{!-- Abilities Tab --}}
+<div class="tab abilities"
+    data-group="primary"
+    data-tab="abilities">
+
+    {{!-- Gadget values --}}
     {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
-      <section class="gadget-properties grid grid-2coll border-bottom">
-        <div class="gadget-property flex-group-center">
-          <label for="system.actionValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
-          {{#if flags.megs.edit-mode}}
-            {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
-          {{else}}
-            {{system.actionValue}}
-          {{/if}}
-        </div>
-        <div class="gadget-property flex-group-center">
-          <label for="system.effectValue" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.EffectValue'}}">{{localize 'MEGS.EffectValue'}}</label>
-          {{#if flags.megs.edit-mode}}
-            {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
-          {{else}}
-            {{system.effectValue}}
-          {{/if}}
-        </div>
-      </section>
+        <section class="gadget-properties grid grid-2coll border-bottom">
+            <div class="gadget-property flex-group-center">
+                <label for="system.actionValue"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
+                {{#if flags.megs.edit-mode}}
+                    {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
+                {{else}}
+                    {{system.actionValue}}
+                {{/if}}
+            </div>
+            <div class="gadget-property flex-group-center">
+                <label for="system.effectValue"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.EffectValue'}}">{{localize 'MEGS.EffectValue'}}</label>
+                {{#if flags.megs.edit-mode}}
+                    {{> plusMinusInput id='effectValue' classes='attribute-input' min=0 value=system.effectValue}}
+                {{else}}
+                    {{system.effectValue}}
+                {{/if}}
+            </div>
+        </section>
     {{/if}}
 
-      {{!-- Gadget attributes --}}
+    {{!-- Gadget attributes --}}
     {{#shouldShowGadgetAttributesDetails system.settings.hasAttributes}}
-      <details open>
-        <summary class="item-summary">{{localize 'MEGS.Attributes'}} {{gadgetAttributesDetailsOpen}}</summary>
+        <details open>
+            <summary class="item-summary">{{localize 'MEGS.Attributes'}} {{gadgetAttributesDetailsOpen}}</summary>
 
-    {{> "systems/megs/templates/item/parts/item-gadget-attributes.hbs"}}
+            {{> "systems/megs/templates/item/parts/item-gadget-attributes.hbs"}}
 
-      </details>
+        </details>
     {{/shouldShowGadgetAttributesDetails}}
 
-      {{!-- Gadget misc properties --}}
-      <details open>
+    {{!-- Gadget misc properties --}}
+    <details open>
         <summary class="item-summary">Miscellaneous</summary>
         <section class="gadget-properties grid grid-3col">
 
-          <div class="gadget-property flex-group-center">
-            <label for="system.quantity" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Quantity'}}">{{localize 'MEGS.Quantity'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
-          {{else}}
-            {{system.quantity}}
-          {{/if}}
+            <div class="gadget-property flex-group-center">
+                <label for="system.quantity"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.Quantity'}}">{{localize 'MEGS.Quantity'}}</label>
+                <div>
+                    {{#if flags.megs.edit-mode}}
+                        {{> plusMinusInput id='quantity' classes='attribute-input' min=1 value=system.quantity}}
+                    {{else}}
+                        {{system.quantity}}
+                    {{/if}}
+                </div>
             </div>
-          </div>
 
-        {{#if (compare system.weapon.isWeapon "eq" "true")}}
-          <div class="gadget-property flex-group-center">
-            <label for="system.weapon.range" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Range'}}">{{localize 'MEGS.Range'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="rangeInput.value = parseInt(rangeInput.value) - 1">&minus;</button>
-              <input id="rangeInput" type="text" class="input-box" name="system.weapon.range" value="{{system.weapon.range}}" data-dtype="number"/>
-              <button class="plus" aria-label="Increase" onClick="rangeInput.value = parseInt(rangeInput.value) + 1">&plus;</button>
-            </div>
-          {{else}}
-            {{system.weapon.range}}
-          {{/if}}
-            </div>
-          </div>
+            {{#if (compare system.weapon.isWeapon "eq" "true")}}
+                <div class="gadget-property flex-group-center">
+                    <label for="system.weapon.range"
+                        class="resource-label flexlarge align-left"
+                        data-label="{{localize 'MEGS.Range'}}">{{localize 'MEGS.Range'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <div class="quantity attribute-input">
+                                <button class="minus"
+                                    aria-label="Decrease"
+                                    onClick="rangeInput.value = parseInt(rangeInput.value) - 1">&minus;</button>
+                                <input id="rangeInput"
+                                    type="text"
+                                    class="input-box"
+                                    name="system.weapon.range"
+                                    value="{{system.weapon.range}}"
+                                    data-dtype="number" />
+                                <button class="plus"
+                                    aria-label="Increase"
+                                    onClick="rangeInput.value = parseInt(rangeInput.value) + 1">&plus;</button>
+                            </div>
+                        {{else}}
+                            {{system.weapon.range}}
+                        {{/if}}
+                    </div>
+                </div>
 
-          <div class="gadget-property flex-group-center">
-            <label for="system.weapon.ammo" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Ammo'}}">{{localize 'MEGS.Ammo'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="ammoInput.value = parseInt(ammoInput.value) - 1">&minus;</button>
-              <input id="ammoInput" type="text" class="input-box" name="system.weapon.ammo" value="{{system.weapon.ammo}}" data-dtype="number"/>
-              <button class="plus" aria-label="Increase" onClick="ammoInput.value = parseInt(ammoInput.value) + 1">&plus;</button>
-            </div>
-          {{else}}
-            {{system.weapon.ammo}}
-          {{/if}}
-            </div>
-          </div>
-        {{/if}}
-          
-          <div class="gadget-property flex-group-center">
-            <label for="system.isCarried" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsCarried'}}">{{localize 'MEGS.IsCarried'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.isCarried" data-type="String">
-              {{selectOptions system.yesNoOptions selected=system.isCarried localize=true}}
-            </select>
-          {{else}}
-            {{trueFalseToYesNo system.isCarried}}
-          {{/if}}
-            </div>
-          </div>
-          
-          <div class="gadget-property flex-group-center">
-            <label for="system.canBeTakenAway" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.CanBeTakenAway'}}">{{localize 'MEGS.CanBeTakenAway'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.canBeTakenAway" data-type="String">
-              {{selectOptions system.yesNoOptions selected=system.canBeTakenAway localize=true}}
-            </select>
-          {{else}}
-            {{trueFalseToYesNo system.canBeTakenAway}}
-          {{/if}}
-            </div>
-          </div>
-          
-          <div class="gadget-property flex-group-center">
-            <label for="system.hasHardenedDefenses" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.HasHardenedDefenses'}}">{{localize 'MEGS.HasHardenedDefenses'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.hasHardenedDefenses" data-type="String">
-              {{selectOptions system.yesNoOptions selected=system.hasHardenedDefenses localize=true}}
-            </select>
-          {{else}}
-            {{trueFalseToYesNo system.hasHardenedDefenses}}
-          {{/if}}
-            </div>
-          </div>
+                <div class="gadget-property flex-group-center">
+                    <label for="system.weapon.ammo"
+                        class="resource-label flexlarge align-left"
+                        data-label="{{localize 'MEGS.Ammo'}}">{{localize 'MEGS.Ammo'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <div class="quantity attribute-input">
+                                <button class="minus"
+                                    aria-label="Decrease"
+                                    onClick="ammoInput.value = parseInt(ammoInput.value) - 1">&minus;</button>
+                                <input id="ammoInput"
+                                    type="text"
+                                    class="input-box"
+                                    name="system.weapon.ammo"
+                                    value="{{system.weapon.ammo}}"
+                                    data-dtype="number" />
+                                <button class="plus"
+                                    aria-label="Increase"
+                                    onClick="ammoInput.value = parseInt(ammoInput.value) + 1">&plus;</button>
+                            </div>
+                        {{else}}
+                            {{system.weapon.ammo}}
+                        {{/if}}
+                    </div>
+                </div>
+            {{/if}}
 
-          {{!-- Gadget reliability --}}
-          <div class="gadget-property flex-group-center">
-            <label for="system.reliability" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
-          {{#if flags.megs.edit-mode}}
-            <select  class="resource-select"  name="system.reliability" data-type="String">
-              {{selectOptions reliabilityScores selected=system.reliability localize=true}}
-            </select>
-          {{else}}
-            {{system.reliability}}
-          {{/if}}
-          </div>
-
-          <div class="gadget-property flex-group-center">
-            <label for="system.isBroken" class="resource-label flexlarge align-left" data-label="{{localize 'MEGS.IsBroken'}}">{{localize 'MEGS.IsBroken'}}</label>
-            <div>
-          {{#if flags.megs.edit-mode}}
-            <select class="resource-select"  name="system.isBroken" data-type="String">
-              {{selectOptions system.yesNoOptions selected=system.isBroken localize=true}}
-            </select>
-          {{else}}
-            {{trueFalseToYesNo system.isBroken}}
-          {{/if}}
+            <div class="gadget-property flex-group-center">
+                <label for="system.isCarried"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.IsCarried'}}">{{localize 'MEGS.IsCarried'}}</label>
+                <div>
+                    {{#if flags.megs.edit-mode}}
+                        <select class="resource-select"
+                            name="system.isCarried"
+                            data-type="String">
+                            {{selectOptions system.yesNoOptions selected=system.isCarried localize=true}}
+                        </select>
+                    {{else}}
+                        {{trueFalseToYesNo system.isCarried}}
+                    {{/if}}
+                </div>
             </div>
-          </div>
+
+            <div class="gadget-property flex-group-center">
+                <label for="system.canBeTakenAway"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.CanBeTakenAway'}}">{{localize 'MEGS.CanBeTakenAway'}}</label>
+                <div>
+                    {{#if flags.megs.edit-mode}}
+                        <select class="resource-select"
+                            name="system.canBeTakenAway"
+                            data-type="String">
+                            {{selectOptions system.yesNoOptions selected=system.canBeTakenAway localize=true}}
+                        </select>
+                    {{else}}
+                        {{trueFalseToYesNo system.canBeTakenAway}}
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="gadget-property flex-group-center">
+                <label for="system.hasHardenedDefenses"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.HasHardenedDefenses'}}">{{localize 'MEGS.HasHardenedDefenses'}}</label>
+                <div>
+                    {{#if flags.megs.edit-mode}}
+                        <select class="resource-select"
+                            name="system.hasHardenedDefenses"
+                            data-type="String">
+                            {{selectOptions system.yesNoOptions selected=system.hasHardenedDefenses localize=true}}
+                        </select>
+                    {{else}}
+                        {{trueFalseToYesNo system.hasHardenedDefenses}}
+                    {{/if}}
+                </div>
+            </div>
+
+            {{!-- Gadget reliability --}}
+            <div class="gadget-property flex-group-center">
+                <label for="system.reliability"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.Reliability'}}">{{localize 'MEGS.Reliability'}}</label>
+                {{#if flags.megs.edit-mode}}
+                    <select class="resource-select"
+                        name="system.reliability"
+                        data-type="String">
+                        {{selectOptions reliabilityScores selected=system.reliability localize=true}}
+                    </select>
+                {{else}}
+                    {{system.reliability}}
+                {{/if}}
+            </div>
+
+            <div class="gadget-property flex-group-center">
+                <label for="system.isBroken"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.IsBroken'}}">{{localize 'MEGS.IsBroken'}}</label>
+                <div>
+                    {{#if flags.megs.edit-mode}}
+                        <select class="resource-select"
+                            name="system.isBroken"
+                            data-type="String">
+                            {{selectOptions system.yesNoOptions selected=system.isBroken localize=true}}
+                        </select>
+                    {{else}}
+                        {{trueFalseToYesNo system.isBroken}}
+                    {{/if}}
+                </div>
+            </div>
         </section>
-      </details>
+    </details>
 
-    </div>
+</div>

@@ -1,29 +1,26 @@
-    {{#each system.attributes as |attribute key|}}
-{{#shouldShowRow @index ../system.settings.hasAttributes}}
-      {{#if (isDivisor 3 @index)}}
-       <section class="attributes grid grid-3col attributeRow">
-      {{/if}}
-          <div class="attribute flex-group-center">
-            <label for="system.attributes.{{key}}.value"
-                class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left"
-                data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-type="attribute"
-                data-value="{{attribute.value}}" data-key="{{key}}">
-              {{attribute.label}}
+{{#each system.attributes as |attribute key|}}
+    {{#shouldShowRow @index ../system.settings.hasAttributes}}
+        {{#if (isDivisor 3 @index)}}
+            <section class="attributes grid grid-3col attributeRow">
+        {{/if}}
+        <div class="attribute flex-group-center">
+            <label for="system.attributes.{{key}}.value" class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left" data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-type="attribute" data-value="{{attribute.value}}" data-key="{{key}}">
+                {{attribute.label}}
             </label>
             <!-- TODO localize label above -->
-<!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
-        {{#if ../flags.megs.edit-mode}}
-            <div class="quantity attribute-input">
-              <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
-              <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max=""  data-dtype="Number"/>
-              <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
-            </div>
-        {{else}}
-            <div>{{attribute.value}}</div>
+            <!-- TODO make this work with:         plusMinusInput id="attributes."+key classes='attribute-input' value=attribute.value -->
+            {{#if ../flags.megs.edit-mode}}
+                <div class="quantity attribute-input">
+                    <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
+                    <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max="" data-dtype="Number" />
+                    <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
+                </div>
+            {{else}}
+                <div>{{attribute.value}}</div>
+            {{/if}}
+        </div>
+        {{#if (isDivisor 3 (sum @index 1))}}
+            </section>
         {{/if}}
-          </div>
-      {{#if (isDivisor 3 (sum @index 1))}}
-        </section>
-     {{/if}}
-{{/shouldShowRow}}
-   {{/each}}
+    {{/shouldShowRow}}
+{{/each}}

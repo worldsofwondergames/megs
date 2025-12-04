@@ -568,16 +568,6 @@ export class MegsTableRolls {
 
     /**
      *
-     * @param {*} template
-     * @param {*} data
-     * @returns
-     */
-    async _renderTemplate(template, data) {
-        return await renderTemplate(template, data);
-    }
-
-    /**
-     *
      * @param {*} avRollTotal
      * @param {*} avIndex
      * @param {*} actionTable

@@ -381,15 +381,18 @@ export class MEGSItemSheet extends ItemSheet {
                 }
             }
 
-            dataset.type = this.object.type;
-
             // values of skills and subskills
             if (
-                this.object.type === MEGS.itemTypes.skill ||
-                this.object.type === MEGS.itemTypes.subskill
+                dataset.type === MEGS.itemTypes.skill ||
+                dataset.type === MEGS.itemTypes.subskill
             ) {
                 actionValue = parseInt(dataset.value);
                 effectValue = parseInt(dataset.value);
+            }
+
+            // If dataset.type is not set, use the object type (for backward compatibility)
+            if (!dataset.type) {
+                dataset.type = this.object.type;
             }
 
             let label = dataset.label;
@@ -408,10 +411,84 @@ export class MEGSItemSheet extends ItemSheet {
                 dataset.roll,
                 dataset.unskilled
             );
+
+            // Create speaker - use parent actor if owned, otherwise use gadget name as alias
+            let speaker;
+            if (this.object.parent) {
+                speaker = ChatMessage.getSpeaker({ actor: this.object.parent });
+            } else {
+                speaker = ChatMessage.getSpeaker();
+                speaker.alias = this.object.name;
+            }
+
             console.info('Rolling from item-sheet click');
-            const rollTables = new MegsTableRolls(rollValues);
+            const rollTables = new MegsTableRolls(rollValues, speaker);
+            const heroPoints = this.object.parent?.system?.heroPoints?.value || 0;
             rollTables
-                .roll(event, this.object.parent.system.heroPoints.value)
+                .roll(event, heroPoints)
+                .then((response) => {});
+        });
+
+        // Attribute and gadget AV/EV rolls
+        html.on('click', '.rollable:not(.d10)', (event) => {
+            event.preventDefault();
+            const element = event.currentTarget;
+            const dataset = element.dataset;
+
+            // Only handle attribute and gadget rolls
+            if (dataset.type !== 'attribute' && dataset.type !== 'gadget') return;
+
+            let actionValue = 0;
+            let opposingValue = 0;
+            let effectValue = 0;
+            let resistanceValue = 0;
+
+            if (dataset.type === 'attribute') {
+                actionValue = parseInt(dataset.value);
+                let targetActor = MegsTableRolls.getTargetActor();
+                if (targetActor) {
+                    opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
+                    resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
+                }
+                // For attributes, effect value is based on the effective column
+                effectValue = Utils.getEffectValue(dataset.key, this.object);
+            } else if (dataset.type === 'gadget') {
+                // For gadgets, use the actionValue and effectValue from the dataset
+                actionValue = parseInt(dataset.actionvalue);
+                effectValue = parseInt(dataset.effectvalue);
+            }
+
+            let label = dataset.label;
+            if (this.object.name) {
+                label = this.object.name + ' - ' + label;
+            }
+
+            console.info('Rolling from item-sheet');
+            const rollValues = new RollValues(
+                label,
+                dataset.type,
+                dataset.actionvalue || dataset.value,
+                actionValue,
+                opposingValue,
+                effectValue,
+                resistanceValue,
+                dataset.roll,
+                false
+            );
+
+            // Create speaker - use parent actor if owned, otherwise use gadget name as alias
+            let speaker;
+            if (this.object.parent) {
+                speaker = ChatMessage.getSpeaker({ actor: this.object.parent });
+            } else {
+                speaker = ChatMessage.getSpeaker();
+                speaker.alias = this.object.name;
+            }
+
+            const rollTables = new MegsTableRolls(rollValues, speaker);
+            const heroPoints = this.object.parent?.system?.heroPoints?.value || 0;
+            rollTables
+                .roll(event, heroPoints)
                 .then((response) => {});
         });
 
@@ -540,11 +617,20 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Create virtual skill items
         for (let [skillName, aps] of Object.entries(skillData)) {
+            // Look up the correct icon for this skill from CONFIG.skills
+            let skillImg = 'systems/megs/assets/images/icons/skillls/skill.png'; // default
+            if (CONFIG.skills) {
+                const skillDef = CONFIG.skills.find(s => s.name === skillName);
+                if (skillDef && skillDef.img) {
+                    skillImg = 'systems/megs/assets/images/icons/skillls/' + skillDef.img;
+                }
+            }
+
             const virtualSkill = {
                 _id: `virtual-skill-${skillName}`,
                 name: skillName,
                 type: MEGS.itemTypes.skill,
-                img: 'systems/megs/assets/images/icons/skillls/skill.png',
+                img: skillImg,
                 system: {
                     aps: aps,
                     parent: '',

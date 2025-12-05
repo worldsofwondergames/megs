@@ -684,7 +684,8 @@ export class MEGSActorSheet extends ActorSheet {
             dataset.roll,
             dataset.unskilled
         );
-        const rollTables = new MegsTableRolls(rollValues);
+        const speaker = ChatMessage.getSpeaker({ actor: this.object });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
         rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {});
     }
 

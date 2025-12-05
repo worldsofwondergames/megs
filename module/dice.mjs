@@ -479,7 +479,6 @@ export class MegsTableRolls {
      * @returns
      */
     async _rollDice(data, initialRoll) {
-        console.log('MEGS Debug - _rollDice called with initialRoll:', initialRoll);
         let dice = [];
         let stopRolling = false;
         if (data) {
@@ -494,15 +493,12 @@ export class MegsTableRolls {
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
-            console.log('MEGS Debug - Using provided initialRoll');
             currentRoll = initialRoll;
         } else {
-            console.log('MEGS Debug - Creating new roll, initialRoll was:', initialRoll);
             // Fallback: create new roll (for tests or when initialRoll is not provided)
             currentRoll = new Roll(this.rollFormula, {});
             await currentRoll.evaluate();
         }
-        console.log('MEGS Debug - currentRoll to use:', currentRoll);
 
         while (!stopRolling) {
             // Extract dice values from the roll object
@@ -513,19 +509,15 @@ export class MegsTableRolls {
                 // Real Foundry Roll structure: terms[0] is first die, terms[2] is second die
                 die1 = currentRoll.terms[0].results[0].result;
                 die2 = currentRoll.terms[2].results[0].result;
-                console.log('MEGS Debug - Extracted from terms:', die1, die2);
-                console.log('MEGS Debug - Roll object:', currentRoll);
             } else if (currentRoll.result && typeof currentRoll.result === 'string') {
                 // Fallback for mocks or legacy: parse the result string
                 const rolledDice = currentRoll.result.split(' + ');
                 die1 = parseInt(rolledDice[0]);
                 die2 = parseInt(rolledDice[1]);
-                console.log('MEGS Debug - Extracted from result string:', die1, die2);
             } else {
                 // Ultimate fallback: use mock dice values or defaults
                 die1 = (currentRoll.dice && currentRoll.dice[0] && currentRoll.dice[0].results) ? currentRoll.dice[0].results[0] : 1;
                 die2 = (currentRoll.dice && currentRoll.dice[1] && currentRoll.dice[1].results) ? currentRoll.dice[1].results[0] : 1;
-                console.log('MEGS Debug - Extracted from fallback:', die1, die2);
             }
 
             dice.push(die1);

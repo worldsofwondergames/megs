@@ -429,39 +429,45 @@ export class MEGSItemSheet extends ItemSheet {
                 .then((response) => {});
         });
 
-        // Attribute rolls (for gadget attributes)
+        // Attribute and gadget AV/EV rolls
         html.on('click', '.rollable:not(.d10)', (event) => {
             event.preventDefault();
             const element = event.currentTarget;
             const dataset = element.dataset;
 
-            // Only handle attribute rolls
-            if (dataset.type !== 'attribute') return;
+            // Only handle attribute and gadget rolls
+            if (dataset.type !== 'attribute' && dataset.type !== 'gadget') return;
 
-            let actionValue = parseInt(dataset.value);
+            let actionValue = 0;
             let opposingValue = 0;
             let effectValue = 0;
             let resistanceValue = 0;
 
-            let targetActor = MegsTableRolls.getTargetActor();
-            if (targetActor) {
-                opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
-                resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
+            if (dataset.type === 'attribute') {
+                actionValue = parseInt(dataset.value);
+                let targetActor = MegsTableRolls.getTargetActor();
+                if (targetActor) {
+                    opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
+                    resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
+                }
+                // For attributes, effect value is based on the effective column
+                effectValue = Utils.getEffectValue(dataset.key, this.object);
+            } else if (dataset.type === 'gadget') {
+                // For gadgets, use the actionValue and effectValue from the dataset
+                actionValue = parseInt(dataset.actionvalue);
+                effectValue = parseInt(dataset.effectvalue);
             }
-
-            // For attributes, effect value is based on the effective column
-            effectValue = Utils.getEffectValue(dataset.key, this.object);
 
             let label = dataset.label;
             if (this.object.name) {
                 label = this.object.name + ' - ' + label;
             }
 
-            console.info('Rolling attribute from item-sheet');
+            console.info('Rolling from item-sheet');
             const rollValues = new RollValues(
                 label,
                 dataset.type,
-                dataset.value,
+                dataset.actionvalue || dataset.value,
                 actionValue,
                 opposingValue,
                 effectValue,

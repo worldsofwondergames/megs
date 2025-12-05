@@ -341,9 +341,10 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (!itemId) return;
 
-            // Check if this is a standalone gadget with virtual traits
+            // Check if this is a standalone gadget with virtual items
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
             const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
+            const isVirtualPower = itemId.startsWith && itemId.startsWith('virtual-power-');
 
             if (isStandaloneGadget && isVirtualTrait) {
                 // Standalone gadget - delete virtual trait from traitData
@@ -353,6 +354,17 @@ export class MEGSItemSheet extends ItemSheet {
                 if (traitData[key]) {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.traitData.-=${key}`;
+                    await this.object.update({ [updateKey]: null });
+                    this.render(true);
+                }
+            } else if (isStandaloneGadget && isVirtualPower) {
+                // Standalone gadget - delete virtual power from powerData
+                const key = itemId.replace('virtual-power-', '');
+                const powerData = this.object.system.powerData || {};
+
+                if (powerData[key]) {
+                    // Use Foundry's key deletion syntax
+                    const updateKey = `system.powerData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
                     this.render(true);
                 }

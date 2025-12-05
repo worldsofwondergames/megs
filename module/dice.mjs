@@ -533,7 +533,7 @@ export class MegsTableRolls {
                 // For first roll, DSN animation already triggered by evaluate(), but we need to wait for it
                 // For subsequent rolls, we need to explicitly show the animation
                 if (game.dice3d && !isFirstRoll) {
-                    await game.dice3d.showForRoll(currentRoll);
+                    await game.dice3d.showForRoll(currentRoll, game.user, true);
                 }
 
                 const confirmed = await Dialog.confirm({

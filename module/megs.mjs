@@ -77,6 +77,15 @@ Hooks.once('init', function () {
             console.error(`Error loading motivations data: ${error.message}`);
         });
 
+    _loadData('systems/megs/assets/data/skills.json')
+        .then((response) => {
+            console.log(`Received response for skills data: ${response.status}`);
+            CONFIG.skills = response;
+        })
+        .catch((error) => {
+            console.error(`Error loading skills data: ${error.message}`);
+        });
+
     // Active Effects are never copied to the Actor,
     // but will still apply to the Actor from within the Item
     // if the transfer property on the Active Effect is true.

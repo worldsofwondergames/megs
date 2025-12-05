@@ -68,7 +68,7 @@ export class MEGSItem extends Item {
         let subskills = [];
 
         for (let i of skillsJson) {
-            i.img = i.img
+            const skillImg = i.img
                 ? 'systems/megs/assets/images/icons/skillls/' + i.img
                 : 'systems/megs/assets/images/icons/skillls/skill.png';
             const item = { ...new MEGSItem(i) };
@@ -79,6 +79,8 @@ export class MEGSItem extends Item {
             item.system.parent = this.id;
             // Use virtual skill APs if available, otherwise default to 0
             item.system.aps = skillData[i.name] || 0;
+            // Ensure the correct icon is set
+            item.img = skillImg;
             skills.push(item);
 
             if (i.system.subskills) {
@@ -347,7 +349,8 @@ export class MEGSItem extends Item {
             '1d10 + 1d10',
             isUnskilled
         );
-        const rollTables = new MegsTableRolls(rollValues);
+        const speaker = ChatMessage.getSpeaker({ actor: this.parent });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
         rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
             // no handling happens
         });

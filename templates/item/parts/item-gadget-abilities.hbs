@@ -8,8 +8,12 @@
         <section class="gadget-properties grid grid-2coll border-bottom">
             <div class="gadget-property flex-group-center">
                 <label for="system.actionValue"
-                    class="resource-label flexlarge align-left"
-                    data-label="{{localize 'MEGS.ActionValue'}}">{{localize 'MEGS.ActionValue'}}</label>
+                    class="resource-label rollable flexlarge align-left"
+                    data-roll="1d10 + 1d10"
+                    data-label="{{localize 'MEGS.ActionValue'}}"
+                    data-type="gadget"
+                    data-actionvalue="{{system.actionValue}}"
+                    data-effectvalue="{{system.effectValue}}">{{localize 'MEGS.ActionValue'}}</label>
                 {{#if flags.megs.edit-mode}}
                     {{> plusMinusInput id='actionValue' classes='attribute-input' min=0 value=system.actionValue}}
                 {{else}}

@@ -502,6 +502,13 @@ body.game .app h4.window-title {
         0 0 7px var(--red);
 }
 
+.megs .sheet-body .gadget-properties:hover {
+    box-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
+}
+
 .megs .attributes .attribute select {
     width: 100%;
     background-color: #ddebf6;
@@ -899,6 +906,48 @@ details summary.no-arrow {
     background-color: var(--darkblue);
     color: #fff;
     border-color: var(--darkblue);
+}
+
+/* Roll dialog quantity styles */
+.megs-dialog .quantity {
+    display: flex;
+    border: 2px solid #a9a7a7;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.megs-dialog .quantity button {
+    background-color: #a9a7a7;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    width: 30px;
+    height: auto;
+    text-align: center;
+    transition: background-color 0.2s;
+    margin: 0;
+    border-radius: 0;
+    line-height: 0;
+}
+
+.megs-dialog .quantity button:hover {
+    text-shadow: none;
+}
+
+.megs-dialog .quantity .input-box {
+    text-align: center;
+    border: none;
+    padding: 8px 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Hide the number input spin buttons */
+.megs-dialog .quantity .input-box::-webkit-inner-spin-button,
+.megs-dialog .quantity .input-box::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .attribute-container {

@@ -11,13 +11,19 @@ export const ShowResultCall = Object.freeze({
 const COLUMN_SHIFT_THRESHOLD = 11;
 
 export class MegsRoll extends Roll {
-    async toMessage(dialogHtml = {}, { rollMode, create = true } = {}) {
-        return await ChatMessage.create({
+    async toMessage(dialogHtml = {}, { rollMode, create = true, speaker = null } = {}) {
+        const messageData = {
             user: game.user.id,
             rolls: [this],
             content: dialogHtml,
             sound: CONFIG.sounds.dice,
-        });
+        };
+
+        if (speaker) {
+            messageData.speaker = speaker;
+        }
+
+        return await ChatMessage.create(messageData);
     }
 }
 
@@ -46,7 +52,7 @@ export class RollValues {
 }
 
 export class MegsTableRolls {
-    constructor(rollValues) {
+    constructor(rollValues, speaker = null) {
         this.valueOrAps = rollValues.valueOrAps;
         this.type = rollValues.type;
         this.actionValue = rollValues.actionValue;
@@ -56,6 +62,7 @@ export class MegsTableRolls {
         this.rollFormula = rollValues.rollFormula;
         this.label = rollValues.label;
         this.isUnskilled = rollValues.unskilled;
+        this.speaker = speaker;
     }
 
     async roll(event, currentHeroPoints) {
@@ -537,7 +544,7 @@ export class MegsTableRolls {
         console.log('Calling show result from point: ' + callingPoint);
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-        await roll.toMessage(dialogHtml);
+        await roll.toMessage(dialogHtml, { speaker: this.speaker });
     }
 
     /**

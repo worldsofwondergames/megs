@@ -1,0 +1,63 @@
+<ol class='items-list'>
+    <li class='item flexrow items-header'>
+        <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+        <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
+        {{#if showHeroPointCosts}}
+            <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
+        {{/if}}
+        <div class='item-controls'>
+        </div>
+    </li>
+    {{#each powers as |item id|}}
+        <li class='item flexrow item-row {{#if item.system.aps}}bold{{/if}}' data-item-id='{{item._id}}'>
+            <div class='item-name'>
+                <div class='item-image'>
+                    <a class='rollable' data-roll-type='item'>
+                        <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
+                    </a>
+                </div>
+                {{#if item.isVirtual}}
+                    <span>{{getPowerDisplayName item}}</span>
+                {{else}}
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
+                        {{getPowerDisplayName item}}
+                    </a>
+                {{/if}}
+            </div>
+            <div class='item-aps'>
+                {{#if ../flags.megs.edit-mode}}
+                    <div class="quantity skill-input">
+                        <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&minus;</button>
+                        <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
+                        <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&plus;</button>
+                    </div>
+                {{else}}
+                    {{item.system.aps}}
+                {{/if}}
+            </div>
+            {{#if showHeroPointCosts}}
+                <div class='item-total-cost'>
+                    {{item.system.totalCost}}
+                </div>
+            {{/if}}
+            <div class='item-controls'>
+                <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}}' data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{item.system.aps}}" data-type="power" data-link="{{item.system.link}}">
+                    {{#if (compare item.system.type '===' 'auto')}}
+                        <img src="/systems/megs/assets/images/icons/d10grey.svg" class="svg-icon" />
+                    {{/if}}
+                    {{#unless (compare item.system.type '===' 'auto')}}
+                        <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" />
+                    {{/unless}}
+                </a>
+                {{#unless item.isVirtual}}
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
+                        <i class='fas fa-edit'></i>
+                    </a>
+                {{/unless}}
+                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=item.name}}'>
+                    <i class='fas fa-trash'></i>
+                </a>
+            </div>
+        </li>
+    {{/each}}
+</ol>

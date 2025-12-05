@@ -231,22 +231,34 @@ export class MEGSItemSheet extends ItemSheet {
             const itemId = button.dataset.itemId;
 
             if (isVirtual) {
-                // Update virtual skill in skillData or subskillData
-                const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
-                const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+                // Check if this is a virtual power
+                if (itemId.startsWith('virtual-power-')) {
+                    const powerKey = itemId.replace('virtual-power-', '');
+                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
 
-                if (skillData.hasOwnProperty(skillName)) {
-                    skillData[skillName] = (skillData[skillName] || 0) + 1;
-                    await this.object.update({ 'system.skillData': skillData });
-                } else if (subskillData.hasOwnProperty(skillName)) {
-                    subskillData[skillName] = (subskillData[skillName] || 0) + 1;
-                    await this.object.update({ 'system.subskillData': subskillData });
+                    if (powerData.hasOwnProperty(powerKey)) {
+                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) + 1;
+                        await this.object.update({ 'system.powerData': powerData });
+                        this.render(false);
+                    }
+                } else {
+                    // Update virtual skill in skillData or subskillData
+                    const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
+                    const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+
+                    if (skillData.hasOwnProperty(skillName)) {
+                        skillData[skillName] = (skillData[skillName] || 0) + 1;
+                        await this.object.update({ 'system.skillData': skillData });
+                    } else if (subskillData.hasOwnProperty(skillName)) {
+                        subskillData[skillName] = (subskillData[skillName] || 0) + 1;
+                        await this.object.update({ 'system.subskillData': subskillData });
+                    }
+                    this.render(false);
                 }
-                this.render(false);
             } else {
-                // Update real skill item
+                // Update real item
                 const item = this.object.parent.items.get(itemId);
-                if (item && (item.type === 'skill' || item.type === 'subskill')) {
+                if (item && (item.type === 'skill' || item.type === 'subskill' || item.type === 'power')) {
                     const newValue = (item.system.aps || 0) + 1;
                     await item.update({ 'system.aps': newValue });
                     this.render(false);
@@ -262,25 +274,37 @@ export class MEGSItemSheet extends ItemSheet {
             const itemId = button.dataset.itemId;
 
             if (isVirtual) {
-                // Update virtual skill in skillData or subskillData
-                const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
-                const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+                // Check if this is a virtual power
+                if (itemId.startsWith('virtual-power-')) {
+                    const powerKey = itemId.replace('virtual-power-', '');
+                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
 
-                if (skillData.hasOwnProperty(skillName) && (skillData[skillName] || 0) > 0) {
-                    skillData[skillName] = (skillData[skillName] || 0) - 1;
-                    await this.object.update({ 'system.skillData': skillData });
-                    this.render(false);
-                } else if (subskillData.hasOwnProperty(skillName) && (subskillData[skillName] || 0) > 0) {
-                    subskillData[skillName] = (subskillData[skillName] || 0) - 1;
-                    await this.object.update({ 'system.subskillData': subskillData });
-                    this.render(false);
+                    if (powerData.hasOwnProperty(powerKey) && (powerData[powerKey].system.aps || 0) > 0) {
+                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) - 1;
+                        await this.object.update({ 'system.powerData': powerData });
+                        this.render(false);
+                    }
+                } else {
+                    // Update virtual skill in skillData or subskillData
+                    const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
+                    const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+
+                    if (skillData.hasOwnProperty(skillName) && (skillData[skillName] || 0) > 0) {
+                        skillData[skillName] = (skillData[skillName] || 0) - 1;
+                        await this.object.update({ 'system.skillData': skillData });
+                        this.render(false);
+                    } else if (subskillData.hasOwnProperty(skillName) && (subskillData[skillName] || 0) > 0) {
+                        subskillData[skillName] = (subskillData[skillName] || 0) - 1;
+                        await this.object.update({ 'system.subskillData': subskillData });
+                        this.render(false);
+                    }
                 }
             } else {
-                // Update real skill item
+                // Update real item
                 const item = this.object.parent.items.get(itemId);
                 if (
                     item &&
-                    (item.type === 'skill' || item.type === 'subskill') &&
+                    (item.type === 'skill' || item.type === 'subskill' || item.type === 'power') &&
                     (item.system.aps || 0) > 0
                 ) {
                     const newValue = (item.system.aps || 0) - 1;

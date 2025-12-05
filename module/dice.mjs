@@ -479,6 +479,7 @@ export class MegsTableRolls {
      * @returns
      */
     async _rollDice(data, initialRoll) {
+        console.log('MEGS Debug - _rollDice called with initialRoll:', initialRoll);
         let dice = [];
         let stopRolling = false;
         if (data) {
@@ -493,12 +494,15 @@ export class MegsTableRolls {
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
+            console.log('MEGS Debug - Using provided initialRoll');
             currentRoll = initialRoll;
         } else {
+            console.log('MEGS Debug - Creating new roll, initialRoll was:', initialRoll);
             // Fallback: create new roll (for tests or when initialRoll is not provided)
             currentRoll = new Roll(this.rollFormula, {});
             await currentRoll.evaluate();
         }
+        console.log('MEGS Debug - currentRoll to use:', currentRoll);
 
         while (!stopRolling) {
             // Extract dice values from the roll object

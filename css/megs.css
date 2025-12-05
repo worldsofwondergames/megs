@@ -502,6 +502,13 @@ body.game .app h4.window-title {
         0 0 7px var(--red);
 }
 
+.megs .sheet-body .gadget-properties:hover {
+    box-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
+}
+
 .megs .attributes .attribute select {
     width: 100%;
     background-color: #ddebf6;

@@ -53,8 +53,9 @@
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)
+- Gadgets can now have powers with optional Powers tab (drag-and-drop only, toggle in Settings)
 - Gadgets can now have traits with optional Traits tab (toggle in Settings)
-- Increment/decrement buttons added for skills on gadgets (in edit mode)
+- Increment/decrement buttons added for skills and powers on gadgets (in edit mode)
 - Vehicle and location actors display skills from linked gadgets (read-only)
 - Owner dropdown on vehicle/location sheets now alphabetized by name
 - Changed configure sheet icon from cog to document icon

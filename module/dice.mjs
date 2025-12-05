@@ -360,7 +360,7 @@ export class MegsTableRolls {
             columnShiftText: '',
             rollTotal: 0,
         };
-        await this._rollDice(resultData).then((response) => {
+        await this._rollDice(resultData, avRoll).then((response) => {
             dice = response;
         });
         resultData.dice = dice;
@@ -475,9 +475,10 @@ export class MegsTableRolls {
     /**
      *
      * @param {*} data
+     * @param {Roll} initialRoll - The initial roll object to extract dice from
      * @returns
      */
-    async _rollDice(data) {
+    async _rollDice(data, initialRoll) {
         let dice = [];
         let stopRolling = false;
         if (data) {
@@ -489,23 +490,43 @@ export class MegsTableRolls {
             }
         }
 
+        // Use the initial roll if provided and valid, otherwise create a new one
+        let currentRoll;
+        if (initialRoll && (initialRoll.terms || initialRoll.result)) {
+            currentRoll = initialRoll;
+        } else {
+            // Fallback: create new roll (for tests or when initialRoll is not provided)
+            currentRoll = new Roll(this.rollFormula, {});
+            await currentRoll.evaluate();
+        }
+
         while (!stopRolling) {
-            // determine whether happens
-            const avRoll = new Roll(this.rollFormula, {});
+            // Extract dice values from the roll object
+            // Try to get from terms first (real Roll), fallback to parsing result (mock/legacy)
+            let die1, die2;
 
-            // Execute the roll
-            await avRoll.evaluate();
+            if (currentRoll.terms && currentRoll.terms.length >= 3) {
+                // Real Foundry Roll structure: terms[0] is first die, terms[2] is second die
+                die1 = currentRoll.terms[0].results[0].result;
+                die2 = currentRoll.terms[2].results[0].result;
+            } else if (currentRoll.result && typeof currentRoll.result === 'string') {
+                // Fallback for mocks or legacy: parse the result string
+                const rolledDice = currentRoll.result.split(' + ');
+                die1 = parseInt(rolledDice[0]);
+                die2 = parseInt(rolledDice[1]);
+            } else {
+                // Ultimate fallback: use mock dice values or defaults
+                die1 = (currentRoll.dice && currentRoll.dice[0] && currentRoll.dice[0].results) ? currentRoll.dice[0].results[0] : 1;
+                die2 = (currentRoll.dice && currentRoll.dice[1] && currentRoll.dice[1].results) ? currentRoll.dice[1].results[0] : 1;
+            }
 
-            // Get roll result
-            const rolledDice = avRoll.result.split(' + ');
+            dice.push(die1);
+            dice.push(die2);
 
-            dice.push(parseInt(rolledDice[0]));
-            dice.push(parseInt(rolledDice[1]));
-
-            if (parseInt(rolledDice[0]) === 1 && parseInt(rolledDice[1]) === 1) {
+            if (die1 === 1 && die2 === 1) {
                 // dice are both 1s
                 stopRolling = true;
-            } else if (rolledDice[0] === rolledDice[1]) {
+            } else if (die1 === die2) {
                 // dice match but are not 1s
                 const confirmed = await Dialog.confirm({
                     title: game.i18n.localize('MEGS.ContinueRolling'),
@@ -514,6 +535,9 @@ export class MegsTableRolls {
                     no: () => false,
                 });
                 if (confirmed) {
+                    // Create and evaluate a new roll for subsequent pairs
+                    currentRoll = new Roll(this.rollFormula, {});
+                    await currentRoll.evaluate();
                     stopRolling = false;
                 } else {
                     stopRolling = true;

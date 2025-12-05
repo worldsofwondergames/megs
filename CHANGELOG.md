@@ -75,3 +75,4 @@
 - Fixed column shift calculation in dice roller that was producing incorrect results
 - Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
 - Added test coverage for edge case where roll is exactly on threshold
+- Fixed Dice So Nice integration to display the same dice values shown in chat messages (issue #169)

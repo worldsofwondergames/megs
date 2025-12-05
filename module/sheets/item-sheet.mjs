@@ -617,11 +617,14 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Create virtual skill items
         for (let [skillName, aps] of Object.entries(skillData)) {
-            // Look up the correct icon for this skill
-            const iconFile = SKILL_ICONS[skillName];
-            const skillImg = iconFile
-                ? 'systems/megs/assets/images/icons/skillls/' + iconFile
-                : 'systems/megs/assets/images/icons/skillls/skill.png';
+            // Look up the correct icon for this skill from CONFIG.skills
+            let skillImg = 'systems/megs/assets/images/icons/skillls/skill.png'; // default
+            if (CONFIG.skills) {
+                const skillDef = CONFIG.skills.find(s => s.name === skillName);
+                if (skillDef && skillDef.img) {
+                    skillImg = 'systems/megs/assets/images/icons/skillls/' + skillDef.img;
+                }
+            }
 
             const virtualSkill = {
                 _id: `virtual-skill-${skillName}`,
@@ -1160,21 +1163,3 @@ export class MEGSItemSheet extends ItemSheet {
         this.render(false);
     }
 }
-
-// Static mapping of skill names to their icon filenames
-const SKILL_ICONS = {
-    'Acrobatics': 'acrobatics.png',
-    'Animal Handling': 'animal-handling.png',
-    'Artist': 'artist.png',
-    'Charisma': 'charisma.png',
-    'Detective': 'detective.png',
-    'Gadgetry': 'gadgetry.png',
-    'Martial Artist': 'martial-artist.png',
-    'Medicine': 'medicine.png',
-    'Military Science': 'military%20science.png',
-    'Occultist': 'occultist.png',
-    'Scientist': 'scientist.png',
-    'Thief': 'thief.png',
-    'Vehicles': 'vehicles.png',
-    'Weaponry': 'weaponry.png'
-};

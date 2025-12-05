@@ -689,6 +689,31 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     /**
+     * Create virtual power items from stored powerData for standalone gadgets
+     * @param {*} context
+     * @returns {Array}
+     */
+    _createVirtualPowersFromData(context) {
+        const virtualItems = [];
+        const powerData = context.system.powerData || {};
+
+        // Create virtual power items
+        for (let [key, power] of Object.entries(powerData)) {
+            const virtualPower = {
+                _id: `virtual-power-${key}`,
+                name: power.name,
+                type: MEGS.itemTypes.power,
+                img: power.img || Item.DEFAULT_ICON,
+                system: power.system,
+                isVirtual: true
+            };
+            virtualItems.push(virtualPower);
+        }
+
+        return virtualItems;
+    }
+
+    /**
      *
      * @param {*} context
      */
@@ -720,6 +745,9 @@ export class MEGSItemSheet extends ItemSheet {
             items = [];
             if (context.system.skillData) {
                 items = items.concat(this._createVirtualSkillsFromData(context));
+            }
+            if (context.system.powerData) {
+                items = items.concat(this._createVirtualPowersFromData(context));
             }
             if (context.system.traitData) {
                 items = items.concat(this._createVirtualTraitsFromData(context));
@@ -1007,10 +1035,13 @@ export class MEGSItemSheet extends ItemSheet {
         const item = await Item.implementation.fromDropData(data);
         const itemData = item.toObject();
 
-        // Handle standalone gadgets dropping traits
+        // Handle standalone gadgets dropping powers and traits
         if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget) {
             if (itemData.type === MEGS.itemTypes.advantage || itemData.type === MEGS.itemTypes.drawback) {
                 return this._onDropTraitToStandaloneGadget(itemData);
+            }
+            if (itemData.type === MEGS.itemTypes.power) {
+                return this._onDropPowerToStandaloneGadget(itemData);
             }
             // For other item types on standalone gadgets, prevent the drop
             return false;
@@ -1044,6 +1075,30 @@ export class MEGSItemSheet extends ItemSheet {
         };
 
         await this.object.update({ 'system.traitData': traitData });
+        this.render(false);
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle dropping a power onto a standalone gadget
+     * @param {object} itemData The power item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onDropPowerToStandaloneGadget(itemData) {
+        const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+
+        // Store the complete item data using a unique key (name + type + timestamp)
+        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
+        powerData[key] = {
+            name: itemData.name,
+            type: itemData.type,
+            img: itemData.img,
+            system: itemData.system
+        };
+
+        await this.object.update({ 'system.powerData': powerData });
         this.render(false);
     }
 

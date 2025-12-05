@@ -197,3 +197,4 @@ Issues are tracked on GitHub: https://github.com/worldsofwondergames/megs/issues
 - Avoid SCSS changes if possible. If it does not seem possible, prompt me before making the change.
 - Update CHANGELOG.md with any significant changes you commit and push. Do not add anything relating to development documentation including Claude docs
 - Never add any statements related to Claude or Claude COde in commit messages or CHANGELOG.md. Use succinct commit comments.
+- Combine commit and push into a single command

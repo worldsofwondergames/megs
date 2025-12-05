@@ -426,6 +426,12 @@ export class MEGSItemSheet extends ItemSheet {
                 effectValue = parseInt(dataset.value);
             }
 
+            // values of powers on gadget sheets
+            if (dataset.type === MEGS.itemTypes.power) {
+                actionValue = parseInt(dataset.value);
+                effectValue = parseInt(dataset.value);
+            }
+
             // If dataset.type is not set, use the object type (for backward compatibility)
             if (!dataset.type) {
                 dataset.type = this.object.type;

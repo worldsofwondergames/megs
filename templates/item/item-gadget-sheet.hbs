@@ -38,14 +38,9 @@
             {{> "systems/megs/templates/item/parts/item-gadget-omni-abilities.hbs"}}
         {{/if}}
 
-        {{!-- Owned Powers Tab --}}
+        {{!-- Powers Tab --}}
         <div class="tab powers" data-group="primary" data-tab="powers">
-            {{#unless hasActor}}
-                <div class="message-panel">Due to technical limitations, Powers cannot be added to an unowned Gadget. Please add this Gadget to a character in order to add Powers.</div>
-            {{/unless}}
-            {{#if hasActor}}
-                {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
-            {{/if}}
+            {{> "systems/megs/templates/item/parts/item-gadget-powers.hbs"}}
         </div>
 
         {{!-- Owned Skills Tab --}}

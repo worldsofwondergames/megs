@@ -492,7 +492,6 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
-        let isFirstRoll = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
@@ -529,10 +528,10 @@ export class MegsTableRolls {
                 stopRolling = true;
             } else if (die1 === die2) {
                 // dice match but are not 1s
-                // Show the Dice So Nice animation if available before prompting
-                // For first roll, DSN animation already triggered by evaluate(), but we need to wait for it
-                // For subsequent rolls, we need to explicitly show the animation
-                if (game.dice3d && !isFirstRoll) {
+                // Show the Dice So Nice animation before prompting
+                // For the first roll, the animation was triggered by evaluate() but we need to ensure it completes
+                // For subsequent rolls, we need to explicitly trigger and wait for the animation
+                if (game.dice3d) {
                     await game.dice3d.showForRoll(currentRoll, game.user, true);
                 }
 
@@ -546,7 +545,6 @@ export class MegsTableRolls {
                     // Create and evaluate a new roll for subsequent pairs
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
-                    isFirstRoll = false;
                     stopRolling = false;
                 } else {
                     stopRolling = true;

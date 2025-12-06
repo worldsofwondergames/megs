@@ -231,22 +231,34 @@ export class MEGSItemSheet extends ItemSheet {
             const itemId = button.dataset.itemId;
 
             if (isVirtual) {
-                // Update virtual skill in skillData or subskillData
-                const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
-                const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+                // Check if this is a virtual power
+                if (itemId.startsWith('virtual-power-')) {
+                    const powerKey = itemId.replace('virtual-power-', '');
+                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
 
-                if (skillData.hasOwnProperty(skillName)) {
-                    skillData[skillName] = (skillData[skillName] || 0) + 1;
-                    await this.object.update({ 'system.skillData': skillData });
-                } else if (subskillData.hasOwnProperty(skillName)) {
-                    subskillData[skillName] = (subskillData[skillName] || 0) + 1;
-                    await this.object.update({ 'system.subskillData': subskillData });
+                    if (powerData.hasOwnProperty(powerKey)) {
+                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) + 1;
+                        await this.object.update({ 'system.powerData': powerData });
+                        this.render(false);
+                    }
+                } else {
+                    // Update virtual skill in skillData or subskillData
+                    const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
+                    const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+
+                    if (skillData.hasOwnProperty(skillName)) {
+                        skillData[skillName] = (skillData[skillName] || 0) + 1;
+                        await this.object.update({ 'system.skillData': skillData });
+                    } else if (subskillData.hasOwnProperty(skillName)) {
+                        subskillData[skillName] = (subskillData[skillName] || 0) + 1;
+                        await this.object.update({ 'system.subskillData': subskillData });
+                    }
+                    this.render(false);
                 }
-                this.render(false);
             } else {
-                // Update real skill item
+                // Update real item
                 const item = this.object.parent.items.get(itemId);
-                if (item && (item.type === 'skill' || item.type === 'subskill')) {
+                if (item && (item.type === 'skill' || item.type === 'subskill' || item.type === 'power')) {
                     const newValue = (item.system.aps || 0) + 1;
                     await item.update({ 'system.aps': newValue });
                     this.render(false);
@@ -262,25 +274,37 @@ export class MEGSItemSheet extends ItemSheet {
             const itemId = button.dataset.itemId;
 
             if (isVirtual) {
-                // Update virtual skill in skillData or subskillData
-                const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
-                const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+                // Check if this is a virtual power
+                if (itemId.startsWith('virtual-power-')) {
+                    const powerKey = itemId.replace('virtual-power-', '');
+                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
 
-                if (skillData.hasOwnProperty(skillName) && (skillData[skillName] || 0) > 0) {
-                    skillData[skillName] = (skillData[skillName] || 0) - 1;
-                    await this.object.update({ 'system.skillData': skillData });
-                    this.render(false);
-                } else if (subskillData.hasOwnProperty(skillName) && (subskillData[skillName] || 0) > 0) {
-                    subskillData[skillName] = (subskillData[skillName] || 0) - 1;
-                    await this.object.update({ 'system.subskillData': subskillData });
-                    this.render(false);
+                    if (powerData.hasOwnProperty(powerKey) && (powerData[powerKey].system.aps || 0) > 0) {
+                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) - 1;
+                        await this.object.update({ 'system.powerData': powerData });
+                        this.render(false);
+                    }
+                } else {
+                    // Update virtual skill in skillData or subskillData
+                    const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
+                    const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+
+                    if (skillData.hasOwnProperty(skillName) && (skillData[skillName] || 0) > 0) {
+                        skillData[skillName] = (skillData[skillName] || 0) - 1;
+                        await this.object.update({ 'system.skillData': skillData });
+                        this.render(false);
+                    } else if (subskillData.hasOwnProperty(skillName) && (subskillData[skillName] || 0) > 0) {
+                        subskillData[skillName] = (subskillData[skillName] || 0) - 1;
+                        await this.object.update({ 'system.subskillData': subskillData });
+                        this.render(false);
+                    }
                 }
             } else {
-                // Update real skill item
+                // Update real item
                 const item = this.object.parent.items.get(itemId);
                 if (
                     item &&
-                    (item.type === 'skill' || item.type === 'subskill') &&
+                    (item.type === 'skill' || item.type === 'subskill' || item.type === 'power') &&
                     (item.system.aps || 0) > 0
                 ) {
                     const newValue = (item.system.aps || 0) - 1;
@@ -317,9 +341,10 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (!itemId) return;
 
-            // Check if this is a standalone gadget with virtual traits
+            // Check if this is a standalone gadget with virtual items
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
             const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
+            const isVirtualPower = itemId.startsWith && itemId.startsWith('virtual-power-');
 
             if (isStandaloneGadget && isVirtualTrait) {
                 // Standalone gadget - delete virtual trait from traitData
@@ -329,6 +354,17 @@ export class MEGSItemSheet extends ItemSheet {
                 if (traitData[key]) {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.traitData.-=${key}`;
+                    await this.object.update({ [updateKey]: null });
+                    this.render(true);
+                }
+            } else if (isStandaloneGadget && isVirtualPower) {
+                // Standalone gadget - delete virtual power from powerData
+                const key = itemId.replace('virtual-power-', '');
+                const powerData = this.object.system.powerData || {};
+
+                if (powerData[key]) {
+                    // Use Foundry's key deletion syntax
+                    const updateKey = `system.powerData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
                     this.render(true);
                 }
@@ -386,6 +422,12 @@ export class MEGSItemSheet extends ItemSheet {
                 dataset.type === MEGS.itemTypes.skill ||
                 dataset.type === MEGS.itemTypes.subskill
             ) {
+                actionValue = parseInt(dataset.value);
+                effectValue = parseInt(dataset.value);
+            }
+
+            // values of powers on gadget sheets
+            if (dataset.type === MEGS.itemTypes.power) {
                 actionValue = parseInt(dataset.value);
                 effectValue = parseInt(dataset.value);
             }
@@ -689,6 +731,31 @@ export class MEGSItemSheet extends ItemSheet {
     }
 
     /**
+     * Create virtual power items from stored powerData for standalone gadgets
+     * @param {*} context
+     * @returns {Array}
+     */
+    _createVirtualPowersFromData(context) {
+        const virtualItems = [];
+        const powerData = context.system.powerData || {};
+
+        // Create virtual power items
+        for (let [key, power] of Object.entries(powerData)) {
+            const virtualPower = {
+                _id: `virtual-power-${key}`,
+                name: power.name,
+                type: MEGS.itemTypes.power,
+                img: power.img || Item.DEFAULT_ICON,
+                system: power.system,
+                isVirtual: true
+            };
+            virtualItems.push(virtualPower);
+        }
+
+        return virtualItems;
+    }
+
+    /**
      *
      * @param {*} context
      */
@@ -720,6 +787,9 @@ export class MEGSItemSheet extends ItemSheet {
             items = [];
             if (context.system.skillData) {
                 items = items.concat(this._createVirtualSkillsFromData(context));
+            }
+            if (context.system.powerData) {
+                items = items.concat(this._createVirtualPowersFromData(context));
             }
             if (context.system.traitData) {
                 items = items.concat(this._createVirtualTraitsFromData(context));
@@ -1007,10 +1077,13 @@ export class MEGSItemSheet extends ItemSheet {
         const item = await Item.implementation.fromDropData(data);
         const itemData = item.toObject();
 
-        // Handle standalone gadgets dropping traits
+        // Handle standalone gadgets dropping powers and traits
         if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget) {
             if (itemData.type === MEGS.itemTypes.advantage || itemData.type === MEGS.itemTypes.drawback) {
                 return this._onDropTraitToStandaloneGadget(itemData);
+            }
+            if (itemData.type === MEGS.itemTypes.power) {
+                return this._onDropPowerToStandaloneGadget(itemData);
             }
             // For other item types on standalone gadgets, prevent the drop
             return false;
@@ -1044,6 +1117,30 @@ export class MEGSItemSheet extends ItemSheet {
         };
 
         await this.object.update({ 'system.traitData': traitData });
+        this.render(false);
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * Handle dropping a power onto a standalone gadget
+     * @param {object} itemData The power item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onDropPowerToStandaloneGadget(itemData) {
+        const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+
+        // Store the complete item data using a unique key (name + type + timestamp)
+        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
+        powerData[key] = {
+            name: itemData.name,
+            type: itemData.type,
+            img: itemData.img,
+            system: itemData.system
+        };
+
+        await this.object.update({ 'system.powerData': powerData });
         this.render(false);
     }
 

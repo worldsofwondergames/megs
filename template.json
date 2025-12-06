@@ -394,6 +394,7 @@
             },
             "skillData": {},
             "subskillData": {},
+            "powerData": {},
             "traitData": {},
             "weapon": {
                 "isWeapon": false,

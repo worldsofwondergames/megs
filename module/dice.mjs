@@ -492,6 +492,7 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
+        let isFirstIteration = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
@@ -501,6 +502,13 @@ export class MegsTableRolls {
         }
 
         while (!stopRolling) {
+            // For subsequent rolls (not the first iteration), wait for DSN animation to complete
+            // The first roll was already shown by evaluate() in _handleRolls
+            // Subsequent rolls are shown by evaluate() in the loop below
+            if (!isFirstIteration && game.dice3d) {
+                await game.dice3d.showForRoll(currentRoll, game.user, true);
+            }
+
             // Extract dice values from the roll object
             // Try to get from terms first (real Roll), fallback to parsing result (mock/legacy)
             let die1, die2;
@@ -528,13 +536,6 @@ export class MegsTableRolls {
                 stopRolling = true;
             } else if (die1 === die2) {
                 // dice match but are not 1s
-                // Show the Dice So Nice animation before prompting
-                // For the first roll, the animation was triggered by evaluate() but we need to ensure it completes
-                // For subsequent rolls, we need to explicitly trigger and wait for the animation
-                if (game.dice3d) {
-                    await game.dice3d.showForRoll(currentRoll, game.user, true);
-                }
-
                 const confirmed = await Dialog.confirm({
                     title: game.i18n.localize('MEGS.ContinueRolling'),
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
@@ -543,8 +544,10 @@ export class MegsTableRolls {
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs
+                    // The DSN animation will be shown at the top of the next loop iteration
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
+                    isFirstIteration = false;
                     stopRolling = false;
                 } else {
                     stopRolling = true;

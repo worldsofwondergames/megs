@@ -492,7 +492,6 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
-        let isFirstIteration = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
@@ -502,10 +501,9 @@ export class MegsTableRolls {
         }
 
         while (!stopRolling) {
-            // For subsequent rolls (not the first iteration), wait for DSN animation to complete
-            // The first roll was already shown by evaluate() in _handleRolls
-            // Subsequent rolls are shown by evaluate() in the loop below
-            if (!isFirstIteration && game.dice3d) {
+            // Wait for DSN animation to complete before processing this roll
+            // This ensures the 3D dice are shown before the dialog appears
+            if (game.dice3d) {
                 await game.dice3d.showForRoll(currentRoll, game.user, true);
             }
 
@@ -547,7 +545,6 @@ export class MegsTableRolls {
                     // The DSN animation will be shown at the top of the next loop iteration
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
-                    isFirstIteration = false;
                     stopRolling = false;
                 } else {
                     stopRolling = true;

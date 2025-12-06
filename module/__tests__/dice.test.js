@@ -362,7 +362,51 @@ test('_rollDice should not roll again if have matching dice on first roll and us
     });
 });
 
-/* 
+test('_rollDice should extract dice from initialRoll with terms structure', () => {
+    const values = {
+        label: 'Test',
+        type: 'attribute',
+        valueOrAps: 0,
+        actionValue: 0,
+        opposingValue: 0,
+        effectValue: 0,
+        resistanceValue: 0,
+        rollFormula: '1d10 + 1d10',
+        unskilled: false,
+    };
+
+    const dice = new MegsTableRolls(values);
+
+    // Mock a Roll object with terms structure (like real Foundry Roll)
+    const mockRollWithTerms = {
+        terms: [
+            { results: [{ result: 7 }] },  // First die
+            { operator: '+' },              // Operator
+            { results: [{ result: 4 }] }   // Second die
+        ],
+        result: '11'
+    };
+
+    let resultData = {
+        result: '',
+        actionValue: 0,
+        opposingValue: 0,
+        difficulty: 0,
+        dice: [],
+        columnShifts: 0,
+        effectValue: 0,
+        resistanceValue: 0,
+        success: true,
+        evResult: '',
+        rvColumnShifts: 0,
+    };
+
+    dice._rollDice(resultData, mockRollWithTerms).then((response) => {
+        expect(response).toStrictEqual([7, 4]);
+    });
+});
+
+/*
 TODO fix
 test('_rollDice should not roll again if have matching dice on first roll and user elects not to roll again', () => {
     global.Dialog = NoDialog;

@@ -492,6 +492,7 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
+        let isFirstIteration = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
@@ -501,10 +502,10 @@ export class MegsTableRolls {
         }
 
         while (!stopRolling) {
-            // Wait for DSN animation to complete before processing this roll
-            // This ensures the 3D dice are shown before the dialog appears
-            if (game.dice3d) {
+            // For the first iteration, wait for the initial roll's DSN animation to complete
+            if (isFirstIteration && game.dice3d) {
                 await game.dice3d.showForRoll(currentRoll, game.user, true);
+                isFirstIteration = false;
             }
 
             // Extract dice values from the roll object
@@ -542,9 +543,12 @@ export class MegsTableRolls {
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs
-                    // The DSN animation will be shown at the top of the next loop iteration
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
+                    // Wait for DSN animation to complete before continuing
+                    if (game.dice3d) {
+                        await game.dice3d.showForRoll(currentRoll, game.user, true);
+                    }
                     stopRolling = false;
                 } else {
                     stopRolling = true;

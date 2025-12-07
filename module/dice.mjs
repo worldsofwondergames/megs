@@ -492,7 +492,6 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
-        let isFirstIteration = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
@@ -502,6 +501,12 @@ export class MegsTableRolls {
         }
 
         while (!stopRolling) {
+            // Manually show DSN animation and wait for it to complete
+            // This ensures dice show before any dialog appears
+            if (game.dice3d) {
+                await game.dice3d.showForRoll(currentRoll, game.user, true);
+            }
+
             // Extract dice values from the roll object
             // Try to get from terms first (real Roll), fallback to parsing result (mock/legacy)
             let die1, die2;
@@ -529,13 +534,6 @@ export class MegsTableRolls {
                 stopRolling = true;
             } else if (die1 === die2) {
                 // dice match but are not 1s
-                // For first iteration, add small delay to let DSN animation show
-                // (already triggered by evaluate() in _handleRolls)
-                if (isFirstIteration && game.dice3d) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    isFirstIteration = false;
-                }
-
                 const confirmed = await Dialog.confirm({
                     title: game.i18n.localize('MEGS.ContinueRolling'),
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
@@ -544,7 +542,6 @@ export class MegsTableRolls {
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs
-                    // DSN will show this automatically
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
                     stopRolling = false;

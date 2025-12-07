@@ -529,9 +529,10 @@ export class MegsTableRolls {
                 stopRolling = true;
             } else if (die1 === die2) {
                 // dice match but are not 1s
-                // Wait for DSN animation to complete before showing dialog
-                if (game.dice3d && isFirstIteration) {
-                    await game.dice3d.showForRoll(currentRoll, game.user, true);
+                // For first iteration, add small delay to let DSN animation show
+                // (already triggered by evaluate() in _handleRolls)
+                if (isFirstIteration && game.dice3d) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                     isFirstIteration = false;
                 }
 
@@ -543,12 +544,9 @@ export class MegsTableRolls {
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs
+                    // DSN will show this automatically
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
-                    // Wait for DSN animation to complete before continuing
-                    if (game.dice3d) {
-                        await game.dice3d.showForRoll(currentRoll, game.user, true);
-                    }
                     stopRolling = false;
                 } else {
                     stopRolling = true;

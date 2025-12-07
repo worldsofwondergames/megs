@@ -502,12 +502,6 @@ export class MegsTableRolls {
         }
 
         while (!stopRolling) {
-            // For the first iteration, wait for the initial roll's DSN animation to complete
-            if (isFirstIteration && game.dice3d) {
-                await game.dice3d.showForRoll(currentRoll, game.user, true);
-                isFirstIteration = false;
-            }
-
             // Extract dice values from the roll object
             // Try to get from terms first (real Roll), fallback to parsing result (mock/legacy)
             let die1, die2;
@@ -535,6 +529,12 @@ export class MegsTableRolls {
                 stopRolling = true;
             } else if (die1 === die2) {
                 // dice match but are not 1s
+                // Wait for DSN animation to complete before showing dialog
+                if (game.dice3d && isFirstIteration) {
+                    await game.dice3d.showForRoll(currentRoll, game.user, true);
+                    isFirstIteration = false;
+                }
+
                 const confirmed = await Dialog.confirm({
                     title: game.i18n.localize('MEGS.ContinueRolling'),
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),

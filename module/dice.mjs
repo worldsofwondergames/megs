@@ -492,21 +492,25 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
-        if (initialRoll && (initialRoll.terms || initialRoll.result)) {
+        if (initialRoll && (initialRoll.terms || initialRoll.result || initialRoll.formula)) {
             currentRoll = initialRoll;
         } else {
             // Fallback: create new roll (for tests or when initialRoll is not provided)
             currentRoll = new Roll(this.rollFormula, {});
-            await currentRoll.evaluate();
+            if (typeof currentRoll.evaluate === 'function') {
+                await currentRoll.evaluate();
+            }
         }
 
+        let isFirstIteration = true;
+
         while (!stopRolling) {
-            // Manually show DSN animation and wait for it to complete
-            // This ensures dice show before any dialog appears
-            if (game.dice3d) {
-                await game.dice3d.showForRoll(currentRoll, game.user, true);
+            // Evaluate and show this roll if not already done
+            if (!currentRoll._evaluated && typeof currentRoll.evaluate === 'function') {
+                await currentRoll.evaluate();
             }
 
+            isFirstIteration = false;
             // Extract dice values from the roll object
             // Try to get from terms first (real Roll), fallback to parsing result (mock/legacy)
             let die1, die2;
@@ -534,6 +538,8 @@ export class MegsTableRolls {
                 stopRolling = true;
             } else if (die1 === die2) {
                 // dice match but are not 1s
+                // DSN animation already completed from showForRoll above
+
                 const confirmed = await Dialog.confirm({
                     title: game.i18n.localize('MEGS.ContinueRolling'),
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
@@ -541,9 +547,9 @@ export class MegsTableRolls {
                     no: () => false,
                 });
                 if (confirmed) {
-                    // Create and evaluate a new roll for subsequent pairs
+                    // Create a new roll for subsequent pairs (unevaluated)
+                    // It will be shown and evaluated at the start of the next loop iteration
                     currentRoll = new Roll(this.rollFormula, {});
-                    await currentRoll.evaluate();
                     stopRolling = false;
                 } else {
                     stopRolling = true;

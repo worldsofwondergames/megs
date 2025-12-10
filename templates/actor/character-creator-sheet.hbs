@@ -33,7 +33,6 @@
         <a class='item' data-tab='skills'>Skills</a>
         <a class='item' data-tab='traits'>Traits</a>
         <a class='item' data-tab='wealth'>Wealth</a>
-        <a class='item' data-tab='summary'>Summary</a>
     </nav>
 
     {{!-- Character Creator Body --}}
@@ -46,21 +45,33 @@
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Dexterity - Agility and coordination">DEX</label>
-                    {{> plusMinusInput id='attributes.dex' classes='attribute-input' value=system.attributes.dex.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(dexInput.value) > 0) { dexInput.value = parseInt(dexInput.value) - 1; dexInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="dexInput" name="system.attributes.dex.value" type="number" class="input-box" value="{{system.attributes.dex.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="dexInput.value = parseInt(dexInput.value) + 1; dexInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.dex.value 7}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Strength - Lifting ability and muscular power">STR</label>
-                    {{> plusMinusInput id='attributes.str' classes='attribute-input' value=system.attributes.str.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(strInput.value) > 0) { strInput.value = parseInt(strInput.value) - 1; strInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="strInput" name="system.attributes.str.value" type="number" class="input-box" value="{{system.attributes.str.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="strInput.value = parseInt(strInput.value) + 1; strInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.str.value 6}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Body - Physical durability and resistance to damage">BODY</label>
-                    {{> plusMinusInput id='attributes.body' classes='attribute-input' value=system.attributes.body.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(bodyInput.value) > 0) { bodyInput.value = parseInt(bodyInput.value) - 1; bodyInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="bodyInput" name="system.attributes.body.value" type="number" class="input-box" value="{{system.attributes.body.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="bodyInput.value = parseInt(bodyInput.value) + 1; bodyInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.body.value 6}} HP</span>
                     </div>
@@ -71,21 +82,33 @@
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Intelligence - Knowledge, reasoning, and memory">INT</label>
-                    {{> plusMinusInput id='attributes.int' classes='attribute-input' value=system.attributes.int.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(intInput.value) > 0) { intInput.value = parseInt(intInput.value) - 1; intInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="intInput" name="system.attributes.int.value" type="number" class="input-box" value="{{system.attributes.int.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="intInput.value = parseInt(intInput.value) + 1; intInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.int.value 7}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Willpower - Determination and mental toughness">WILL</label>
-                    {{> plusMinusInput id='attributes.will' classes='attribute-input' value=system.attributes.will.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(willInput.value) > 0) { willInput.value = parseInt(willInput.value) - 1; willInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="willInput" name="system.attributes.will.value" type="number" class="input-box" value="{{system.attributes.will.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="willInput.value = parseInt(willInput.value) + 1; willInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.will.value 6}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Mind - Mental resistance and psychic defense">MIND</label>
-                    {{> plusMinusInput id='attributes.mind' classes='attribute-input' value=system.attributes.mind.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(mindInput.value) > 0) { mindInput.value = parseInt(mindInput.value) - 1; mindInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="mindInput" name="system.attributes.mind.value" type="number" class="input-box" value="{{system.attributes.mind.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="mindInput.value = parseInt(mindInput.value) + 1; mindInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.mind.value 6}} HP</span>
                     </div>
@@ -96,21 +119,33 @@
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Influence - Charisma, personality, and presence">INFL</label>
-                    {{> plusMinusInput id='attributes.infl' classes='attribute-input' value=system.attributes.infl.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(inflInput.value) > 0) { inflInput.value = parseInt(inflInput.value) - 1; inflInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="inflInput" name="system.attributes.infl.value" type="number" class="input-box" value="{{system.attributes.infl.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="inflInput.value = parseInt(inflInput.value) + 1; inflInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.infl.value 7}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Aura - Interpersonal resonance and magical effects">AURA</label>
-                    {{> plusMinusInput id='attributes.aura' classes='attribute-input' value=system.attributes.aura.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(auraInput.value) > 0) { auraInput.value = parseInt(auraInput.value) - 1; auraInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="auraInput" name="system.attributes.aura.value" type="number" class="input-box" value="{{system.attributes.aura.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="auraInput.value = parseInt(auraInput.value) + 1; auraInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.aura.value 6}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
                     <label class="resource-label flexlarge align-left" title="Spirit - Spiritual strength and mystical resistance">SPIRIT</label>
-                    {{> plusMinusInput id='attributes.spirit' classes='attribute-input' value=system.attributes.spirit.value min=0 max=60 hasValue=true}}
+                    <div class="quantity attribute-input">
+                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(spiritInput.value) > 0) { spiritInput.value = parseInt(spiritInput.value) - 1; spiritInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <input id="spiritInput" name="system.attributes.spirit.value" type="number" class="input-box" value="{{system.attributes.spirit.value}}" min="0" max="60" data-dtype="Number" />
+                        <button class="plus" aria-label="Increase" onClick="spiritInput.value = parseInt(spiritInput.value) + 1; spiritInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                    </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.spirit.value 6}} HP</span>
                     </div>
@@ -144,11 +179,6 @@
         {{!-- Wealth Tab (Placeholder) --}}
         <div class="tab wealth" data-group="primary" data-tab="wealth">
             <p>Wealth selection coming soon...</p>
-        </div>
-
-        {{!-- Summary Tab (Placeholder) --}}
-        <div class="tab summary" data-group="primary" data-tab="summary">
-            <p>Character summary coming soon...</p>
         </div>
 
     </section>

@@ -53,6 +53,7 @@
 - Implemented AP Purchase Chart for accurate MEGS character creation costs (issue #27)
 - Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
 - Hero Point budget tracking calculates total HP spent on attributes and items
+- Character creator sheet with Attributes tab for point-buy character creation
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)

@@ -216,11 +216,20 @@ export class MEGSItem extends Item {
             }
         }
 
-        // calculate total cost of the item
+        // calculate total cost of the item using AP Purchase Chart
         // TODO gadgets are different
         if (systemData.hasOwnProperty('baseCost')) {
             if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
-                systemData.totalCost = systemData.baseCost + systemData.factorCost * systemData.aps;
+                // Check if power/skill is linked to an attribute
+                // Linking reduces Factor Cost by 2 (minimum 1)
+                let effectiveFC = systemData.factorCost;
+                if (systemData.isLinked === 'true' || systemData.isLinked === true) {
+                    effectiveFC = Math.max(1, systemData.factorCost - 2);
+                }
+
+                // Use AP Purchase Chart for accurate MEGS cost calculation
+                const apCost = MEGS.getAPCost(systemData.aps, effectiveFC);
+                systemData.totalCost = systemData.baseCost + apCost;
             } else {
                 systemData.totalCost = systemData.baseCost;
             }

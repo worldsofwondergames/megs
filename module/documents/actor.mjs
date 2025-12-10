@@ -103,6 +103,9 @@ export class MEGSActor extends Actor {
         this.system.currentMind.max = this.system.attributes.mind.value;
         this.system.currentSpirit.max = this.system.attributes.spirit.value;
 
+        // Calculate Hero Point budget and spending
+        this._calculateHeroPointBudget();
+
         if (this.type === MEGS.characterTypes.hero || this.type === MEGS.characterTypes.villain) {
             const merge = (a, b, predicate = (a, b) => a === b) => {
                 const c = [...a]; // copy to avoid side effects
@@ -117,6 +120,69 @@ export class MEGSActor extends Actor {
                 CONFIG.motivations.antihero
             );
         }
+    }
+
+    /**
+     * Calculate Hero Point budget tracking for character creation
+     */
+    _calculateHeroPointBudget() {
+        // Base budget is 450 HP for standard characters
+        const baseBudget = 450;
+
+        // Calculate HP spent on attributes
+        let attributesCost = 0;
+        const attributes = this.system.attributes;
+
+        if (attributes) {
+            // Physical attributes
+            attributesCost += MEGS.getAPCost(attributes.dex.value, 7) || 0;  // DEX is FC 7
+            attributesCost += MEGS.getAPCost(attributes.str.value, 6) || 0;  // STR is FC 6
+            attributesCost += MEGS.getAPCost(attributes.body.value, 6) || 0; // BODY is FC 6
+
+            // Mental attributes
+            attributesCost += MEGS.getAPCost(attributes.int.value, 7) || 0;  // INT is FC 7
+            attributesCost += MEGS.getAPCost(attributes.will.value, 6) || 0; // WILL is FC 6
+            attributesCost += MEGS.getAPCost(attributes.mind.value, 6) || 0; // MIND is FC 6
+
+            // Mystical attributes
+            attributesCost += MEGS.getAPCost(attributes.infl.value, 7) || 0;  // INFL is FC 7
+            attributesCost += MEGS.getAPCost(attributes.aura.value, 6) || 0;  // AURA is FC 6
+            attributesCost += MEGS.getAPCost(attributes.spirit.value, 6) || 0; // SPIRIT is FC 6
+        }
+
+        // Calculate HP spent on items (powers, skills, advantages, wealth)
+        let itemsCost = 0;
+        let drawbacksValue = 0;
+
+        if (this.items) {
+            this.items.forEach(item => {
+                if (item.system.totalCost) {
+                    if (item.type === MEGS.itemTypes.drawback) {
+                        // Drawbacks add HP back to the budget
+                        drawbacksValue += item.system.totalCost;
+                    } else {
+                        // All other items cost HP
+                        itemsCost += item.system.totalCost;
+                    }
+                }
+            });
+        }
+
+        // Calculate totals
+        const totalBudget = baseBudget + drawbacksValue;
+        const totalSpent = attributesCost + itemsCost;
+        const remaining = totalBudget - totalSpent;
+
+        // Store in actor system data for display
+        this.system.heroPointBudget = {
+            base: baseBudget,
+            drawbacks: drawbacksValue,
+            total: totalBudget,
+            attributesCost: attributesCost,
+            itemsCost: itemsCost,
+            totalSpent: totalSpent,
+            remaining: remaining
+        };
     }
 
     /**

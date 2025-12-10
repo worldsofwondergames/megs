@@ -86,6 +86,15 @@ Hooks.once('init', function () {
             console.error(`Error loading skills data: ${error.message}`);
         });
 
+    _loadData('systems/megs/assets/data/apCostChart.json')
+        .then((response) => {
+            console.log(`Received response for AP cost chart data: ${response.status}`);
+            CONFIG.apCostChart = response;
+        })
+        .catch((error) => {
+            console.error(`Error loading AP cost chart data: ${error.message}`);
+        });
+
     // Active Effects are never copied to the Actor,
     // but will still apply to the Actor from within the Item
     // if the transfer property on the Active Effect is true.

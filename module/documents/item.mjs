@@ -228,8 +228,10 @@ export class MEGSItem extends Item {
                 }
 
                 // Use AP Purchase Chart for accurate MEGS cost calculation
-                const apCost = MEGS.getAPCost(systemData.aps, effectiveFC);
-                systemData.totalCost = systemData.baseCost + apCost;
+                const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+                    ? MEGS.getAPCost(systemData.aps, effectiveFC)
+                    : (systemData.factorCost * systemData.aps); // Fallback to linear
+                systemData.totalCost = systemData.baseCost + (apCost || 0);
             } else {
                 systemData.totalCost = systemData.baseCost;
             }

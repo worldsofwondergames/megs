@@ -199,3 +199,4 @@ Issues are tracked on GitHub: https://github.com/worldsofwondergames/megs/issues
 - Never add any statements related to Claude or Claude COde in commit messages or CHANGELOG.md. Use succinct commit comments.
 - Combine commit and push into a single command
 - When I say to do final cleanup, return the URLs in system.json to the base branch, update CHANGELOG.md, commit, and push without prompting me. This will be an exception to my directive not to push without prompting me.
+- When asked to update system.json to the current branch, always use "git branch --show-current" to check the current branch before making any changes

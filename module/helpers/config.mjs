@@ -119,9 +119,15 @@ MEGS.yesNoOptions = {
  * @returns {number} The Hero Point cost, or 0 if invalid parameters
  */
 MEGS.getAPCost = function(aps, factorCost) {
-    // Validate inputs
-    if (!aps || !factorCost || aps < 1 || factorCost < 1 || factorCost > 10) {
+    // Validate inputs - 0 APs is valid (costs 0), but FC must be 1-10
+    if (aps === null || aps === undefined || aps < 0 ||
+        factorCost === null || factorCost === undefined || factorCost < 1 || factorCost > 10) {
         console.warn(`Invalid AP cost lookup: ${aps} APs at FC ${factorCost}`);
+        return 0;
+    }
+
+    // 0 APs always costs 0 HP
+    if (aps === 0) {
         return 0;
     }
 

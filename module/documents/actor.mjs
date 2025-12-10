@@ -135,19 +135,19 @@ export class MEGSActor extends Actor {
 
         if (attributes) {
             // Physical attributes
-            attributesCost += MEGS.getAPCost(attributes.dex.value, 7) || 0;  // DEX is FC 7
-            attributesCost += MEGS.getAPCost(attributes.str.value, 6) || 0;  // STR is FC 6
-            attributesCost += MEGS.getAPCost(attributes.body.value, 6) || 0; // BODY is FC 6
+            attributesCost += MEGS.getAPCost(attributes.dex?.value ?? 0, 7) || 0;  // DEX is FC 7
+            attributesCost += MEGS.getAPCost(attributes.str?.value ?? 0, 6) || 0;  // STR is FC 6
+            attributesCost += MEGS.getAPCost(attributes.body?.value ?? 0, 6) || 0; // BODY is FC 6
 
             // Mental attributes
-            attributesCost += MEGS.getAPCost(attributes.int.value, 7) || 0;  // INT is FC 7
-            attributesCost += MEGS.getAPCost(attributes.will.value, 6) || 0; // WILL is FC 6
-            attributesCost += MEGS.getAPCost(attributes.mind.value, 6) || 0; // MIND is FC 6
+            attributesCost += MEGS.getAPCost(attributes.int?.value ?? 0, 7) || 0;  // INT is FC 7
+            attributesCost += MEGS.getAPCost(attributes.will?.value ?? 0, 6) || 0; // WILL is FC 6
+            attributesCost += MEGS.getAPCost(attributes.mind?.value ?? 0, 6) || 0; // MIND is FC 6
 
             // Mystical attributes
-            attributesCost += MEGS.getAPCost(attributes.infl.value, 7) || 0;  // INFL is FC 7
-            attributesCost += MEGS.getAPCost(attributes.aura.value, 6) || 0;  // AURA is FC 6
-            attributesCost += MEGS.getAPCost(attributes.spirit.value, 6) || 0; // SPIRIT is FC 6
+            attributesCost += MEGS.getAPCost(attributes.infl?.value ?? 0, 7) || 0;  // INFL is FC 7
+            attributesCost += MEGS.getAPCost(attributes.aura?.value ?? 0, 6) || 0;  // AURA is FC 6
+            attributesCost += MEGS.getAPCost(attributes.spirit?.value ?? 0, 6) || 0; // SPIRIT is FC 6
         }
 
         // Calculate HP spent on items (powers, skills, advantages, wealth)

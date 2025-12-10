@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @font-face {
     font-family: DecoturaICG;
-    src: url("../fonts/Decotura ICG Regular.ttf");
+    src: url('../fonts/Decotura ICG Regular.ttf');
 }
 
 /* Global styles */
@@ -13,19 +13,30 @@
     text-transform: uppercase;
 }
 
+/* variables */
+:root {
+    --darkblue: #1f5079;
+    --white: #ffffff;
+    --red: #d63a28;
+}
+
 /*------------------------------------------------------------------------*/
 /* 
 /*------------------------------------------------------------------------*/
 
 .megs {
-    font-family: "DecoturaICG", sans-serif;
+    font-family: 'DecoturaICG', sans-serif;
     background-image: none;
     letter-spacing: 0.05em;
 }
 
 .megs .window-header {
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     font-size: 20px;
+}
+
+body.game .app h4.window-title {
+    font-family: 'DecoturaICG', sans-serif;
 }
 
 .megs.window-app .window-content {
@@ -33,24 +44,24 @@
     background-image: none;
 }
 
-.megs input[type="text"] {
+.megs input[type='text'] {
     background-color: #ddebf6;
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
 }
 
 .megs label {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs select {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .message-panel {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
@@ -59,9 +70,9 @@
 }
 
 .megs .editor-content {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
@@ -75,19 +86,19 @@
 }
 
 .megs div.biography div.editor-content {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
     background-color: #ddebf6;
 }
 
 .megs .description-text {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 10px 5px 0 5px;
 }
 
 .megs .tabs .item {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .tabs .item.active {
@@ -96,9 +107,12 @@
 
 .rollable:hover,
 .rollable:focus {
-    color: #1f5079;
+    color: var(--darkblue);
     cursor: pointer;
-    text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+    text-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
 }
 
 .grid,
@@ -295,17 +309,17 @@
 }
 
 /* Styles limited to megs sheets */
-.megs input[type="checkbox"] + label {
-    font-family: "Helvetica", "Arial", sans-serif;
+.megs input[type='checkbox'] + label {
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 13px;
 }
 
-.megs input[type="checkbox"] {
+.megs input[type='checkbox'] {
     vertical-align: middle;
 }
 
 .megs .item-form {
-    color: #1f5079;
+    color: var(--darkblue);
 }
 .megs .sheet-header {
     flex: 0 auto;
@@ -316,10 +330,12 @@
     justify-content: flex-start;
     margin-bottom: 10px;
 }
-.megs .sheet-header .profile-img {
+.megs .sheet-header .profile-img,
+.megs .sheet-header .profile-img-no-click {
     flex: 0 0 120px;
     height: 120px;
     margin-right: 10px;
+    background-color: var(--white);
 }
 .megs .sheet-header .profile-img:hover {
     opacity: 0.5;
@@ -335,19 +351,19 @@
     border-bottom: 0;
 }
 .megs .sheet-header h1.charname.isLocked {
-    background-color: #1f5079;
+    background-color: var(--darkblue);
 }
 .megs .sheet-header h1.charname.isUnlocked {
     background-color: #fff;
 }
-.megs .sheet-header h1.charname input[name="name"],
-.megs .sheet-header h1.charname div[name="name"] {
+.megs .sheet-header h1.charname input[name='name'],
+.megs .sheet-header h1.charname div[name='name'] {
     float: left;
     flex-grow: 1;
     height: 50px;
     margin: 5px 5px 0 0;
 }
-.megs .sheet-header h1.charname div[name="name"] {
+.megs .sheet-header h1.charname div[name='name'] {
     padding: 5px 0 0 3px;
     color: #fff;
 }
@@ -369,7 +385,7 @@
 .megs header.sheet-header .attribute-container {
     display: inline-block;
     width: calc(100% - 40px);
-    padding-right: 5px;
+    padding-right: 0;
     padding-left: 5px;
 }
 .megs header.sheet-header button.reset {
@@ -380,7 +396,7 @@
     cursor: pointer;
     background-image: url(/systems/megs/assets/images/icons/reset.png);
     background-size: 30px auto;
-    background-color: #ffffff;
+    background-color: var(--white);
 }
 
 .megs .sheet-header .header-fields select {
@@ -392,10 +408,13 @@
 }
 .megs .sheet-tabs a.item {
     font-size: 24px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 .megs .sheet-tabs a.item:hover:not(.active) {
-    text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+    text-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
 }
 .megs .sheet-body,
 .megs .sheet-body .tab,
@@ -403,7 +422,7 @@
     height: 100%;
 }
 .megs .tox .tox-editor-container {
-    background: #fff;
+    background: var(--white);
 }
 .megs .tox .tox-edit-area {
     padding: 0 8px;
@@ -429,7 +448,7 @@
 
 .megs .resource-content span {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .sheet-header .attribute,
@@ -437,7 +456,7 @@
 .megs .sheet-body .initiative-and-hp .hero-points,
 .megs .gadget-properties .gadget-property,
 .megs .attributes .attribute {
-    border: 2px solid #1f5079;
+    border: 2px solid var(--darkblue);
     font-size: 22px;
 }
 
@@ -451,7 +470,7 @@
 .megs .attributes .attribute label {
     font-size: 24px;
     display: block;
-    background: #1f5079;
+    background: var(--darkblue);
     text-align: center;
     color: #fff;
     padding-bottom: 2px;
@@ -477,13 +496,38 @@
 }
 
 .megs .sheet-body .attributeRow:hover {
-    box-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+    box-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
+}
+
+.megs .sheet-body .gadget-properties:hover {
+    box-shadow:
+        0 0 3px var(--red),
+        0 0 5px var(--red),
+        0 0 7px var(--red);
 }
 
 .megs .attributes .attribute select {
     width: 100%;
     background-color: #ddebf6;
     border: 0;
+}
+
+.megs .quantity.attribute-input input[type='number'].input-label {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 30px;
+}
+
+.megs .quantity.attribute-input button.attributeControl {
+    border-radius: 50%;
+    background-color: #1f5079;
+    color: #fff;
+    width: 24px;
+    height: 24px;
 }
 
 /*------------------------------------------------------------------------*/
@@ -518,8 +562,8 @@
     scrollbar-width: thin;
 }
 .megs .items-list .item-row {
-    font-family: "Helvetica", "Arial", sans-serif;
-    color: #1f5079;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    color: var(--darkblue);
 }
 .megs .items-list > li.item-row:nth-of-type(odd) {
     background: #ddebf6;
@@ -587,7 +631,7 @@
     margin: 2px 0;
     padding: 0;
     align-items: center;
-    background: #1f5079;
+    background: var(--darkblue);
     border: 2px groove #eeede0;
     color: #fff;
 }
@@ -620,7 +664,7 @@
 
 .megs .sheet-body .grid-2col-header {
     font-size: 22px;
-    color: #1f5079;
+    color: var(--darkblue);
 }
 
 .megs .sheet-body div.biography section.description-item {
@@ -629,7 +673,7 @@
 }
 
 .megs .sheet-body div.biography section.description-item input {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 14px;
 }
 
@@ -642,16 +686,16 @@
     width: 100%;
     display: flex;
 
-    input[type="range"] {
+    input[type='range'] {
         height: 38px;
         margin: 0;
         width: 100%;
     }
 
-    input[type="range"] + .range-value {
+    input[type='range'] + .range-value {
         flex: 0 1 48px;
         text-align: center;
-        border: 1px solid #1f5079;
+        border: 1px solid var(--darkblue);
         padding: 2px;
         margin-left: 10px;
     }
@@ -666,25 +710,25 @@ li.chat-message .message-content {
 }
 
 li.chat-message .chat-value {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
 }
 
 li.chat-message .chat-value label {
     width: 100%;
     color: #fff;
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     display: block;
     text-align: center;
     padding: 3px;
 }
 
 li.chat-message .chat-value div {
-    color: #1f5079;
+    color: var(--darkblue);
     padding: 3px;
 }
 
 li.chat-message .chat-result {
-    border: 1px solid #1f5079;
+    border: 1px solid var(--darkblue);
     padding: 3px;
 }
 
@@ -703,7 +747,7 @@ li.chat-message .chat-result.success:hover {
 }
 
 li.chat-message .chat-result.failure {
-    background-color: #d63a28;
+    background-color: var(--red);
     color: #fff;
     transition: 0.2s background linear;
 }
@@ -726,7 +770,7 @@ li.chat-message .chat-result .d10 {
 
 li.chat-message .megs-chat-title {
     padding: 5px 0 2px 2px;
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     color: #fff;
     text-align: center;
 }
@@ -735,7 +779,7 @@ li.chat-message .megs-chat-roll {
     margin: 0 3px 0 3px;
 }
 
-li.directory-item img[src*="assets/images/icons"] {
+li.directory-item img[src*='assets/images/icons'] {
     filter: invert(100%);
 }
 
@@ -768,10 +812,14 @@ details summary.no-arrow {
     height: 55px;
     border-radius: 25px;
     border: solid #ccc 3px;
-    box-shadow: 0 1px 2px #fff, 0 -1px 1px #666,
+    box-shadow:
+        0 1px 2px #fff,
+        0 -1px 1px #666,
         inset 0 -1px 1px rgba(0, 0, 0, 0.5),
         inset 0 1px 1px rgba(255, 255, 255, 0.8);
-    -webkit-box-shadow: 0 1px 2px #fff, 0 -1px 1px #666,
+    -webkit-box-shadow:
+        0 1px 2px #fff,
+        0 -1px 1px #666,
         inset 0 -1px 1px rgba(0, 0, 0, 0.5),
         inset 0 1px 1px rgba(255, 255, 255, 0.8);
     transition: 0.2s background linear;
@@ -783,7 +831,7 @@ details summary.no-arrow {
 
 .sheet-header .header-fields .grid .d10:hover {
     background-image: url(/systems/megs/assets/images/icons/2d10-white.png);
-    background-color: #1f5079;
+    background-color: var(--darkblue);
     background-size: 50px 50px;
     transition: 0.2s background linear;
 }
@@ -798,14 +846,14 @@ details summary.no-arrow {
     border: none;
 }
 
-.quantity {
+.megs .quantity {
     display: flex;
     border: 2px solid #a9a7a7;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.quantity button {
+.megs .quantity button {
     background-color: #a9a7a7;
     color: #fff;
     border: none;
@@ -820,11 +868,11 @@ details summary.no-arrow {
     line-height: 0;
 }
 
-.quantity button:hover {
+.megs .quantity button:hover {
     text-shadow: none;
 }
 
-.quantity .input-box {
+.megs .quantity .input-box {
     text-align: center;
     border: none;
     padding: 8px 10px;
@@ -833,31 +881,73 @@ details summary.no-arrow {
 }
 
 /* Hide the number input spin buttons */
-.quantity .input-box::-webkit-inner-spin-button,
-.quantity .input-box::-webkit-outer-spin-button {
+.megs .quantity .input-box::-webkit-inner-spin-button,
+.megs .quantity .input-box::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-.quantity.attribute-input {
+.megs .quantity.attribute-input {
     border: 0;
     text-align: center;
 }
 
-.quantity.attribute-input button {
-    background-color: #ffffff;
-    color: #1f5079;
+.megs .quantity.attribute-input button {
+    background-color: var(--white);
+    color: var(--darkblue);
 }
 
-.quantity.attribute-input input[type="number"],
-.quantity.current-input input[type="number"] {
+.megs .quantity.attribute-input input[type='number'],
+.megs .quantity.current-input input[type='number'] {
     background-color: #ddebf6;
 }
 
-.quantity.current-input button {
-    background-color: #1f5079;
+.megs .quantity.current-input button {
+    background-color: var(--darkblue);
     color: #fff;
-    border-color: #1f5079;
+    border-color: var(--darkblue);
+}
+
+/* Roll dialog quantity styles */
+.megs-dialog .quantity {
+    display: flex;
+    border: 2px solid #a9a7a7;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.megs-dialog .quantity button {
+    background-color: #a9a7a7;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    width: 30px;
+    height: auto;
+    text-align: center;
+    transition: background-color 0.2s;
+    margin: 0;
+    border-radius: 0;
+    line-height: 0;
+}
+
+.megs-dialog .quantity button:hover {
+    text-shadow: none;
+}
+
+.megs-dialog .quantity .input-box {
+    text-align: center;
+    border: none;
+    padding: 8px 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Hide the number input spin buttons */
+.megs-dialog .quantity .input-box::-webkit-inner-spin-button,
+.megs-dialog .quantity .input-box::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .attribute-container {
@@ -872,7 +962,7 @@ details summary.no-arrow {
     color: #fff;
     margin: 9px 0 3px 0;
     padding: 3px 0 3px 5px;
-    background-color: #1f5079;
+    background-color: var(--darkblue);
 }
 
 .megs details[open] summary.item-summary {
@@ -889,19 +979,19 @@ details summary.no-arrow {
     float: left;
     font-size: 22px;
     text-align: center;
-    color: #1f5079;
+    color: var(--darkblue);
     background-color: #ddebf6;
     border: 2px solid #a9a7a7;
 }
 
 .megs div.tab.readableText label {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
 .megs .indentLeft {
     padding-left: 15px;
     padding-top: 5px;
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 16px;
 }
 
@@ -915,21 +1005,30 @@ details summary.no-arrow {
 /* Tooltip text */
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
+    color: black;
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    border-radius: 12px;
+    border: 3px solid green;
 
-    /* Position the tooltip text - see examples below! */
+    background-color: var(--white);
+
     position: absolute;
     z-index: 1;
 
-    bottom: 100%;
+    bottom: calc(100% + 6px);
     left: 50%;
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-  
+}
+
+.tooltip .tooltiptext.wide {
+    width: 200px;
+
+    margin-left: -100px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
+}
+
+.tooltip .tooltiptext.narrow {
+    width: 130px;
+
+    margin-left: -65px; /* Use half of the width (120+(width*2)/2 = 60), to center the tooltip */
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
@@ -939,12 +1038,63 @@ details summary.no-arrow {
 
 /* tooltip bottom arrow */
 .tooltip .tooltiptext::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 100%; /* At the bottom of the tooltip */
     left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
+    margin-left: -15px;
+    border-width: 15px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
-  }
+    border-color: green transparent transparent transparent;
+}
+
+/*------------------------------------------------------------------------*/
+/*
+/*------------------------------------------------------------------------*/
+
+.init-table-header {
+    width: 100%;
+    background-color: green;
+    color: var(--white);
+    text-align: center;
+}
+
+.init-table {
+    display: table;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 14px;
+    background-color: white;
+    border: none;
+    width: 93%;
+    margin: 8px;
+
+    .label {
+        text-align: left;
+    }
+
+    .value {
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .total {
+        border-top: 1px black solid;
+        font-weight: bold;
+    }
+}
+
+.tooltip .tooltiptext.wide .init-table .label {
+    width: 80%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .label {
+    width: 75%;
+}
+
+.tooltip .tooltiptext.wide .init-table .value {
+    width: 20%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .value {
+    width: 25%;
+}

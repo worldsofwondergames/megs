@@ -1,52 +1,52 @@
- <header class="sheet-header">
+<header class="sheet-header">
     {{#if flags.megs.edit-mode}}
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120"/>
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="120" width="120" />
     {{else}}
-    <img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" height="120" width="120"/>
+        <img class="profile-img" src="{{actor.img}}" title="{{actor.name}}" height="120" width="120" />
     {{/if}}
     <div class="header-fields">
-      <h1 class="charname
+        <h1 class="charname
         {{#if flags.megs.edit-mode}}isUnlocked{{else}}isLocked{{/if}}
       ">
-        {{#if flags.megs.edit-mode}}
-          <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}" tabindex="100"/>
-        {{else}}
-          <div name="name">{{actor.name}}</div>
-        {{/if}}
-      </h1>
+            {{#if flags.megs.edit-mode}}
+                <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.Name'}}" tabindex="100" />
+            {{else}}
+                <div name="name">{{actor.name}}</div>
+            {{/if}}
+        </h1>
 
-      <div class="resources grid grid-3col">
+        <div class="resources grid grid-3col">
 
-        <div class="resource flex-group-center">
-          <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
-          <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value minPos=system.attributes.body.value max=system.attributes.body.value hasValue=true tabindex=110}}
+            <div class="resource flex-group-center">
+                <label for="system.currentBody.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Body"}}</label>
+                <div>
+                    <div class="resource-content flexrow flex-center flex-between attribute-container">
+                        {{> plusMinusInput id='currentBody' classes='current-input' value=system.currentBody.value minPos=system.attributes.body.value max=system.attributes.body.value hasValue=true tabindex=110}}
+                    </div>
+                    <button class="reset" onClick="currentBodyInput.value = {{system.attributes.body.value}}" />
+                </div>
             </div>
-            <button class="reset" onClick="currentBodyInput.value = {{system.attributes.body.value}}" />
-          </div>
-        </div>
 
-        <div class="resource flex-group-center">
-          <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}</label>
-          <div>
-            <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value minPos=-system.attributes.mind.value max=system.attributes.mind.value hasValue=true tabindex=120}}
+            <div class="resource flex-group-center">
+                <label for="system.currentMind.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Mind"}}</label>
+                <div>
+                    <div class="resource-content flexrow flex-center flex-between attribute-container">
+                        {{> plusMinusInput id='currentMind' classes='current-input' value=system.currentMind.value minPos=system.attributes.mind.value max=system.attributes.mind.value hasValue=true}}
+                    </div>
+                    <button class="reset" onClick="currentMindInput.value = {{system.attributes.mind.value}}" />
+                </div>
             </div>
-            <button class="reset" onClick="currentMindInput.value = parseInt(mindInput.value)" />
-          </div>
-        </div>
 
-        <div class="resource flex-group-center">
-          <label for="system.currentSpirit.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Spirit"}}</label>
-          <div>
-           <div class="resource-content flexrow flex-center flex-between attribute-container">
-              {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value minPos=-system.attributes.spirit.value max=system.attributes.spirit.value hasValue=true tabindex=130}}
+            <div class="resource flex-group-center">
+                <label for="system.currentSpirit.value" class="resource-label">{{localize "MEGS.Current"}} {{localize "MEGS.Spirit"}}</label>
+                <div>
+                    <div class="resource-content flexrow flex-center flex-between attribute-container">
+                        {{> plusMinusInput id='currentSpirit' classes='current-input' value=system.currentSpirit.value minPos=system.attributes.spirit.value max=system.attributes.spirit.value hasValue=true tabindex=130}}
+                    </div>
+                    <button class="reset" onClick="currentSpiritInput.value = {{system.attributes.spirit.value}}" />
+                </div>
             </div>
-            <button class="reset" onClick="currentSpiritInput.value = parseInt(spiritInput.value)" />
-          </div>
-        </div>
 
-      </div>
+        </div>
     </div>
-  </header>
+</header>

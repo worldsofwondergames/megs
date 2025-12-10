@@ -37,7 +37,8 @@
             "useUnskilled": "true",
             "linked": false,
             "unskilled": true
-        }    },
+        }
+    },
     {
         "name": "Animal Handling",
         "type": "skill",
@@ -623,7 +624,7 @@
                     "type": "dice"
                 }
             ],
-             "useUnskilled": "true",
+            "useUnskilled": "true",
             "linked": false,
             "unskilled": true
         }

@@ -1,21 +1,17 @@
 <section class="initiative-and-hp grid grid-2col">
     <div class="initiative flex-group-center">
-        <label for="system.initiativeBonus.value"
-            class="resource-label flexlarge align-left"
-            data-label="{{system.initiativeBonus.label}}"
-        >
+        <label for="system.initiativeBonus.value" class="resource-label flexlarge align-left" data-label="{{system.initiativeBonus.label}}">
             {{localize "MEGS.InitiativeBonus"}}
         </label>
         <div class="tooltip">
             {{system.initiativeBonus.value}}
-            <span class="tooltiptext">Tooltip text</span>
+            <span class="tooltiptext wide">
+                {{{system.initiativeBonus.text}}}
+            </span>
         </div>
     </div>
     <div class="hero-points flex-group-center">
-        <label for="system.heroPoints.value"
-            class="resource-label flexlarge align-left"
-            data-label="{{localize "MEGS.HeroPoints"}}"
-        >
+        <label for="system.heroPoints.value" class="resource-label flexlarge align-left" data-label="{{localize " MEGS.HeroPoints"}}">
             {{localize "MEGS.HeroPoints"}}
         </label>
         {{> plusMinusInput id='heroPoints' classes='attribute-input' min=0 value=system.heroPoints.value hasValue=true tabindex="200"}}

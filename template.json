@@ -1,368 +1,418 @@
 {
-  "Actor": {
-    "types": [ "hero", "villain", "npc", "pet", "vehicle", "location"],
-    "templates": {
-      "identity": {
-        "biography": "",
-        "wealth": 0,
-        "motivation": "",
-        "occupation": "",
-        "background": "",
-        "alterEgo": ""
-      },
-      "baseCharacter": {
-        "name": "",
-        "currentBody": {
-          "value": 0,
-          "min": 0,
-          "max": 60
+    "Actor": {
+        "types": ["hero", "villain", "npc", "pet", "vehicle", "location"],
+        "templates": {
+            "identity": {
+                "biography": "",
+                "wealth": 0,
+                "motivation": "",
+                "occupation": "",
+                "background": "",
+                "alterEgo": ""
+            },
+            "baseCharacter": {
+                "name": "",
+                "currentBody": {
+                    "value": 0,
+                    "min": 0,
+                    "max": 60
+                },
+                "currentMind": {
+                    "value": 0,
+                    "min": 0,
+                    "max": 60
+                },
+                "currentSpirit": {
+                    "value": 0,
+                    "min": 0,
+                    "max": 60
+                },
+                "heroPoints": {
+                    "value": 0
+                },
+                "settings": {
+                    "hideZeroAPSkills": true
+                }
+            },
+            "attributes": {
+                "attributes": {
+                    "dex": {
+                        "value": 0,
+                        "factorCost": 7,
+                        "label": "Dexterity",
+                        "type": "physical",
+                        "rolls": ["action", "opposing"]
+                    },
+                    "str": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Strength",
+                        "type": "physical",
+                        "rolls": ["effect"]
+                    },
+                    "body": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Body",
+                        "type": "physical",
+                        "rolls": ["resistance"]
+                    },
+                    "int": {
+                        "value": 0,
+                        "factorCost": 7,
+                        "label": "Intelligence",
+                        "type": "mental",
+                        "rolls": ["action", "opposing"]
+                    },
+                    "will": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Will",
+                        "type": "mental",
+                        "rolls": ["effect"]
+                    },
+                    "mind": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Mind",
+                        "type": "mental",
+                        "rolls": ["resistance"]
+                    },
+                    "infl": {
+                        "value": 0,
+                        "factorCost": 7,
+                        "label": "Influence",
+                        "type": "mystical",
+                        "rolls": ["action", "opposing"]
+                    },
+                    "aura": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Aura",
+                        "type": "mystical",
+                        "rolls": ["effect"]
+                    },
+                    "spirit": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Spirit",
+                        "type": "mystical",
+                        "rolls": ["resistance"]
+                    }
+                }
+            },
+            "hasInitiative": {
+                "initiativeBonus": {
+                    "value": 0,
+                    "label": "Initiative Bonus"
+                }
+            },
+            "hasGadgets": {
+                "gadgets": []
+            },
+            "hasAttitude": {
+                "attitude": ""
+            },
+            "owned": {
+                "ownerId": ""
+            }
         },
-        "currentMind": {
-          "value": 0,
-          "min": 0,
-          "max": 60
+        "location": {
+            "templates": ["baseCharacter", "attributes", "hasGadgets"],
+            "linkedItemId": ""
         },
-        "currentSpirit": {
-          "value": 0,
-          "min": 0,
-          "max": 60
+        "hero": {
+            "templates": ["baseCharacter", "attributes", "hasInitiative", "hasGadgets", "identity"]
         },
-        "heroPoints": {
-          "value": 0
+        "npc": {
+            "templates": [
+                "baseCharacter",
+                "attributes",
+                "hasInitiative",
+                "hasGadgets",
+                "identity",
+                "hasAttitude"
+            ]
         },
-        "settings": {
-          "hideZeroAPSkills": true
+        "villain": {
+            "templates": [
+                "baseCharacter",
+                "attributes",
+                "hasInitiative",
+                "hasGadgets",
+                "identity",
+                "hasAttitude"
+            ]
+        },
+        "pet": {
+            "templates": ["baseCharacter", "attributes", "owned"]
+        },
+        "vehicle": {
+            "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
+            "linkedItemId": ""
         }
-      },
-      "attributes": {
-        "attributes": {
-          "dex": {
-            "value": 0,
-            "factorCost": 7,
-            "label": "Dexterity",
-            "type": "physical",
-            "rolls": ["action", "opposing"]
-          },
-          "str": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Strength",
-            "type": "physical",
-            "rolls": ["effect"]
-          },
-          "body": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Body",
-            "type": "physical",
-            "rolls": ["resistance"]
-          },
-          "int": {
-            "value": 0,
-            "factorCost": 7,
-            "label": "Intelligence",
-            "type": "mental",
-            "rolls": ["action", "opposing"]
-          },
-          "will": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Will",
-            "type": "mental",
-            "rolls": ["effect"]
-          },
-          "mind": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Mind",
-            "type": "mental",
-            "rolls": ["resistance"]
-          },
-          "infl": {
-            "value": 0,
-            "factorCost": 7,
-            "label": "Influence",
-            "type": "mystical",
-            "rolls": ["action", "opposing"]
-          },
-          "aura": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Aura",
-            "type": "mystical",
-            "rolls": ["effect"]
-          },
-          "spirit": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Spirit",
-            "type": "mystical",
-            "rolls": ["resistance"]
-          }
+    },
+    "Item": {
+        "types": [
+            "advantage",
+            "bonus",
+            "drawback",
+            "gadget",
+            "limitation",
+            "power",
+            "skill",
+            "subskill"
+        ],
+        "templates": {
+            "baseItem": {
+                "name": "",
+                "description": ""
+            },
+            "attributes": {
+                "attributes": {
+                    "dex": {
+                        "value": 0,
+                        "factorCost": 7,
+                        "label": "Dexterity",
+                        "type": "physical",
+                        "rolls": ["action", "opposing"],
+                        "alwaysSubstitute": false
+                    },
+                    "str": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Strength",
+                        "type": "physical",
+                        "rolls": ["effect"],
+                        "alwaysSubstitute": false
+                    },
+                    "body": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Body",
+                        "type": "physical",
+                        "rolls": ["resistance"],
+                        "alwaysSubstitute": false
+                    },
+                    "int": {
+                        "value": 0,
+                        "factorCost": 7,
+                        "label": "Intelligence",
+                        "type": "mental",
+                        "rolls": ["action", "opposing"],
+                        "alwaysSubstitute": false
+                    },
+                    "will": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Will",
+                        "type": "mental",
+                        "rolls": ["effect"],
+                        "alwaysSubstitute": false
+                    },
+                    "mind": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Mind",
+                        "type": "mental",
+                        "rolls": ["resistance"],
+                        "alwaysSubstitute": false
+                    },
+                    "infl": {
+                        "value": 0,
+                        "factorCost": 7,
+                        "label": "Influence",
+                        "type": "mystical",
+                        "rolls": ["action", "opposing"],
+                        "alwaysSubstitute": false
+                    },
+                    "aura": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Aura",
+                        "type": "mystical",
+                        "rolls": ["effect"],
+                        "alwaysSubstitute": false
+                    },
+                    "spirit": {
+                        "value": 0,
+                        "factorCost": 6,
+                        "label": "Spirit",
+                        "type": "mystical",
+                        "rolls": ["resistance"],
+                        "alwaysSubstitute": false
+                    }
+                }
+            },
+            "currentAttributes": {
+                "currentBody": {
+                    "value": 0,
+                    "min": 0,
+                    "max": 60
+                },
+                "currentMind": {
+                    "value": 0,
+                    "min": 0,
+                    "max": 60
+                },
+                "currentSpirit": {
+                    "value": 0,
+                    "min": 0,
+                    "max": 60
+                }
+            },
+            "abilities": {
+                "link": "",
+                "isLinked": false,
+                "range": "",
+                "rangeAPs": 0,
+                "formula": "1d10 + 1d10"
+            },
+            "purchasable": {
+                "baseCost": 0,
+                "totalCost": 0
+            },
+            "scalable": {
+                "factorCost": 0,
+                "aps": 0
+            },
+            "subtext": {
+                "text": "",
+                "hasSubtext": true
+            },
+            "hasModifiers": {
+                "bonuses": [],
+                "customBonuses": [],
+                "limitations": [],
+                "customLimitations": []
+            },
+            "modifier": {
+                "factorCostMod": 0
+            },
+            "hasParent": {
+                "parent": ""
+            },
+            "trackOriginal": {
+                "originalId": ""
+            },
+            "omni": {
+                "isOmni": false,
+                "aps": 0,
+                "omniClasses": {
+                    "a": false,
+                    "b": false,
+                    "c": false,
+                    "d": false
+                }
+            }
+        },
+        "power": {
+            "templates": [
+                "baseItem",
+                "attributes",
+                "abilities",
+                "purchasable",
+                "scalable",
+                "hasModifiers",
+                "hasParent"
+            ],
+            "type": "power",
+            "img": "systems/megs/assets/images/icons/power.png",
+            "source": "",
+            "activateFree": false
+        },
+        "skill": {
+            "templates": [
+                "baseItem",
+                "attributes",
+                "abilities",
+                "hasModifiers",
+                "purchasable",
+                "scalable",
+                "hasParent"
+            ],
+            "type": "skill",
+            "img": "icons/svg/light.svg",
+            "useUnskilled": true
+        },
+        "subskill": {
+            "templates": ["baseItem", "purchasable", "scalable", "hasParent"],
+            "type": "subskill",
+            "linkedSkill": "",
+            "useUnskilled": true,
+            "actorId": ""
+        },
+        "advantage": {
+            "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
+            "type": "advantage",
+            "img": "icons/svg/regen.svg"
+        },
+        "bonus": {
+            "templates": ["baseItem", "hasParent", "modifier", "subtext", "trackOriginal"],
+            "type": "bonus",
+            "img": "icons/svg/regen.svg"
+        },
+        "drawback": {
+            "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
+            "type": "drawback",
+            "img": "icons/svg/degen.svg"
+        },
+        "gadget": {
+            "templates": [
+                "baseItem",
+                "attributes",
+                "trackOriginal",
+                "currentAttributes",
+                "omni",
+                "weapon"
+            ],
+            "img": "systems/megs/assets/images/icons/gadget.png",
+            "quantity": 1,
+            "actionValue": 0,
+            "effectValue": 0,
+            "reliability": 0,
+            "isBroken": false,
+            "isCarried": true,
+            "canBeTakenAway": true,
+            "hasHardenedDefenses": false,
+            "settings": {
+                "isDetailsOpen": {
+                    "attributes": "false",
+                    "miscellaneous": "false"
+                },
+                "hasAVAndEV": "false",
+                "hasAttributes": {
+                    "physical": "true",
+                    "mental": "false",
+                    "mystical": "false"
+                },
+                "hasPowers": "true",
+                "hasSkills": "true",
+                "hasGadgets": "true",
+                "hasTraits": "false",
+                "hideZeroAPSkills": "true"
+            },
+            "skillData": {},
+            "subskillData": {},
+            "powerData": {},
+            "traitData": {},
+            "weapon": {
+                "isWeapon": false,
+                "range": 0,
+                "ammo": 0
+            },
+            "armor": {
+                "isArmor": false
+            },
+            "vehicle": {
+                "isVehicle": true,
+                "linkedActorId": ""
+            }
+        },
+        "limitation": {
+            "templates": ["baseItem", "hasParent", "modifier", "subtext", "trackOriginal"],
+            "type": "limitation",
+            "img": "icons/svg/degen.svg"
         }
-      },
-      "hasInitiative": {
-        "initiativeBonus": {
-          "value": 0,
-          "label": "Initiative Bonus"
-        }
-      },
-      "hasGadgets": {
-        "gadgets" : []
-      },
-      "hasAttitude": {
-        "attitude": ""
-      },
-      "owned": {
-        "ownerId": ""
-      }
-    },
-    "location": {
-      "templates": ["baseCharacter", "attributes", "hasGadgets"],
-      "linkedItemId" : ""
-    },
-    "hero": {
-      "templates": ["baseCharacter", "attributes", "hasInitiative", "hasGadgets", "identity"]
-    },
-    "npc": {
-      "templates": ["baseCharacter", "attributes", "hasInitiative", "hasGadgets", "identity", "hasAttitude"]
-    },
-    "villain": {
-      "templates": ["baseCharacter", "attributes", "hasInitiative", "hasGadgets", "identity", "hasAttitude"]
-    },
-    "pet": {
-      "templates": ["baseCharacter", "attributes", "owned"]
-    },
-    "vehicle": {
-      "templates": ["baseCharacter", "attributes", "hasGadgets", "owned"],
-      "linkedItemId" : ""
     }
- },
-  "Item": {
-    "types": ["advantage", "bonus", "drawback", "gadget", "limitation", "power", "skill", "subskill"],
-    "templates": {
-      "baseItem": {
-        "name": "",
-        "description": ""
-      },
-      "attributes": {
-        "attributes": {
-          "dex": {
-            "value": 0,
-            "factorCost": 7,
-            "label": "Dexterity",
-            "type": "physical",
-            "rolls": ["action", "opposing"],
-            "alwaysSubstitute": false
-          },
-          "str": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Strength",
-            "type": "physical",
-            "rolls": ["effect"],
-            "alwaysSubstitute": false
-          },
-          "body": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Body",
-            "type": "physical",
-            "rolls": ["resistance"],
-            "alwaysSubstitute": false
-          },
-          "int": {
-            "value": 0,
-            "factorCost": 7,
-            "label": "Intelligence",
-            "type": "mental",
-            "rolls": ["action", "opposing"],
-            "alwaysSubstitute": false
-          },
-          "will": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Will",
-            "type": "mental",
-            "rolls": ["effect"],
-            "alwaysSubstitute": false
-          },
-          "mind": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Mind",
-            "type": "mental",
-            "rolls": ["resistance"],
-            "alwaysSubstitute": false
-          },
-          "infl": {
-            "value": 0,
-            "factorCost": 7,
-            "label": "Influence",
-            "type": "mystical",
-            "rolls": ["action", "opposing"],
-            "alwaysSubstitute": false
-          },
-          "aura": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Aura",
-            "type": "mystical",
-            "rolls": ["effect"],
-            "alwaysSubstitute": false
-          },
-          "spirit": {
-            "value": 0,
-            "factorCost": 6,
-            "label": "Spirit",
-            "type": "mystical",
-            "rolls": ["resistance"],
-            "alwaysSubstitute": false
-          }
-        }
-      },
-      "currentAttributes": {
-        "currentBody": {
-          "value": 0,
-          "min": 0,
-          "max": 60
-        },
-        "currentMind": {
-          "value": 0,
-          "min": 0,
-          "max": 60
-        },
-        "currentSpirit": {
-          "value": 0,
-          "min": 0,
-          "max": 60
-        }
-      },
-      "abilities": {
-        "link": "",
-        "isLinked": false,
-        "range": "",
-        "rangeAPs": 0,
-        "formula": "1d10 + 1d10"
-      },
-      "purchasable": {
-        "baseCost": 0,
-        "totalCost": 0
-      }, 
-      "scalable": {
-        "factorCost": 0,
-        "aps": 0
-      },
-      "subtext": {
-        "text": "",
-        "hasSubtext": true
-      },
-      "hasModifiers": {
-        "bonuses": [],
-        "customBonuses": [],
-        "limitations": [],
-        "customLimitations": [
-        ]
-      },
-      "modifier": {
-        "factorCostMod": 0
-      },
-      "hasParent": {
-        "parent": ""
-      },
-      "trackOriginal": {
-        "originalId": ""
-      },
-      "omni": {
-        "isOmni": false,
-        "aps": 0,
-        "omniClasses": {
-          "a": false,
-          "b": false,
-          "c": false,
-          "d": false
-        }
-      }
-    },
-    "power": {
-      "templates": ["baseItem", "attributes", "abilities", "purchasable", "scalable", "hasModifiers", "hasParent"],
-      "type": "power",
-      "img": "systems/megs/assets/images/icons/power.png",
-      "source": "",
-      "activateFree": false
-    },
-    "skill": {
-      "templates": ["baseItem", "attributes", "abilities", "hasModifiers", "purchasable", "scalable", "hasParent"],
-      "type": "skill",
-      "img": "icons/svg/light.svg",
-      "useUnskilled": true
-    },
-    "subskill": {
-      "templates": ["baseItem", "purchasable", "scalable", "hasParent"],
-      "type": "subskill",
-      "linkedSkill": "",
-      "useUnskilled": true,
-      "actorId": ""
-    },
-    "advantage": {
-      "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
-      "type": "advantage",
-      "img": "icons/svg/regen.svg"
-    },
-    "bonus": {
-      "templates": ["baseItem", "hasParent","modifier", "subtext", "trackOriginal"],
-      "type": "bonus",
-      "img": "icons/svg/regen.svg"
-    },
-    "drawback": {
-      "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
-      "type": "drawback",
-      "img": "icons/svg/degen.svg"
-    },
-    "gadget": {
-      "templates": ["baseItem", "attributes", "trackOriginal", "currentAttributes", "omni", "weapon"],
-      "img": "systems/megs/assets/images/icons/gadget.png",
-      "quantity": 1,
-      "actionValue": 0,
-      "effectValue": 0,
-      "reliability": 0,
-      "isBroken": false,
-      "isCarried": true,
-      "canBeTakenAway": true,
-      "hasHardenedDefenses": false,
-      "settings": {
-        "isDetailsOpen": {
-          "attributes": "false",
-          "miscellaneous": "false"
-        },
-        "hasAVAndEV" : "false",
-        "hasAttributes": {
-          "physical": "true",
-          "mental": "false",
-          "mystical": "false"
-        },
-        "hasPowers": "true",
-        "hasSkills": "true",
-        "hasGadgets": "true",
-        "hideZeroAPSkills": "true"
-      },
-      "weapon" : {
-        "isWeapon": false,
-        "range": 0,
-        "ammo": 0
-      },
-      "armor": {
-        "isArmor": false
-      },
-      "vehicle": {
-        "isVehicle": true,
-        "linkedActorId" : ""
-      }
-    },
-    "limitation": {
-      "templates": ["baseItem", "hasParent", "modifier", "subtext", "trackOriginal"],
-      "type": "limitation",
-      "img": "icons/svg/degen.svg"
-    }
-  }
 }

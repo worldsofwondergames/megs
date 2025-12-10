@@ -135,6 +135,15 @@ Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase();
 });
 
+Handlebars.registerHelper('getAttributeCost', function (aps, factorCost) {
+    // Use the MEGS.getAPCost function to calculate attribute cost
+    if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
+        console.warn('MEGS.getAPCost not available');
+        return 0;
+    }
+    return CONFIG.MEGS.getAPCost(aps, factorCost) || 0;
+});
+
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
     return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
 });

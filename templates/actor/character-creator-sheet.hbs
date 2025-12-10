@@ -41,132 +41,78 @@
 
         {{!-- Attributes Tab --}}
         <div class="tab attributes" data-group="primary" data-tab="attributes">
-            <div class="creator-instructions">
-                <p>Allocate Action Points (APs) to each attribute. Hero Point costs are calculated automatically using Factor Cost.</p>
-            </div>
 
-            {{!-- Physical Attributes --}}
-            <section class="attribute-group">
-                <h3 class="section-header">Physical Attributes</h3>
-                <div class="attributes-grid">
-                    {{!-- DEX (FC 7) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Dexterity - Agility and coordination">DEX</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.dex' classes='attribute-input' value=system.attributes.dex.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.dex.value 7}} HP</span>
-                        </div>
+            {{!-- Row 1: DEX, STR, BODY --}}
+            <section class="attributes grid grid-3col attributeRow">
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Dexterity - Agility and coordination">DEX</label>
+                    {{> plusMinusInput id='attributes.dex' classes='attribute-input' value=system.attributes.dex.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.dex.value 7}} HP</span>
                     </div>
-
-                    {{!-- STR (FC 6) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Strength - Lifting ability and muscular power">STR</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.str' classes='attribute-input' value=system.attributes.str.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.str.value 6}} HP</span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Strength - Lifting ability and muscular power">STR</label>
+                    {{> plusMinusInput id='attributes.str' classes='attribute-input' value=system.attributes.str.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.str.value 6}} HP</span>
                     </div>
-
-                    {{!-- BODY (FC 6) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Body - Physical durability and resistance to damage">BODY</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.body' classes='attribute-input' value=system.attributes.body.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.body.value 6}} HP</span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Body - Physical durability and resistance to damage">BODY</label>
+                    {{> plusMinusInput id='attributes.body' classes='attribute-input' value=system.attributes.body.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.body.value 6}} HP</span>
                     </div>
                 </div>
             </section>
 
-            {{!-- Mental Attributes --}}
-            <section class="attribute-group">
-                <h3 class="section-header">Mental Attributes</h3>
-                <div class="attributes-grid">
-                    {{!-- INT (FC 7) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Intelligence - Knowledge, reasoning, and memory">INT</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.int' classes='attribute-input' value=system.attributes.int.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.int.value 7}} HP</span>
-                        </div>
+            {{!-- Row 2: INT, WILL, MIND --}}
+            <section class="attributes grid grid-3col attributeRow">
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Intelligence - Knowledge, reasoning, and memory">INT</label>
+                    {{> plusMinusInput id='attributes.int' classes='attribute-input' value=system.attributes.int.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.int.value 7}} HP</span>
                     </div>
-
-                    {{!-- WILL (FC 6) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Willpower - Determination and mental toughness">WILL</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.will' classes='attribute-input' value=system.attributes.will.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.will.value 6}} HP</span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Willpower - Determination and mental toughness">WILL</label>
+                    {{> plusMinusInput id='attributes.will' classes='attribute-input' value=system.attributes.will.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.will.value 6}} HP</span>
                     </div>
-
-                    {{!-- MIND (FC 6) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Mind - Mental resistance and psychic defense">MIND</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.mind' classes='attribute-input' value=system.attributes.mind.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.mind.value 6}} HP</span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Mind - Mental resistance and psychic defense">MIND</label>
+                    {{> plusMinusInput id='attributes.mind' classes='attribute-input' value=system.attributes.mind.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.mind.value 6}} HP</span>
                     </div>
                 </div>
             </section>
 
-            {{!-- Mystical Attributes --}}
-            <section class="attribute-group">
-                <h3 class="section-header">Mystical Attributes</h3>
-                <div class="attributes-grid">
-                    {{!-- INFL (FC 7) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Influence - Charisma, personality, and presence">INFL</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.infl' classes='attribute-input' value=system.attributes.infl.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.infl.value 7}} HP</span>
-                        </div>
+            {{!-- Row 3: INFL, AURA, SPIRIT --}}
+            <section class="attributes grid grid-3col attributeRow">
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Influence - Charisma, personality, and presence">INFL</label>
+                    {{> plusMinusInput id='attributes.infl' classes='attribute-input' value=system.attributes.infl.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.infl.value 7}} HP</span>
                     </div>
-
-                    {{!-- AURA (FC 6) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Aura - Interpersonal resonance and magical effects">AURA</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.aura' classes='attribute-input' value=system.attributes.aura.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.aura.value 6}} HP</span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Aura - Interpersonal resonance and magical effects">AURA</label>
+                    {{> plusMinusInput id='attributes.aura' classes='attribute-input' value=system.attributes.aura.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.aura.value 6}} HP</span>
                     </div>
-
-                    {{!-- SPIRIT (FC 6) --}}
-                    <div class="attribute-row">
-                        <label class="attribute-label" title="Spirit - Spiritual strength and mystical resistance">SPIRIT</label>
-                        <div class="attribute-input-wrapper">
-                            {{> plusMinusInput id='attributes.spirit' classes='attribute-input' value=system.attributes.spirit.value min=0 max=60 hasValue=true}}
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-label">Cost:</span>
-                            <span class="cost-value">{{getAttributeCost system.attributes.spirit.value 6}} HP</span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Spirit - Spiritual strength and mystical resistance">SPIRIT</label>
+                    {{> plusMinusInput id='attributes.spirit' classes='attribute-input' value=system.attributes.spirit.value min=0 max=60 hasValue=true}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">{{getAttributeCost system.attributes.spirit.value 6}} HP</span>
                     </div>
                 </div>
             </section>

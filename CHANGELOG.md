@@ -81,3 +81,6 @@
 - Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
 - Added test coverage for edge case where roll is exactly on threshold
 - Fixed Dice So Nice integration to display the same dice values shown in chat messages (issue #169)
+- Fixed validation in AP cost calculation to handle items without Factor Cost
+- Prevented NaN errors in cost calculations by adding null-safe attribute access
+- Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups

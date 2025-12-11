@@ -222,16 +222,20 @@ export class MEGSItem extends Item {
             if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                let effectiveFC = systemData.factorCost;
+                let effectiveFC = systemData.factorCost || 0;
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
-                    effectiveFC = Math.max(1, systemData.factorCost - 2);
+                    effectiveFC = Math.max(1, effectiveFC - 2);
                 }
 
                 // Use AP Purchase Chart for accurate MEGS cost calculation
-                const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
-                    ? MEGS.getAPCost(systemData.aps, effectiveFC)
-                    : (systemData.factorCost * systemData.aps); // Fallback to linear
-                systemData.totalCost = systemData.baseCost + (apCost || 0);
+                // Only calculate if we have valid factor cost
+                let apCost = 0;
+                if (effectiveFC > 0 && (systemData.aps || 0) >= 0) {
+                    apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+                        ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
+                        : (effectiveFC * (systemData.aps || 0)); // Fallback to linear
+                }
+                systemData.totalCost = systemData.baseCost + apCost;
             } else {
                 systemData.totalCost = systemData.baseCost;
             }

@@ -9,18 +9,26 @@
             </h1>
 
             {{!-- Hero Point Budget Display --}}
-            <div class="budget-summary grid grid-3col">
-                <div class="budget-item">
-                    <label>HP Budget:</label>
-                    <span class="budget-value">{{system.heroPointBudget.total}}</span>
+            <div class="resources grid grid-3col">
+                <div class="resource flex-group-center">
+                    <label for="system.heroPointBudget.total" class="resource-label">HP Budget</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <span class="resource-value">{{system.heroPointBudget.total}}</span>
+                    </div>
                 </div>
-                <div class="budget-item">
-                    <label>HP Spent:</label>
-                    <span class="budget-value">{{system.heroPointBudget.totalSpent}}</span>
+
+                <div class="resource flex-group-center">
+                    <label for="system.heroPointBudget.totalSpent" class="resource-label">HP Spent</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <span class="resource-value">{{system.heroPointBudget.totalSpent}}</span>
+                    </div>
                 </div>
-                <div class="budget-item {{#if (compare system.heroPointBudget.remaining '<' 0)}}over-budget{{/if}}">
-                    <label>HP Remaining:</label>
-                    <span class="budget-value"><strong>{{system.heroPointBudget.remaining}}</strong></span>
+
+                <div class="resource flex-group-center">
+                    <label for="system.heroPointBudget.remaining" class="resource-label">HP Remaining</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <span class="resource-value {{#if (compare system.heroPointBudget.remaining '<' 0)}}over-budget{{/if}}">{{system.heroPointBudget.remaining}}</span>
+                    </div>
                 </div>
             </div>
         </div>

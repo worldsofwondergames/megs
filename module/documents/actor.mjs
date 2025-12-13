@@ -87,6 +87,31 @@ export class MEGSActor extends Actor {
     prepareBaseData() {
         // Data modifications in this step occur before processing embedded
         // documents or derived data.
+
+        // Ensure attributes exist and have valid values (for actors created before template updates)
+        if (!this.system.attributes) {
+            this.system.attributes = {};
+        }
+
+        const defaultAttributes = {
+            dex: { value: 0, factorCost: 7, label: 'Dexterity', type: 'physical', rolls: ['action', 'opposing'] },
+            str: { value: 0, factorCost: 6, label: 'Strength', type: 'physical', rolls: ['effect'] },
+            body: { value: 0, factorCost: 6, label: 'Body', type: 'physical', rolls: ['resistance'] },
+            int: { value: 0, factorCost: 7, label: 'Intelligence', type: 'mental', rolls: ['action', 'opposing'] },
+            will: { value: 0, factorCost: 6, label: 'Will', type: 'mental', rolls: ['effect'] },
+            mind: { value: 0, factorCost: 6, label: 'Mind', type: 'mental', rolls: ['resistance'] },
+            infl: { value: 0, factorCost: 7, label: 'Influence', type: 'mystical', rolls: ['action', 'opposing'] },
+            aura: { value: 0, factorCost: 6, label: 'Aura', type: 'mystical', rolls: ['effect'] },
+            spirit: { value: 0, factorCost: 6, label: 'Spirit', type: 'mystical', rolls: ['resistance'] }
+        };
+
+        for (const [key, defaultAttr] of Object.entries(defaultAttributes)) {
+            if (!this.system.attributes[key]) {
+                this.system.attributes[key] = { ...defaultAttr };
+            } else if (this.system.attributes[key].value === undefined || this.system.attributes[key].value === null) {
+                this.system.attributes[key].value = 0;
+            }
+        }
     }
     /**
      * @override

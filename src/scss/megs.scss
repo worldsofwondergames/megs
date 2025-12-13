@@ -18,4 +18,23 @@
     @import 'components/resource';
     @import 'components/items';
     @import 'components/effects';
+
+    /* Character Creator Attributes Summary */
+    .attributes-summary {
+        margin-top: 10px;
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+
+            .summary-label,
+            .summary-value {
+                font-size: 0.85em;
+            }
+        }
+    }
 }

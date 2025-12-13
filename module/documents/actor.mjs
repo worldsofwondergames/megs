@@ -198,6 +198,17 @@ export class MEGSActor extends Actor {
         const totalSpent = attributesCost + itemsCost;
         const remaining = totalBudget - totalSpent;
 
+        // Debug logging for HP budget calculation
+        console.log('HP Budget Calculation:', {
+            attributesCost,
+            itemsCost,
+            totalSpent,
+            baseBudget,
+            drawbacksValue,
+            totalBudget,
+            remaining
+        });
+
         // Store in actor system data for display
         this.system.heroPointBudget = {
             base: baseBudget,

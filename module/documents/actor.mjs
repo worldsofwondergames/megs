@@ -187,6 +187,7 @@ export class MEGSActor extends Actor {
                         drawbacksValue += item.system.totalCost;
                     } else {
                         // All other items cost HP
+                        console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
                         itemsCost += item.system.totalCost;
                     }
                 }

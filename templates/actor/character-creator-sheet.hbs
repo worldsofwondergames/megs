@@ -11,9 +11,9 @@
             {{!-- Hero Point Budget Display --}}
             <div class="resources grid grid-3col">
                 <div class="resource flex-group-center">
-                    <label for="system.heroPointBudget.total" class="resource-label">HP Budget</label>
+                    <label for="system.creationBudget.base" class="resource-label">HP Budget</label>
                     <div class="resource-content flexrow flex-center flex-between">
-                        <span class="resource-value">{{system.heroPointBudget.total}}</span>
+                        <input type="number" name="system.creationBudget.base" value="{{system.creationBudget.base}}" data-dtype="Number" min="0" class="resource-value-input" />
                     </div>
                 </div>
 

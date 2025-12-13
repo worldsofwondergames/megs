@@ -151,8 +151,8 @@ export class MEGSActor extends Actor {
      * Calculate Hero Point budget tracking for character creation
      */
     _calculateHeroPointBudget() {
-        // Base budget is 450 HP for standard characters
-        const baseBudget = 450;
+        // Base budget from character creation (defaults to 450 HP for standard characters)
+        const baseBudget = this.system.creationBudget?.base ?? 450;
 
         // Calculate HP spent on attributes
         let attributesCost = 0;

@@ -30,6 +30,9 @@
                 "heroPoints": {
                     "value": 0
                 },
+                "creationBudget": {
+                    "base": 450
+                },
                 "settings": {
                     "hideZeroAPSkills": true
                 }

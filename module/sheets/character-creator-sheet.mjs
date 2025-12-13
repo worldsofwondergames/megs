@@ -28,6 +28,11 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     async getData() {
         const context = await super.getData();
 
+        // Ensure context.system exists
+        if (!context.system) {
+            context.system = this.actor.system;
+        }
+
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 

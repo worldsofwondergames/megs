@@ -136,12 +136,16 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 });
 
 Handlebars.registerHelper('getAttributeCost', function (aps, factorCost) {
-    // Use the MEGS.getAPCost function to calculate attribute cost
+    // Validate inputs before calling getAPCost
     if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
-        console.warn('MEGS.getAPCost not available');
         return 0;
     }
-    return CONFIG.MEGS.getAPCost(aps, factorCost) || 0;
+
+    // Ensure aps and factorCost are valid numbers (not undefined/null)
+    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
+    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
+
+    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {

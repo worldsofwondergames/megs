@@ -49,6 +49,14 @@
         {{!-- Attributes Tab --}}
         <div class="tab attributes" data-group="primary" data-tab="attributes">
 
+            {{!-- Attributes Summary --}}
+            <section class="attributes-summary">
+                <div class="summary-row">
+                    <label class="summary-label">Total Attributes Cost:</label>
+                    <span class="summary-value">{{system.heroPointBudget.attributesCost}} HP</span>
+                </div>
+            </section>
+
             {{!-- Row 1: DEX, STR, BODY --}}
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">

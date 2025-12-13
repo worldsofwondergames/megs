@@ -235,7 +235,14 @@ export class MEGSItem extends Item {
                         ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
                         : (effectiveFC * (systemData.aps || 0)); // Fallback to linear
                 }
-                systemData.totalCost = systemData.baseCost + apCost;
+
+                // Skills/subskills with 0 APs have no cost (not purchased yet)
+                // Only apply baseCost + apCost if APs > 0
+                if ((systemData.aps || 0) > 0) {
+                    systemData.totalCost = systemData.baseCost + apCost;
+                } else {
+                    systemData.totalCost = 0;
+                }
             } else {
                 systemData.totalCost = systemData.baseCost;
             }

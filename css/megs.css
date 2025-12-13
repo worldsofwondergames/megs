@@ -1115,3 +1115,21 @@ details summary.no-arrow {
     padding: 4px 8px;
     text-align: center;
 }
+
+/* Character Creator Attributes Summary */
+.megs .attributes-summary {
+    margin-bottom: 10px;
+}
+
+.megs .attributes-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.megs .attributes-summary .summary-row .summary-label,
+.megs .attributes-summary .summary-row .summary-value {
+    font-size: 0.85em;
+}

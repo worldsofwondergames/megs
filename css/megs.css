@@ -1108,3 +1108,11 @@ details summary.no-arrow {
 .megs .attribute-cost .cost-value {
     font-size: 0.85em;
 }
+
+/* Character Creator HP Budget Input */
+.megs .resource-value-input {
+    background: #e8f4f8;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+    text-align: center;
+}

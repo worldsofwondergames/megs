@@ -1160,7 +1160,14 @@ details summary.no-arrow {
 
 /* Character Creator Powers column widths */
 .megs .tab.powers .item-name {
-    flex: 3;
+    flex: 2;
+}
+
+.megs .tab.powers .item-base-cost,
+.megs .tab.powers .item-factor-cost,
+.megs .tab.powers .item-aps,
+.megs .tab.powers .item-total-cost {
+    flex: 1;
 }
 
 .megs .tab.powers .item-controls {

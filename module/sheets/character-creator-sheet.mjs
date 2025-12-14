@@ -68,6 +68,11 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         return context;
     }
 
+    /** @override */
+    activateListeners(html) {
+        super.activateListeners(html);
+    }
+
     /**
      * Ensure actor attributes are properly initialized in the database
      * This fixes actors created before the attribute system was fully implemented

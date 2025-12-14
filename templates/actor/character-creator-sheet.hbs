@@ -202,8 +202,8 @@
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}
                         </div>
-                        <div class='item-factor-cost'>
-                            {{item.system.factorCost}}
+                        <div class='item-factor-cost factor-cost-calculated' title='{{getFactorCostTooltip item ../items}}'>
+                            {{getEffectiveFactorCost item ../items}}
                         </div>
                         <div class='item-aps {{#if (isLinkedPowerMismatch item ../actor)}}link-mismatch{{/if}}'>
                             <div class="quantity skill-input">

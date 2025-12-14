@@ -1158,6 +1158,11 @@ details summary.no-arrow {
     text-align: center;
 }
 
+/* Factor Cost tooltip cursor */
+.character-creator .tab.powers .items-list .factor-cost-calculated {
+    cursor: pointer;
+}
+
 /* Character Creator Power Modifiers (Bonuses/Limitations) */
 .megs.character-creator .tab.powers .modifier-row {
     background: rgba(0, 0, 0, 0.02);

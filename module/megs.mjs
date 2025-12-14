@@ -326,6 +326,63 @@ Handlebars.registerHelper('formatSigned', function (number) {
     }
 });
 
+Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
+    // Calculate the effective Factor Cost including linking and modifiers
+    let baseFc = power.system.factorCost || 0;
+    let effectiveFc = baseFc;
+
+    // Apply linking reduction (-2, minimum 1)
+    if (power.system.isLinked === 'true' || power.system.isLinked === true) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    // Add modifiers from bonuses/limitations
+    if (items) {
+        items.forEach(item => {
+            if ((item.type === 'bonus' || item.type === 'limitation') &&
+                item.system.parent === power._id &&
+                item.system.factorCostMod) {
+                effectiveFc += item.system.factorCostMod;
+            }
+        });
+    }
+
+    return Math.max(1, effectiveFc); // Minimum FC is always 1
+});
+
+Handlebars.registerHelper('getFactorCostTooltip', function (power, items) {
+    // Generate tooltip text explaining the Factor Cost calculation
+    const baseFc = power.system.factorCost || 0;
+    let tooltip = `Base FC: ${baseFc}`;
+    let effectiveFc = baseFc;
+
+    // Check if linked
+    const isLinked = power.system.isLinked === 'true' || power.system.isLinked === true;
+    if (isLinked) {
+        tooltip += '\nLinked: -2';
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    // Check for modifiers
+    if (items) {
+        items.forEach(item => {
+            if ((item.type === 'bonus' || item.type === 'limitation') &&
+                item.system.parent === power._id &&
+                item.system.factorCostMod) {
+                const mod = item.system.factorCostMod;
+                const sign = mod > 0 ? '+' : '';
+                tooltip += `\n${item.name}: ${sign}${mod}`;
+                effectiveFc += mod;
+            }
+        });
+    }
+
+    effectiveFc = Math.max(1, effectiveFc);
+    tooltip += `\nTotal: ${effectiveFc}`;
+
+    return tooltip;
+});
+
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */

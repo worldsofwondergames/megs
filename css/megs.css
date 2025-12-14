@@ -1131,5 +1131,23 @@ details summary.no-arrow {
 
 .megs .attributes-summary .summary-row .summary-label,
 .megs .attributes-summary .summary-row .summary-value {
-    font-size: 0.95em;
+    font-size: 1.25em;
+}
+
+/* Character Creator Powers Summary */
+.megs .powers-summary {
+    margin-bottom: 10px;
+}
+
+.megs .powers-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.megs .powers-summary .summary-row .summary-label,
+.megs .powers-summary .summary-row .summary-value {
+    font-size: 1.25em;
 }

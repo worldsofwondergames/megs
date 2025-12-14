@@ -74,6 +74,38 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     /** @override */
     activateListeners(html) {
         super.activateListeners(html);
+
+        // Item delete handler
+        html.on('click', '.item-delete', (ev) => {
+            const li = $(ev.currentTarget).parents('.item');
+            const item = this.actor.items.get(li.data('itemId'));
+            item.delete();
+            li.slideUp(200, () => this.render(false));
+        });
+
+        // Power/Skill APs increment
+        html.on('click', '.ap-plus', async (ev) => {
+            ev.preventDefault();
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && (item.type === 'skill' || item.type === 'power')) {
+                const newValue = (item.system.aps || 0) + 1;
+                await item.update({ 'system.aps': newValue });
+                this.render(false);
+            }
+        });
+
+        // Power/Skill APs decrement
+        html.on('click', '.ap-minus', async (ev) => {
+            ev.preventDefault();
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && (item.type === 'skill' || item.type === 'power') && (item.system.aps || 0) > 0) {
+                const newValue = (item.system.aps || 0) - 1;
+                await item.update({ 'system.aps': newValue });
+                this.render(false);
+            }
+        });
     }
 
     /**

@@ -78,11 +78,24 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        // Item delete handler
-        html.on('click', '.item-delete', (ev) => {
+        // Item delete handler with cascade delete for modifiers
+        html.on('click', '.item-delete', async (ev) => {
             const li = $(ev.currentTarget).parents('.item');
             const item = this.actor.items.get(li.data('itemId'));
-            item.delete();
+
+            // If deleting a power or skill, also delete all associated bonuses/limitations
+            if (item.type === 'power' || item.type === 'skill') {
+                const modifiers = this.actor.items.filter(i =>
+                    (i.type === 'bonus' || i.type === 'limitation') &&
+                    i.system.parent === item._id
+                );
+                const modifierIds = modifiers.map(m => m._id);
+                if (modifierIds.length > 0) {
+                    await this.actor.deleteEmbeddedDocuments('Item', modifierIds);
+                }
+            }
+
+            await item.delete();
             li.slideUp(200, () => this.render(false));
         });
 

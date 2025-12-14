@@ -1159,12 +1159,12 @@ details summary.no-arrow {
 }
 
 /* Character Creator Power Modifiers (Bonuses/Limitations) */
-.megs .tab.powers .modifier-row {
+.megs.character-creator .tab.powers .modifier-row {
     background: rgba(0, 0, 0, 0.02);
     font-size: 0.9em;
 }
 
-.megs .tab.powers .modifier-name {
+.megs.character-creator .tab.powers .modifier-name {
     padding-left: 20px;
     font-style: italic;
     color: #666;
@@ -1178,26 +1178,26 @@ details summary.no-arrow {
 }
 
 /* Character Creator Powers column widths */
-.megs .tab.powers .item-name {
+.megs.character-creator .tab.powers .item-name {
     flex: 1.85;
 }
 
-.megs .tab.powers .item-linked {
+.megs.character-creator .tab.powers .item-linked {
     flex: 0 0 50px;
     text-align: center;
 }
 
-.megs .tab.powers .item-base-cost,
-.megs .tab.powers .item-factor-cost,
-.megs .tab.powers .item-total-cost {
+.megs.character-creator .tab.powers .item-base-cost,
+.megs.character-creator .tab.powers .item-factor-cost,
+.megs.character-creator .tab.powers .item-total-cost {
     flex: 1;
 }
 
-.megs .tab.powers .item-aps {
+.megs.character-creator .tab.powers .item-aps {
     flex: 1.15;
 }
 
-.megs .tab.powers .item-controls {
+.megs.character-creator .tab.powers .item-controls {
     flex: 0 0 40px;
     justify-content: center;
 }

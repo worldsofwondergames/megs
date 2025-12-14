@@ -1158,6 +1158,13 @@ details summary.no-arrow {
     text-align: center;
 }
 
+/* Error styling for budget and linked power mismatches */
+.megs .over-budget,
+.megs .link-mismatch {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
 /* Character Creator Powers column widths */
 .megs .tab.powers .item-name {
     flex: 1.85;

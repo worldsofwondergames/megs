@@ -276,6 +276,30 @@ Handlebars.registerHelper('getPowerDisplayName', function (power) {
     return displayName;
 });
 
+Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
+    // Check if power is linked
+    if (!power.system.isLinked || power.system.isLinked === false || power.system.isLinked === 'false') {
+        return false;
+    }
+
+    // Check if link is valid
+    const link = power.system.link;
+    if (!link || link === 'none' || link === 'special' || link === '') {
+        return false;
+    }
+
+    // Get the linked attribute value from the actor
+    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
+        return false;
+    }
+
+    const attributeValue = actor.system.attributes[link].value || 0;
+    const powerAPs = power.system.aps || 0;
+
+    // Return true if there's a mismatch
+    return attributeValue !== powerAPs;
+});
+
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */

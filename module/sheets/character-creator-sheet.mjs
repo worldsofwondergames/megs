@@ -33,6 +33,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             context.system = this.actor.system;
         }
 
+        // Prepare powers for the Powers tab
+        context.powers = this.actor.items.filter(i => i.type === 'power');
+
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 

@@ -221,6 +221,24 @@
                             </a>
                         </div>
                     </li>
+                    {{!-- Display Bonuses and Limitations under the Power --}}
+                    {{#each (getPowerModifiers item._id ../items) as |modifier|}}
+                        <li class='item flexrow item-row modifier-row' data-item-id='{{modifier._id}}'>
+                            <div class='item-name modifier-name'>
+                                <i class='fas fa-angle-right'></i> {{modifier.name}} ({{localize (concat 'TYPES.Item.' modifier.type)}})
+                            </div>
+                            <div class='item-linked'></div>
+                            <div class='item-base-cost'></div>
+                            <div class='item-factor-cost'></div>
+                            <div class='item-aps'></div>
+                            <div class='item-total-cost'></div>
+                            <div class='item-controls'>
+                                <a class='item-control item-delete' title='Delete {{modifier.name}}'>
+                                    <i class='fas fa-trash'></i>
+                                </a>
+                            </div>
+                        </li>
+                    {{/each}}
                 {{/each}}
             </ol>
         </div>

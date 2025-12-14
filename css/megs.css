@@ -1157,3 +1157,13 @@ details summary.no-arrow {
 .megs .item-factor-cost {
     text-align: center;
 }
+
+/* Character Creator Powers column widths */
+.megs .tab.powers .item-name {
+    flex: 3;
+}
+
+.megs .tab.powers .item-controls {
+    flex: 0 0 40px;
+    justify-content: center;
+}

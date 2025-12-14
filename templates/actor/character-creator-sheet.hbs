@@ -185,8 +185,9 @@
                 <li class='item flexrow items-header'>
                     <div class='item-name'>Name</div>
                     <div class='item-base-cost'>Base Cost</div>
+                    <div class='item-factor-cost'>Factor Cost</div>
                     <div class='item-aps'>APs</div>
-                    <div class='item-total-cost'>Cost</div>
+                    <div class='item-total-cost'>Total Cost</div>
                     <div class='item-controls'></div>
                 </li>
                 {{#each powers as |item id|}}
@@ -203,6 +204,9 @@
                         </div>
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}
+                        </div>
+                        <div class='item-factor-cost'>
+                            {{item.system.factorCost}}
                         </div>
                         <div class='item-aps'>
                             <div class="quantity skill-input">

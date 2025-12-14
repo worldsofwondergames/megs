@@ -1178,28 +1178,28 @@ details summary.no-arrow {
 }
 
 /* Character Creator Powers column widths */
-.megs.character-creator .tab.powers .item-name {
+.character-creator .tab.powers .items-list .item-name {
     flex: 2.2;
 }
 
-.megs.character-creator .tab.powers .item-linked {
+.character-creator .tab.powers .items-list .item-linked {
     flex: 0 0 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.megs.character-creator .tab.powers .item-base-cost,
-.megs.character-creator .tab.powers .item-factor-cost,
-.megs.character-creator .tab.powers .item-total-cost {
+.character-creator .tab.powers .items-list .item-base-cost,
+.character-creator .tab.powers .items-list .item-factor-cost,
+.character-creator .tab.powers .items-list .item-total-cost {
     flex: 1;
 }
 
-.megs.character-creator .tab.powers .item-aps {
+.character-creator .tab.powers .items-list .item-aps {
     flex: 1.15;
 }
 
-.megs.character-creator .tab.powers .item-controls {
+.character-creator .tab.powers .items-list .item-controls {
     flex: 0 0 30px;
     display: flex;
     justify-content: center;

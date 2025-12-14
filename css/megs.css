@@ -1179,12 +1179,14 @@ details summary.no-arrow {
 
 /* Character Creator Powers column widths */
 .megs.character-creator .tab.powers .item-name {
-    flex: 1.85;
+    flex: 2.2;
 }
 
 .megs.character-creator .tab.powers .item-linked {
     flex: 0 0 50px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .megs.character-creator .tab.powers .item-base-cost,
@@ -1198,6 +1200,8 @@ details summary.no-arrow {
 }
 
 .megs.character-creator .tab.powers .item-controls {
-    flex: 0 0 40px;
+    flex: 0 0 30px;
+    display: flex;
     justify-content: center;
+    align-items: center;
 }

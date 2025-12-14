@@ -128,6 +128,9 @@ export class MEGSActor extends Actor {
         this.system.currentMind.max = this.system.attributes.mind.value;
         this.system.currentSpirit.max = this.system.attributes.spirit.value;
 
+        // Recalculate costs for powers/skills with modifiers
+        this._recalculateItemCosts();
+
         // Calculate Hero Point budget and spending
         this._calculateHeroPointBudget();
 
@@ -145,6 +148,56 @@ export class MEGSActor extends Actor {
                 CONFIG.motivations.antihero
             );
         }
+    }
+
+    /**
+     * Recalculate item costs for powers and skills, accounting for modifiers
+     * This must run before _calculateHeroPointBudget() to ensure accurate costs
+     */
+    _recalculateItemCosts() {
+        if (!this.items) return;
+
+        // Get all powers and skills
+        const itemsWithCosts = this.items.filter(item =>
+            (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+            item.system.hasOwnProperty('baseCost') &&
+            item.system.hasOwnProperty('factorCost') &&
+            item.system.hasOwnProperty('aps')
+        );
+
+        itemsWithCosts.forEach(item => {
+            const systemData = item.system;
+
+            // Calculate effective Factor Cost
+            let effectiveFC = systemData.factorCost || 0;
+
+            // Apply linking reduction (-2, minimum 1)
+            if (systemData.isLinked === 'true' || systemData.isLinked === true) {
+                effectiveFC = Math.max(1, effectiveFC - 2);
+            }
+
+            // Add modifiers from bonuses/limitations
+            this.items.forEach(modifier => {
+                if ((modifier.type === MEGS.itemTypes.bonus || modifier.type === MEGS.itemTypes.limitation) &&
+                    modifier.system.parent === item._id &&
+                    modifier.system.factorCostMod) {
+                    effectiveFC += modifier.system.factorCostMod;
+                }
+            });
+
+            // Ensure minimum FC of 1
+            effectiveFC = Math.max(1, effectiveFC);
+
+            // Calculate total cost
+            if ((systemData.aps || 0) === 0) {
+                systemData.totalCost = 0;
+            } else {
+                const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+                    ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
+                    : (effectiveFC * (systemData.aps || 0)); // Fallback
+                systemData.totalCost = systemData.baseCost + apCost;
+            }
+        });
     }
 
     /**

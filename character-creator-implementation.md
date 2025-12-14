@@ -167,6 +167,7 @@ Total: 2
   - Updated `getData()` to provide items collection
   - AP +/- handlers
   - Link checkbox handler
+  - Cascade delete: deleting a power/skill also deletes all associated bonuses/limitations
 
 - `module/megs.mjs` (Handlebars Helpers)
   - `isLinkedPowerMismatch(power, actor)` - check if linked power APs match attribute

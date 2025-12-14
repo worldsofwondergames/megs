@@ -7,7 +7,7 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     static get defaultOptions() {
         let newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
-        newOptions.width = 600;
+        newOptions.width = 650;
         newOptions.height = 600;
         newOptions.tabs = [
             {

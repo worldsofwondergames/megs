@@ -300,6 +300,20 @@ Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
     return attributeValue !== powerAPs;
 });
 
+Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
+    // Filter items to find bonuses and limitations that belong to this power
+    if (!items) return [];
+
+    const modifiers = [];
+    items.forEach(item => {
+        if ((item.type === 'bonus' || item.type === 'limitation') && item.system.parent === powerId) {
+            modifiers.push(item);
+        }
+    });
+
+    return modifiers;
+});
+
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */

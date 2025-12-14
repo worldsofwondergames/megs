@@ -1158,6 +1158,18 @@ details summary.no-arrow {
     text-align: center;
 }
 
+/* Character Creator Power Modifiers (Bonuses/Limitations) */
+.megs .tab.powers .modifier-row {
+    background: rgba(0, 0, 0, 0.02);
+    font-size: 0.9em;
+}
+
+.megs .tab.powers .modifier-name {
+    padding-left: 20px;
+    font-style: italic;
+    color: #666;
+}
+
 /* Error styling for budget and linked power mismatches */
 .megs .over-budget,
 .megs .link-mismatch {

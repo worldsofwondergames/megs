@@ -36,6 +36,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Prepare powers for the Powers tab
         context.powers = this.actor.items.filter(i => i.type === 'power');
 
+        // Provide all items for the getPowerModifiers helper
+        context.items = this.actor.items;
+
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 
@@ -116,6 +119,71 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                 this.render(false);
             }
         });
+
+        // Enable drag-and-drop for Bonuses/Limitations onto Powers
+        this._enablePowerRowDropZones(html);
+    }
+
+    /**
+     * Enable each power row as a drop zone for Bonuses and Limitations
+     * @param {jQuery} html
+     * @private
+     */
+    _enablePowerRowDropZones(html) {
+        const powerRows = html.find('.tab.powers .item-row');
+
+        powerRows.each((i, row) => {
+            row.addEventListener('dragover', this._onDragOver.bind(this));
+            row.addEventListener('drop', this._onDropOnPower.bind(this));
+        });
+    }
+
+    /**
+     * Handle dragover event to allow dropping
+     * @param {DragEvent} event
+     * @private
+     */
+    _onDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+    }
+
+    /**
+     * Handle dropping a Bonus or Limitation onto a Power
+     * @param {DragEvent} event
+     * @private
+     */
+    async _onDropOnPower(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Get the power ID from the row
+        const row = event.currentTarget;
+        const powerId = row.dataset.itemId;
+
+        if (!powerId) return;
+
+        // Get the dropped item data
+        const data = TextEditor.getDragEventData(event);
+        const droppedItem = await Item.implementation.fromDropData(data);
+
+        if (!droppedItem) return;
+
+        // Only allow Bonuses and Limitations
+        if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
+            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            return;
+        }
+
+        // Create the item data with parent set to the power
+        const itemData = droppedItem.toObject();
+        itemData.system.parent = powerId;
+
+        // Create the item on the actor
+        await this.actor.createEmbeddedDocuments('Item', [itemData]);
+
+        ui.notifications.info(`${droppedItem.name} attached to power.`);
+        this.render(false);
     }
 
     /**

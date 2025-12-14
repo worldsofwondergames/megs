@@ -70,7 +70,7 @@ Created a fully functional Powers tab in the character creator sheet with drag-a
 **Display**:
 - Appears directly under parent power row
 - Light gray background (rgba(0, 0, 0, 0.02))
-- 10px left indent
+- 25px left indent in Name column
 - Italic, gray text (smaller font 0.9em)
 - Shows Factor Cost Mod in Factor Cost column (always signed: +2, -1, etc.)
 
@@ -134,7 +134,7 @@ Total: 2
     font-size: 0.9em;
 }
 .megs.character-creator .tab.powers .modifier-name {
-    padding-left: 10px;
+    padding-left: 25px;
     font-style: italic;
     color: #666;
 }

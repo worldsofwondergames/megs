@@ -184,6 +184,7 @@
             <ol class='items-list'>
                 <li class='item flexrow items-header'>
                     <div class='item-name'>Name</div>
+                    <div class='item-base-cost'>Base Cost</div>
                     <div class='item-aps'>APs</div>
                     <div class='item-total-cost'>Cost</div>
                     <div class='item-controls'></div>
@@ -199,6 +200,9 @@
                             <a class='item-control item-edit' title='Edit {{item.name}}'>
                                 {{getPowerDisplayName item}}
                             </a>
+                        </div>
+                        <div class='item-base-cost'>
+                            {{item.system.baseCost}}
                         </div>
                         <div class='item-aps'>
                             <div class="quantity skill-input">

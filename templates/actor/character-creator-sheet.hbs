@@ -183,12 +183,12 @@
             {{!-- Powers List --}}
             <ol class='items-list'>
                 <li class='item flexrow items-header'>
-                    <div class='item-name'>Name</div>
-                    <div class='item-linked'>Link?</div>
-                    <div class='item-base-cost'>Base Cost</div>
-                    <div class='item-factor-cost'>Factor Cost</div>
-                    <div class='item-aps'>APs</div>
-                    <div class='item-total-cost'>Total Cost</div>
+                    <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                    <div class='item-linked'>{{localize 'MEGS.Link'}}?</div>
+                    <div class='item-base-cost'>{{localize 'MEGS.Base'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-factor-cost'>{{localize 'MEGS.Factor'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
+                    <div class='item-total-cost'>{{localize 'MEGS.Total'}}<br>{{localize 'MEGS.Cost'}}</div>
                     <div class='item-controls'></div>
                 </li>
                 {{#each powers as |item id|}}

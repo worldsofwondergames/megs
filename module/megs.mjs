@@ -383,6 +383,44 @@ Handlebars.registerHelper('getFactorCostTooltip', function (power, items) {
     return tooltip;
 });
 
+Handlebars.registerHelper('getTotalCostTooltip', function (power, items) {
+    // Generate tooltip text explaining the Total Cost calculation
+    const baseCost = power.system.baseCost || 0;
+    const aps = power.system.aps || 0;
+
+    if (aps === 0) {
+        return 'Not purchased (0 APs)';
+    }
+
+    // Calculate effective FC
+    let effectiveFc = power.system.factorCost || 0;
+    const isLinked = power.system.isLinked === 'true' || power.system.isLinked === true;
+    if (isLinked) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    // Add modifiers
+    if (items) {
+        items.forEach(item => {
+            if ((item.type === 'bonus' || item.type === 'limitation') &&
+                item.system.parent === power._id &&
+                item.system.factorCostMod) {
+                effectiveFc += item.system.factorCostMod;
+            }
+        });
+    }
+    effectiveFc = Math.max(1, effectiveFc);
+
+    // Get AP cost from chart
+    const apCost = MEGS.getAPCost ? MEGS.getAPCost(aps, effectiveFc) : (effectiveFc * aps);
+
+    let tooltip = `Base Cost: ${baseCost}`;
+    tooltip += `\nAP Cost (${aps} APs @ FC ${effectiveFc}): ${apCost}`;
+    tooltip += `\nTotal: ${baseCost + apCost}`;
+
+    return tooltip;
+});
+
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */

@@ -1163,6 +1163,11 @@ details summary.no-arrow {
     cursor: pointer;
 }
 
+/* Total Cost tooltip cursor */
+.character-creator .tab.powers .items-list .total-cost-calculated {
+    cursor: pointer;
+}
+
 /* Character Creator Power Modifiers (Bonuses/Limitations) */
 .megs.character-creator .tab.powers .items-list .modifier-row {
     background: rgba(0, 0, 0, 0.02);

@@ -1164,13 +1164,13 @@ details summary.no-arrow {
 }
 
 /* Character Creator Power Modifiers (Bonuses/Limitations) */
-.megs.character-creator .tab.powers .modifier-row {
+.megs.character-creator .tab.powers .items-list .modifier-row {
     background: rgba(0, 0, 0, 0.02);
     font-size: 0.9em;
 }
 
-.megs.character-creator .tab.powers .modifier-name {
-    padding-left: 25px;
+.megs.character-creator .tab.powers .items-list .modifier-name {
+    padding-left: 25px !important;
     font-style: italic;
     color: #666;
 }

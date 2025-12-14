@@ -1153,6 +1153,7 @@ details summary.no-arrow {
 }
 
 /* Character Creator Powers List */
-.megs .item-base-cost {
+.megs .item-base-cost,
+.megs .item-factor-cost {
     text-align: center;
 }

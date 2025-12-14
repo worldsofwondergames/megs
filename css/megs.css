@@ -1163,6 +1163,11 @@ details summary.no-arrow {
     flex: 2;
 }
 
+.megs .tab.powers .item-linked {
+    flex: 0 0 50px;
+    text-align: center;
+}
+
 .megs .tab.powers .item-base-cost,
 .megs .tab.powers .item-factor-cost,
 .megs .tab.powers .item-aps,

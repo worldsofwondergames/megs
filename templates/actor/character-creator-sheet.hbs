@@ -225,7 +225,7 @@
                     {{#each (getPowerModifiers item._id ../items) as |modifier|}}
                         <li class='item flexrow item-row modifier-row' data-item-id='{{modifier._id}}'>
                             <div class='item-name modifier-name'>
-                                {{modifier.name}} ({{localize (concat 'TYPES.Item.' modifier.type)}})
+                                <span style="display: inline-block; width: 25px;"></span>{{modifier.name}} ({{localize (concat 'TYPES.Item.' modifier.type)}})
                             </div>
                             <div class='item-linked'></div>
                             <div class='item-base-cost'></div>

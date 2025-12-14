@@ -1170,7 +1170,8 @@ details summary.no-arrow {
 }
 
 .megs.character-creator .tab.powers .items-list .modifier-name {
-    padding-left: 25px !important;
+    margin-left: 25px;
+    padding-left: 0;
     font-style: italic;
     color: #666;
 }

@@ -314,6 +314,18 @@ Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
     return modifiers;
 });
 
+Handlebars.registerHelper('formatSigned', function (number) {
+    // Format a number with a sign (+ or -)
+    const num = Number(number) || 0;
+    if (num > 0) {
+        return '+' + num;
+    } else if (num < 0) {
+        return String(num); // negative sign already included
+    } else {
+        return '+0';
+    }
+});
+
 /* -------------------------------------------- */
 // gadget-related
 /* -------------------------------------------- */

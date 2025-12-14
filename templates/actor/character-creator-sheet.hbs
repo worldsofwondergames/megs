@@ -186,12 +186,7 @@
                     <div class='item-name'>Name</div>
                     <div class='item-aps'>APs</div>
                     <div class='item-total-cost'>Cost</div>
-                    <div class='item-controls'>
-                        <a class='item-control item-create' title='Create Power' data-type='power'>
-                            <i class='fas fa-plus'></i>
-                            New Power
-                        </a>
-                    </div>
+                    <div class='item-controls'></div>
                 </li>
                 {{#each powers as |item id|}}
                     <li class='item flexrow item-row {{#if item.system.aps}}bold{{/if}}' data-item-id='{{item._id}}'>

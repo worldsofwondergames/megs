@@ -106,6 +106,16 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                 this.render(false);
             }
         });
+
+        // Power/Skill isLinked checkbox
+        html.on('change', 'input[name="system.isLinked"]', async (ev) => {
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item) {
+                await item.update({ 'system.isLinked': ev.currentTarget.checked });
+                this.render(false);
+            }
+        });
     }
 
     /**

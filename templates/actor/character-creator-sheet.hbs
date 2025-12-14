@@ -184,6 +184,7 @@
             <ol class='items-list'>
                 <li class='item flexrow items-header'>
                     <div class='item-name'>Name</div>
+                    <div class='item-linked'>Link?</div>
                     <div class='item-base-cost'>Base Cost</div>
                     <div class='item-factor-cost'>Factor Cost</div>
                     <div class='item-aps'>APs</div>
@@ -194,6 +195,9 @@
                     <li class='item flexrow item-row {{#if item.system.aps}}bold{{/if}}' data-item-id='{{item._id}}'>
                         <div class='item-name'>
                             {{getPowerDisplayName item}}
+                        </div>
+                        <div class='item-linked'>
+                            <input type="checkbox" name="system.isLinked" {{checked item.system.isLinked}} data-item-id="{{item._id}}" />
                         </div>
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}

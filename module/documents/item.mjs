@@ -227,21 +227,14 @@ export class MEGSItem extends Item {
                     effectiveFC = Math.max(1, effectiveFC - 2);
                 }
 
-                // Use AP Purchase Chart for accurate MEGS cost calculation
-                // Only calculate if we have valid factor cost
-                let apCost = 0;
-                if (effectiveFC > 0 && (systemData.aps || 0) >= 0) {
-                    apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
-                        ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
-                        : (effectiveFC * (systemData.aps || 0)); // Fallback to linear
-                }
-
-                // Skills/subskills with 0 APs have no cost (not purchased yet)
-                // Only apply baseCost + apCost if APs > 0
-                if ((systemData.aps || 0) > 0) {
-                    systemData.totalCost = systemData.baseCost + apCost;
-                } else {
+                // Calculate total cost using linear formula
+                // If APs == 0, Total Cost = 0
+                // Otherwise, Total Cost = Base Cost + (Factor Cost * APs)
+                if ((systemData.aps || 0) === 0) {
                     systemData.totalCost = 0;
+                } else {
+                    const apCost = effectiveFC * (systemData.aps || 0);
+                    systemData.totalCost = systemData.baseCost + apCost;
                 }
             } else {
                 systemData.totalCost = systemData.baseCost;

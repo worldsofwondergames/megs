@@ -1151,3 +1151,8 @@ details summary.no-arrow {
 .megs .powers-summary .summary-row .summary-value {
     font-size: 1.25em;
 }
+
+/* Character Creator Powers List */
+.megs .item-base-cost {
+    text-align: center;
+}

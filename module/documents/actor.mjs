@@ -248,6 +248,7 @@ export class MEGSActor extends Actor {
         let itemsCost = 0;
         let powersCost = 0;
         let skillsCost = 0;
+        let advantagesCost = 0;
         let drawbacksValue = 0;
 
         if (this.items) {
@@ -257,11 +258,13 @@ export class MEGSActor extends Actor {
                         // Drawbacks add HP back to the budget
                         drawbacksValue += item.system.totalCost;
                     } else {
-                        // Track powers and skills separately for character creator
+                        // Track powers, skills, and advantages separately for character creator
                         if (item.type === MEGS.itemTypes.power) {
                             powersCost += item.system.totalCost;
                         } else if (item.type === MEGS.itemTypes.skill) {
                             skillsCost += item.system.totalCost;
+                        } else if (item.type === MEGS.itemTypes.advantage) {
+                            advantagesCost += item.system.totalCost;
                         }
                         // All other items cost HP (excluding subskills which have no cost)
                         if (item.type !== MEGS.itemTypes.subskill) {
@@ -297,6 +300,7 @@ export class MEGSActor extends Actor {
             attributesCost: attributesCost,
             powersCost: powersCost,
             skillsCost: skillsCost,
+            advantagesCost: advantagesCost,
             itemsCost: itemsCost,
             totalSpent: totalSpent,
             remaining: remaining

@@ -1171,6 +1171,47 @@ details summary.no-arrow {
     font-size: 1.25em;
 }
 
+/* Character Creator Traits Summary */
+.megs .traits-summary {
+    margin-bottom: 10px;
+}
+
+.megs .traits-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.megs .traits-summary .summary-row .summary-label,
+.megs .traits-summary .summary-row .summary-value {
+    font-size: 1.25em;
+}
+
+/* Character Creator Traits List */
+.character-creator .tab.traits .grid-2col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.character-creator .tab.traits .grid-2col-header .header-cost {
+    font-size: 0.85em;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.character-creator .tab.traits .items-list .item-name {
+    flex: 2;
+}
+
+.character-creator .tab.traits .items-list .item-cost {
+    flex: 0 0 80px;
+    text-align: center;
+}
+
 /* Character Creator Powers List */
 .megs .item-base-cost,
 .megs .item-factor-cost {

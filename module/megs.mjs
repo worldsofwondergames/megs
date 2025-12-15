@@ -516,6 +516,11 @@ Handlebars.registerHelper('formatSigned', function (number) {
     }
 });
 
+Handlebars.registerHelper('subtract', function (a, b) {
+    // Subtract two numbers
+    return (Number(a) || 0) - (Number(b) || 0);
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;

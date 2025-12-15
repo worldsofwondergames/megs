@@ -203,7 +203,7 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
 
         // Wealth year selection
         html.on('change', '.wealth-year-select', async (ev) => {
-            const selectedYear = ev.currentTarget.value;
+            const selectedYear = parseInt(ev.currentTarget.value);
             await this.actor.update({ 'system.wealthYear': selectedYear });
             this.render(false);
         });

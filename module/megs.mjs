@@ -457,6 +457,53 @@ Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
     return reducedFc;
 });
 
+/* -------------------------------------------- */
+// New simplified subskill system helpers
+/* -------------------------------------------- */
+Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items) {
+    // Calculate effective Factor Cost for a skill
+    // FC = Base FC - (number of unchecked subskills)
+    // Minimum FC is always 1
+    const baseFc = skill.system.factorCost || 0;
+
+    if (!items) return baseFc;
+
+    // Count unchecked subskills (isTrained = false or undefined)
+    const uncheckedCount = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        !item.system.isTrained
+    ).length;
+
+    return Math.max(1, baseFc - uncheckedCount);
+});
+
+Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
+    // Generate tooltip text explaining the Factor Cost calculation for skills
+    const baseFc = skill.system.factorCost || 0;
+    let tooltip = `Base FC: ${baseFc}`;
+
+    if (!items) {
+        return tooltip;
+    }
+
+    // Count unchecked subskills
+    const uncheckedCount = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        !item.system.isTrained
+    ).length;
+
+    if (uncheckedCount > 0) {
+        tooltip += `\nUnchecked subskills: -${uncheckedCount}`;
+    }
+
+    const effectiveFc = Math.max(1, baseFc - uncheckedCount);
+    tooltip += `\nEffective FC: ${effectiveFc}`;
+
+    return tooltip;
+});
+
 Handlebars.registerHelper('formatSigned', function (number) {
     // Format a number with a sign (+ or -)
     const num = Number(number) || 0;

@@ -43,25 +43,6 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         const allItems = Array.from(this.actor.items);
         context.items = allItems;
 
-        // Add lock states to skills and subskills
-        context.skills.forEach(skill => {
-            // Check if any subskill has APs > 0
-            const hasSubskillsWithAPs = allItems.some(item =>
-                item.type === 'subskill' &&
-                item.system.parent === skill._id &&
-                (item.system.aps || 0) > 0
-            );
-            skill._isLocked = hasSubskillsWithAPs;
-        });
-
-        // Add lock state to subskills
-        allItems.forEach(item => {
-            if (item.type === 'subskill' && item.system.parent) {
-                const parentSkill = allItems.find(i => i.type === 'skill' && i._id === item.system.parent);
-                item._isLocked = parentSkill && (parentSkill.system.aps || 0) > 0;
-            }
-        });
-
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 
@@ -122,12 +103,12 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             li.slideUp(200, () => this.render(false));
         });
 
-        // Power/Skill/Subskill APs increment
+        // Power/Skill APs increment
         html.on('click', '.ap-plus', async (ev) => {
             ev.preventDefault();
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power' || item.type === 'subskill')) {
+            if (item && (item.type === 'skill' || item.type === 'power')) {
                 const newValue = (item.system.aps || 0) + 1;
 
                 // Save accordion state before render
@@ -138,12 +119,12 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             }
         });
 
-        // Power/Skill/Subskill APs decrement
+        // Power/Skill APs decrement
         html.on('click', '.ap-minus', async (ev) => {
             ev.preventDefault();
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power' || item.type === 'subskill') && (item.system.aps || 0) > 0) {
+            if (item && (item.type === 'skill' || item.type === 'power') && (item.system.aps || 0) > 0) {
                 const newValue = (item.system.aps || 0) - 1;
 
                 // Save accordion state before render
@@ -160,6 +141,19 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             const item = this.actor.items.get(itemId);
             if (item) {
                 await item.update({ 'system.isLinked': ev.currentTarget.checked });
+                this.render(false);
+            }
+        });
+
+        // Subskill isTrained checkbox
+        html.on('change', '.subskill-checkbox', async (ev) => {
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && item.type === 'subskill') {
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
+                await item.update({ 'system.isTrained': ev.currentTarget.checked });
                 this.render(false);
             }
         });

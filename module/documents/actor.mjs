@@ -157,9 +157,9 @@ export class MEGSActor extends Actor {
     _recalculateItemCosts() {
         if (!this.items) return;
 
-        // Get all powers, skills, and subskills
+        // Get all powers and skills (subskills no longer have costs)
         const itemsWithCosts = this.items.filter(item =>
-            (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill || item.type === MEGS.itemTypes.subskill) &&
+            (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
             item.system.hasOwnProperty('baseCost') &&
             item.system.hasOwnProperty('factorCost') &&
             item.system.hasOwnProperty('aps')
@@ -171,24 +171,17 @@ export class MEGSActor extends Actor {
             // Calculate effective Factor Cost
             let effectiveFC = systemData.factorCost || 0;
 
-            // Special handling for subskills: reduce FC based on unused subskills
-            if (item.type === MEGS.itemTypes.subskill && systemData.parent) {
-                // Find parent skill
-                const parentSkill = this.items.find(i => i.type === MEGS.itemTypes.skill && i._id === systemData.parent);
+            // Special handling for skills: reduce FC based on unchecked subskills
+            if (item.type === MEGS.itemTypes.skill) {
+                // Count unchecked subskills (isTrained = false or undefined)
+                const uncheckedCount = this.items.filter(i =>
+                    i.type === MEGS.itemTypes.subskill &&
+                    i.system.parent === item._id &&
+                    !i.system.isTrained
+                ).length;
 
-                if (parentSkill) {
-                    // Count total subskills for this skill
-                    const allSubskills = this.items.filter(i =>
-                        i.type === MEGS.itemTypes.subskill && i.system.parent === parentSkill._id
-                    );
-
-                    // Count unused subskills (those with 0 APs)
-                    const unusedSubskills = allSubskills.filter(i => (i.system.aps || 0) === 0).length;
-
-                    // Reduced FC = Parent Skill FC - unused subskills
-                    const parentFC = parentSkill.system.factorCost || 0;
-                    effectiveFC = Math.max(1, parentFC - unusedSubskills);
-                }
+                // Reduced FC = Base FC - unchecked subskills
+                effectiveFC = Math.max(1, effectiveFC - uncheckedCount);
             }
 
             // Apply linking reduction (-2, minimum 1) for powers
@@ -266,12 +259,14 @@ export class MEGSActor extends Actor {
                         // Track powers and skills separately for character creator
                         if (item.type === MEGS.itemTypes.power) {
                             powersCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.skill || item.type === MEGS.itemTypes.subskill) {
+                        } else if (item.type === MEGS.itemTypes.skill) {
                             skillsCost += item.system.totalCost;
                         }
-                        // All other items cost HP
-                        console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
-                        itemsCost += item.system.totalCost;
+                        // All other items cost HP (excluding subskills which have no cost)
+                        if (item.type !== MEGS.itemTypes.subskill) {
+                            console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
+                            itemsCost += item.system.totalCost;
+                        }
                     }
                 }
             });

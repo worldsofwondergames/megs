@@ -343,7 +343,8 @@
             "type": "subskill",
             "linkedSkill": "",
             "useUnskilled": true,
-            "actorId": ""
+            "actorId": "",
+            "isTrained": false
         },
         "advantage": {
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],

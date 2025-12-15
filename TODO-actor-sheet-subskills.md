@@ -36,8 +36,15 @@ The Character Creator sheet has been updated to use the new subskill system (com
 ## Reference Implementation
 See `character-creator-sheet.mjs` and `character-creator-sheet.hbs` for the correct implementation patterns.
 
+5. **Skill Item Sheet Display**
+   - This change will also impact how Subskills are displayed on a Skill item sheet
+   - Item sheets will need to reflect that subskills are checkbox-based (isTrained)
+   - Subskills should show as checked/unchecked, not as having independent AP values
+
 ## Related Files
 - `module/sheets/actor-sheet.mjs` - Main actor sheet logic
 - `templates/actor/actor-*-sheet.hbs` - Actor sheet templates for different actor types
+- `module/sheets/item-sheet.mjs` - Item sheet logic (may need updates for skill display)
+- `templates/item/item-skill-sheet.hbs` - Skill item sheet template (may need updates)
 - `module/documents/actor.mjs` - Cost calculation (already updated)
 - `module/megs.mjs` - Handlebars helpers (already updated with new helpers)

@@ -1159,12 +1159,12 @@ details summary.no-arrow {
 }
 
 /* Factor Cost tooltip cursor */
-.character-creator .tab.powers .items-list .factor-cost-calculated {
+.character-creator .items-list .factor-cost-calculated {
     cursor: pointer;
 }
 
 /* Total Cost tooltip cursor */
-.character-creator .tab.powers .items-list .total-cost-calculated {
+.character-creator .items-list .total-cost-calculated {
     cursor: pointer;
 }
 

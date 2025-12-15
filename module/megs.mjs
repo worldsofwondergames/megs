@@ -351,10 +351,9 @@ Handlebars.registerHelper('subskillParentHasAPs', function (subskill, items) {
     return parentSkill && (parentSkill.system.aps || 0) > 0;
 });
 
-Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
-    // Calculate reduced Factor Cost for independently purchased subskill
-    // FC = Skill's base FC - (number of unused subskills)
-    if (!items || !subskill.system.parent) return subskill.system.factorCost || 0;
+Handlebars.registerHelper('getSubskillBaseCost', function (subskill, items) {
+    // Subskills inherit base cost from parent skill
+    if (!items || !subskill.system.parent) return 0;
 
     // Find parent skill
     const parentSkill = items.find(item =>
@@ -362,13 +361,21 @@ Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
         item._id === subskill.system.parent
     );
 
-    if (!parentSkill) return subskill.system.factorCost || 0;
+    return parentSkill ? (parentSkill.system.baseCost || 0) : 0;
+});
 
-    // Count total subskills for this skill
-    const totalSubskills = items.filter(item =>
-        item.type === 'subskill' &&
-        item.system.parent === parentSkill._id
-    ).length;
+Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
+    // Calculate reduced Factor Cost for independently purchased subskill
+    // FC = Skill's base FC - (number of unused subskills)
+    if (!items || !subskill.system.parent) return 0;
+
+    // Find parent skill
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    if (!parentSkill) return 0;
 
     // Count how many subskills have 0 APs (unused)
     const unusedSubskills = items.filter(item =>

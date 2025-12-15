@@ -344,7 +344,7 @@
             "linkedSkill": "",
             "useUnskilled": true,
             "actorId": "",
-            "isTrained": false
+            "isTrained": true
         },
         "advantage": {
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],

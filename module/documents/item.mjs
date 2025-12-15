@@ -101,6 +101,7 @@ export class MEGSItem extends Item {
                             type: j.type,
                             linkedSkill: i.name,
                             useUnskilled: j.useUnskilled,
+                            isTrained: true,
                         },
                     };
                     subskills.push(subskillObj);

@@ -46,6 +46,7 @@ export class MEGSActor extends Actor {
                             type: j.type,
                             linkedSkill: i.name,
                             useUnskilled: j.useUnskilled,
+                            isTrained: true,
                         },
                     };
                     subskills.push(subskillObj);

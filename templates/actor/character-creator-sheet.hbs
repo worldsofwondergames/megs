@@ -306,7 +306,7 @@
                                 <span style="display: inline-block; width: 25px;"></span>{{subskill.name}}
                             </div>
                             <div class='item-base-cost'>
-                                {{subskill.system.baseCost}}
+                                {{getSubskillBaseCost subskill ../items}}
                             </div>
                             <div class='item-factor-cost factor-cost-calculated' title='Reduced FC: {{getSubskillReducedFC subskill ../items}}'>
                                 {{getSubskillReducedFC subskill ../items}}

@@ -276,11 +276,7 @@
                             {{item.name}}
                         </div>
                         <div class='item-base-cost'>
-                            {{#if (skillIsIndependentSubskillMode item ../items)}}
-                                {{!-- In independent subskill mode, show empty --}}
-                            {{else}}
-                                {{item.system.baseCost}}
-                            {{/if}}
+                            {{item.system.baseCost}}
                         </div>
                         <div class='item-factor-cost factor-cost-calculated' title='{{#if (skillIsIndependentSubskillMode item ../items)}}Reduced FC{{else}}{{getFactorCostTooltip item ../items}}{{/if}}'>
                             {{#if (skillIsIndependentSubskillMode item ../items)}}

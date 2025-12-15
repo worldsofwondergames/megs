@@ -1216,3 +1216,18 @@ details summary.no-arrow {
     justify-content: center;
     align-items: center;
 }
+
+/* Character Creator Skills column widths */
+.character-creator .tab.skills .items-list .item-name {
+    flex: 2.5;
+}
+
+.character-creator .tab.skills .items-list .item-base-cost,
+.character-creator .tab.skills .items-list .item-factor-cost,
+.character-creator .tab.skills .items-list .item-total-cost {
+    flex: 1;
+}
+
+.character-creator .tab.skills .items-list .item-aps {
+    flex: 1.15;
+}

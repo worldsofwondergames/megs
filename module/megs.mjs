@@ -314,6 +314,20 @@ Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
     return modifiers;
 });
 
+Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
+    // Filter items to find subskills that belong to this skill
+    if (!items) return [];
+
+    const subskills = [];
+    items.forEach(item => {
+        if (item.type === 'subskill' && item.system.parent === skillId) {
+            subskills.push(item);
+        }
+    });
+
+    return subskills;
+});
+
 Handlebars.registerHelper('formatSigned', function (number) {
     // Format a number with a sign (+ or -)
     const num = Number(number) || 0;

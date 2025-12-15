@@ -33,6 +33,35 @@ The Character Creator sheet has been updated to use the new subskill system (com
    - Show inherited APs as display-only value in subskills
    - Remove edit controls from subskill AP display
 
+## Test Case / Expected Behavior
+
+**Example: Acrobatics Skill (3 subskills: Climbing, Dodging, Gymnastics)**
+
+Scenario: Only Climbing is trained (checked)
+
+### Actor Sheet - Skills Tab
+- **Display Name**: "Acrobatics (Climbing)" - shows trained subskills in parentheses
+- **APs**: 1+ APs selectable at skill level (not at subskill level)
+- **Factor Cost**: 5 (base FC 7 - 2 untrained subskills)
+
+### Skill Item Sheet
+**Main Tab:**
+- Shows updated Factor Cost: 5
+- Shows 1+ APs selected at skill level
+
+**Subskills Tab:**
+- **Checkboxes**: Only Climbing is checked; Dodging and Gymnastics are unchecked
+- **APs Column**: Removed from subskills display
+- **Roll Icons**:
+  - Climbing: Blue die icon (trained)
+  - Dodging: Gray die icon (untrained)
+  - Gymnastics: Gray die icon (untrained)
+
+**Rolling Behavior:**
+- Rolling Climbing: Normal roll (uses skill APs)
+- Rolling Dodging: Untrained roll (penalty applied)
+- Rolling Gymnastics: Untrained roll (penalty applied)
+
 ## Reference Implementation
 See `character-creator-sheet.mjs` and `character-creator-sheet.hbs` for the correct implementation patterns.
 

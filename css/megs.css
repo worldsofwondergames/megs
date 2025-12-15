@@ -1210,6 +1210,7 @@ details summary.no-arrow {
 .character-creator .tab.traits .items-list .item-cost {
     flex: 0 0 80px;
     text-align: center;
+    font-size: 1em;
 }
 
 /* Character Creator Powers List */

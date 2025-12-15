@@ -50,16 +50,8 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Provide wealth data from CONFIG
         context.wealthData = CONFIG.wealth;
 
-        // Ensure wealth fields are initialized
-        if (context.system.wealth === undefined || context.system.wealth === null) {
-            context.system.wealth = 0;
-        }
-        if (context.system.wealthYear === undefined || context.system.wealthYear === null) {
-            context.system.wealthYear = 1990;
-        }
-        if (context.system.wealthAdjustForInflation === undefined || context.system.wealthAdjustForInflation === null) {
-            context.system.wealthAdjustForInflation = false;
-        }
+        // Ensure wealth fields are initialized in the database
+        await this._ensureWealthInitialized();
 
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
@@ -334,6 +326,38 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Update the actor if needed
         if (needsUpdate) {
             console.log('MEGS Character Creator: Initializing missing attributes for actor', actor.name);
+            await actor.update(updates);
+        }
+    }
+
+    /**
+     * Ensure wealth fields are properly initialized in the database
+     * This fixes actors created before the wealth system was implemented
+     */
+    async _ensureWealthInitialized() {
+        const actor = this.actor;
+        let needsUpdate = false;
+        const updates = {};
+
+        // Check if wealth fields are missing or invalid
+        if (actor.system.wealth === undefined || actor.system.wealth === null) {
+            needsUpdate = true;
+            updates['system.wealth'] = 0;
+        }
+
+        if (actor.system.wealthYear === undefined || actor.system.wealthYear === null) {
+            needsUpdate = true;
+            updates['system.wealthYear'] = 1990;
+        }
+
+        if (actor.system.wealthAdjustForInflation === undefined || actor.system.wealthAdjustForInflation === null) {
+            needsUpdate = true;
+            updates['system.wealthAdjustForInflation'] = false;
+        }
+
+        // Update the actor if needed
+        if (needsUpdate) {
+            console.log('MEGS Character Creator: Initializing wealth fields for actor', actor.name);
             await actor.update(updates);
         }
     }

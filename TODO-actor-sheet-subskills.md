@@ -78,6 +78,12 @@ See `character-creator-sheet.mjs` and `character-creator-sheet.hbs` for the corr
    - Item sheets will need to reflect that subskills are checkbox-based (isTrained)
    - Subskills should show as checked/unchecked, not as having independent AP values
 
+6. **Data Model Cleanup**
+   - Remove `aps` field from subskill data model in `template.json`
+   - Subskills no longer store their own AP values (they inherit from parent skill)
+   - Update any code that references `subskill.system.aps` to instead look up parent skill's APs
+   - This includes: display logic, roll handlers, and any calculations
+
 ## Related Files
 - `module/sheets/actor-sheet.mjs` - Main actor sheet logic
 - `templates/actor/actor-*-sheet.hbs` - Actor sheet templates for different actor types

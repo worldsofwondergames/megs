@@ -405,7 +405,7 @@
                     <div class="inflation-controls-right">
                         <select name="system.wealthYear" class="wealth-year-select" {{#unless system.wealthAdjustForInflation}}disabled{{/unless}}>
                             {{#each wealthData.adjusted_years as |year|}}
-                                <option value="{{year}}" {{selected (eq year ../system.wealthYear)}}>{{year}}</option>
+                                <option value="{{year}}" {{#if (eq year ../system.wealthYear)}}selected{{/if}}>{{year}}</option>
                             {{/each}}
                         </select>
                     </div>

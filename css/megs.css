@@ -1212,16 +1212,22 @@ details summary.no-arrow {
     background: var(--lightblue);
     color: var(--darkblue);
     padding: 4px 8px;
+    border: none;
 }
 
 .character-creator .tab.traits .items-list .item-name {
-    flex: 2;
+    flex: 1;
 }
 
 .character-creator .tab.traits .items-list .item-cost {
-    flex: 0 0 80px;
+    flex: 0 0 50px;
     text-align: center;
-    font-size: 1em;
+    font-size: inherit;
+}
+
+.character-creator .tab.traits .items-list .item-controls {
+    flex: 0 0 30px;
+    text-align: center;
 }
 
 /* Character Creator Powers List */

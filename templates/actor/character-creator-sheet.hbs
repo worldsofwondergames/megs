@@ -310,9 +310,69 @@
             </ol>
         </div>
 
-        {{!-- Traits Tab (Placeholder) --}}
+        {{!-- Traits Tab --}}
         <div class="tab traits" data-group="primary" data-tab="traits">
-            <p>Advantages and Drawbacks coming soon...</p>
+
+            {{!-- Traits Summary --}}
+            <section class="traits-summary">
+                <div class="summary-row">
+                    <label class="summary-label">Net Traits Cost:</label>
+                    <span class="summary-value">{{subtract system.heroPointBudget.advantagesCost system.heroPointBudget.drawbacks}} HP</span>
+                </div>
+            </section>
+
+            {{!-- Traits Two-Column Layout --}}
+            <div class="resources grid grid-2col">
+
+                {{!-- Advantages Column --}}
+                <div class="resource flex-group-center">
+                    <div class="grid-2col-header">
+                        {{localize "MEGS.Advantages"}}
+                        <span class="header-cost">({{system.heroPointBudget.advantagesCost}} HP)</span>
+                    </div>
+                    <ol class='items-list'>
+                        <li class='item flexrow items-header'>
+                            <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                            <div class='item-cost'>{{localize 'MEGS.Cost'}}</div>
+                        </li>
+                        {{#each advantages as |item id|}}
+                            <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+                                <div class='item-name'>
+                                    {{item.name}}
+                                </div>
+                                <div class='item-cost'>
+                                    {{item.system.totalCost}}
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ol>
+                </div>
+
+                {{!-- Drawbacks Column --}}
+                <div class="resource flex-group-center">
+                    <div class="grid-2col-header">
+                        {{localize "MEGS.Drawbacks"}}
+                        <span class="header-cost">({{system.heroPointBudget.drawbacks}} HP)</span>
+                    </div>
+                    <ol class='items-list'>
+                        <li class='item flexrow items-header'>
+                            <div class='item-name'>{{localize 'Name'}}</div>
+                            <div class='item-cost'>{{localize 'MEGS.Cost'}}</div>
+                        </li>
+                        {{#each drawbacks as |item id|}}
+                            <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+                                <div class='item-name'>
+                                    {{item.name}}
+                                </div>
+                                <div class='item-cost'>
+                                    {{item.system.totalCost}}
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ol>
+                </div>
+
+            </div>
         </div>
 
         {{!-- Gadgets Tab (Placeholder) --}}

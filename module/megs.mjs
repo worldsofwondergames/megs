@@ -157,6 +157,19 @@ Handlebars.registerHelper('getAttributeCost', function (aps, factorCost) {
     return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
 });
 
+Handlebars.registerHelper('getAPCost', function (aps, factorCost) {
+    // Validate inputs before calling getAPCost
+    if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
+        return 0;
+    }
+
+    // Ensure aps and factorCost are valid numbers (not undefined/null)
+    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
+    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
+
+    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+});
+
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
     return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
 });

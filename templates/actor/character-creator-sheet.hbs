@@ -260,6 +260,7 @@
             {{!-- Skills List --}}
             <ol class='items-list'>
                 <li class='item flexrow items-header'>
+                    <div class='item-toggle'></div>
                     <div class='item-name'>{{localize 'MEGS.Name'}}</div>
                     <div class='item-base-cost'>{{localize 'MEGS.Base'}}<br>{{localize 'MEGS.Cost'}}</div>
                     <div class='item-factor-cost'>{{localize 'MEGS.Factor'}}<br>{{localize 'MEGS.Cost'}}</div>
@@ -267,7 +268,10 @@
                     <div class='item-total-cost'>{{localize 'MEGS.Total'}}<br>{{localize 'MEGS.Cost'}}</div>
                 </li>
                 {{#each skills as |item id|}}
-                    <li class='item flexrow item-row {{#if item.system.aps}}bold{{/if}}' data-item-id='{{item._id}}'>
+                    <li class='item flexrow item-row skill-row {{#if item.system.aps}}bold{{/if}}' data-item-id='{{item._id}}' data-expanded='false'>
+                        <div class='item-toggle'>
+                            <i class='fas fa-chevron-right toggle-icon'></i>
+                        </div>
                         <div class='item-name'>
                             {{item.name}}
                         </div>
@@ -290,7 +294,8 @@
                     </li>
                     {{!-- Display Subskills under the Skill --}}
                     {{#each (getSkillSubskills item._id ../items) as |subskill|}}
-                        <li class='item flexrow item-row modifier-row' data-item-id='{{subskill._id}}'>
+                        <li class='item flexrow item-row modifier-row subskill-row' data-item-id='{{subskill._id}}' data-parent-id='{{item._id}}' style='display: none;'>
+                            <div class='item-toggle'></div>
                             <div class='item-name modifier-name'>
                                 <span style="display: inline-block; width: 25px;"></span>{{subskill.name}}
                             </div>

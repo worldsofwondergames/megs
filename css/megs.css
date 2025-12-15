@@ -1398,6 +1398,8 @@ details summary.no-arrow {
     border-radius: 3px;
     border: 1px solid #ccc;
     width: 100%;
+    height: 32px;
+    line-height: normal;
 }
 
 .megs .wealth-summary .inflation-controls-right select:disabled {

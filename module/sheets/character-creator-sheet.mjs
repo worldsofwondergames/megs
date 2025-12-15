@@ -40,7 +40,8 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         context.skills = this.actor.items.filter(i => i.type === 'skill');
 
         // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
-        context.items = this.actor.items;
+        // Convert to array for helper compatibility
+        context.items = Array.from(this.actor.items);
 
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();

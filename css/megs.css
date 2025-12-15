@@ -1418,6 +1418,7 @@ details summary.no-arrow {
 .megs .wealth-table {
     width: 100%;
     border-collapse: collapse;
+    font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
 .megs .wealth-table thead {

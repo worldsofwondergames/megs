@@ -282,7 +282,7 @@
                             {{getEffectiveFactorCost item ../items}}
                         </div>
                         <div class='item-aps'>
-                            {{#if (skillHasSubskillsWithAPs item._id ../items)}}
+                            {{#if item._isLocked}}
                                 {{!-- Skill is locked because subskills have APs --}}
                                 <span class="aps-locked">0</span>
                             {{else}}
@@ -312,7 +312,7 @@
                                 {{getSubskillReducedFC subskill ../items}}
                             </div>
                             <div class='item-aps'>
-                                {{#if (subskillParentHasAPs subskill ../items)}}
+                                {{#if subskill._isLocked}}
                                     {{!-- Parent skill has APs, subskill is locked --}}
                                     <span class="aps-locked">&mdash;</span>
                                 {{else}}

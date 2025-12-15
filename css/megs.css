@@ -1250,3 +1250,11 @@ details summary.no-arrow {
 .character-creator .tab.skills .toggle-icon:hover {
     color: #000;
 }
+
+/* Locked APs display */
+.character-creator .tab.skills .aps-locked {
+    display: block;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}

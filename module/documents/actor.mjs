@@ -157,9 +157,9 @@ export class MEGSActor extends Actor {
     _recalculateItemCosts() {
         if (!this.items) return;
 
-        // Get all powers and skills
+        // Get all powers, skills, and subskills
         const itemsWithCosts = this.items.filter(item =>
-            (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+            (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill || item.type === MEGS.itemTypes.subskill) &&
             item.system.hasOwnProperty('baseCost') &&
             item.system.hasOwnProperty('factorCost') &&
             item.system.hasOwnProperty('aps')
@@ -171,19 +171,41 @@ export class MEGSActor extends Actor {
             // Calculate effective Factor Cost
             let effectiveFC = systemData.factorCost || 0;
 
-            // Apply linking reduction (-2, minimum 1)
-            if (systemData.isLinked === 'true' || systemData.isLinked === true) {
+            // Special handling for subskills: reduce FC based on unused subskills
+            if (item.type === MEGS.itemTypes.subskill && systemData.parent) {
+                // Find parent skill
+                const parentSkill = this.items.find(i => i.type === MEGS.itemTypes.skill && i._id === systemData.parent);
+
+                if (parentSkill) {
+                    // Count total subskills for this skill
+                    const allSubskills = this.items.filter(i =>
+                        i.type === MEGS.itemTypes.subskill && i.system.parent === parentSkill._id
+                    );
+
+                    // Count unused subskills (those with 0 APs)
+                    const unusedSubskills = allSubskills.filter(i => (i.system.aps || 0) === 0).length;
+
+                    // Reduced FC = Parent Skill FC - unused subskills
+                    const parentFC = parentSkill.system.factorCost || 0;
+                    effectiveFC = Math.max(1, parentFC - unusedSubskills);
+                }
+            }
+
+            // Apply linking reduction (-2, minimum 1) for powers
+            if (item.type === MEGS.itemTypes.power && (systemData.isLinked === 'true' || systemData.isLinked === true)) {
                 effectiveFC = Math.max(1, effectiveFC - 2);
             }
 
-            // Add modifiers from bonuses/limitations
-            this.items.forEach(modifier => {
-                if ((modifier.type === MEGS.itemTypes.bonus || modifier.type === MEGS.itemTypes.limitation) &&
-                    modifier.system.parent === item._id &&
-                    modifier.system.factorCostMod) {
-                    effectiveFC += modifier.system.factorCostMod;
-                }
-            });
+            // Add modifiers from bonuses/limitations (powers only)
+            if (item.type === MEGS.itemTypes.power) {
+                this.items.forEach(modifier => {
+                    if ((modifier.type === MEGS.itemTypes.bonus || modifier.type === MEGS.itemTypes.limitation) &&
+                        modifier.system.parent === item._id &&
+                        modifier.system.factorCostMod) {
+                        effectiveFC += modifier.system.factorCostMod;
+                    }
+                });
+            }
 
             // Ensure minimum FC of 1
             effectiveFC = Math.max(1, effectiveFC);

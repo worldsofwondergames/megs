@@ -521,6 +521,11 @@ Handlebars.registerHelper('subtract', function (a, b) {
     return (Number(a) || 0) - (Number(b) || 0);
 });
 
+Handlebars.registerHelper('negate', function (number) {
+    // Negate a number (make it negative)
+    return -(Number(number) || 0);
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;

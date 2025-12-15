@@ -62,6 +62,14 @@ Scenario: Only Climbing is trained (checked)
 - Rolling Dodging: Untrained roll (penalty applied)
 - Rolling Gymnastics: Untrained roll (penalty applied)
 
+### Subskill Item Sheet
+When opening a subskill's own item sheet (e.g., "Climbing" item):
+- **Base Cost**: Not displayed
+- **Factor Cost**: Not displayed
+- **APs**: Displayed as a read-only label (not +/- component)
+  - Value equals the parent skill's AP value (e.g., if Acrobatics has 3 APs, Climbing shows "3 APs")
+- **Trained Status**: Shows whether this subskill is checked (isTrained: true/false)
+
 ## Reference Implementation
 See `character-creator-sheet.mjs` and `character-creator-sheet.hbs` for the correct implementation patterns.
 

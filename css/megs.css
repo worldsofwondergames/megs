@@ -1218,6 +1218,10 @@ details summary.no-arrow {
 }
 
 /* Character Creator Skills column widths */
+.character-creator .tab.skills .items-list .item-row {
+    min-height: 40px;
+}
+
 .character-creator .tab.skills .items-list .item-toggle {
     flex: 0 0 25px;
     display: flex;

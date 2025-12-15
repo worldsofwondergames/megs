@@ -199,13 +199,18 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                     'system.wealthAdjustForInflation': false,
                     'system.wealthYear': 1990
                 });
+
+                // Explicitly set dropdown value to 1990
+                const yearSelect = html.find('.wealth-year-select');
+                yearSelect.val(1990);
+                yearSelect.prop('disabled', true);
             } else {
                 await this.actor.update({ 'system.wealthAdjustForInflation': true });
-            }
 
-            // Enable/disable the year dropdown
-            const yearSelect = html.find('.wealth-year-select');
-            yearSelect.prop('disabled', !isChecked);
+                // Enable the dropdown
+                const yearSelect = html.find('.wealth-year-select');
+                yearSelect.prop('disabled', false);
+            }
 
             this.render(false);
         });

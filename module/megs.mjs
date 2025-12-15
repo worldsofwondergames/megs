@@ -554,6 +554,11 @@ Handlebars.registerHelper('formatNumber', function (number) {
     return num.toLocaleString('en-US');
 });
 
+Handlebars.registerHelper('default', function (value, defaultValue) {
+    // Return value if it exists, otherwise return defaultValue
+    return (value !== undefined && value !== null) ? value : defaultValue;
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;

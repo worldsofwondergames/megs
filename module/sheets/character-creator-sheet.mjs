@@ -50,6 +50,17 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Provide wealth data from CONFIG
         context.wealthData = CONFIG.wealth;
 
+        // Ensure wealth fields are initialized
+        if (context.system.wealth === undefined || context.system.wealth === null) {
+            context.system.wealth = 0;
+        }
+        if (context.system.wealthYear === undefined || context.system.wealthYear === null) {
+            context.system.wealthYear = 1990;
+        }
+        if (context.system.wealthAdjustForInflation === undefined || context.system.wealthAdjustForInflation === null) {
+            context.system.wealthAdjustForInflation = false;
+        }
+
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 
@@ -199,27 +210,28 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                     'system.wealthAdjustForInflation': false,
                     'system.wealthYear': 1990
                 });
-
-                // Explicitly set dropdown value to 1990
-                const yearSelect = html.find('.wealth-year-select');
-                yearSelect.val(1990);
-                yearSelect.prop('disabled', true);
             } else {
                 await this.actor.update({ 'system.wealthAdjustForInflation': true });
-
-                // Enable the dropdown
-                const yearSelect = html.find('.wealth-year-select');
-                yearSelect.prop('disabled', false);
             }
 
-            this.render(false);
+            // Update the table values dynamically without full render
+            this._updateWealthTableValues(html);
+
+            // Toggle dropdown disabled state
+            const yearSelect = html.find('.wealth-year-select');
+            yearSelect.prop('disabled', !isChecked);
+            if (!isChecked) {
+                yearSelect.val(1990);
+            }
         });
 
         // Wealth year selection
         html.on('change', '.wealth-year-select', async (ev) => {
             const selectedYear = parseInt(ev.currentTarget.value);
             await this.actor.update({ 'system.wealthYear': selectedYear });
-            this.render(false);
+
+            // Update the table values dynamically without full render
+            this._updateWealthTableValues(html);
         });
 
         // Wealth radio button selection
@@ -324,6 +336,27 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             console.log('MEGS Character Creator: Initializing missing attributes for actor', actor.name);
             await actor.update(updates);
         }
+    }
+
+    /**
+     * Update wealth table dollar values dynamically without full re-render
+     * @param {jQuery} html
+     * @private
+     */
+    _updateWealthTableValues(html) {
+        const wealthData = CONFIG.wealth;
+        const currentYear = this.actor.system.wealthYear || 1990;
+
+        if (!wealthData || !wealthData.wealth_table) return;
+
+        // Update each row's dollar value
+        wealthData.wealth_table.forEach(row => {
+            const dollarValue = row[currentYear];
+            if (dollarValue !== undefined) {
+                const formattedValue = dollarValue.toLocaleString('en-US');
+                html.find(`.wealth-value-col[data-ap="${row.ap}"]`).text(`$${formattedValue}`);
+            }
+        });
     }
 
     /**

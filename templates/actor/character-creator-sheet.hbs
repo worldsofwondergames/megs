@@ -276,10 +276,18 @@
                             {{item.name}}
                         </div>
                         <div class='item-base-cost'>
-                            {{item.system.baseCost}}
+                            {{#if (skillIsIndependentSubskillMode item ../items)}}
+                                {{!-- In independent subskill mode, show empty --}}
+                            {{else}}
+                                {{item.system.baseCost}}
+                            {{/if}}
                         </div>
-                        <div class='item-factor-cost factor-cost-calculated' title='{{getFactorCostTooltip item ../items}}'>
-                            {{getEffectiveFactorCost item ../items}}
+                        <div class='item-factor-cost factor-cost-calculated' title='{{#if (skillIsIndependentSubskillMode item ../items)}}Reduced FC{{else}}{{getFactorCostTooltip item ../items}}{{/if}}'>
+                            {{#if (skillIsIndependentSubskillMode item ../items)}}
+                                {{getIndependentSubskillReducedFC item ../items}}
+                            {{else}}
+                                {{getEffectiveFactorCost item ../items}}
+                            {{/if}}
                         </div>
                         <div class='item-aps'>
                             {{#if item._isLocked}}
@@ -294,8 +302,12 @@
                                 </div>
                             {{/if}}
                         </div>
-                        <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
-                            {{item.system.totalCost}}
+                        <div class='item-total-cost total-cost-calculated' title='{{#if (skillIsIndependentSubskillMode item ../items)}}Sum of subskill costs{{else}}{{getTotalCostTooltip item ../items}}{{/if}}'>
+                            {{#if (skillIsIndependentSubskillMode item ../items)}}
+                                {{getIndependentSubskillTotalCost item ../items}}
+                            {{else}}
+                                {{item.system.totalCost}}
+                            {{/if}}
                         </div>
                     </li>
                     {{!-- Display Subskills under the Skill --}}
@@ -306,10 +318,10 @@
                                 <span style="display: inline-block; width: 25px;"></span>{{subskill.name}}
                             </div>
                             <div class='item-base-cost'>
-                                {{getSubskillBaseCost subskill ../items}}
+                                {{!-- Empty when parent is in independent mode --}}
                             </div>
-                            <div class='item-factor-cost factor-cost-calculated' title='Reduced FC: {{getSubskillReducedFC subskill ../items}}'>
-                                {{getSubskillReducedFC subskill ../items}}
+                            <div class='item-factor-cost'>
+                                {{!-- Empty when parent is in independent mode --}}
                             </div>
                             <div class='item-aps'>
                                 {{#if subskill._isLocked}}
@@ -324,8 +336,8 @@
                                     </div>
                                 {{/if}}
                             </div>
-                            <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip subskill ../items}}'>
-                                {{subskill.system.totalCost}}
+                            <div class='item-total-cost'>
+                                {{!-- Empty when parent is in independent mode --}}
                             </div>
                         </li>
                     {{/each}}

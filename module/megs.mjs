@@ -339,6 +339,53 @@ Handlebars.registerHelper('skillHasSubskillsWithAPs', function (skillId, items) 
     );
 });
 
+Handlebars.registerHelper('skillIsIndependentSubskillMode', function (skill, items) {
+    // Check if skill is in independent subskill mode:
+    // - Skill has 0 APs
+    // - At least one subskill has APs > 0
+    if (!items || (skill.system.aps || 0) > 0) return false;
+
+    return items.some(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        (item.system.aps || 0) > 0
+    );
+});
+
+Handlebars.registerHelper('getIndependentSubskillReducedFC', function (skill, items) {
+    // Calculate reduced FC when purchasing independent subskills
+    // FC = Normal FC - (number of subskills with 0 APs)
+    if (!items) return 0;
+
+    // Count subskills with 0 APs
+    const subskillsWithZeroAPs = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        (item.system.aps || 0) === 0
+    ).length;
+
+    const normalFC = skill.system.factorCost || 0;
+    return Math.max(1, normalFC - subskillsWithZeroAPs);
+});
+
+Handlebars.registerHelper('getIndependentSubskillTotalCost', function (skill, items) {
+    // Calculate total cost when purchasing independent subskills
+    // This is the sum of all subskill costs
+    if (!items) return 0;
+
+    const subskills = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id
+    );
+
+    let totalCost = 0;
+    subskills.forEach(subskill => {
+        totalCost += subskill.system.totalCost || 0;
+    });
+
+    return totalCost;
+});
+
 Handlebars.registerHelper('subskillParentHasAPs', function (subskill, items) {
     // Check if this subskill's parent skill has APs > 0
     if (!items || !subskill.system.parent) return false;
@@ -349,6 +396,25 @@ Handlebars.registerHelper('subskillParentHasAPs', function (subskill, items) {
     );
 
     return parentSkill && (parentSkill.system.aps || 0) > 0;
+});
+
+Handlebars.registerHelper('subskillParentIsIndependentMode', function (subskill, items) {
+    // Check if this subskill's parent is in independent subskill mode
+    if (!items || !subskill.system.parent) return false;
+
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    if (!parentSkill || (parentSkill.system.aps || 0) > 0) return false;
+
+    // Check if any subskill of parent has APs > 0
+    return items.some(item =>
+        item.type === 'subskill' &&
+        item.system.parent === parentSkill._id &&
+        (item.system.aps || 0) > 0
+    );
 });
 
 Handlebars.registerHelper('getSubskillBaseCost', function (subskill, items) {

@@ -36,20 +36,22 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Prepare powers for the Powers tab
         context.powers = this.actor.items.filter(i => i.type === 'power');
 
-        // Prepare skills for the Skills tab with lock states
+        // Prepare skills for the Skills tab
+        context.skills = this.actor.items.filter(i => i.type === 'skill');
+
+        // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
         const allItems = Array.from(this.actor.items);
-        context.skills = this.actor.items.filter(i => i.type === 'skill').map(skill => {
+        context.items = allItems;
+
+        // Add lock states to skills and subskills
+        context.skills.forEach(skill => {
             // Check if any subskill has APs > 0
             const hasSubskillsWithAPs = allItems.some(item =>
                 item.type === 'subskill' &&
                 item.system.parent === skill._id &&
                 (item.system.aps || 0) > 0
             );
-
-            return {
-                ...skill,
-                _isLocked: hasSubskillsWithAPs
-            };
+            skill._isLocked = hasSubskillsWithAPs;
         });
 
         // Add lock state to subskills
@@ -59,9 +61,6 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                 item._isLocked = parentSkill && (parentSkill.system.aps || 0) > 0;
             }
         });
-
-        // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
-        context.items = allItems;
 
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();

@@ -1209,10 +1209,16 @@ details summary.no-arrow {
 }
 
 .character-creator .tab.traits .items-list .items-header {
-    background: var(--lightblue);
+    background: var(--lightblue) !important;
     color: var(--darkblue);
     padding: 4px 8px;
     border: none;
+}
+
+.character-creator .tab.traits .items-list .items-header .item-name,
+.character-creator .tab.traits .items-list .items-header .item-cost,
+.character-creator .tab.traits .items-list .items-header .item-controls {
+    font-size: 1em;
 }
 
 .character-creator .tab.traits .items-list .item-name {

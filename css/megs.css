@@ -1209,7 +1209,7 @@ details summary.no-arrow {
 }
 
 .character-creator .tab.traits .items-list .items-header {
-    background: var(--lightblue) !important;
+    background: #ddebf6 !important;
     color: var(--darkblue) !important;
     padding: 4px 8px;
     border: none !important;

@@ -244,7 +244,10 @@ export class MEGSActor extends Actor {
             attributesCost += MEGS.getAPCost(attributes.spirit?.value ?? 0, 6) || 0; // SPIRIT is FC 6
         }
 
-        // Calculate HP spent on items (powers, skills, advantages, wealth)
+        // Calculate HP spent on wealth (FC 2)
+        const wealthCost = MEGS.getAPCost(this.system.wealth ?? 0, 2) || 0;
+
+        // Calculate HP spent on items (powers, skills, advantages)
         let itemsCost = 0;
         let powersCost = 0;
         let skillsCost = 0;
@@ -278,12 +281,13 @@ export class MEGSActor extends Actor {
 
         // Calculate totals
         const totalBudget = baseBudget + drawbacksValue;
-        const totalSpent = attributesCost + itemsCost;
+        const totalSpent = attributesCost + wealthCost + itemsCost;
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation
         console.log('HP Budget Calculation:', {
             attributesCost,
+            wealthCost,
             itemsCost,
             totalSpent,
             baseBudget,
@@ -298,6 +302,7 @@ export class MEGSActor extends Actor {
             drawbacks: drawbacksValue,
             total: totalBudget,
             attributesCost: attributesCost,
+            wealthCost: wealthCost,
             powersCost: powersCost,
             skillsCost: skillsCost,
             advantagesCost: advantagesCost,

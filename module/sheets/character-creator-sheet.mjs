@@ -47,6 +47,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         const allItems = Array.from(this.actor.items);
         context.items = allItems;
 
+        // Provide wealth data from CONFIG
+        context.wealthData = CONFIG.wealth;
+
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 
@@ -184,6 +187,32 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                 icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
                 skillRow.data('expanded', true);
             }
+        });
+
+        // Wealth inflation adjustment checkbox
+        html.on('change', '.wealth-inflation-checkbox', async (ev) => {
+            const isChecked = ev.currentTarget.checked;
+            await this.actor.update({ 'system.wealthAdjustForInflation': isChecked });
+
+            // Enable/disable the year dropdown
+            const yearSelect = html.find('.wealth-year-select');
+            yearSelect.prop('disabled', !isChecked);
+
+            this.render(false);
+        });
+
+        // Wealth year selection
+        html.on('change', '.wealth-year-select', async (ev) => {
+            const selectedYear = ev.currentTarget.value;
+            await this.actor.update({ 'system.wealthYear': selectedYear });
+            this.render(false);
+        });
+
+        // Wealth radio button selection
+        html.on('change', '.wealth-radio', async (ev) => {
+            const selectedAP = parseInt(ev.currentTarget.value);
+            await this.actor.update({ 'system.wealth': selectedAP });
+            this.render(false);
         });
 
         // Restore accordion state after render

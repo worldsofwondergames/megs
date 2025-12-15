@@ -328,6 +328,62 @@ Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
     return subskills;
 });
 
+Handlebars.registerHelper('skillHasSubskillsWithAPs', function (skillId, items) {
+    // Check if this skill has any subskills with APs > 0
+    if (!items) return false;
+
+    return items.some(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skillId &&
+        (item.system.aps || 0) > 0
+    );
+});
+
+Handlebars.registerHelper('subskillParentHasAPs', function (subskill, items) {
+    // Check if this subskill's parent skill has APs > 0
+    if (!items || !subskill.system.parent) return false;
+
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    return parentSkill && (parentSkill.system.aps || 0) > 0;
+});
+
+Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
+    // Calculate reduced Factor Cost for independently purchased subskill
+    // FC = Skill's base FC - (number of unused subskills)
+    if (!items || !subskill.system.parent) return subskill.system.factorCost || 0;
+
+    // Find parent skill
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    if (!parentSkill) return subskill.system.factorCost || 0;
+
+    // Count total subskills for this skill
+    const totalSubskills = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === parentSkill._id
+    ).length;
+
+    // Count how many subskills have 0 APs (unused)
+    const unusedSubskills = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === parentSkill._id &&
+        (item.system.aps || 0) === 0
+    ).length;
+
+    // Reduced FC = Parent Skill FC - unused subskills
+    const baseFc = parentSkill.system.factorCost || 0;
+    const reducedFc = Math.max(1, baseFc - unusedSubskills);
+
+    return reducedFc;
+});
+
 Handlebars.registerHelper('formatSigned', function (number) {
     // Format a number with a sign (+ or -)
     const num = Number(number) || 0;

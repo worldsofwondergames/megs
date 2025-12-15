@@ -282,11 +282,17 @@
                             {{getEffectiveFactorCost item ../items}}
                         </div>
                         <div class='item-aps'>
-                            <div class="quantity skill-input">
-                                <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
-                                <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-                                <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
-                            </div>
+                            {{#if (skillHasSubskillsWithAPs item._id ../items)}}
+                                {{!-- Skill is locked because subskills have APs --}}
+                                <span class="aps-locked">0</span>
+                            {{else}}
+                                {{!-- Skill is editable --}}
+                                <div class="quantity skill-input">
+                                    <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+                                    <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
+                                    <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+                                </div>
+                            {{/if}}
                         </div>
                         <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
                             {{item.system.totalCost}}
@@ -302,15 +308,21 @@
                             <div class='item-base-cost'>
                                 {{subskill.system.baseCost}}
                             </div>
-                            <div class='item-factor-cost factor-cost-calculated' title='{{getFactorCostTooltip subskill ../items}}'>
-                                {{getEffectiveFactorCost subskill ../items}}
+                            <div class='item-factor-cost factor-cost-calculated' title='Reduced FC: {{getSubskillReducedFC subskill ../items}}'>
+                                {{getSubskillReducedFC subskill ../items}}
                             </div>
                             <div class='item-aps'>
-                                <div class="quantity skill-input">
-                                    <button class="ap-minus" aria-label="Decrease" data-item-id="{{subskill._id}}">&minus;</button>
-                                    <input id="subskill-aps-{{subskill._id}}" name="system.aps" type="number" class="input-box" value="{{subskill.system.aps}}" min="0" data-dtype="Number" readonly />
-                                    <button class="ap-plus" aria-label="Increase" data-item-id="{{subskill._id}}">&plus;</button>
-                                </div>
+                                {{#if (subskillParentHasAPs subskill ../items)}}
+                                    {{!-- Parent skill has APs, subskill is locked --}}
+                                    <span class="aps-locked">&mdash;</span>
+                                {{else}}
+                                    {{!-- Parent skill has 0 APs, subskill is editable --}}
+                                    <div class="quantity skill-input">
+                                        <button class="ap-minus" aria-label="Decrease" data-item-id="{{subskill._id}}">&minus;</button>
+                                        <input id="subskill-aps-{{subskill._id}}" name="system.aps" type="number" class="input-box" value="{{subskill.system.aps}}" min="0" data-dtype="Number" readonly />
+                                        <button class="ap-plus" aria-label="Increase" data-item-id="{{subskill._id}}">&plus;</button>
+                                    </div>
+                                {{/if}}
                             </div>
                             <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip subskill ../items}}'>
                                 {{subskill.system.totalCost}}

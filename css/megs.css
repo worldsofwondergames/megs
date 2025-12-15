@@ -1152,6 +1152,25 @@ details summary.no-arrow {
     font-size: 1.25em;
 }
 
+/* Character Creator Skills Summary */
+.megs .skills-summary {
+    margin-bottom: 10px;
+}
+
+.megs .skills-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.megs .skills-summary .summary-row .summary-label,
+.megs .skills-summary .summary-row .summary-value {
+    font-size: 1.25em;
+}
+
 /* Character Creator Powers List */
 .megs .item-base-cost,
 .megs .item-factor-cost {

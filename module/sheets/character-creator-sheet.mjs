@@ -194,36 +194,39 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
 
         // Wealth inflation adjustment checkbox
         html.on('change', '.wealth-inflation-checkbox', async (ev) => {
+            ev.preventDefault();
             const isChecked = ev.currentTarget.checked;
+
+            // Store current wealth selection to restore after render
+            const currentWealth = this.actor.system.wealth;
 
             // If unchecking, reset year to 1990
             if (!isChecked) {
                 await this.actor.update({
                     'system.wealthAdjustForInflation': false,
-                    'system.wealthYear': 1990
+                    'system.wealthYear': 1990,
+                    'system.wealth': currentWealth  // Preserve wealth selection
                 });
             } else {
-                await this.actor.update({ 'system.wealthAdjustForInflation': true });
-            }
-
-            // Update the table values dynamically without full render
-            this._updateWealthTableValues(html);
-
-            // Toggle dropdown disabled state
-            const yearSelect = html.find('.wealth-year-select');
-            yearSelect.prop('disabled', !isChecked);
-            if (!isChecked) {
-                yearSelect.val(1990);
+                await this.actor.update({
+                    'system.wealthAdjustForInflation': true,
+                    'system.wealth': currentWealth  // Preserve wealth selection
+                });
             }
         });
 
         // Wealth year selection
         html.on('change', '.wealth-year-select', async (ev) => {
+            ev.preventDefault();
             const selectedYear = parseInt(ev.currentTarget.value);
-            await this.actor.update({ 'system.wealthYear': selectedYear });
 
-            // Update the table values dynamically without full render
-            this._updateWealthTableValues(html);
+            // Store current wealth selection to restore after render
+            const currentWealth = this.actor.system.wealth;
+
+            await this.actor.update({
+                'system.wealthYear': selectedYear,
+                'system.wealth': currentWealth  // Preserve wealth selection
+            });
         });
 
         // Wealth radio button selection

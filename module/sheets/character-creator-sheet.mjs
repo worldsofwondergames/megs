@@ -192,7 +192,16 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Wealth inflation adjustment checkbox
         html.on('change', '.wealth-inflation-checkbox', async (ev) => {
             const isChecked = ev.currentTarget.checked;
-            await this.actor.update({ 'system.wealthAdjustForInflation': isChecked });
+
+            // If unchecking, reset year to 1990
+            if (!isChecked) {
+                await this.actor.update({
+                    'system.wealthAdjustForInflation': false,
+                    'system.wealthYear': 1990
+                });
+            } else {
+                await this.actor.update({ 'system.wealthAdjustForInflation': true });
+            }
 
             // Enable/disable the year dropdown
             const yearSelect = html.find('.wealth-year-select');

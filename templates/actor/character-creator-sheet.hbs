@@ -392,9 +392,58 @@
             <p>Gadgets coming soon...</p>
         </div>
 
-        {{!-- Wealth Tab (Placeholder) --}}
+        {{!-- Wealth Tab --}}
         <div class="tab wealth" data-group="primary" data-tab="wealth">
-            <p>Wealth selection coming soon...</p>
+
+            {{!-- Wealth Cost Summary --}}
+            <section class="wealth-cost-summary">
+                <div class="summary-row">
+                    <label class="summary-label">Total Wealth Cost:</label>
+                    <span class="summary-value">{{system.heroPointBudget.wealthCost}} HP</span>
+                </div>
+            </section>
+
+            {{!-- Wealth Inflation Controls --}}
+            <section class="wealth-summary">
+                <div class="summary-row">
+                    <div class="inflation-controls">
+                        <input type="checkbox" name="system.wealthAdjustForInflation" {{checked system.wealthAdjustForInflation}} class="wealth-inflation-checkbox" />
+                        <label>Do you want to adjust for inflation?</label>
+                        <select name="system.wealthYear" class="wealth-year-select" {{#unless system.wealthAdjustForInflation}}disabled{{/unless}}>
+                            {{#each wealthData.adjusted_years as |year|}}
+                                <option value="{{year}}" {{#if (eq year ../system.wealthYear)}}selected{{/if}}>{{year}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            {{!-- Wealth Table --}}
+            <div class="wealth-table-wrapper">
+                <table class="wealth-table">
+                    <thead>
+                        <tr>
+                            <th class="wealth-select-col">Select</th>
+                            <th class="wealth-ap-col">AP</th>
+                            <th class="wealth-value-col">Wealth</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each wealthData.wealth_table as |row|}}
+                            <tr class="wealth-row">
+                                <td class="wealth-select-col">
+                                    <input type="radio" name="system.wealth" value="{{row.ap}}" {{checked (eq row.ap ../system.wealth)}} class="wealth-radio" data-ap="{{row.ap}}" />
+                                </td>
+                                <td class="wealth-ap-col">{{row.ap}}</td>
+                                <td class="wealth-value-col" data-ap="{{row.ap}}">
+                                    ${{lookup row ../system.wealthYear}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
     </section>

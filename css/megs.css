@@ -1210,15 +1210,13 @@ details summary.no-arrow {
 
 .character-creator .tab.traits .items-list .items-header {
     background: var(--lightblue) !important;
-    color: var(--darkblue);
+    color: var(--darkblue) !important;
     padding: 4px 8px;
-    border: none;
+    border: none !important;
 }
 
-.character-creator .tab.traits .items-list .items-header .item-name,
-.character-creator .tab.traits .items-list .items-header .item-cost,
-.character-creator .tab.traits .items-list .items-header .item-controls {
-    font-size: 1em;
+.character-creator .tab.traits .items-list .items-header > * {
+    font-size: 20px !important;
 }
 
 .character-creator .tab.traits .items-list .item-name {

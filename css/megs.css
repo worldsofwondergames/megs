@@ -1195,12 +1195,23 @@ details summary.no-arrow {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--darkblue);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 3px;
+    margin-bottom: 5px;
 }
 
 .character-creator .tab.traits .grid-2col-header .header-cost {
     font-size: 0.85em;
     font-weight: normal;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.character-creator .tab.traits .items-list .items-header {
+    background: var(--lightblue);
+    color: var(--darkblue);
+    padding: 4px 8px;
 }
 
 .character-creator .tab.traits .items-list .item-name {

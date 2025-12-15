@@ -198,7 +198,8 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             const isChecked = ev.currentTarget.checked;
 
             // Store current wealth selection to restore after render
-            const currentWealth = this.actor.system.wealth;
+            const currentWealth = this.actor.system.wealth ?? 0;
+            console.log('Checkbox change - current wealth:', currentWealth, 'checked:', isChecked);
 
             // If unchecking, reset year to 1990
             if (!isChecked) {
@@ -213,6 +214,7 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                     'system.wealth': currentWealth  // Preserve wealth selection
                 });
             }
+            console.log('After update - wealth:', this.actor.system.wealth);
         });
 
         // Wealth year selection
@@ -221,12 +223,14 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             const selectedYear = parseInt(ev.currentTarget.value);
 
             // Store current wealth selection to restore after render
-            const currentWealth = this.actor.system.wealth;
+            const currentWealth = this.actor.system.wealth ?? 0;
+            console.log('Year change - current wealth:', currentWealth, 'new year:', selectedYear);
 
             await this.actor.update({
                 'system.wealthYear': selectedYear,
                 'system.wealth': currentWealth  // Preserve wealth selection
             });
+            console.log('After update - wealth:', this.actor.system.wealth);
         });
 
         // Wealth radio button selection

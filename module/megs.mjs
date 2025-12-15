@@ -548,6 +548,12 @@ Handlebars.registerHelper('negate', function (number) {
     return -(Number(number) || 0);
 });
 
+Handlebars.registerHelper('formatNumber', function (number) {
+    // Format a number with comma separators
+    const num = Number(number) || 0;
+    return num.toLocaleString('en-US');
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;

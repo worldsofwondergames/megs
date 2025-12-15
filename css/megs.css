@@ -1357,11 +1357,11 @@ details summary.no-arrow {
 }
 
 /* Character Creator Wealth Tab */
-.megs .wealth-cost-summary {
+.megs .wealth-summary {
     margin-bottom: 10px;
 }
 
-.megs .wealth-cost-summary .summary-row {
+.megs .wealth-summary .summary-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1370,47 +1370,37 @@ details summary.no-arrow {
     border-radius: 3px;
 }
 
-.megs .wealth-cost-summary .summary-row .summary-label,
-.megs .wealth-cost-summary .summary-row .summary-value {
-    font-size: 1.25em;
-}
-
-.megs .wealth-summary {
-    margin-bottom: 10px;
-}
-
-.megs .wealth-summary .summary-row {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-}
-
-.megs .wealth-summary .inflation-controls {
+.megs .wealth-summary .inflation-controls-left {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
 }
 
-.megs .wealth-summary .inflation-controls input[type="checkbox"] {
+.megs .wealth-summary .inflation-controls-left input[type="checkbox"] {
     width: auto;
     margin: 0;
 }
 
-.megs .wealth-summary .inflation-controls label {
+.megs .wealth-summary .inflation-controls-left label {
     margin: 0;
     font-size: 1.1em;
 }
 
-.megs .wealth-summary .inflation-controls select {
+.megs .wealth-summary .inflation-controls-right {
+    display: flex;
+    justify-content: flex-end;
+    flex: 0 0 100px;
+}
+
+.megs .wealth-summary .inflation-controls-right select {
     padding: 4px 8px;
     border-radius: 3px;
     border: 1px solid #ccc;
+    width: 100%;
 }
 
-.megs .wealth-summary .inflation-controls select:disabled {
+.megs .wealth-summary .inflation-controls-right select:disabled {
     background-color: #e9ecef;
     color: #6c757d;
     cursor: not-allowed;
@@ -1454,6 +1444,7 @@ details summary.no-arrow {
     padding: 6px 8px;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
+    font-size: 13px;
 }
 
 .megs .wealth-table .wealth-select-col {
@@ -1462,6 +1453,10 @@ details summary.no-arrow {
 
 .megs .wealth-table .wealth-ap-col {
     width: 60px;
+}
+
+.megs .wealth-table .wealth-cost-col {
+    width: 80px;
 }
 
 .megs .wealth-table .wealth-value-col {

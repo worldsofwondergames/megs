@@ -36,12 +36,32 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Prepare powers for the Powers tab
         context.powers = this.actor.items.filter(i => i.type === 'power');
 
-        // Prepare skills for the Skills tab
-        context.skills = this.actor.items.filter(i => i.type === 'skill');
+        // Prepare skills for the Skills tab with lock states
+        const allItems = Array.from(this.actor.items);
+        context.skills = this.actor.items.filter(i => i.type === 'skill').map(skill => {
+            // Check if any subskill has APs > 0
+            const hasSubskillsWithAPs = allItems.some(item =>
+                item.type === 'subskill' &&
+                item.system.parent === skill._id &&
+                (item.system.aps || 0) > 0
+            );
+
+            return {
+                ...skill,
+                _isLocked: hasSubskillsWithAPs
+            };
+        });
+
+        // Add lock state to subskills
+        allItems.forEach(item => {
+            if (item.type === 'subskill' && item.system.parent) {
+                const parentSkill = allItems.find(i => i.type === 'skill' && i._id === item.system.parent);
+                item._isLocked = parentSkill && (parentSkill.system.aps || 0) > 0;
+            }
+        });
 
         // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
-        // Convert to array for helper compatibility
-        context.items = Array.from(this.actor.items);
+        context.items = allItems;
 
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
@@ -103,25 +123,33 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             li.slideUp(200, () => this.render(false));
         });
 
-        // Power/Skill APs increment
+        // Power/Skill/Subskill APs increment
         html.on('click', '.ap-plus', async (ev) => {
             ev.preventDefault();
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power')) {
+            if (item && (item.type === 'skill' || item.type === 'power' || item.type === 'subskill')) {
                 const newValue = (item.system.aps || 0) + 1;
+
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
                 await item.update({ 'system.aps': newValue });
                 this.render(false);
             }
         });
 
-        // Power/Skill APs decrement
+        // Power/Skill/Subskill APs decrement
         html.on('click', '.ap-minus', async (ev) => {
             ev.preventDefault();
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power') && (item.system.aps || 0) > 0) {
+            if (item && (item.type === 'skill' || item.type === 'power' || item.type === 'subskill') && (item.system.aps || 0) > 0) {
                 const newValue = (item.system.aps || 0) - 1;
+
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
                 await item.update({ 'system.aps': newValue });
                 this.render(false);
             }
@@ -160,6 +188,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
                 skillRow.data('expanded', true);
             }
         });
+
+        // Restore accordion state after render
+        this._restoreAccordionState(html);
     }
 
     /**
@@ -253,5 +284,41 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             console.log('MEGS Character Creator: Initializing missing attributes for actor', actor.name);
             await actor.update(updates);
         }
+    }
+
+    /**
+     * Save the current accordion state for skills
+     * @param {jQuery} html
+     * @private
+     */
+    _saveAccordionState(html) {
+        const state = {};
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const isExpanded = $(row).data('expanded');
+            state[skillId] = isExpanded;
+        });
+        this._accordionState = state;
+    }
+
+    /**
+     * Restore the accordion state for skills after render
+     * @param {jQuery} html
+     * @private
+     */
+    _restoreAccordionState(html) {
+        if (!this._accordionState) return;
+
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const wasExpanded = this._accordionState[skillId];
+
+            if (wasExpanded) {
+                // Restore expanded state
+                $(row).data('expanded', true);
+                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
+            }
+        });
     }
 }

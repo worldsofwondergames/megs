@@ -138,6 +138,27 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
 
         // Enable drag-and-drop for Bonuses/Limitations onto Powers
         this._enablePowerRowDropZones(html);
+
+        // Skill accordion toggle
+        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => {
+            ev.preventDefault();
+            const skillRow = $(ev.currentTarget).closest('.skill-row');
+            const skillId = skillRow.data('itemId');
+            const isExpanded = skillRow.data('expanded');
+            const icon = $(ev.currentTarget);
+
+            if (isExpanded) {
+                // Collapse - hide subskills
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
+                icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                skillRow.data('expanded', false);
+            } else {
+                // Expand - show subskills
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
+                icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                skillRow.data('expanded', true);
+            }
+        });
     }
 
     /**

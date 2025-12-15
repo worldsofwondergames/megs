@@ -1218,6 +1218,14 @@ details summary.no-arrow {
 }
 
 /* Character Creator Skills column widths */
+.character-creator .tab.skills .items-list .item-toggle {
+    flex: 0 0 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
 .character-creator .tab.skills .items-list .item-name {
     flex: 2.5;
 }
@@ -1230,4 +1238,15 @@ details summary.no-arrow {
 
 .character-creator .tab.skills .items-list .item-aps {
     flex: 1.15;
+}
+
+/* Skills accordion icon */
+.character-creator .tab.skills .toggle-icon {
+    color: #666;
+    font-size: 0.85em;
+    transition: transform 0.2s ease;
+}
+
+.character-creator .tab.skills .toggle-icon:hover {
+    color: #000;
 }

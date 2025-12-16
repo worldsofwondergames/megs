@@ -179,6 +179,25 @@ export class MEGSItem extends Item {
     }
 
     /**
+     * Get Factor Cost modifier based on Reliability Number
+     * @param {number} reliability - The R# value
+     * @returns {number} Factor Cost modifier
+     * @private
+     */
+    _getReliabilityModifier(reliability) {
+        const reliabilityTable = {
+            0: 3,
+            2: 2,
+            3: 1,
+            5: 0,
+            7: -1,
+            9: -2,
+            11: -3
+        };
+        return reliabilityTable[reliability] ?? 0;
+    }
+
+    /**
      * Augment the basic Item data model with additional dynamic data.
      */
     prepareData() {
@@ -207,18 +226,80 @@ export class MEGSItem extends Item {
             }
         }
 
-        // calculate gadget bonus
-        // TODO cost
+        // Calculate gadget total cost
         if (this.type === MEGS.itemTypes.gadget) {
-            if (itemData.canBeTakenAway) {
-                this.gadgetBonus = 4;
-            } else {
-                this.gadgetBonus = 2;
+            let totalCost = 0;
+
+            // Get Reliability Number modifier for Factor Cost
+            const reliabilityMod = this._getReliabilityModifier(systemData.reliability || 5);
+
+            // Calculate attribute costs
+            if (systemData.attributes) {
+                for (const [key, attr] of Object.entries(systemData.attributes)) {
+                    if (attr.value > 0) {
+                        let fc = attr.factorCost + reliabilityMod;
+
+                        // Italicized attributes (alwaysSubstitute) add +2 FC
+                        if (attr.alwaysSubstitute) {
+                            fc += 2;
+                        }
+
+                        // Hardened Defenses add +2 to BODY FC
+                        if (key === 'body' && systemData.hasHardenedDefenses) {
+                            fc += 2;
+                        }
+
+                        fc = Math.max(1, fc); // Minimum FC of 1
+                        totalCost += MEGS.getAPCost(attr.value, fc) || 0;
+                    }
+                }
             }
+
+            // Calculate AV cost (actionValue) - Base Cost 5, FC 1
+            if (systemData.actionValue > 0) {
+                const fc = Math.max(1, 1 + reliabilityMod);
+                totalCost += 5; // Base cost
+                totalCost += MEGS.getAPCost(systemData.actionValue, fc) || 0;
+            }
+
+            // Calculate EV cost (effectValue) - Base Cost 5, FC 1
+            if (systemData.effectValue > 0) {
+                const fc = Math.max(1, 1 + reliabilityMod);
+                totalCost += 5; // Base cost
+                totalCost += MEGS.getAPCost(systemData.effectValue, fc) || 0;
+            }
+
+            // Calculate Range cost (if exists) - Base Cost 5, FC 1
+            if (systemData.range && systemData.range > 0) {
+                const fc = Math.max(1, 1 + reliabilityMod);
+                totalCost += 5; // Base cost
+                totalCost += MEGS.getAPCost(systemData.range, fc) || 0;
+            }
+
+            // Add child item costs (powers, skills, bonuses, limitations, etc.)
+            if (this.parent && this.parent.items) {
+                this.parent.items.forEach(item => {
+                    if (item.system.parent === this.id && item.system.totalCost) {
+                        if (item.type === MEGS.itemTypes.drawback) {
+                            // Drawbacks subtract from cost
+                            totalCost -= item.system.totalCost;
+                        } else {
+                            // Powers, skills, advantages, bonuses, limitations add to cost
+                            totalCost += item.system.totalCost;
+                        }
+                    }
+                });
+            }
+
+            // Apply Gadget Bonus (divide by 2 if can be Taken Away, 4 if cannot)
+            const gadgetBonus = systemData.canBeTakenAway ? 2 : 4;
+            totalCost = Math.ceil(totalCost / gadgetBonus);
+
+            systemData.totalCost = totalCost;
+            this.totalCost = totalCost;
         }
 
-        // calculate total cost of the item using AP Purchase Chart
-        // TODO gadgets are different
+        // Calculate total cost for powers, skills, advantages, drawbacks
         if (systemData.hasOwnProperty('baseCost')) {
             if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
                 // Check if power/skill is linked to an attribute

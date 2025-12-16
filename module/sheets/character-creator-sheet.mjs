@@ -53,6 +53,11 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Ensure wealth fields are initialized in the database
         await this._ensureWealthInitialized();
 
+        // Ensure wealth is always a number (Foundry form handling can convert to string)
+        if (context.system.wealth !== undefined && context.system.wealth !== null) {
+            context.system.wealth = parseInt(context.system.wealth);
+        }
+
         // Debug: Log wealth value in getData
         console.log('getData - wealth value:', context.system.wealth, 'type:', typeof context.system.wealth);
 

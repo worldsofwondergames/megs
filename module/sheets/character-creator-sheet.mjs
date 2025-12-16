@@ -201,7 +201,7 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             const isChecked = ev.currentTarget.checked;
 
             // Store current wealth selection to restore after render
-            const currentWealth = this.actor.system.wealth ?? 0;
+            const currentWealth = parseInt(this.actor.system.wealth ?? 0);
             console.log('Checkbox change - current wealth:', currentWealth, 'checked:', isChecked);
 
             // If unchecking, reset year to 1990
@@ -226,7 +226,7 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             const selectedYear = parseInt(ev.currentTarget.value);
 
             // Store current wealth selection to restore after render
-            const currentWealth = this.actor.system.wealth ?? 0;
+            const currentWealth = parseInt(this.actor.system.wealth ?? 0);
             console.log('Year change - current wealth:', currentWealth, 'new year:', selectedYear);
 
             await this.actor.update({

@@ -344,15 +344,29 @@ All commits include push:
 git add <files> && git commit -m "message" && git push
 ```
 
-## Completed Tabs
+## Implementation Status
 
-All character creator tabs have been implemented:
+### Completed Features (from MEGS_CHARACTER_CREATION.md plan)
+
+#### Core System Implementation ✓
+1. **AP Purchase Chart** - Implemented in `module/helpers/config.mjs`
+2. **Correct Cost Formula** - `totalCost = baseCost + apCostChart[APs][FC]`
+3. **Budget Tracking** - Hero Point budget display with running totals
+4. **Linking System** - FC reduction by 2, AP cap enforcement, mismatch detection
+5. **Drawbacks Budget Impact** - Drawbacks add HP back to available pool
+
+#### Character Creator Tabs ✓
 - **Attributes Tab**: Increment/decrement controls with individual AP cost display
 - **Powers Tab**: Drag-and-drop, linking, bonuses/limitations, cost calculations
 - **Skills Tab**: Accordion display for subskills with cost tracking
 - **Traits Tab**: Two-column layout for Advantages and Drawbacks
 - **Wealth Tab**: Inflation-adjusted purchasing power (0-21 APs, years 1940-2025)
-- **Gadgets Tab**: Placeholder for future functionality
+
+### Remaining Work
+
+#### Gadgets Tab
+- **Status**: Placeholder only
+- **Needed**: Full functionality for Gadgets tab following Powers/Skills pattern
 
 ## Key Commits
 

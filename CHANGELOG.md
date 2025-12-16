@@ -46,32 +46,6 @@
 - Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis
 
-## 1.0.0 (TBD)
-
-### Enhancements
-
-- Implemented AP Purchase Chart for accurate MEGS character creation costs (issue #27)
-- Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
-- Hero Point budget tracking calculates total HP spent on attributes and items
-- Character creator sheet with comprehensive point-buy character creation
-  - Attributes tab with increment/decrement controls and individual AP cost display
-  - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
-  - Skills tab with accordion display for subskills and cost tracking
-  - Traits tab with two-column layout for Advantages and Drawbacks
-  - Gadgets tab (placeholder for future functionality)
-  - Wealth tab with inflation-adjusted purchasing power
-    - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
-    - Inflation adjustment feature with year selection (1940-2025)
-    - Dollar value display adjusted for selected year using CPI-based multipliers
-    - Wealth cost integrated into Hero Point budget tracking
-
-### Bug Fixes
-
-- Fixed validation in AP cost calculation to handle items without Factor Cost
-- Prevented NaN errors in cost calculations by adding null-safe attribute access
-- Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
-- Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
-
 ## 0.7.0 (December 15, 2025)
 
 ### Enhancements
@@ -103,3 +77,29 @@
 - Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
 - Added test coverage for edge case where roll is exactly on threshold
 - Fixed Dice So Nice integration to display the same dice values shown in chat messages (issue #169)
+
+## 1.0.0 (February 1, 2026)
+
+### Enhancements
+
+- Implemented AP Purchase Chart for accurate MEGS character creation costs (issue #27)
+- Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
+- Hero Point budget tracking calculates total HP spent on attributes and items
+- Character creator sheet with comprehensive point-buy character creation
+    - Attributes tab with increment/decrement controls and individual AP cost display
+    - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
+    - Skills tab with accordion display for subskills and cost tracking
+    - Traits tab with two-column layout for Advantages and Drawbacks
+    - Gadgets tab (placeholder for future functionality)
+    - Wealth tab with inflation-adjusted purchasing power
+        - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
+        - Inflation adjustment feature with year selection (1940-2025)
+        - Dollar value display adjusted for selected year using CPI-based multipliers
+        - Wealth cost integrated into Hero Point budget tracking
+
+### Bug Fixes
+
+- Fixed validation in AP cost calculation to handle items without Factor Cost
+- Prevented NaN errors in cost calculations by adding null-safe attribute access
+- Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
+- Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly

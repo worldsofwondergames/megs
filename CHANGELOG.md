@@ -53,12 +53,17 @@
 - Implemented AP Purchase Chart for accurate MEGS character creation costs (issue #27)
 - Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
 - Hero Point budget tracking calculates total HP spent on attributes and items
-- Character creator sheet with Attributes tab for point-buy character creation
-- Wealth tab in character creator with inflation-adjusted purchasing power
-  - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
-  - Inflation adjustment feature with year selection (1940-2025)
-  - Dollar value display adjusted for selected year using CPI-based multipliers
-  - Wealth cost integrated into Hero Point budget tracking
+- Character creator sheet with comprehensive point-buy character creation
+  - Attributes tab with increment/decrement controls and individual AP cost display
+  - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
+  - Skills tab with accordion display for subskills and cost tracking
+  - Traits tab with two-column layout for Advantages and Drawbacks
+  - Gadgets tab (placeholder for future functionality)
+  - Wealth tab with inflation-adjusted purchasing power
+    - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
+    - Inflation adjustment feature with year selection (1940-2025)
+    - Dollar value display adjusted for selected year using CPI-based multipliers
+    - Wealth cost integrated into Hero Point budget tracking
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)

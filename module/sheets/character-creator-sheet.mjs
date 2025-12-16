@@ -53,9 +53,12 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Ensure wealth fields are initialized in the database
         await this._ensureWealthInitialized();
 
-        // Ensure wealth is always a number (Foundry form handling can convert to string)
+        // Ensure wealth values are always numbers (Foundry form handling can convert to string)
         if (context.system.wealth !== undefined && context.system.wealth !== null) {
             context.system.wealth = parseInt(context.system.wealth);
+        }
+        if (context.system.wealthYear !== undefined && context.system.wealthYear !== null) {
+            context.system.wealthYear = parseInt(context.system.wealthYear);
         }
 
         // Debug: Log wealth value in getData

@@ -1220,6 +1220,10 @@ details summary.no-arrow {
     text-align: center;
 }
 
+.character-creator .tab.gadgets .gadget-cost-tooltip {
+    cursor: pointer;
+}
+
 .character-creator .tab.gadgets .items-list .item-controls {
     flex: 0 0 30px; /* Fixed width just for trash icon */
 }

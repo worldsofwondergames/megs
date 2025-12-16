@@ -427,7 +427,7 @@
                         {{#each wealthData.wealth_table as |row|}}
                             <tr class="wealth-row">
                                 <td class="wealth-select-col">
-                                    <input type="radio" name="system.wealth" value="{{row.ap}}" {{checked (eq row.ap (default ../system.wealth 0))}} class="wealth-radio" data-ap="{{row.ap}}" />
+                                    <input type="radio" name="system.wealth" value="{{row.ap}}" {{checked (eq row.ap (debugLog "wealth value for comparison" (default ../system.wealth 0)))}} class="wealth-radio" data-ap="{{row.ap}}" />
                                 </td>
                                 <td class="wealth-ap-col">{{row.ap}}</td>
                                 <td class="wealth-cost-col">{{getAPCost row.ap 2}}</td>

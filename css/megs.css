@@ -1212,6 +1212,7 @@ details summary.no-arrow {
 /* Character Creator Gadgets Tab Column Widths */
 .character-creator .tab.gadgets .items-list .item-name {
     flex: 1; /* Takes all remaining space */
+    display: block; /* Ensure content flows as inline text */
 }
 
 .character-creator .tab.gadgets .items-list .item-gadget-cost {

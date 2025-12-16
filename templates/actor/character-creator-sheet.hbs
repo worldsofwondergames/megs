@@ -408,7 +408,7 @@
                 {{#each gadgets as |item id|}}
                     <li class='item flexrow item-row' data-item-id='{{item._id}}'>
                         <div class='item-name'>
-                            <span class="gadget-name-line">{{item.name}}&nbsp;</span><span class="gadget-description">({{getGadgetDescription item}})</span>
+                            <strong>{{item.name}}</strong> ({{getGadgetDescription item}})
                         </div>
                         <div class='item-gadget-cost'>
                             {{item.system.totalCost}}

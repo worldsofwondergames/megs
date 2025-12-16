@@ -64,6 +64,18 @@
     - Inflation adjustment feature with year selection (1940-2025)
     - Dollar value display adjusted for selected year using CPI-based multipliers
     - Wealth cost integrated into Hero Point budget tracking
+
+### Bug Fixes
+
+- Fixed validation in AP cost calculation to handle items without Factor Cost
+- Prevented NaN errors in cost calculations by adding null-safe attribute access
+- Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
+- Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
+
+## 0.7.0 (December 15, 2025)
+
+### Enhancements
+
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)
@@ -91,7 +103,3 @@
 - Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
 - Added test coverage for edge case where roll is exactly on threshold
 - Fixed Dice So Nice integration to display the same dice values shown in chat messages (issue #169)
-- Fixed validation in AP cost calculation to handle items without Factor Cost
-- Prevented NaN errors in cost calculations by adding null-safe attribute access
-- Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
-- Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly

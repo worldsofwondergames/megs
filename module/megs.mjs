@@ -774,6 +774,118 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
     return description;
 });
 
+Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
+    if (!gadget || !gadget.system) return '';
+
+    const systemData = gadget.system;
+    let tooltip = '';
+    let totalBeforeBonus = 0;
+
+    // Helper function to get reliability modifier
+    const getReliabilityMod = (reliability) => {
+        const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
+        return table[reliability] ?? 0;
+    };
+
+    const reliabilityMod = getReliabilityMod(systemData.reliability || 5);
+
+    // Calculate attribute costs
+    let attributesCost = 0;
+    if (systemData.attributes) {
+        for (const [key, attr] of Object.entries(systemData.attributes)) {
+            if (attr.value > 0) {
+                let fc = attr.factorCost + reliabilityMod;
+                if (attr.alwaysSubstitute) fc += 2;
+                if (key === 'body' && systemData.hasHardenedDefenses) fc += 2;
+                fc = Math.max(1, fc);
+                attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
+            }
+        }
+    }
+    if (attributesCost > 0) {
+        tooltip += 'Attributes: ' + attributesCost + '\\n';
+        totalBeforeBonus += attributesCost;
+    }
+
+    // Calculate AV cost
+    if (systemData.actionValue > 0) {
+        const fc = Math.max(1, 1 + reliabilityMod);
+        const avCost = 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
+        tooltip += 'AV: ' + avCost + '\\n';
+        totalBeforeBonus += avCost;
+    }
+
+    // Calculate EV cost
+    if (systemData.effectValue > 0) {
+        const fc = Math.max(1, 1 + reliabilityMod);
+        const evCost = 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
+        tooltip += 'EV: ' + evCost + '\\n';
+        totalBeforeBonus += evCost;
+    }
+
+    // Calculate Range cost
+    if (systemData.range && systemData.range > 0) {
+        const fc = Math.max(1, 1 + reliabilityMod);
+        const rangeCost = 5 + (MEGS.getAPCost(systemData.range, fc) || 0);
+        tooltip += 'Range: ' + rangeCost + '\\n';
+        totalBeforeBonus += rangeCost;
+    }
+
+    // Add child item costs
+    const owner = game.actors.get(gadget.ownerId);
+    if (owner && owner.items) {
+        let powersCost = 0;
+        let skillsCost = 0;
+        let advantagesCost = 0;
+        let drawbacksCost = 0;
+
+        owner.items.forEach(item => {
+            if (item.system.parent === gadget._id && item.system.totalCost) {
+                if (item.type === MEGS.itemTypes.power) {
+                    powersCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.skill) {
+                    skillsCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.advantage) {
+                    advantagesCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.drawback) {
+                    drawbacksCost += item.system.totalCost;
+                }
+            }
+        });
+
+        if (powersCost > 0) {
+            tooltip += 'Powers: ' + powersCost + '\\n';
+            totalBeforeBonus += powersCost;
+        }
+        if (skillsCost > 0) {
+            tooltip += 'Skills: ' + skillsCost + '\\n';
+            totalBeforeBonus += skillsCost;
+        }
+        if (advantagesCost > 0) {
+            tooltip += 'Advantages: ' + advantagesCost + '\\n';
+            totalBeforeBonus += advantagesCost;
+        }
+        if (drawbacksCost > 0) {
+            tooltip += 'Drawbacks: -' + drawbacksCost + '\\n';
+            totalBeforeBonus -= drawbacksCost;
+        }
+    }
+
+    // Add total before bonus
+    tooltip += '---\\n';
+    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\\n';
+
+    // Add gadget bonus
+    const gadgetBonus = systemData.canBeTakenAway ? 2 : 4;
+    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\\n';
+
+    // Add final cost
+    const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
+    tooltip += 'Final Cost: ' + finalCost;
+
+    return tooltip;
+});
+
 Handlebars.registerHelper('shouldShowRow', function (index, hasAttributes, options) {
     if (index < 3 && hasAttributes?.physical) {
         return options.fn(this);

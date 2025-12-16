@@ -243,9 +243,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
 
         // Wealth radio button selection
         html.on('change', '.wealth-radio', async (ev) => {
+            ev.preventDefault();
             const selectedAP = parseInt(ev.currentTarget.value);
             await this.actor.update({ 'system.wealth': selectedAP });
-            this.render(false);
         });
 
         // Restore accordion state after render

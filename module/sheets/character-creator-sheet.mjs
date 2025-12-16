@@ -33,18 +33,18 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
             context.system = this.actor.system;
         }
 
-        // Prepare powers for the Powers tab
-        context.powers = this.actor.items.filter(i => i.type === 'power');
+        // Prepare powers for the Powers tab (exclude powers that belong to gadgets)
+        context.powers = this.actor.items.filter(i => i.type === 'power' && !i.system.parent);
 
-        // Prepare skills for the Skills tab
-        context.skills = this.actor.items.filter(i => i.type === 'skill');
+        // Prepare skills for the Skills tab (exclude skills that belong to gadgets)
+        context.skills = this.actor.items.filter(i => i.type === 'skill' && !i.system.parent);
 
-        // Prepare advantages and drawbacks for the Traits tab
-        context.advantages = this.actor.items.filter(i => i.type === 'advantage');
-        context.drawbacks = this.actor.items.filter(i => i.type === 'drawback');
+        // Prepare advantages and drawbacks for the Traits tab (exclude those that belong to gadgets)
+        context.advantages = this.actor.items.filter(i => i.type === 'advantage' && !i.system.parent);
+        context.drawbacks = this.actor.items.filter(i => i.type === 'drawback' && !i.system.parent);
 
-        // Prepare gadgets for the Gadgets tab
-        context.gadgets = this.actor.items.filter(i => i.type === 'gadget');
+        // Prepare gadgets for the Gadgets tab (exclude sub-gadgets that belong to other gadgets)
+        context.gadgets = this.actor.items.filter(i => i.type === 'gadget' && !i.system.parent);
         // Set ownerId on each gadget so getGadgetDescription can find powers/skills
         context.gadgets.forEach(gadget => {
             gadget.ownerId = this.actor._id;

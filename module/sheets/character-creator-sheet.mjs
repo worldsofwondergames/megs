@@ -43,6 +43,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         context.advantages = this.actor.items.filter(i => i.type === 'advantage');
         context.drawbacks = this.actor.items.filter(i => i.type === 'drawback');
 
+        // Prepare gadgets for the Gadgets tab
+        context.gadgets = this.actor.items.filter(i => i.type === 'gadget');
+
         // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
         const allItems = Array.from(this.actor.items);
         context.items = allItems;

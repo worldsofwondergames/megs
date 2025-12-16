@@ -247,11 +247,12 @@ export class MEGSActor extends Actor {
         // Calculate HP spent on wealth (FC 2)
         const wealthCost = MEGS.getAPCost(this.system.wealth ?? 0, 2) || 0;
 
-        // Calculate HP spent on items (powers, skills, advantages)
+        // Calculate HP spent on items (powers, skills, advantages, gadgets)
         let itemsCost = 0;
         let powersCost = 0;
         let skillsCost = 0;
         let advantagesCost = 0;
+        let gadgetsCost = 0;
         let drawbacksValue = 0;
 
         if (this.items) {
@@ -261,13 +262,15 @@ export class MEGSActor extends Actor {
                         // Drawbacks add HP back to the budget
                         drawbacksValue += item.system.totalCost;
                     } else {
-                        // Track powers, skills, and advantages separately for character creator
+                        // Track powers, skills, advantages, and gadgets separately for character creator
                         if (item.type === MEGS.itemTypes.power) {
                             powersCost += item.system.totalCost;
                         } else if (item.type === MEGS.itemTypes.skill) {
                             skillsCost += item.system.totalCost;
                         } else if (item.type === MEGS.itemTypes.advantage) {
                             advantagesCost += item.system.totalCost;
+                        } else if (item.type === MEGS.itemTypes.gadget) {
+                            gadgetsCost += item.system.totalCost;
                         }
                         // All other items cost HP (excluding subskills which have no cost)
                         if (item.type !== MEGS.itemTypes.subskill) {
@@ -306,6 +309,7 @@ export class MEGSActor extends Actor {
             powersCost: powersCost,
             skillsCost: skillsCost,
             advantagesCost: advantagesCost,
+            gadgetsCost: gadgetsCost,
             itemsCost: itemsCost,
             totalSpent: totalSpent,
             remaining: remaining

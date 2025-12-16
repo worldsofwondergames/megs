@@ -366,7 +366,12 @@ git add <files> && git commit -m "message" && git push
 
 #### Gadgets Tab
 - **Status**: Placeholder only
-- **Needed**: Full functionality for Gadgets tab following Powers/Skills pattern
+- **Design**: Simple drag-and-drop display
+  - Drag gadgets from compendium onto tab
+  - Display gadget name and total cost
+  - Delete icon to remove gadget
+  - No editing or modification allowed (gadgets remain as-is)
+  - Simpler than Powers/Skills tabs - view only
 
 ## Key Commits
 

@@ -402,15 +402,16 @@
             <ol class='items-list'>
                 <li class='item flexrow items-header'>
                     <div class='item-name'>{{localize 'MEGS.Name'}}</div>
-                    <div class='item-total-cost'>{{localize 'MEGS.Total'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-gadget-cost'>{{localize 'MEGS.Cost'}}</div>
                     <div class='item-controls'></div>
                 </li>
                 {{#each gadgets as |item id|}}
                     <li class='item flexrow item-row' data-item-id='{{item._id}}'>
                         <div class='item-name'>
-                            {{item.name}}
+                            <div class="gadget-name-line">{{item.name}}</div>
+                            <div class="gadget-description">{{getGadgetDescription item}}</div>
                         </div>
-                        <div class='item-total-cost'>
+                        <div class='item-gadget-cost'>
                             {{item.system.totalCost}}
                         </div>
                         <div class='item-controls'>

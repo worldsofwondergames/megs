@@ -45,6 +45,10 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
 
         // Prepare gadgets for the Gadgets tab
         context.gadgets = this.actor.items.filter(i => i.type === 'gadget');
+        // Set ownerId on each gadget so getGadgetDescription can find powers/skills
+        context.gadgets.forEach(gadget => {
+            gadget.ownerId = this.actor._id;
+        });
 
         // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
         const allItems = Array.from(this.actor.items);

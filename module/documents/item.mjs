@@ -276,17 +276,22 @@ export class MEGSItem extends Item {
                 totalCost += MEGS.getAPCost(systemData.range, fc) || 0;
             }
 
-            // Add child item costs (powers, skills, bonuses, limitations, etc.)
+            // Add child item costs (only direct children: powers, skills, advantages, drawbacks)
+            // Bonuses, limitations, and subskills are counted as part of their parent item's cost
             if (this.parent && this.parent.items) {
                 this.parent.items.forEach(item => {
                     if (item.system.parent === this.id && item.system.totalCost) {
-                        if (item.type === MEGS.itemTypes.drawback) {
+                        // Only count direct child items, not grandchildren
+                        if (item.type === MEGS.itemTypes.power ||
+                            item.type === MEGS.itemTypes.skill ||
+                            item.type === MEGS.itemTypes.advantage) {
+                            totalCost += item.system.totalCost;
+                        } else if (item.type === MEGS.itemTypes.drawback) {
                             // Drawbacks subtract from cost
                             totalCost -= item.system.totalCost;
-                        } else {
-                            // Powers, skills, advantages, bonuses, limitations add to cost
-                            totalCost += item.system.totalCost;
                         }
+                        // Bonuses, limitations, subskills are NOT counted here
+                        // They're already included in their parent power/skill's totalCost
                     }
                 });
             }

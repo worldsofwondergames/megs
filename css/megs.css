@@ -1190,6 +1190,25 @@ details summary.no-arrow {
     font-size: 1.25em;
 }
 
+/* Character Creator Gadgets Summary */
+.megs .gadgets-summary {
+    margin-bottom: 10px;
+}
+
+.megs .gadgets-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.megs .gadgets-summary .summary-row .summary-label,
+.megs .gadgets-summary .summary-row .summary-value {
+    font-size: 1.25em;
+}
+
 /* Character Creator Traits List */
 .character-creator .tab.traits .grid-2col-header {
     display: flex;

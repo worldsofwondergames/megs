@@ -53,6 +53,9 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         // Ensure wealth fields are initialized in the database
         await this._ensureWealthInitialized();
 
+        // Debug: Log wealth value in getData
+        console.log('getData - wealth value:', context.system.wealth, 'type:', typeof context.system.wealth);
+
         // Check if actor needs attribute initialization and fix it in the database
         await this._ensureAttributesInitialized();
 

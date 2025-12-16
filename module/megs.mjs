@@ -559,6 +559,12 @@ Handlebars.registerHelper('default', function (value, defaultValue) {
     return (value !== undefined && value !== null) ? value : defaultValue;
 });
 
+Handlebars.registerHelper('debugLog', function (label, value) {
+    // Debug helper to log values in templates
+    console.log('Template debug -', label + ':', value, 'type:', typeof value);
+    return value;
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;

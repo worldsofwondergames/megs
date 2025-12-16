@@ -46,7 +46,7 @@
 - Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis
 
-## 0.7.0 (December 15, 2025)
+## 1.0.0 (TBD)
 
 ### Enhancements
 

@@ -1231,8 +1231,6 @@ details summary.no-arrow {
 .character-creator .tab.gadgets .gadget-description {
     font-size: 0.9em;
     color: #666;
-    font-style: italic;
-    margin-top: 2px;
 }
 
 /* Character Creator Traits List */

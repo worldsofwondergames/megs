@@ -54,6 +54,11 @@
 - Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
 - Hero Point budget tracking calculates total HP spent on attributes and items
 - Character creator sheet with Attributes tab for point-buy character creation
+- Wealth tab in character creator with inflation-adjusted purchasing power
+  - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
+  - Inflation adjustment feature with year selection (1940-2025)
+  - Dollar value display adjusted for selected year using CPI-based multipliers
+  - Wealth cost integrated into Hero Point budget tracking
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)
@@ -84,3 +89,4 @@
 - Fixed validation in AP cost calculation to handle items without Factor Cost
 - Prevented NaN errors in cost calculations by adding null-safe attribute access
 - Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
+- Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly

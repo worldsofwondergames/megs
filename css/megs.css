@@ -1228,11 +1228,6 @@ details summary.no-arrow {
     font-weight: bold;
 }
 
-.character-creator .tab.gadgets .gadget-description {
-    font-size: 0.9em;
-    color: #666;
-}
-
 /* Character Creator Traits List */
 .character-creator .tab.traits .grid-2col-header {
     display: flex;

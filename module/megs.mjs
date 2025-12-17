@@ -790,6 +790,9 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     const reliability = systemData.reliability ?? 5; // Use nullish coalescing to allow 0
     const reliabilityMod = getReliabilityMod(reliability);
 
+    // Debug: Show what reliability value we're reading
+    tooltip += `[DEBUG] R#: ${systemData.reliability}, Mod: ${reliabilityMod}\\n`;
+
     // Calculate attribute costs
     let attributesCost = 0;
     if (systemData.attributes) {
@@ -811,8 +814,9 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     // Calculate AV cost
     if (systemData.actionValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
-        const avCost = 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
-        tooltip += 'AV: ' + avCost + '\\n';
+        const chartCost = MEGS.getAPCost(systemData.actionValue, fc) || 0;
+        const avCost = 5 + chartCost;
+        tooltip += `AV: ${avCost} (${systemData.actionValue} APs @ FC ${fc} = ${chartCost})\\n`;
         totalBeforeBonus += avCost;
     }
 

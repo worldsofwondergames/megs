@@ -797,6 +797,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
 
     // Calculate attribute costs
     let attributesCost = 0;
+    let attrDetails = [];
     if (systemData.attributes) {
         for (const [key, attr] of Object.entries(systemData.attributes)) {
             if (attr.value > 0) {
@@ -804,12 +805,14 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
                 if (attr.alwaysSubstitute) fc += 2;
                 if (key === 'body' && systemData.hasHardenedDefenses) fc += 2;
                 fc = Math.max(1, fc);
-                attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
+                const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
+                attributesCost += attrCost;
+                attrDetails.push(`${key.toUpperCase()}: ${attr.value} @ FC${fc}=${attrCost}`);
             }
         }
     }
     if (attributesCost > 0) {
-        tooltip += 'Attributes: ' + attributesCost + '\\n';
+        tooltip += 'Attributes: ' + attributesCost + ' (' + attrDetails.join(', ') + ')\\n';
         totalBeforeBonus += attributesCost;
     }
 

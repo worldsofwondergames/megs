@@ -875,8 +875,8 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     tooltip += '---\\n';
     tooltip += 'Total before bonus: ' + totalBeforeBonus + '\\n';
 
-    // Add gadget bonus
-    const gadgetBonus = systemData.canBeTakenAway ? 2 : 4;
+    // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
+    const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
     tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\\n';
 
     // Add final cost

@@ -787,7 +787,8 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         return table[reliability] ?? 0;
     };
 
-    const reliabilityMod = getReliabilityMod(systemData.reliability || 5);
+    const reliability = systemData.reliability ?? 5; // Use nullish coalescing to allow 0
+    const reliabilityMod = getReliabilityMod(reliability);
 
     // Calculate attribute costs
     let attributesCost = 0;

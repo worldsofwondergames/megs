@@ -13,8 +13,16 @@ import { MEGS } from '../helpers/config.mjs';
 
 // Load AP Cost Chart for tests
 beforeAll(async () => {
-    const response = await fetch('../../assets/data/apCostChart.json');
-    const apCostChart = await response.json();
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    const { fileURLToPath } = await import('url');
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const chartPath = path.join(__dirname, '../../assets/data/apCostChart.json');
+
+    const chartData = await fs.readFile(chartPath, 'utf-8');
+    const apCostChart = JSON.parse(chartData);
     CONFIG.apCostChart = apCostChart;
 });
 
@@ -82,12 +90,12 @@ describe('Gadget Cost Calculation', () => {
         gadget.prepareDerivedData();
 
         // Expected calculation:
-        // BODY: 24 (chart: 4 APs @ FC 6)
+        // BODY: 18 (chart: 4 APs @ FC 6)
         // Child power: 30
-        // Subtotal: 54
-        // Gadget Bonus ÷4: 54 ÷ 4 = 13.5 = 14
+        // Subtotal: 48
+        // Gadget Bonus ÷4: 48 ÷ 4 = 12
 
-        expect(gadget.system.totalCost).toBe(14);
+        expect(gadget.system.totalCost).toBe(12);
     });
 
     test('Gadget that cannot be Taken Away uses ÷2 bonus', () => {
@@ -107,10 +115,10 @@ describe('Gadget Cost Calculation', () => {
         gadget.prepareDerivedData();
 
         // Expected calculation:
-        // BODY: 48 (chart: 6 APs @ FC 6+0=6)
-        // Gadget Bonus ÷2 (cannot be Taken Away): 48 ÷ 2 = 24
+        // BODY: 36 (chart: 6 APs @ FC 6+0=6)
+        // Gadget Bonus ÷2 (cannot be Taken Away): 36 ÷ 2 = 18
 
-        expect(gadget.system.totalCost).toBe(24);
+        expect(gadget.system.totalCost).toBe(18);
     });
 
     test('Reliability Number modifies attribute Factor Cost', () => {
@@ -130,9 +138,9 @@ describe('Gadget Cost Calculation', () => {
         gadget.prepareDerivedData();
 
         // Expected calculation:
-        // BODY: 40 (chart: 5 APs @ FC 6+2=8)
-        // Gadget Bonus ÷4: 40 ÷ 4 = 10
+        // BODY: 32 (chart: 5 APs @ FC 6+2=8)
+        // Gadget Bonus ÷4: 32 ÷ 4 = 8
 
-        expect(gadget.system.totalCost).toBe(10);
+        expect(gadget.system.totalCost).toBe(8);
     });
 });

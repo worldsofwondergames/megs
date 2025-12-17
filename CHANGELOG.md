@@ -116,7 +116,3 @@
 - Prevented NaN errors in cost calculations by adding null-safe attribute access
 - Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
 - Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
-- Fixed gadget cost calculation to use correct Gadget Bonus divisors (was reversed)
-- Fixed child items (powers, skills belonging to gadgets) from appearing in character creator tabs
-- Fixed gadget description to display child powers and skills by setting ownerId property
-- Prevented grandchild items from being counted directly in gadget cost (counted through parent item only)

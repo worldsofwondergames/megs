@@ -231,7 +231,9 @@ export class MEGSItem extends Item {
             let totalCost = 0;
 
             // Get Reliability Number modifier for Factor Cost
-            const reliability = systemData.reliability ?? 5; // Use nullish coalescing to allow 0
+            // reliability is stored as an index into CONFIG.reliabilityScores array
+            const reliabilityIndex = systemData.reliability ?? 3; // Default to index 3 (R# 5)
+            const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
             const reliabilityMod = this._getReliabilityModifier(reliability);
 
             // Calculate attribute costs

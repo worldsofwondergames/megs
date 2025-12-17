@@ -764,7 +764,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
     }
 
     // reliability
-    if (gadget.system.reliability > 0) {
+    if (gadget.system.reliability != null && gadget.system.reliability !== '') {
         if (description) {
             description += ', ';
         }
@@ -787,11 +787,13 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         return table[reliability] ?? 0;
     };
 
-    const reliability = systemData.reliability ?? 5; // Use nullish coalescing to allow 0
+    // reliability is stored as an index into CONFIG.reliabilityScores array
+    const reliabilityIndex = systemData.reliability ?? 3; // Default to index 3 (R# 5)
+    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
     const reliabilityMod = getReliabilityMod(reliability);
 
     // Debug: Show what reliability value we're reading
-    tooltip += `[DEBUG] R#: ${systemData.reliability}, Mod: ${reliabilityMod}\\n`;
+    tooltip += `[DEBUG] Index: ${systemData.reliability}, R#: ${reliability}, Mod: ${reliabilityMod}\\n`;
 
     // Calculate attribute costs
     let attributesCost = 0;

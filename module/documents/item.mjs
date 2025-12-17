@@ -253,7 +253,7 @@ export class MEGSItem extends Item {
                         }
 
                         // Hardened Defenses add +2 to BODY FC
-                        if (key === 'body' && systemData.hasHardenedDefenses) {
+                        if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                             fc += 2;
                             console.log(`    +2 for Hardened Defenses → FC=${fc}`);
                         }

@@ -270,10 +270,12 @@ export class MEGSItem extends Item {
             }
 
             // Calculate Range cost (if exists) - Base Cost 5, FC 1
-            if (systemData.range && systemData.range > 0) {
+            // Check both systemData.range and systemData.weapon.range for compatibility
+            const rangeValue = systemData.range || systemData.weapon?.range || 0;
+            if (rangeValue > 0) {
                 const fc = Math.max(1, 1 + reliabilityMod);
                 totalCost += 5; // Base cost
-                totalCost += MEGS.getAPCost(systemData.range, fc) || 0;
+                totalCost += MEGS.getAPCost(rangeValue, fc) || 0;
             }
 
             // Add child item costs (only direct children: powers, skills, advantages, drawbacks)
@@ -303,9 +305,8 @@ export class MEGSItem extends Item {
             systemData.totalCost = totalCost;
             this.totalCost = totalCost;
         }
-
-        // Calculate total cost for powers, skills, advantages, drawbacks
-        if (systemData.hasOwnProperty('baseCost')) {
+        // Calculate total cost for powers, skills, advantages, drawbacks (but not gadgets)
+        else if (systemData.hasOwnProperty('baseCost')) {
             if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)

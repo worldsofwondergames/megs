@@ -12,10 +12,39 @@ global.fail = fail;
 /**
  * Item
  */
-const Item = jest
-    .fn()
-    .mockImplementation(() => {})
-    .mockName('Item');
+class Item {
+    constructor(data, context) {
+        if (data) {
+            Object.assign(this, data);
+            // Ensure system property is set
+            if (data.system) {
+                this.system = data.system;
+            }
+        }
+        this._id = data?._id || 'test-item-id';
+        this.type = data?.type || 'power';
+        this.name = data?.name || 'Test Item';
+        this.img = data?.img || '';
+        this.parent = null;
+    }
+
+    // Foundry uses 'id' as a getter for '_id'
+    get id() {
+        return this._id;
+    }
+
+    prepareData() {
+        this.prepareDerivedData();
+    }
+
+    prepareDerivedData() {
+        // Override in subclass
+    }
+
+    getRollData() {
+        return { ...this.system };
+    }
+}
 global.Item = Item;
 
 /**

@@ -823,10 +823,11 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         totalBeforeBonus += evCost;
     }
 
-    // Calculate Range cost
-    if (systemData.range && systemData.range > 0) {
+    // Calculate Range cost (check both systemData.range and systemData.weapon.range)
+    const rangeValue = systemData.range || systemData.weapon?.range || 0;
+    if (rangeValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
-        const rangeCost = 5 + (MEGS.getAPCost(systemData.range, fc) || 0);
+        const rangeCost = 5 + (MEGS.getAPCost(rangeValue, fc) || 0);
         tooltip += 'Range: ' + rangeCost + '\\n';
         totalBeforeBonus += rangeCost;
     }

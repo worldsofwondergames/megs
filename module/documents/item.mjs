@@ -296,8 +296,8 @@ export class MEGSItem extends Item {
                 });
             }
 
-            // Apply Gadget Bonus (divide by 2 if can be Taken Away, 4 if cannot)
-            const gadgetBonus = systemData.canBeTakenAway ? 2 : 4;
+            // Apply Gadget Bonus (divide by 4 if can be Taken Away, 2 if cannot)
+            const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
             totalCost = Math.ceil(totalCost / gadgetBonus);
 
             systemData.totalCost = totalCost;

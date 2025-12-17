@@ -806,7 +806,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
                     fc += 2;
                     console.log(`    +2 for alwaysSubstitute`);
                 }
-                if (key === 'body' && systemData.hasHardenedDefenses) {
+                if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                     fc += 2;
                     console.log(`    +2 for Hardened Defenses`);
                 }

@@ -236,24 +236,32 @@ export class MEGSItem extends Item {
             const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
             const reliabilityMod = this._getReliabilityModifier(reliability);
 
+            console.log(`[${this.name}] Cost Calculation - Reliability Index: ${reliabilityIndex}, R#: ${reliability}, Mod: ${reliabilityMod}`);
+
             // Calculate attribute costs
             if (systemData.attributes) {
                 for (const [key, attr] of Object.entries(systemData.attributes)) {
                     if (attr.value > 0) {
+                        console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
                         let fc = attr.factorCost + reliabilityMod;
+                        console.log(`    After reliability mod: FC=${fc}`);
 
                         // Italicized attributes (alwaysSubstitute) add +2 FC
                         if (attr.alwaysSubstitute) {
                             fc += 2;
+                            console.log(`    +2 for alwaysSubstitute → FC=${fc}`);
                         }
 
                         // Hardened Defenses add +2 to BODY FC
                         if (key === 'body' && systemData.hasHardenedDefenses) {
                             fc += 2;
+                            console.log(`    +2 for Hardened Defenses → FC=${fc}`);
                         }
 
                         fc = Math.max(1, fc); // Minimum FC of 1
-                        totalCost += MEGS.getAPCost(attr.value, fc) || 0;
+                        const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
+                        console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
+                        totalCost += attrCost;
                     }
                 }
             }
@@ -303,7 +311,10 @@ export class MEGSItem extends Item {
 
             // Apply Gadget Bonus (divide by 4 if can be Taken Away, 2 if cannot)
             const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
+            console.log(`  Subtotal: ${totalCost} HP`);
+            console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
             totalCost = Math.ceil(totalCost / gadgetBonus);
+            console.log(`  Final Cost: ${totalCost} HP`);
 
             systemData.totalCost = totalCost;
             this.totalCost = totalCost;

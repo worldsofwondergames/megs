@@ -90,12 +90,25 @@
     - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
     - Skills tab with accordion display for subskills and cost tracking
     - Traits tab with two-column layout for Advantages and Drawbacks
-    - Gadgets tab (placeholder for future functionality)
+    - Gadgets tab with drag-and-drop support and automatic cost calculation
+        - Display gadget name with attribute/power/skill summary
+        - Automatic cost calculation following MEGS rules including Reliability Number modifiers
+        - Cost breakdown tooltip showing attributes, AV/EV/Range, child items, and Gadget Bonus
+        - Child items (powers, skills, advantages) only displayed under parent gadget
     - Wealth tab with inflation-adjusted purchasing power
         - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
         - Inflation adjustment feature with year selection (1940-2025)
         - Dollar value display adjusted for selected year using CPI-based multipliers
         - Wealth cost integrated into Hero Point budget tracking
+- Gadget cost calculation implements complete MEGS rules
+    - Reliability Number modifies Factor Cost for all abilities
+    - AV/EV/Range have Base Cost 5 and Factor Cost 1 (modified by R#)
+    - Attributes have Base Cost 0, Factor Cost from template (modified by R#)
+    - Italicized attributes add +2 to Factor Cost
+    - Hardened Defenses add +2 to BODY Factor Cost
+    - Child items (powers, skills, advantages, drawbacks) included in total
+    - Gadget Bonus correctly applied: ÷4 if can be Taken Away, ÷2 if cannot
+- Test coverage for gadget cost calculations including rulebook example (Machinegun)
 
 ### Bug Fixes
 
@@ -103,3 +116,7 @@
 - Prevented NaN errors in cost calculations by adding null-safe attribute access
 - Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
 - Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
+- Fixed gadget cost calculation to use correct Gadget Bonus divisors (was reversed)
+- Fixed child items (powers, skills belonging to gadgets) from appearing in character creator tabs
+- Fixed gadget description to display child powers and skills by setting ownerId property
+- Prevented grandchild items from being counted directly in gadget cost (counted through parent item only)

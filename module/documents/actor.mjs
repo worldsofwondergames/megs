@@ -263,17 +263,19 @@ export class MEGSActor extends Actor {
                         drawbacksValue += item.system.totalCost;
                     } else {
                         // Track powers, skills, advantages, and gadgets separately for character creator
-                        if (item.type === MEGS.itemTypes.power) {
+                        // Only count items that don't have a parent (child items are counted in their parent's cost)
+                        if (item.type === MEGS.itemTypes.power && !item.system.parent) {
                             powersCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.skill) {
+                        } else if (item.type === MEGS.itemTypes.skill && !item.system.parent) {
                             skillsCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.advantage) {
+                        } else if (item.type === MEGS.itemTypes.advantage && !item.system.parent) {
                             advantagesCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.gadget) {
+                        } else if (item.type === MEGS.itemTypes.gadget && !item.system.parent) {
                             gadgetsCost += item.system.totalCost;
                         }
-                        // All other items cost HP (excluding subskills which have no cost)
-                        if (item.type !== MEGS.itemTypes.subskill) {
+                        // All other items cost HP (excluding subskills and child items)
+                        // Child items are already counted in their parent's cost
+                        if (item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
                             console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
                             itemsCost += item.system.totalCost;
                         }

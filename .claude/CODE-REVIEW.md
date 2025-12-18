@@ -43,19 +43,15 @@ The last 20 commits show excellent iterative debugging:
 - Just barely failing but indicates some refactoring opportunities
 - Review and consolidate duplicated logic in cost calculation methods
 
-#### 2. Console Logging Left in Production Code
+#### 2. Console Logging ~~Left in Production Code~~ ✅ FIXED
 
-Multiple places still have debug logging that should be removed before release:
+~~Multiple places still have debug logging that should be removed before release~~
 
-- `actor.mjs:279`: "Item contributing to cost: ..." logging
-- `actor.mjs:293-302`: HP budget calculation debug block
-
-**Recommendation**: Remove or convert to conditional debug mode:
-```javascript
-if (CONFIG.debug.megs) {
-    console.log(`Item contributing to cost: ${item.name}`);
-}
-```
+**Status**: All debug logging is now gated behind `MEGS.debug.enabled` configuration:
+- `config.mjs`: Added `MEGS.debug.enabled` flag (default: false)
+- All console.log statements wrapped in `if (MEGS.debug.enabled)` checks
+- Debug logging can be enabled by setting `MEGS.debug.enabled = true` in browser console
+- console.error statements for invalid data remain active (as they should)
 
 ---
 
@@ -369,11 +365,12 @@ If multiplayer scenarios need real-time budget updates, consider socket hooks.
 ### Before Merge - MUST FIX
 
 **High Priority:**
-1. **Remove all debug console.log statements**
-   - Clean up production code
-   - Or gate behind `CONFIG.debug.megs` flag
+1. ~~**Remove all debug console.log statements**~~ ✅ FIXED
+   - ~~Clean up production code~~
+   - ~~Or gate behind `CONFIG.debug.megs` flag~~
+   - **RESOLVED**: All debug logging now gated behind `MEGS.debug.enabled`
 
-2. **Address SonarQube duplication warnings**
+2. **Address SonarQube duplication warnings** ⚠️ REMAINING
    - Extract common cost calculation logic
    - Reduce code duplication to <3%
 

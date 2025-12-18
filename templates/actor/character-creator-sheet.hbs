@@ -20,14 +20,14 @@
                 <div class="resource flex-group-center">
                     <label for="system.heroPointBudget.totalSpent" class="resource-label">HP Spent</label>
                     <div class="resource-content flexrow flex-center flex-between">
-                        <span class="resource-value">{{system.heroPointBudget.totalSpent}}</span>
+                        <span class="resource-value">{{formatNumber system.heroPointBudget.totalSpent}}</span>
                     </div>
                 </div>
 
                 <div class="resource flex-group-center">
                     <label for="system.heroPointBudget.remaining" class="resource-label">HP Remaining</label>
                     <div class="resource-content flexrow flex-center flex-between">
-                        <span class="resource-value {{#if (compare system.heroPointBudget.remaining '<' 0)}}over-budget{{/if}}">{{system.heroPointBudget.remaining}}</span>
+                        <span class="resource-value {{#if (compare system.heroPointBudget.remaining '<' 0)}}over-budget{{/if}}">{{formatNumber system.heroPointBudget.remaining}}</span>
                     </div>
                 </div>
             </div>

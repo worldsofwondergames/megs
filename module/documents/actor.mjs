@@ -276,7 +276,9 @@ export class MEGSActor extends Actor {
                         // All other items cost HP (excluding subskills and child items)
                         // Child items are already counted in their parent's cost
                         if (item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
-                            console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
+                            if (MEGS.debug.enabled) {
+                                console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
+                            }
                             itemsCost += item.system.totalCost;
                         }
                     }
@@ -290,16 +292,18 @@ export class MEGSActor extends Actor {
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation
-        console.log('HP Budget Calculation:', {
-            attributesCost,
-            wealthCost,
-            itemsCost,
-            totalSpent,
-            baseBudget,
-            drawbacksValue,
-            totalBudget,
-            remaining
-        });
+        if (MEGS.debug.enabled) {
+            console.log('HP Budget Calculation:', {
+                attributesCost,
+                wealthCost,
+                itemsCost,
+                totalSpent,
+                baseBudget,
+                drawbacksValue,
+                totalBudget,
+                remaining
+            });
+        }
 
         // Store in actor system data for display
         this.system.heroPointBudget = {

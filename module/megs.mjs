@@ -347,12 +347,6 @@ Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
         }
     });
 
-    // Debug: Log all subskills found for this skill
-    if (subskills.length > 0) {
-        const skill = items.find(i => i._id === skillId);
-        console.log(`Subskills for ${skill?.name || 'unknown'}:`, subskills.map(s => `${s.name} (isTrained: ${s.system.isTrained})`));
-    }
-
     return subskills;
 });
 

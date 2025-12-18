@@ -124,4 +124,3 @@
 - Fixed subskills incorrectly triggering invalid Factor Cost validation errors
 - Added support for base cost only powers without Factor Cost
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
-- Added automatic data migration to convert legacy subskills with APs to isTrained model

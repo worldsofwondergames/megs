@@ -38,68 +38,15 @@ The last 20 commits show excellent iterative debugging:
 
 ### Critical Issues
 
-#### 1. Data Migration in prepareDerivedData() is Problematic
-
-**Location:** `module/documents/item.mjs:233-238`
-
-```javascript
-if (systemData.aps > 0) {
-    console.log(`Migrating legacy subskill...`);
-    this.update({  // ❌ Async update during data prep!
-        'system.isTrained': true,
-        'system.aps': 0
-    });
-}
-```
-
-**Problem**: Calling `update()` during `prepareDerivedData()` triggers re-renders and can cause infinite loops or race conditions. The Foundry data preparation lifecycle is synchronous and should not trigger database writes.
-
-**Recommendation**: Move this to `_preUpdate()` hook or a one-time migration script:
-
-```javascript
-async _preUpdate(changed, options, user) {
-    await super._preUpdate(changed, options, user);
-
-    if (this.type === MEGS.itemTypes.subskill && this.system.aps > 0) {
-        changed.system = changed.system || {};
-        changed.system.isTrained = true;
-        changed.system.aps = 0;
-    }
-}
-```
-
-**Alternative**: Create a migration utility that runs once:
-```javascript
-// In a migration script
-async function migrateSubskills() {
-    for (let actor of game.actors) {
-        const updates = [];
-        for (let item of actor.items) {
-            if (item.type === 'subskill' && item.system.aps > 0) {
-                updates.push({
-                    _id: item.id,
-                    'system.isTrained': true,
-                    'system.aps': 0
-                });
-            }
-        }
-        if (updates.length > 0) {
-            await actor.updateEmbeddedDocuments('Item', updates);
-        }
-    }
-}
-```
-
-#### 2. SonarQube Quality Gate Failed
+#### 1. SonarQube Quality Gate Failed
 - 3.0% code duplication (requirement: ≤3%)
 - Just barely failing but indicates some refactoring opportunities
 - Review and consolidate duplicated logic in cost calculation methods
 
-#### 3. Console Logging Left in Production Code
+#### 2. Console Logging Left in Production Code
 
 Multiple places still have debug logging that should be removed before release:
 
-- `item.mjs:234`: Migration logging
 - `actor.mjs:279`: "Item contributing to cost: ..." logging
 - `actor.mjs:293-302`: HP budget calculation debug block
 
@@ -421,17 +368,12 @@ If multiplayer scenarios need real-time budget updates, consider socket hooks.
 
 ### Before Merge - MUST FIX
 
-**Critical:**
-1. **Remove or refactor `update()` call in `prepareDerivedData()`** (item.mjs:234-238)
-   - This is a critical bug that can cause infinite loops
-   - Move to `_preUpdate()` hook or separate migration utility
-
 **High Priority:**
-2. **Remove all debug console.log statements**
+1. **Remove all debug console.log statements**
    - Clean up production code
    - Or gate behind `CONFIG.debug.megs` flag
 
-3. **Address SonarQube duplication warnings**
+2. **Address SonarQube duplication warnings**
    - Extract common cost calculation logic
    - Reduce code duplication to <3%
 
@@ -465,20 +407,19 @@ If multiplayer scenarios need real-time budget updates, consider socket hooks.
 
 ## Verdict
 
-**⚠️ CONDITIONAL APPROVAL**
+**✅ APPROVED with Minor Clean-up**
 
 This is high-quality work with excellent documentation and solid implementation of complex MEGS rules. The character creator sheet is well-architected, the cost calculations are thorough, and the iterative debugging approach visible in commit history shows strong problem-solving.
 
-**However**, the critical issue with `update()` being called in `prepareDerivedData()` **MUST** be addressed before merge. This is a Foundry anti-pattern that can cause serious runtime issues.
-
-After fixing the critical issue and removing debug logging, this PR is ready to merge. The "should fix" and "nice to have" items can be addressed in follow-up PRs.
+The code follows proper Foundry VTT patterns and lifecycle hooks. Before merging, remove debug logging and address the SonarQube duplication warning. The "should fix" and "nice to have" items can be addressed in follow-up PRs.
 
 ### Recommended Merge Path
 
-1. Fix critical `update()` issue in item.mjs
-2. Remove debug logging
+1. Remove debug console.log statements
+2. Address SonarQube duplication (if time permits, otherwise can be follow-up)
 3. Merge to MEGS-1.0.0-Release
 4. Create follow-up issues for:
+   - Legacy subskill migration (#174 - already exists)
    - Test coverage (#xxx)
    - Handlebars helper refactoring (#xxx)
    - Boolean normalization (#xxx)

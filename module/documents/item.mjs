@@ -303,11 +303,18 @@ export class MEGSItem extends Item {
                         let itemCost = 0;
                         if ((item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
                             item.system.aps > 0) {
+                            // Check if factorCost is missing or invalid
+                            if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
+                                console.warn(`  ⚠️ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
+                                console.log(`     Full system data:`, item.system);
+                            }
+
                             // Calculate effective FC (with linking bonus if applicable)
-                            let effectiveFC = item.system.factorCost || 0;
+                            let effectiveFC = item.system.factorCost || 1; // Default to FC 1 if not set
                             if (item.system.isLinked === 'true' || item.system.isLinked === true) {
                                 effectiveFC = Math.max(1, effectiveFC - 2);
                             }
+                            effectiveFC = Math.max(1, Math.min(10, effectiveFC)); // Clamp to valid range 1-10
                             itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                             // For advantages/drawbacks, use their totalCost or baseCost

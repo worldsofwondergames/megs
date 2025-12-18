@@ -116,3 +116,12 @@
 - Prevented NaN errors in cost calculations by adding null-safe attribute access
 - Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
 - Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
+- Fixed gadget cost calculation converting reliability from index to actual R# value
+- Fixed Hardened Defenses boolean comparison to handle string "false" correctly
+- Fixed gadget range cost to support both systemData.range and systemData.weapon.range fields
+- Fixed HP budget double-counting child items belonging to gadgets
+- Fixed gadget child item cost calculation to compute directly during data preparation
+- Fixed subskills incorrectly triggering invalid Factor Cost validation errors
+- Added support for base cost only powers without Factor Cost
+- Added comma formatting to HP Spent and HP Remaining values on character creator sheet
+- Added automatic data migration to convert legacy subskills with APs to isTrained model

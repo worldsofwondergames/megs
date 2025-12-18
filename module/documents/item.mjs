@@ -228,6 +228,15 @@ export class MEGSItem extends Item {
 
         // Subskills don't have costs - skip all cost calculations
         if (this.type === MEGS.itemTypes.subskill) {
+            // Data migration: Convert legacy subskills with APs to isTrained model
+            // If subskill has APs > 0, set isTrained to true and reset APs to 0
+            if (systemData.aps > 0) {
+                console.log(`Migrating legacy subskill: ${this.name} (APs: ${systemData.aps} → isTrained: true, APs: 0)`);
+                this.update({
+                    'system.isTrained': true,
+                    'system.aps': 0
+                });
+            }
             return;
         }
 

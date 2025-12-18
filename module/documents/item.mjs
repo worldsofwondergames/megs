@@ -291,22 +291,32 @@ export class MEGSItem extends Item {
 
             // Add child item costs (only direct children: powers, skills, advantages, drawbacks)
             // Bonuses, limitations, and subskills are counted as part of their parent item's cost
+            console.log(`  Checking for child items - has parent: ${!!this.parent}, has parent.items: ${!!this.parent?.items}`);
             if (this.parent && this.parent.items) {
+                console.log(`  Parent has ${this.parent.items.size} items`);
+                let childItemsFound = 0;
                 this.parent.items.forEach(item => {
-                    if (item.system.parent === this.id && item.system.totalCost) {
-                        // Only count direct child items, not grandchildren
-                        if (item.type === MEGS.itemTypes.power ||
-                            item.type === MEGS.itemTypes.skill ||
-                            item.type === MEGS.itemTypes.advantage) {
-                            totalCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.drawback) {
-                            // Drawbacks subtract from cost
-                            totalCost -= item.system.totalCost;
+                    if (item.system.parent === this.id) {
+                        childItemsFound++;
+                        console.log(`    Found child: ${item.name} (${item.type}) - cost: ${item.system.totalCost}`);
+                        if (item.system.totalCost) {
+                            // Only count direct child items, not grandchildren
+                            if (item.type === MEGS.itemTypes.power ||
+                                item.type === MEGS.itemTypes.skill ||
+                                item.type === MEGS.itemTypes.advantage) {
+                                totalCost += item.system.totalCost;
+                            } else if (item.type === MEGS.itemTypes.drawback) {
+                                // Drawbacks subtract from cost
+                                totalCost -= item.system.totalCost;
+                            }
+                            // Bonuses, limitations, subskills are NOT counted here
+                            // They're already included in their parent power/skill's totalCost
                         }
-                        // Bonuses, limitations, subskills are NOT counted here
-                        // They're already included in their parent power/skill's totalCost
                     }
                 });
+                console.log(`  Total child items found: ${childItemsFound}`);
+            } else {
+                console.log(`  Cannot check child items - parent or parent.items not available`);
             }
 
             // Apply Gadget Bonus (divide by 4 if can be Taken Away, 2 if cannot)

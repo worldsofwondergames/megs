@@ -298,19 +298,32 @@ export class MEGSItem extends Item {
                 this.parent.items.forEach(item => {
                     if (item.system.parent === this.id) {
                         childItemsFound++;
-                        console.log(`    Found child: ${item.name} (${item.type}) - cost: ${item.system.totalCost}`);
-                        if (item.system.totalCost) {
-                            // Only count direct child items, not grandchildren
+
+                        // Calculate cost directly for powers and skills (don't rely on totalCost being ready)
+                        let itemCost = 0;
+                        if ((item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+                            item.system.aps > 0) {
+                            // Calculate effective FC (with linking bonus if applicable)
+                            let effectiveFC = item.system.factorCost || 0;
+                            if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+                                effectiveFC = Math.max(1, effectiveFC - 2);
+                            }
+                            itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
+                        } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
+                            // For advantages/drawbacks, use their totalCost or baseCost
+                            itemCost = item.system.totalCost || item.system.baseCost || 0;
+                        }
+
+                        console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
+
+                        if (itemCost > 0) {
                             if (item.type === MEGS.itemTypes.power ||
                                 item.type === MEGS.itemTypes.skill ||
                                 item.type === MEGS.itemTypes.advantage) {
-                                totalCost += item.system.totalCost;
+                                totalCost += itemCost;
                             } else if (item.type === MEGS.itemTypes.drawback) {
-                                // Drawbacks subtract from cost
-                                totalCost -= item.system.totalCost;
+                                totalCost -= itemCost;
                             }
-                            // Bonuses, limitations, subskills are NOT counted here
-                            // They're already included in their parent power/skill's totalCost
                         }
                     }
                 });

@@ -367,15 +367,19 @@ export class MEGSItem extends Item {
 
                 // Calculate total cost using AP Purchase Chart
                 // If APs == 0: Total Cost = 0 (not purchased yet)
-                // If APs > 0: Total Cost = Base Cost + AP Purchase Chart(APs, Factor Cost)
+                // If APs > 0 and FC > 0: Total Cost = Base Cost + AP Purchase Chart(APs, Factor Cost)
+                // If APs > 0 and FC == 0: Base cost only power (e.g., Self-Link)
                 if ((systemData.aps || 0) === 0) {
                     systemData.totalCost = 0;
-                } else {
+                } else if (effectiveFC > 0) {
                     // Use AP Purchase Chart for APs cost
                     const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
                         ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
                         : (effectiveFC * (systemData.aps || 0)); // Fallback to linear if chart not available
                     systemData.totalCost = systemData.baseCost + apCost;
+                } else {
+                    // Base cost only power (no Factor Cost or FC is 0)
+                    systemData.totalCost = systemData.baseCost || 0;
                 }
             } else {
                 systemData.totalCost = systemData.baseCost;

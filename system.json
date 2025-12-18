@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/27-ap-purchase-chart/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],

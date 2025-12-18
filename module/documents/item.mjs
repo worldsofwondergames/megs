@@ -226,6 +226,11 @@ export class MEGSItem extends Item {
             }
         }
 
+        // Subskills don't have costs - skip all cost calculations
+        if (this.type === MEGS.itemTypes.subskill) {
+            return;
+        }
+
         // Calculate gadget total cost
         if (this.type === MEGS.itemTypes.gadget) {
             let totalCost = 0;

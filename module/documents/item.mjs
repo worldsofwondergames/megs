@@ -243,31 +243,43 @@ export class MEGSItem extends Item {
             const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
             const reliabilityMod = this._getReliabilityModifier(reliability);
 
-            console.log(`[${this.name}] Cost Calculation - Reliability Index: ${reliabilityIndex}, R#: ${reliability}, Mod: ${reliabilityMod}`);
+            if (MEGS.debug.enabled) {
+                console.log(`[${this.name}] Cost Calculation - Reliability Index: ${reliabilityIndex}, R#: ${reliability}, Mod: ${reliabilityMod}`);
+            }
 
             // Calculate attribute costs
             if (systemData.attributes) {
                 for (const [key, attr] of Object.entries(systemData.attributes)) {
                     if (attr.value > 0) {
-                        console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
+                        if (MEGS.debug.enabled) {
+                            console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
+                        }
                         let fc = attr.factorCost + reliabilityMod;
-                        console.log(`    After reliability mod: FC=${fc}`);
+                        if (MEGS.debug.enabled) {
+                            console.log(`    After reliability mod: FC=${fc}`);
+                        }
 
                         // Italicized attributes (alwaysSubstitute) add +2 FC
                         if (attr.alwaysSubstitute) {
                             fc += 2;
-                            console.log(`    +2 for alwaysSubstitute → FC=${fc}`);
+                            if (MEGS.debug.enabled) {
+                                console.log(`    +2 for alwaysSubstitute → FC=${fc}`);
+                            }
                         }
 
                         // Hardened Defenses add +2 to BODY FC
                         if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                             fc += 2;
-                            console.log(`    +2 for Hardened Defenses → FC=${fc}`);
+                            if (MEGS.debug.enabled) {
+                                console.log(`    +2 for Hardened Defenses → FC=${fc}`);
+                            }
                         }
 
                         fc = Math.max(1, fc); // Minimum FC of 1
                         const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
-                        console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
+                        if (MEGS.debug.enabled) {
+                            console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
+                        }
                         totalCost += attrCost;
                     }
                 }
@@ -298,9 +310,13 @@ export class MEGSItem extends Item {
 
             // Add child item costs (only direct children: powers, skills, advantages, drawbacks)
             // Bonuses, limitations, and subskills are counted as part of their parent item's cost
-            console.log(`  Checking for child items - has parent: ${!!this.parent}, has parent.items: ${!!this.parent?.items}`);
+            if (MEGS.debug.enabled) {
+                console.log(`  Checking for child items - has parent: ${!!this.parent}, has parent.items: ${!!this.parent?.items}`);
+            }
             if (this.parent && this.parent.items) {
-                console.log(`  Parent has ${this.parent.items.size} items`);
+                if (MEGS.debug.enabled) {
+                    console.log(`  Parent has ${this.parent.items.size} items`);
+                }
                 let childItemsFound = 0;
                 this.parent.items.forEach(item => {
                     if (item.system.parent === this.id) {
@@ -313,7 +329,9 @@ export class MEGSItem extends Item {
                             // Check if factorCost is missing or invalid
                             if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
                                 console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
-                                console.log(`     Full system data:`, item.system);
+                                if (MEGS.debug.enabled) {
+                                    console.log(`     Full system data:`, item.system);
+                                }
                             }
 
                             // Calculate effective FC (with linking bonus if applicable)
@@ -327,7 +345,9 @@ export class MEGSItem extends Item {
                             itemCost = item.system.totalCost || item.system.baseCost || 0;
                         }
 
-                        console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
+                        if (MEGS.debug.enabled) {
+                            console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
+                        }
 
                         if (itemCost > 0) {
                             if (item.type === MEGS.itemTypes.power ||
@@ -340,17 +360,25 @@ export class MEGSItem extends Item {
                         }
                     }
                 });
-                console.log(`  Total child items found: ${childItemsFound}`);
+                if (MEGS.debug.enabled) {
+                    console.log(`  Total child items found: ${childItemsFound}`);
+                }
             } else {
-                console.log(`  Cannot check child items - parent or parent.items not available`);
+                if (MEGS.debug.enabled) {
+                    console.log(`  Cannot check child items - parent or parent.items not available`);
+                }
             }
 
             // Apply Gadget Bonus (divide by 4 if can be Taken Away, 2 if cannot)
             const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
-            console.log(`  Subtotal: ${totalCost} HP`);
-            console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
+            if (MEGS.debug.enabled) {
+                console.log(`  Subtotal: ${totalCost} HP`);
+                console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
+            }
             totalCost = Math.ceil(totalCost / gadgetBonus);
-            console.log(`  Final Cost: ${totalCost} HP`);
+            if (MEGS.debug.enabled) {
+                console.log(`  Final Cost: ${totalCost} HP`);
+            }
 
             systemData.totalCost = totalCost;
             this.totalCost = totalCost;

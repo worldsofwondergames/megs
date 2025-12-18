@@ -1,6 +1,15 @@
 export const MEGS = {};
 
 /**
+ * Debug configuration
+ * Set to true to enable debug logging throughout the system
+ * @type {Object}
+ */
+MEGS.debug = {
+    enabled: false, // Set to true to enable debug console logging
+};
+
+/**
  * The set of Attribute Scores used within the system.
  * @type {Object}
  */

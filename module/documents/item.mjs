@@ -34,6 +34,22 @@ export class MEGSItem extends Item {
         }
     }
 
+    /** @override */
+    async _preUpdate(changed, options, user) {
+        await super._preUpdate(changed, options, user);
+
+        // Data migration: Convert legacy subskills with APs to isTrained model
+        // This runs before the update is saved to the database
+        if (this.type === MEGS.itemTypes.subskill && this.system.aps > 0) {
+            console.log(`Migrating legacy subskill: ${this.name} (APs: ${this.system.aps} → isTrained: true, APs: 0)`);
+
+            // Modify the change data before it's applied
+            if (!changed.system) changed.system = {};
+            changed.system.isTrained = true;
+            changed.system.aps = 0;
+        }
+    }
+
     async _initializeSkillData() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
@@ -208,6 +224,22 @@ export class MEGSItem extends Item {
 
     /**
      * @override
+     * Prepare base data for the item.
+     * This is called before prepareEmbeddedDocuments and prepareDerivedData.
+     */
+    prepareBaseData() {
+        super.prepareBaseData();
+
+        // Fix legacy subskills in memory (doesn't trigger database writes)
+        // The _preUpdate hook will persist this fix when the item is next saved
+        if (this.type === MEGS.itemTypes.subskill && this.system.aps > 0) {
+            this.system.isTrained = true;
+            this.system.aps = 0;
+        }
+    }
+
+    /**
+     * @override
      * Augment the item source data with additional dynamic data. Typically,
      * you'll want to handle most of your calculated/derived data in this step.
      * Data calculated in this step should generally not exist in template.json
@@ -228,15 +260,6 @@ export class MEGSItem extends Item {
 
         // Subskills don't have costs - skip all cost calculations
         if (this.type === MEGS.itemTypes.subskill) {
-            // Data migration: Convert legacy subskills with APs to isTrained model
-            // If subskill has APs > 0, set isTrained to true and reset APs to 0
-            if (systemData.aps > 0) {
-                console.log(`Migrating legacy subskill: ${this.name} (APs: ${systemData.aps} → isTrained: true, APs: 0)`);
-                this.update({
-                    'system.isTrained': true,
-                    'system.aps': 0
-                });
-            }
             return;
         }
 

@@ -305,16 +305,15 @@ export class MEGSItem extends Item {
                             item.system.aps > 0) {
                             // Check if factorCost is missing or invalid
                             if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
-                                console.warn(`  ⚠️ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
+                                console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
                                 console.log(`     Full system data:`, item.system);
                             }
 
                             // Calculate effective FC (with linking bonus if applicable)
-                            let effectiveFC = item.system.factorCost || 1; // Default to FC 1 if not set
+                            let effectiveFC = item.system.factorCost;
                             if (item.system.isLinked === 'true' || item.system.isLinked === true) {
                                 effectiveFC = Math.max(1, effectiveFC - 2);
                             }
-                            effectiveFC = Math.max(1, Math.min(10, effectiveFC)); // Clamp to valid range 1-10
                             itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                             // For advantages/drawbacks, use their totalCost or baseCost
@@ -352,9 +351,14 @@ export class MEGSItem extends Item {
         // Calculate total cost for powers, skills, advantages, drawbacks (but not gadgets)
         else if (systemData.hasOwnProperty('baseCost')) {
             if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
+                // Check if factorCost is invalid
+                if (systemData.factorCost === 0 || systemData.factorCost === undefined || systemData.factorCost === null) {
+                    console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
+                }
+
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                let effectiveFC = systemData.factorCost || 0;
+                let effectiveFC = systemData.factorCost;
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
                     effectiveFC = Math.max(1, effectiveFC - 2);
                 }

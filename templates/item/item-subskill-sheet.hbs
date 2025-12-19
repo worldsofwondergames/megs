@@ -29,9 +29,26 @@
             {{/if}}
         </div>
 
-        {{#unless skillHasRanks}}
-            {{> "systems/megs/templates/item/parts/item-skill-calculator-header.hbs"}}
-        {{/unless}}
+        {{!-- Subskills show APs (read-only from parent) and Trained status instead of cost calculator --}}
+        <div class="resources grid grid-2col">
+            <div class="resource flex-group-center">
+                <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
+                <div class="resource-content flexrow flex-center flex-between">
+                    <span>{{effectiveAPs}}</span>
+                </div>
+            </div>
+
+            <div class="resource flex-group-center">
+                <label for="system.isTrained" class="resource-label">{{localize 'MEGS.Trained'}}</label>
+                <div class="resource-content flexrow flex-center flex-between">
+                    {{#if flags.megs.edit-mode}}
+                        <input type="checkbox" name="system.isTrained" {{checked system.isTrained}} data-dtype="Boolean"/>
+                    {{else}}
+                        <span>{{trueFalseToYesNo system.isTrained}}</span>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
 
         </div>
     </header>

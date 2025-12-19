@@ -202,21 +202,6 @@ export class MEGSActorSheet extends ActorSheet {
 
     /**
      *
-     * @param {*} skill
-     * @returns
-     */
-    _doSubskillsHaveAPs(skill) {
-        let hasTrainedSubskills = false;
-        skill.subskills.forEach((subskill) => {
-            if (subskill.system.isTrained) {
-                hasTrainedSubskills = true;
-            }
-        });
-        return hasTrainedSubskills;
-    }
-
-    /**
-     *
      * @param {*} array
      * @returns
      */

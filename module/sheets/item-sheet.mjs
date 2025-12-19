@@ -914,7 +914,7 @@ export class MEGSItemSheet extends ItemSheet {
             context.filteredSkills = skills;
         } else {
             skills.forEach((skill) => {
-                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                if (skill.system.aps > 0) {
                     context.filteredSkills.push(skill);
                 }
             });
@@ -927,23 +927,6 @@ export class MEGSItemSheet extends ItemSheet {
         context.drawbacks = drawbacks;
         context.subskills = subskills;
         context.gadgets = gadgets;
-    }
-
-    /**
-     * Check if any subskills have APs > 0
-     * @param {*} skill
-     * @returns {boolean}
-     */
-    _doSubskillsHaveAPs(skill) {
-        let hasTrainedSubskills = false;
-        if (skill.subskills && skill.subskills.length > 0) {
-            skill.subskills.forEach((subskill) => {
-                if (subskill.system.isTrained) {
-                    hasTrainedSubskills = true;
-                }
-            });
-        }
-        return hasTrainedSubskills;
     }
 
     /**

@@ -98,34 +98,31 @@ export class MEGSItemSheet extends ItemSheet {
             context.skillHasRanks = false;
             context.parentSkillAPs = 0;
 
-            // if has APs, those are effective
-            if (this.object.system.aps > 0) {
-                context.effectiveAPs = this.object.system.aps;
-                context.isUnskilled = false;
-            } else {
-                // check parent for APs
-                const actor = game.actors.get(context.document.system.actorId);
-                if (actor) {
-                    var skill = actor.items.filter((obj) => {
-                        return obj._id === context.document.system.parent;
-                    })[0];
-                    if (skill) {
-                        context.parentSkillAPs = skill.system.aps || 0;
-                        if (skill.system.aps > 0) {
-                            context.effectiveAPs = skill.system.aps;
-                            context.isUnskilled = false;
-                            context.skillHasRanks = true;
-                        } else {
-                            // if no APs for parent, fall back to linked skill
-                            context.effectiveAPs = actor.system.attributes[skill.system.link].value;
-                            context.isUnskilled = true;
-                        }
+            // Always display parent skill's APs
+            const actor = game.actors.get(context.document.system.actorId);
+            if (actor) {
+                var skill = actor.items.filter((obj) => {
+                    return obj._id === context.document.system.parent;
+                })[0];
+                if (skill) {
+                    // Always use parent skill APs for display
+                    context.parentSkillAPs = skill.system.aps || 0;
+
+                    // effectiveAPs is used for rolling
+                    if (skill.system.aps > 0) {
+                        context.effectiveAPs = skill.system.aps;
+                        context.isUnskilled = false;
+                        context.skillHasRanks = true;
                     } else {
-                        context.effectiveAPs = 0;
+                        // if no APs for parent, fall back to linked attribute for rolling
+                        context.effectiveAPs = actor.system.attributes[skill.system.link].value;
+                        context.isUnskilled = true;
                     }
                 } else {
                     context.effectiveAPs = 0;
                 }
+            } else {
+                context.effectiveAPs = 0;
             }
 
             context.minAPs = 0;

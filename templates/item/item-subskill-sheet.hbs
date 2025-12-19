@@ -34,7 +34,11 @@
             <div class="resource flex-group-center">
                 <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
                 <div class="resource-content flexrow flex-center flex-between">
-                    <span>{{effectiveAPs}}</span>
+                    {{#if system.isTrained}}
+                        <span>{{parentSkillAPs}}</span>
+                    {{else}}
+                        <span>&mdash;</span>
+                    {{/if}}
                 </div>
             </div>
 

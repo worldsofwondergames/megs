@@ -245,27 +245,6 @@ export class MEGSItemSheet extends ItemSheet {
             this.render(false);
         });
 
-        // Handle skill APs changes to enable/disable subskill checkboxes
-        html.on('change', 'input[name="system.aps"]', async (ev) => {
-            const newAps = parseInt(ev.currentTarget.value) || 0;
-            const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
-
-            checkboxes.each(function() {
-                const checkbox = $(this);
-                const isEditMode = checkbox.closest('form').find('input[name="flags.megs.edit-mode"]').length > 0;
-
-                if (newAps === 0) {
-                    // When skill has 0 APs: disable checkboxes and check them all
-                    checkbox.prop('disabled', true);
-                    checkbox.prop('checked', true);
-                } else {
-                    // When skill has 1+ APs: enable checkboxes
-                    checkbox.prop('disabled', false);
-                    // Checkbox remains in its current isTrained state
-                }
-            });
-        });
-
         // Skill APs increment/decrement
         html.on('click', '.ap-plus', async (ev) => {
             ev.preventDefault();

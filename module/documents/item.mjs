@@ -250,6 +250,17 @@ export class MEGSItem extends Item {
             }
         }
 
+        // Import constants for all item types (including subskills)
+        systemData.powerTypes = MEGS.powerTypes;
+        systemData.powerSources = MEGS.powerSources;
+        systemData.ranges = MEGS.ranges;
+        systemData.yesNoOptions = MEGS.yesNoOptions;
+
+        systemData.attributesForLink = {};
+        for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
+            systemData.attributesForLink[key] = game.i18n.localize(value);
+        }
+
         // Subskills don't have costs - skip all cost calculations
         if (this.type === MEGS.itemTypes.subskill) {
             return;
@@ -455,18 +466,6 @@ export class MEGSItem extends Item {
                 systemData.totalCost = systemData.baseCost;
             }
             this.totalCost = systemData.totalCost;
-        }
-
-        // import constants
-        systemData.powerTypes = MEGS.powerTypes;
-        systemData.powerSources = MEGS.powerSources;
-        systemData.ranges = MEGS.ranges;
-
-        systemData.yesNoOptions = MEGS.yesNoOptions;
-
-        systemData.attributesForLink = {};
-        for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
-            systemData.attributesForLink[key] = game.i18n.localize(value);
         }
     }
 

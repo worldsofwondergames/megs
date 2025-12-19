@@ -603,6 +603,8 @@ export class MEGSItemSheet extends ItemSheet {
         // Initialize containers.
         const bonuses = [];
         const limitations = [];
+        let totalBonusMod = 0;
+        let totalLimitationMod = 0;
 
         if (this.object.parent && this.object.parent.items) {
             // Iterate through items, allocating to containers
@@ -612,11 +614,13 @@ export class MEGSItemSheet extends ItemSheet {
                     i.img = i.img || Item.DEFAULT_ICON;
                     if (i.type === MEGS.itemTypes.bonus) {
                         bonuses.push(i);
+                        totalBonusMod += i.system.factorCostMod || 0;
                         // Link parent power's item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                     if (i.type === MEGS.itemTypes.limitation) {
                         limitations.push(i);
+                        totalLimitationMod += i.system.factorCostMod || 0;
 
                         // Link parent power's item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
@@ -627,6 +631,19 @@ export class MEGSItemSheet extends ItemSheet {
             // Assign and return
             context.bonuses = bonuses;
             context.limitations = limitations;
+
+            // Calculate effective Factor Cost
+            const baseFactor = context.system.factorCost || 0;
+            context.system.effectiveFactorCost = baseFactor + totalBonusMod + totalLimitationMod;
+
+            // Store modifier totals for tooltip
+            context.system.bonusMod = totalBonusMod;
+            context.system.limitationMod = totalLimitationMod;
+        } else {
+            // No modifiers, effective = base
+            context.system.effectiveFactorCost = context.system.factorCost || 0;
+            context.system.bonusMod = 0;
+            context.system.limitationMod = 0;
         }
     }
 

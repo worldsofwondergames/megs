@@ -160,7 +160,7 @@
                         </div>
                         <div class='item-trained'>
                             {{#if flags.megs.edit-mode}}
-                                <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if compare ../system.aps "===" 0}}disabled{{/if}} />
+                                <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if (compare ../system.aps "===" 0)}}disabled{{/if}} />
                             {{else}}
                                 <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" disabled />
                             {{/if}}

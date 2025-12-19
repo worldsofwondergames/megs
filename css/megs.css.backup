@@ -1510,26 +1510,3 @@ details summary.no-arrow {
     margin: 0;
     cursor: pointer;
 }
-
-/* Actor Sheet Skills Tab Accordion Styles */
-.megs.sheet.actor .tab.skills .items-list .skill-row {
-  background-color: #e8f4f8;
-}
-.megs.sheet.actor .tab.skills .items-list .subskill-row {
-  background-color: #ffffff;
-}
-.megs.sheet.actor .tab.skills .items-list .item-toggle {
-  flex: 0 0 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.megs.sheet.actor .tab.skills .items-list .toggle-icon {
-  color: #666;
-  font-size: 0.85em;
-  transition: transform 0.2s ease;
-}
-.megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
-  color: #000;
-}

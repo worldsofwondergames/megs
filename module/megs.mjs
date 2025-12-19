@@ -261,22 +261,30 @@ Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
 
 Handlebars.registerHelper('getSkillDisplayName', function (skill) {
     let displayName = skill.name;
-    if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
-        let subskillText = ' (';
-        skill.subskills.forEach((subskill) => {
-            if (subskill.system.isTrained) {
-                if (subskillText !== ' (') {
-                    subskillText += ', ';
+
+    // Only show subskills if skill has APs and at least one subskill is untrained
+    if (skill.system.aps > 0 && skill.subskills && skill.subskills.length > 0) {
+        // Check if at least one subskill is untrained
+        const hasUntrainedSubskills = skill.subskills.some(s => !s.system.isTrained);
+
+        if (hasUntrainedSubskills) {
+            let subskillText = ' (';
+            skill.subskills.forEach((subskill) => {
+                if (subskill.system.isTrained) {
+                    if (subskillText !== ' (') {
+                        subskillText += ', ';
+                    }
+                    // No need to show " Weapons" after every weapon type
+                    subskillText += subskill.name.replace(' Weapons', '');
                 }
-                // No need to show " Weapons" after every weapon type
-                subskillText += subskill.name.replace(' Weapons', '');
+            });
+            subskillText += ')';
+            if (subskillText !== ' ()') {
+                displayName += subskillText;
             }
-        });
-        subskillText += ')';
-        if (subskillText !== ' ()') {
-            displayName += subskillText;
         }
     }
+
     if (skill.system.isLinked === 'true') {
         displayName += '*';
     }

@@ -805,7 +805,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     }
     if (attributesCost > 0) {
         console.log(`  Total Attributes: ${attributesCost} HP`);
-        tooltip += 'Attributes: ' + attributesCost + '\\n';
+        tooltip += 'Attributes: ' + attributesCost + '\n';
         totalBeforeBonus += attributesCost;
     }
 
@@ -815,7 +815,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         const chartCost = MEGS.getAPCost(systemData.actionValue, fc) || 0;
         const avCost = 5 + chartCost;
         console.log(`  AV: 5 (base) + ${systemData.actionValue} APs @ FC ${fc} = ${chartCost} HP → Total: ${avCost} HP`);
-        tooltip += `AV: ${avCost}\\n`;
+        tooltip += `AV: ${avCost}\n`;
         totalBeforeBonus += avCost;
     }
 
@@ -823,7 +823,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (systemData.effectValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const evCost = 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
-        tooltip += 'EV: ' + evCost + '\\n';
+        tooltip += 'EV: ' + evCost + '\n';
         totalBeforeBonus += evCost;
     }
 
@@ -832,7 +832,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (rangeValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const rangeCost = 5 + (MEGS.getAPCost(rangeValue, fc) || 0);
-        tooltip += 'Range: ' + rangeCost + '\\n';
+        tooltip += 'Range: ' + rangeCost + '\n';
         totalBeforeBonus += rangeCost;
     }
 
@@ -859,32 +859,32 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         });
 
         if (powersCost > 0) {
-            tooltip += 'Powers: ' + powersCost + '\\n';
+            tooltip += 'Powers: ' + powersCost + '\n';
             totalBeforeBonus += powersCost;
         }
         if (skillsCost > 0) {
-            tooltip += 'Skills: ' + skillsCost + '\\n';
+            tooltip += 'Skills: ' + skillsCost + '\n';
             totalBeforeBonus += skillsCost;
         }
         if (advantagesCost > 0) {
-            tooltip += 'Advantages: ' + advantagesCost + '\\n';
+            tooltip += 'Advantages: ' + advantagesCost + '\n';
             totalBeforeBonus += advantagesCost;
         }
         if (drawbacksCost > 0) {
-            tooltip += 'Drawbacks: -' + drawbacksCost + '\\n';
+            tooltip += 'Drawbacks: -' + drawbacksCost + '\n';
             totalBeforeBonus -= drawbacksCost;
         }
     }
 
     // Add total before bonus
-    tooltip += '---\\n';
-    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\\n';
+    tooltip += '---\n';
+    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\n';
 
     // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
     const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
     console.log(`  Total before bonus: ${totalBeforeBonus} HP`);
     console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
-    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\\n';
+    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\n';
 
     // Add final cost
     const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);

@@ -274,8 +274,8 @@ export class MEGSActor extends Actor {
         if (this.items) {
             this.items.forEach(item => {
                 if (item.system.totalCost) {
-                    if (item.type === MEGS.itemTypes.drawback) {
-                        // Drawbacks add HP back to the budget
+                    if (item.type === MEGS.itemTypes.drawback && !item.system.parent) {
+                        // Drawbacks add HP back to the budget (only count top-level drawbacks)
                         drawbacksValue += item.system.totalCost;
                     } else {
                         // Track powers, skills, advantages, and gadgets separately for character creator

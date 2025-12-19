@@ -21,18 +21,11 @@
                 </h1>
             </div>
             {{#if hasActor}}
-                {{#if system.aps}}
-                    <!-- TODO skill that is auto should be gray die -->
-                    <div class="d10 grid-span-1 rollable " data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}">
-                        &nbsp;
-                    </div>
-                {{else}}
-                    {{#if isUnskilled}}
-                        {{#if (compare system.useUnskilled "===" "true")}}
-                            <div class="d10 grid-span-1 rollable unskilled" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}" data-unskilled="true">
-                                &nbsp;
-                            </div>
-                        {{/if}}
+                {{#if isUnskilled}}
+                    {{#if (compare system.useUnskilled "===" "true")}}
+                        <div class="d10 grid-span-1 rollable unskilled" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}" data-unskilled="true">
+                            &nbsp;
+                        </div>
                     {{/if}}
                 {{/if}}
             {{/if}}
@@ -166,13 +159,11 @@
                             </a>
                         </div>
                         <div class='item-trained'>
-                            <p>{{system.aps}} | {{../system.aps}} | {{effectiveAPs}}</p><!-- TODO delete -->
                             {{#if flags.megs.edit-mode}}
                                 <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if compare ../system.aps "===" 0}}disabled{{/if}} />
                             {{else}}
                                 <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" disabled />
                             {{/if}}
-
                         </div>
                         <div class='item-controls'>
                             {{#if subskill.isRollable}}

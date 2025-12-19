@@ -145,10 +145,7 @@
             <ol class='items-list'>
                 <li class='item flexrow items-header grid-8col'>
                     <div class='item-name grid-span-5'>{{localize 'MEGS.Name'}}</div>
-                    <div class='item-aps grid-span-1'>{{localize 'MEGS.APs'}}</div>
-                    {{#if showHeroPointCosts}}
-                        <div class='item-total-cost grid-span-1'>{{localize 'MEGS.TotalCost'}}</div>
-                    {{/if}}
+                    <div class='item-trained grid-span-1'>{{localize 'MEGS.Trained'}}</div>
                     <div class='item-controls grid-span-1'>
                         {{#if flags.megs.edit-mode}}
                             <a class='item-control item-create' title='{{localize "DOCUMENT.Create" type=' Subskill'}}' data-type='subskill'>
@@ -168,26 +165,9 @@
                                 {{subskill.name}}
                             </a>
                         </div>
-                        <div class='item-aps'>
-                            {{#if subskill.isUnskilled}}
-                                &mdash;
-                            {{else}}
-                                {{#if subskill.system.aps}}
-                                    {{subskill.system.aps}}
-                                {{else}}
-                                    &mdash;
-                                {{/if}}
-                            {{/if}}
+                        <div class='item-trained'>
+                            <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" {{#unless flags.megs.edit-mode}}disabled{{/unless}}/>
                         </div>
-                        {{#if showHeroPointCosts}}
-                            <div class='item-total-cost'>
-                                {{#if subskill.system.aps}}
-                                    {{subskill.system.totalCost}}
-                                {{else}}
-                                    &mdash;
-                                {{/if}}
-                            </div>
-                        {{/if}}
                         <div class='item-controls'>
                             {{#if subskill.isRollable}}
                                 <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{subskill.name}}
@@ -196,12 +176,10 @@
                                     {{#if (compare subskill.system.type '===' 'auto')}}
                                         <img src="/systems/megs/assets/images/icons/d10grey.svg" class="svg-icon" />
                                     {{else}}
-                                        {{#if subskill.isUnskilled}}
-                                            <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" />
+                                        {{#if subskill.system.isTrained}}
+                                            <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" />
                                         {{else}}
-                                            {{#if (compare subskill.effectiveAPs ">" 0)}}
-                                                <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" />
-                                            {{/if}}
+                                            <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" />
                                         {{/if}}
                                     {{/if}}
                                 </a>

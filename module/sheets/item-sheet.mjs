@@ -212,7 +212,8 @@ export class MEGSItemSheet extends ItemSheet {
         // Initialize subskill checkbox states based on skill APs
         if (this.object.type === 'skill') {
             const skillAps = this.object.system.aps || 0;
-            const isEditMode = this.isEditable;
+            // Check the custom edit-mode flag (not Foundry's isEditable)
+            const isEditMode = this.object.getFlag('megs', 'edit-mode') === true;
             const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
 
             checkboxes.each(function() {
@@ -223,10 +224,10 @@ export class MEGSItemSheet extends ItemSheet {
                     checkbox.prop('disabled', true);
                     checkbox.prop('checked', true);
                 } else if (isEditMode) {
-                    // When skill has 1+ APs and sheet is editable: enable
+                    // When skill has 1+ APs and edit mode is on: enable
                     checkbox.prop('disabled', false);
                 } else {
-                    // When skill has 1+ APs but sheet is not editable: disable
+                    // When skill has 1+ APs but edit mode is off: disable
                     checkbox.prop('disabled', true);
                 }
             });

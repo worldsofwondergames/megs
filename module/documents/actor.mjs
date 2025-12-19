@@ -321,6 +321,9 @@ export class MEGSActor extends Actor {
             });
         }
 
+        // Calculate net traits cost (advantages - drawbacks)
+        const traitsCost = advantagesCost - drawbacksValue;
+
         // Store in actor system data for display
         this.system.heroPointBudget = {
             base: baseBudget,
@@ -331,6 +334,7 @@ export class MEGSActor extends Actor {
             powersCost: powersCost,
             skillsCost: skillsCost,
             advantagesCost: advantagesCost,
+            traitsCost: traitsCost,
             gadgetsCost: gadgetsCost,
             itemsCost: itemsCost,
             totalSpent: totalSpent,

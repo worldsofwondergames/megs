@@ -40,11 +40,11 @@
 
             <div class="resource flex-group-center">
                 <label for="system.isTrained" class="resource-label">{{localize 'MEGS.Trained'}}</label>
-                <div class="resource-content flexrow flex-center flex-between">
+                <div class="resource-content flexrow flex-center">
                     {{#if flags.megs.edit-mode}}
-                        <input type="checkbox" name="system.isTrained" {{checked system.isTrained}} data-dtype="Boolean"/>
+                        <input type="checkbox" name="system.isTrained" {{checked system.isTrained}} data-dtype="Boolean" {{#if (compare parentSkillAPs "===" 0)}}disabled{{/if}}/>
                     {{else}}
-                        <span>{{trueFalseToYesNo system.isTrained}}</span>
+                        <input type="checkbox" name="system.isTrained" {{checked system.isTrained}} data-dtype="Boolean" disabled/>
                     {{/if}}
                 </div>
             </div>

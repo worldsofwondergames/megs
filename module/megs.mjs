@@ -894,6 +894,38 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     return tooltip;
 });
 
+Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {
+    if (!power || !power.system) return '';
+
+    const systemData = power.system;
+    let tooltip = '';
+
+    // Base Factor Cost
+    const baseFactor = systemData.factorCost || 0;
+    tooltip += 'Base Factor Cost: ' + baseFactor + '\n';
+
+    // Bonuses
+    const bonusMod = systemData.bonusMod || 0;
+    if (bonusMod !== 0) {
+        tooltip += 'Bonuses: ' + (bonusMod > 0 ? '+' : '') + bonusMod + '\n';
+    }
+
+    // Limitations
+    const limitationMod = systemData.limitationMod || 0;
+    if (limitationMod !== 0) {
+        tooltip += 'Limitations: ' + (limitationMod > 0 ? '+' : '') + limitationMod + '\n';
+    }
+
+    // Show calculation if there are modifiers
+    if (bonusMod !== 0 || limitationMod !== 0) {
+        tooltip += '---\n';
+        const effectiveFactor = systemData.effectiveFactorCost || baseFactor;
+        tooltip += 'Effective Factor Cost: ' + effectiveFactor;
+    }
+
+    return tooltip;
+});
+
 Handlebars.registerHelper('shouldShowRow', function (index, hasAttributes, options) {
     if (index < 3 && hasAttributes?.physical) {
         return options.fn(this);

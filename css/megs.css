@@ -1533,3 +1533,9 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
   color: #000;
 }
+
+/* Power Factor Cost Tooltip */
+.factor-cost-tooltip {
+  cursor: pointer;
+  white-space: pre-line;
+}

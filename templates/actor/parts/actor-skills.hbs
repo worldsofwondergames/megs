@@ -5,23 +5,17 @@
 
 <ol class='items-list'>
     <li class='item flexrow items-header'>
+        <div class='item-toggle'></div>
         <div class='item-name'>{{localize 'MEGS.Name'}}</div>
         <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
-        {{#if showHeroPointCosts}}
-            <div class='item-total-cost'>{{localize 'MEGS.TotalCost'}}</div>
-        {{/if}}
         <div class='item-controls'></div>
     </li>
     {{#each filteredSkills as |item id|}}
-        <li class='item flexrow item-row
-    {{#if item.system.aps}}bold{{/if}}
-    ' data-item-id='{{item._id}}'>
+        <li class='item flexrow item-row skill-row {{#if item.system.aps}}bold{{/if}}' data-item-id='{{item._id}}' data-expanded='false'>
+            <div class='item-toggle'>
+                <i class='fas fa-chevron-right toggle-icon'></i>
+            </div>
             <div class='item-name'>
-                <div class='item-image'>
-                    <a class='rollable' data-roll-type='item'>
-                        <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
-                    </a>
-                </div>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
                     {{getSkillDisplayName item}}
                 </a>
@@ -41,16 +35,6 @@
                     {{item.system.aps}}
                 {{/if}}
             </div>
-            {{#if showHeroPointCosts}}
-                <div class='item-total-cost'>
-                    {{#if item.system.aps}}
-                        {{item.system.totalCost}}
-                    {{/if}}
-                    {{#unless item.system.aps}}
-                        &mdash;
-                    {{/unless}}
-                </div>
-            {{/if}}
             <div class='item-controls'>
                 {{#unless item.system.aps}}
                     {{#if (compare item.system.useUnskilled '===' 'true')}}
@@ -79,5 +63,17 @@
                 {{/unless}}
             </div>
         </li>
+        {{!-- Display Subskills under the Skill --}}
+        {{#each (getSkillSubskills item._id ../items) as |subskill|}}
+            <li class='item flexrow item-row modifier-row subskill-row' data-item-id='{{subskill._id}}' data-parent-id='{{item._id}}' style='display: none;'>
+                <div class='item-toggle'></div>
+                <div class='item-name modifier-name'>
+                    <input type="checkbox" class="subskill-checkbox" {{checked subskill.system.isTrained}} data-item-id="{{subskill._id}}" {{#if (compare item.system.aps "===" 0)}}disabled{{/if}} {{#unless ../flags.megs.edit-mode}}disabled{{/unless}} />
+                    <span style="display: inline-block; width: 10px;"></span>{{subskill.name}}
+                </div>
+                <div class='item-aps'></div>
+                <div class='item-controls'></div>
+            </li>
+        {{/each}}
     {{/each}}
 </ol>

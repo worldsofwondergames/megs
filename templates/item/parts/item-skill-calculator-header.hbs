@@ -26,7 +26,11 @@
     <label for="system.factorCost" class="resource-label">{{localize 'MEGS.Factor'}}</label>
     {{#if hasActor}}
         <div class="resource-content flexrow flex-center flex-between">
-            <span>{{system.factorCost}}</span>
+            {{#if system.effectiveFactorCost}}
+                <span>{{system.effectiveFactorCost}}</span>
+            {{else}}
+                <span>{{system.factorCost}}</span>
+            {{/if}}
         </div>
     {{/if}}
     {{#unless hasActor}}

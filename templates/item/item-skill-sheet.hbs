@@ -166,7 +166,7 @@
                             </a>
                         </div>
                         <div class='item-trained'>
-                            <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked (or (compare ../system.aps "===" 0) subskill.system.isTrained)}} data-dtype="Boolean" {{#if (or (not flags.megs.edit-mode) (compare ../system.aps "===" 0))}}disabled{{/if}}/>
+                            <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if (or (not flags.megs.edit-mode) (compare ../system.aps "===" 0))}}disabled{{/if}}/>
                         </div>
                         <div class='item-controls'>
                             {{#if subskill.isRollable}}

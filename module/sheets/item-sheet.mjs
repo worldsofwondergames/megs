@@ -209,6 +209,20 @@ export class MEGSItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Initialize subskill checkbox states based on skill APs
+        if (this.object.type === 'skill') {
+            const skillAps = this.object.system.aps || 0;
+            const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
+
+            checkboxes.each(function() {
+                const checkbox = $(this);
+                if (skillAps === 0) {
+                    // When skill has 0 APs: ensure checkboxes are checked and disabled
+                    checkbox.prop('checked', true);
+                }
+            });
+        }
+
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
@@ -219,6 +233,27 @@ export class MEGSItemSheet extends ItemSheet {
             const value = checkbox.checked ? 'true' : 'false';
             await this.object.update({ 'system.settings.hideZeroAPSkills': value });
             this.render(false);
+        });
+
+        // Handle skill APs changes to enable/disable subskill checkboxes
+        html.on('change', 'input[name="system.aps"]', async (ev) => {
+            const newAps = parseInt(ev.currentTarget.value) || 0;
+            const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
+
+            checkboxes.each(function() {
+                const checkbox = $(this);
+                const isEditMode = checkbox.closest('form').find('input[name="flags.megs.edit-mode"]').length > 0;
+
+                if (newAps === 0) {
+                    // When skill has 0 APs: disable checkboxes and check them all
+                    checkbox.prop('disabled', true);
+                    checkbox.prop('checked', true);
+                } else {
+                    // When skill has 1+ APs: enable checkboxes
+                    checkbox.prop('disabled', false);
+                    // Checkbox remains in its current isTrained state
+                }
+            });
         });
 
         // Skill APs increment/decrement

@@ -34,6 +34,7 @@ export class MEGSItem extends Item {
         }
     }
 
+
     async _initializeSkillData() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
@@ -101,6 +102,7 @@ export class MEGSItem extends Item {
                             type: j.type,
                             linkedSkill: i.name,
                             useUnskilled: j.useUnskilled,
+                            isTrained: true,
                         },
                     };
                     subskills.push(subskillObj);
@@ -178,6 +180,25 @@ export class MEGSItem extends Item {
     }
 
     /**
+     * Get Factor Cost modifier based on Reliability Number
+     * @param {number} reliability - The R# value
+     * @returns {number} Factor Cost modifier
+     * @private
+     */
+    _getReliabilityModifier(reliability) {
+        const reliabilityTable = {
+            0: 3,
+            2: 2,
+            3: 1,
+            5: 0,
+            7: -1,
+            9: -2,
+            11: -3
+        };
+        return reliabilityTable[reliability] ?? 0;
+    }
+
+    /**
      * Augment the basic Item data model with additional dynamic data.
      */
     prepareData() {
@@ -185,6 +206,7 @@ export class MEGSItem extends Item {
         // preparation methods overridden (such as prepareBaseData()).
         super.prepareData();
     }
+
 
     /**
      * @override
@@ -206,21 +228,194 @@ export class MEGSItem extends Item {
             }
         }
 
-        // calculate gadget bonus
-        // TODO cost
-        if (this.type === MEGS.itemTypes.gadget) {
-            if (itemData.canBeTakenAway) {
-                this.gadgetBonus = 4;
-            } else {
-                this.gadgetBonus = 2;
-            }
+        // Subskills don't have costs - skip all cost calculations
+        if (this.type === MEGS.itemTypes.subskill) {
+            return;
         }
 
-        // calculate total cost of the item
-        // TODO gadgets are different
-        if (systemData.hasOwnProperty('baseCost')) {
+        // Calculate gadget total cost
+        if (this.type === MEGS.itemTypes.gadget) {
+            let totalCost = 0;
+
+            // Get Reliability Number modifier for Factor Cost
+            // reliability is stored as an index into CONFIG.reliabilityScores array
+            const reliabilityIndex = systemData.reliability ?? 3; // Default to index 3 (R# 5)
+            const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+            const reliabilityMod = this._getReliabilityModifier(reliability);
+
+            if (MEGS.debug.enabled) {
+                console.log(`[${this.name}] Cost Calculation - Reliability Index: ${reliabilityIndex}, R#: ${reliability}, Mod: ${reliabilityMod}`);
+            }
+
+            // Calculate attribute costs
+            if (systemData.attributes) {
+                for (const [key, attr] of Object.entries(systemData.attributes)) {
+                    if (attr.value > 0) {
+                        if (MEGS.debug.enabled) {
+                            console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
+                        }
+                        let fc = attr.factorCost + reliabilityMod;
+                        if (MEGS.debug.enabled) {
+                            console.log(`    After reliability mod: FC=${fc}`);
+                        }
+
+                        // Italicized attributes (alwaysSubstitute) add +2 FC
+                        if (attr.alwaysSubstitute) {
+                            fc += 2;
+                            if (MEGS.debug.enabled) {
+                                console.log(`    +2 for alwaysSubstitute → FC=${fc}`);
+                            }
+                        }
+
+                        // Hardened Defenses add +2 to BODY FC
+                        if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
+                            fc += 2;
+                            if (MEGS.debug.enabled) {
+                                console.log(`    +2 for Hardened Defenses → FC=${fc}`);
+                            }
+                        }
+
+                        fc = Math.max(1, fc); // Minimum FC of 1
+                        const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
+                        if (MEGS.debug.enabled) {
+                            console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
+                        }
+                        totalCost += attrCost;
+                    }
+                }
+            }
+
+            // Calculate AV cost (actionValue) - Base Cost 5, FC 1
+            if (systemData.actionValue > 0) {
+                const fc = Math.max(1, 1 + reliabilityMod);
+                totalCost += 5; // Base cost
+                totalCost += MEGS.getAPCost(systemData.actionValue, fc) || 0;
+            }
+
+            // Calculate EV cost (effectValue) - Base Cost 5, FC 1
+            if (systemData.effectValue > 0) {
+                const fc = Math.max(1, 1 + reliabilityMod);
+                totalCost += 5; // Base cost
+                totalCost += MEGS.getAPCost(systemData.effectValue, fc) || 0;
+            }
+
+            // Calculate Range cost (if exists) - Base Cost 5, FC 1
+            // Check both systemData.range and systemData.weapon.range for compatibility
+            const rangeValue = systemData.range || systemData.weapon?.range || 0;
+            if (rangeValue > 0) {
+                const fc = Math.max(1, 1 + reliabilityMod);
+                totalCost += 5; // Base cost
+                totalCost += MEGS.getAPCost(rangeValue, fc) || 0;
+            }
+
+            // Add child item costs (only direct children: powers, skills, advantages, drawbacks)
+            // Bonuses, limitations, and subskills are counted as part of their parent item's cost
+            if (MEGS.debug.enabled) {
+                console.log(`  Checking for child items - has parent: ${!!this.parent}, has parent.items: ${!!this.parent?.items}`);
+            }
+            if (this.parent && this.parent.items) {
+                if (MEGS.debug.enabled) {
+                    console.log(`  Parent has ${this.parent.items.size} items`);
+                }
+                let childItemsFound = 0;
+                this.parent.items.forEach(item => {
+                    if (item.system.parent === this.id) {
+                        childItemsFound++;
+
+                        // Calculate cost directly for powers and skills (don't rely on totalCost being ready)
+                        let itemCost = 0;
+                        if ((item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+                            item.system.aps > 0) {
+                            // Check if factorCost is missing or invalid
+                            if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
+                                console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
+                                if (MEGS.debug.enabled) {
+                                    console.log(`     Full system data:`, item.system);
+                                }
+                            }
+
+                            // Calculate effective FC (with linking bonus if applicable)
+                            let effectiveFC = item.system.factorCost;
+                            if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+                                effectiveFC = Math.max(1, effectiveFC - 2);
+                            }
+                            itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
+                        } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
+                            // For advantages/drawbacks, use their totalCost or baseCost
+                            itemCost = item.system.totalCost || item.system.baseCost || 0;
+                        }
+
+                        if (MEGS.debug.enabled) {
+                            console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
+                        }
+
+                        if (itemCost > 0) {
+                            if (item.type === MEGS.itemTypes.power ||
+                                item.type === MEGS.itemTypes.skill ||
+                                item.type === MEGS.itemTypes.advantage) {
+                                totalCost += itemCost;
+                            } else if (item.type === MEGS.itemTypes.drawback) {
+                                totalCost -= itemCost;
+                            }
+                        }
+                    }
+                });
+                if (MEGS.debug.enabled) {
+                    console.log(`  Total child items found: ${childItemsFound}`);
+                }
+            } else {
+                if (MEGS.debug.enabled) {
+                    console.log(`  Cannot check child items - parent or parent.items not available`);
+                }
+            }
+
+            // Apply Gadget Bonus (divide by 4 if can be Taken Away, 2 if cannot)
+            const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
+            if (MEGS.debug.enabled) {
+                console.log(`  Subtotal: ${totalCost} HP`);
+                console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
+            }
+            totalCost = Math.ceil(totalCost / gadgetBonus);
+            if (MEGS.debug.enabled) {
+                console.log(`  Final Cost: ${totalCost} HP`);
+            }
+
+            systemData.totalCost = totalCost;
+            this.totalCost = totalCost;
+        }
+        // Calculate total cost for powers, skills, advantages, drawbacks (but not gadgets or subskills)
+        else if (systemData.hasOwnProperty('baseCost')) {
             if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
-                systemData.totalCost = systemData.baseCost + systemData.factorCost * systemData.aps;
+                // Subskills don't have costs - skip validation and calculation for them
+                // Only validate factorCost for actual powers and skills
+                if (this.type !== MEGS.itemTypes.subskill &&
+                    (systemData.factorCost === 0 || systemData.factorCost === undefined || systemData.factorCost === null)) {
+                    console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
+                }
+
+                // Check if power/skill is linked to an attribute
+                // Linking reduces Factor Cost by 2 (minimum 1)
+                let effectiveFC = systemData.factorCost;
+                if (systemData.isLinked === 'true' || systemData.isLinked === true) {
+                    effectiveFC = Math.max(1, effectiveFC - 2);
+                }
+
+                // Calculate total cost using AP Purchase Chart
+                // If APs == 0: Total Cost = 0 (not purchased yet)
+                // If APs > 0 and FC > 0: Total Cost = Base Cost + AP Purchase Chart(APs, Factor Cost)
+                // If APs > 0 and FC == 0: Base cost only power (e.g., Self-Link)
+                if ((systemData.aps || 0) === 0) {
+                    systemData.totalCost = 0;
+                } else if (effectiveFC > 0) {
+                    // Use AP Purchase Chart for APs cost
+                    const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+                        ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
+                        : (effectiveFC * (systemData.aps || 0)); // Fallback to linear if chart not available
+                    systemData.totalCost = systemData.baseCost + apCost;
+                } else {
+                    // Base cost only power (no Factor Cost or FC is 0)
+                    systemData.totalCost = systemData.baseCost || 0;
+                }
             } else {
                 systemData.totalCost = systemData.baseCost;
             }

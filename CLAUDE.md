@@ -196,6 +196,8 @@ Issues are tracked on GitHub: https://github.com/worldsofwondergames/megs/issues
 - If I tell you to commit a change, go ahead and push it as well
 - Avoid SCSS changes if possible. If it does not seem possible, prompt me before making the change.
 - Update CHANGELOG.md with any significant changes you commit and push. Do not add anything relating to development documentation including Claude docs
-- Never add any statements related to Claude or Claude COde in commit messages or CHANGELOG.md. Use succinct commit comments.
+- Do not include bug fixes for the current development branch in CHANGELOG.md - only add enhancements and new features
+- Never add any statements related to Claude or Claude Code in commit messages or CHANGELOG.md. Use succinct commit comments.
 - Combine commit and push into a single command
 - When I say to do final cleanup, return the URLs in system.json to the base branch, update CHANGELOG.md, commit, and push without prompting me. This will be an exception to my directive not to push without prompting me.
+- When asked to update system.json to the current branch, always use "git branch --show-current" to check the current branch before making any changes

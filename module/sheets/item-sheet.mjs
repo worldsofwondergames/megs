@@ -985,7 +985,7 @@ export class MEGSItemSheet extends ItemSheet {
             subItem = await MEGSItem.create(itemData, {});
         }
         subItem.apps[this.appId] = this;
-        this.render(true);
+        this.render(false);
         return subItem;
     }
 
@@ -1209,7 +1209,7 @@ export class MEGSItemSheet extends ItemSheet {
         itemData.system.parent = this.object._id; // link subitem to item
         itemData = itemData instanceof Array ? itemData : [itemData];
         const item = await this.object.parent.createEmbeddedDocuments('Item', itemData);
-        this.render(true);
+        this.render(false);
         return item;
     }
 

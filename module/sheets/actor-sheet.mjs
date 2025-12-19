@@ -468,6 +468,9 @@ export class MEGSActorSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Restore accordion state after render
+        this._restoreAccordionState(html);
+
         html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
 
         // Render the item sheet for viewing/editing prior to the editable check.
@@ -512,6 +515,9 @@ export class MEGSActorSheet extends ActorSheet {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item && (item.type === 'skill' || item.type === 'power')) {
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
                 const newValue = (item.system.aps || 0) + 1;
                 await item.update({ 'system.aps': newValue });
                 this.render(false);
@@ -526,8 +532,45 @@ export class MEGSActorSheet extends ActorSheet {
                 (item.type === 'skill' || item.type === 'power') &&
                 (item.system.aps || 0) > 0
             ) {
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
                 const newValue = (item.system.aps || 0) - 1;
                 await item.update({ 'system.aps': newValue });
+                this.render(false);
+            }
+        });
+
+        // Skill accordion toggle
+        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => {
+            ev.preventDefault();
+            const skillRow = $(ev.currentTarget).closest('.skill-row');
+            const skillId = skillRow.data('itemId');
+            const isExpanded = skillRow.data('expanded');
+            const icon = $(ev.currentTarget);
+
+            if (isExpanded) {
+                // Collapse - hide subskills
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
+                icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                skillRow.data('expanded', false);
+            } else {
+                // Expand - show subskills
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
+                icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                skillRow.data('expanded', true);
+            }
+        });
+
+        // Subskill isTrained checkbox
+        html.on('change', '.subskill-checkbox', async (ev) => {
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && item.type === 'subskill') {
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
+                await item.update({ 'system.isTrained': ev.currentTarget.checked });
                 this.render(false);
             }
         });
@@ -747,5 +790,41 @@ export class MEGSActorSheet extends ActorSheet {
     _toggleEditMode(_e) {
         const currentValue = this.actor.getFlag('megs', 'edit-mode');
         this.actor.setFlag('megs', 'edit-mode', !currentValue);
+    }
+
+    /**
+     * Save the current accordion state (which skills are expanded)
+     * @param {jQuery} html
+     * @private
+     */
+    _saveAccordionState(html) {
+        const state = {};
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const isExpanded = $(row).data('expanded');
+            state[skillId] = isExpanded;
+        });
+        this._accordionState = state;
+    }
+
+    /**
+     * Restore the accordion state after re-render
+     * @param {jQuery} html
+     * @private
+     */
+    _restoreAccordionState(html) {
+        if (!this._accordionState) return;
+
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const wasExpanded = this._accordionState[skillId];
+
+            if (wasExpanded) {
+                // Restore expanded state
+                $(row).data('expanded', true);
+                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
+            }
+        });
     }
 }

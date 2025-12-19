@@ -96,6 +96,7 @@ export class MEGSItemSheet extends ItemSheet {
 
         if (itemData.type === MEGS.itemTypes.subskill) {
             context.skillHasRanks = false;
+            context.parentSkillAPs = 0;
 
             // if has APs, those are effective
             if (this.object.system.aps > 0) {
@@ -108,14 +109,19 @@ export class MEGSItemSheet extends ItemSheet {
                     var skill = actor.items.filter((obj) => {
                         return obj._id === context.document.system.parent;
                     })[0];
-                    if (skill.system.aps > 0) {
-                        context.effectiveAPs = skill.system.aps;
-                        context.isUnskilled = false;
-                        context.skillHasRanks = true;
+                    if (skill) {
+                        context.parentSkillAPs = skill.system.aps || 0;
+                        if (skill.system.aps > 0) {
+                            context.effectiveAPs = skill.system.aps;
+                            context.isUnskilled = false;
+                            context.skillHasRanks = true;
+                        } else {
+                            // if no APs for parent, fall back to linked skill
+                            context.effectiveAPs = actor.system.attributes[skill.system.link].value;
+                            context.isUnskilled = true;
+                        }
                     } else {
-                        // if no APs for parent, fall back to linked skill
-                        context.effectiveAPs = actor.system.attributes[skill.system.link].value;
-                        context.isUnskilled = true;
+                        context.effectiveAPs = 0;
                     }
                 } else {
                     context.effectiveAPs = 0;

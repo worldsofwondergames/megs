@@ -399,7 +399,7 @@ export class MEGSItemSheet extends ItemSheet {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.traitData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
-                    this.render(true);
+                    this.render(false);
                 }
             } else if (isStandaloneGadget && isVirtualPower) {
                 // Standalone gadget - delete virtual power from powerData
@@ -410,7 +410,7 @@ export class MEGSItemSheet extends ItemSheet {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.powerData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
-                    this.render(true);
+                    this.render(false);
                 }
             } else if (this.object.parent) {
                 // Gadget owned by actor - delete real item

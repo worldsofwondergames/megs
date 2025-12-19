@@ -393,9 +393,22 @@ export class MEGSItem extends Item {
                     console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
                 }
 
+                // For skills with subskills, calculate effective Factor Cost
+                // Formula: Base Factor Cost - (Number of Untrained Subskills)
+                let effectiveFC = systemData.factorCost;
+                if (this.type === MEGS.itemTypes.skill && this.parent) {
+                    const subskills = this.parent.items.filter(i =>
+                        i.type === MEGS.itemTypes.subskill && i.system.parent === this.id
+                    );
+                    if (subskills.length > 0) {
+                        const trainedCount = subskills.filter(s => s.system.isTrained).length;
+                        const untrainedCount = subskills.length - trainedCount;
+                        effectiveFC = systemData.factorCost - untrainedCount;
+                    }
+                }
+
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                let effectiveFC = systemData.factorCost;
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
                     effectiveFC = Math.max(1, effectiveFC - 2);
                 }

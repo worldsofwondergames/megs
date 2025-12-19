@@ -257,6 +257,8 @@ export class MEGSItemSheet extends ItemSheet {
                 const subskill = this.object.parent.items.get(subskillId);
                 if (subskill) {
                     await subskill.update({ 'system.isTrained': checkbox.checked });
+                    // Re-render to update effective Factor Cost display
+                    this.render(false);
                 }
             }
         });
@@ -678,6 +680,18 @@ export class MEGSItemSheet extends ItemSheet {
             });
 
             context.subskills = subskills;
+
+            // Calculate effective Factor Cost based on trained subskills
+            // Formula: Base Factor Cost - (Number of Untrained Subskills)
+            if (subskills.length > 0) {
+                const trainedCount = subskills.filter(s => s.system.isTrained).length;
+                const untrainedCount = subskills.length - trainedCount;
+                const baseFactor = context.item.system.factorCost || 0;
+                context.system.effectiveFactorCost = baseFactor - untrainedCount;
+            } else {
+                // No subskills, use base factor cost
+                context.system.effectiveFactorCost = context.item.system.factorCost || 0;
+            }
         }
     }
 

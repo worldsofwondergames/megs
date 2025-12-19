@@ -245,6 +245,22 @@ export class MEGSItemSheet extends ItemSheet {
             this.render(false);
         });
 
+        // Handle subskill trained checkbox changes
+        html.on('change', '.subskills input[type="checkbox"][name^="items."]', async (ev) => {
+            ev.preventDefault();
+            const checkbox = ev.currentTarget;
+            const name = checkbox.name;
+            // Extract subskill ID from name like "items.{id}.system.isTrained"
+            const match = name.match(/^items\.(.+?)\.system\.isTrained$/);
+            if (match && this.object.parent) {
+                const subskillId = match[1];
+                const subskill = this.object.parent.items.get(subskillId);
+                if (subskill) {
+                    await subskill.update({ 'system.isTrained': checkbox.checked });
+                }
+            }
+        });
+
         // Skill APs increment/decrement
         html.on('click', '.ap-plus', async (ev) => {
             ev.preventDefault();

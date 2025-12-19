@@ -124,3 +124,16 @@
 - Fixed subskills incorrectly triggering invalid Factor Cost validation errors
 - Added support for base cost only powers without Factor Cost
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
+- Ensured current condition tracks (currentBody, currentMind, currentSpirit) are initialized in prepareBaseData()
+
+### Testing
+
+- Added comprehensive test coverage for character budget calculations
+  - Attribute cost calculations with different Factor Costs
+  - Proper exclusion of child items from budget totals
+  - Drawback handling in budget calculations
+  - Total spent and remaining HP calculations
+- Added test coverage for Reliability Number index-to-value conversion
+  - R# 0 (+3 to FC), R# 2 (+2 to FC), R# 5 (no modifier), R# 11 (-3 to FC)
+- Added test coverage for base cost only powers (FC 0)
+- Fixed test infrastructure to include CONFIG.reliabilityScores and proper Actor mock methods

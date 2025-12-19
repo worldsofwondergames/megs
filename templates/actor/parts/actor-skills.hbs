@@ -68,7 +68,7 @@
             <li class='item flexrow item-row modifier-row subskill-row' data-item-id='{{subskill._id}}' data-parent-id='{{item._id}}' style='display: none;'>
                 <div class='item-toggle'></div>
                 <div class='item-name modifier-name'>
-                    <input type="checkbox" class="subskill-checkbox" {{checked subskill.system.isTrained}} data-item-id="{{subskill._id}}" {{#if (compare item.system.aps "===" 0)}}disabled{{/if}} {{#unless ../flags.megs.edit-mode}}disabled{{/unless}} />
+                    <input type="checkbox" class="subskill-checkbox" {{checked subskill.system.isTrained}} data-item-id="{{subskill._id}}" {{#if (compare item.system.aps "===" 0)}}disabled{{/if}} {{#unless ../../flags.megs.edit-mode}}disabled{{/unless}} />
                     <span style="display: inline-block; width: 10px;"></span>{{subskill.name}}
                 </div>
                 <div class='item-aps'></div>

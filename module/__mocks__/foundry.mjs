@@ -180,7 +180,18 @@ class Actor {
         });
     }
 
-    prepareData() {}
+    prepareData() {
+        this.prepareBaseData();
+        this.prepareDerivedData();
+    }
+
+    prepareBaseData() {
+        // Override in subclass
+    }
+
+    prepareDerivedData() {
+        // Override in subclass
+    }
 
     getRollData() {
         return this.system;

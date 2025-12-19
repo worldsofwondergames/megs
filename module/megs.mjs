@@ -264,12 +264,12 @@ Handlebars.registerHelper('getSkillDisplayName', function (skill) {
     if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
         let subskillText = ' (';
         skill.subskills.forEach((subskill) => {
-            if (subskill.system.aps > 0) {
+            if (subskill.system.isTrained) {
                 if (subskillText !== ' (') {
-                    subskillText += ' ,';
+                    subskillText += ', ';
                 }
                 // No need to show " Weapons" after every weapon type
-                subskillText += subskill.name.replace(' Weapons', '') + ' ' + subskill.system.aps;
+                subskillText += subskill.name.replace(' Weapons', '');
             }
         });
         subskillText += ')';

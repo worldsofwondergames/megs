@@ -194,8 +194,7 @@ export class MEGSItemSheet extends ItemSheet {
             const isDice = skill.system.type === MEGS.powerTypes.dice.toLowerCase();
             const isBoth = skill.system.type === MEGS.powerTypes.both.toLowerCase();
             const isRollable =
-                itemData.system.aps > 0 || // if subskill has APs
-                skill.system.aps > 0 || // or skill has APs
+                (itemData.system.isTrained && skill.system.aps > 0) || // if subskill is trained and parent skill has APs
                 itemData.system.useUnskilled === 'true'; // or subskill can be rolled unskilled
 
             return (isDice || isBoth) && isRollable;
@@ -884,15 +883,15 @@ export class MEGSItemSheet extends ItemSheet {
      * @returns {boolean}
      */
     _doSubskillsHaveAPs(skill) {
-        let doSubskillsHaveAPs = false;
+        let hasTrainedSubskills = false;
         if (skill.subskills && skill.subskills.length > 0) {
             skill.subskills.forEach((subskill) => {
-                if (subskill.system.aps > 0) {
-                    doSubskillsHaveAPs = true;
+                if (subskill.system.isTrained) {
+                    hasTrainedSubskills = true;
                 }
             });
         }
-        return doSubskillsHaveAPs;
+        return hasTrainedSubskills;
     }
 
     /**

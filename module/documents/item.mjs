@@ -34,6 +34,28 @@ export class MEGSItem extends Item {
         }
     }
 
+    /** @override */
+    async _onUpdate(changed, options, userId) {
+        await super._onUpdate(changed, options, userId);
+
+        // When a skill's APs reach 0, set all subskills to isTrained = true
+        if (this.type === MEGS.itemTypes.skill && changed.system?.aps === 0 && this.parent) {
+            const subskills = this.parent.items.filter(i =>
+                i.type === MEGS.itemTypes.subskill && i.system.parent === this.id
+            );
+
+            // Update all subskills to trained
+            const updates = subskills.map(subskill => ({
+                _id: subskill.id,
+                'system.isTrained': true
+            }));
+
+            if (updates.length > 0) {
+                await this.parent.updateEmbeddedDocuments('Item', updates);
+            }
+        }
+    }
+
 
     async _initializeSkillData() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');

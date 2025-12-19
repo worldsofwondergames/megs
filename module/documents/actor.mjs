@@ -113,6 +113,22 @@ export class MEGSActor extends Actor {
                 this.system.attributes[key].value = 0;
             }
         }
+
+        // Ensure current condition tracks exist
+        if (!this.system.currentBody) {
+            this.system.currentBody = { value: 0, min: 0, max: 60 };
+        }
+        if (!this.system.currentMind) {
+            this.system.currentMind = { value: 0, min: 0, max: 60 };
+        }
+        if (!this.system.currentSpirit) {
+            this.system.currentSpirit = { value: 0, min: 0, max: 60 };
+        }
+
+        // Ensure creation budget exists
+        if (!this.system.creationBudget) {
+            this.system.creationBudget = { base: 450 };
+        }
     }
     /**
      * @override

@@ -162,7 +162,7 @@ export class MEGSActorSheet extends ActorSheet {
                 context.filteredSkills = context.skills;
             } else {
                 context.skills.forEach((skill) => {
-                    if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                    if (skill.system.aps > 0) {
                         context.filteredSkills.push(skill);
                     }
                 });

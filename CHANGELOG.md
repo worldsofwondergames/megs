@@ -128,12 +128,4 @@
 
 ### Testing
 
-- Added comprehensive test coverage for character budget calculations
-  - Attribute cost calculations with different Factor Costs
-  - Proper exclusion of child items from budget totals
-  - Drawback handling in budget calculations
-  - Total spent and remaining HP calculations
-- Added test coverage for Reliability Number index-to-value conversion
-  - R# 0 (+3 to FC), R# 2 (+2 to FC), R# 5 (no modifier), R# 11 (-3 to FC)
-- Added test coverage for base cost only powers (FC 0)
-- Fixed test infrastructure to include CONFIG.reliabilityScores and proper Actor mock methods
+- Added test coverage for character budget calculations, reliability number conversion, and base cost only powers

@@ -597,17 +597,14 @@ export class MEGSItemSheet extends ItemSheet {
                 for (let i of this.object.parent.items) {
                     if (i.type === MEGS.itemTypes.subskill) {
                         if (i.system.parent === context.item._id) {
-                            // TODO parent ID
-                            // if subskill has APs
-                            // or skill has APs
-                            // or subskill can be rolled unskilled
+                            // Subskills inherit APs from parent skill
+                            // Determine rollability: skill has APs and subskill is trained, OR subskill can be used unskilled
                             if (
-                                i.system.aps > 0 ||
-                                context.item.system.aps > 0 ||
+                                (i.system.isTrained && context.item.system.aps > 0) ||
                                 i.system.useUnskilled === 'true'
                             ) {
                                 i.isRollable = true;
-                                if (i.system.aps === 0 && context.item.system.aps === 0) {
+                                if (context.item.system.aps === 0) {
                                     // unskilled
                                     i.isUnskilled = true;
                                     const actor = context.document.parent;
@@ -615,16 +612,14 @@ export class MEGSItemSheet extends ItemSheet {
                                         actor.system.attributes[context.item.system.link].value;
                                 } else {
                                     i.isUnskilled = false;
-                                    i.effectiveAPs = Math.max(
-                                        i.system.aps,
-                                        context.item.system.aps
-                                    );
+                                    i.effectiveAPs = context.item.system.aps;
                                 }
                             } else {
                                 i.isUnskilled = false;
                                 i.isRollable = false;
                                 i.effectiveAPs = 0;
                             }
+                            // Always add all subskills to the list
                             subskills.push(i);
                         }
                     }

@@ -121,3 +121,36 @@
     flex: 0 0 200px;
     padding: 0 8px;
 }
+
+// Actor Sheet Skills Tab Accordion Styles
+.megs.sheet.actor {
+    .tab.skills {
+        .items-list {
+            .skill-row {
+                background-color: #e8f4f8; // Light blue for skills
+            }
+
+            .subskill-row {
+                background-color: #ffffff; // White for subskills
+            }
+
+            .item-toggle {
+                flex: 0 0 25px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .toggle-icon {
+                color: #666;
+                font-size: 0.85em;
+                transition: transform 0.2s ease;
+
+                &:hover {
+                    color: #000;
+                }
+            }
+        }
+    }
+}

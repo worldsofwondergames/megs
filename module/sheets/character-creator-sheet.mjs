@@ -7,13 +7,13 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     static get defaultOptions() {
         let newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
-        newOptions.width = 600;
+        newOptions.width = 650;
         newOptions.height = 600;
         newOptions.tabs = [
             {
                 navSelector: '.sheet-tabs',
                 contentSelector: '.sheet-body',
-                initial: 'abilities',
+                initial: 'attributes',
             },
         ];
         return newOptions;
@@ -22,5 +22,425 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     /** @override */
     get template() {
         return `systems/megs/templates/actor/character-creator-sheet.hbs`;
+    }
+
+    /** @override */
+    async getData() {
+        const context = await super.getData();
+
+        // Ensure context.system exists
+        if (!context.system) {
+            context.system = this.actor.system;
+        }
+
+        // Prepare powers for the Powers tab (exclude powers that belong to gadgets)
+        context.powers = this.actor.items.filter(i => i.type === 'power' && !i.system.parent);
+
+        // Prepare skills for the Skills tab (exclude skills that belong to gadgets)
+        context.skills = this.actor.items.filter(i => i.type === 'skill' && !i.system.parent);
+
+        // Prepare advantages and drawbacks for the Traits tab (exclude those that belong to gadgets)
+        context.advantages = this.actor.items.filter(i => i.type === 'advantage' && !i.system.parent);
+        context.drawbacks = this.actor.items.filter(i => i.type === 'drawback' && !i.system.parent);
+
+        // Prepare gadgets for the Gadgets tab (exclude sub-gadgets that belong to other gadgets)
+        context.gadgets = this.actor.items.filter(i => i.type === 'gadget' && !i.system.parent);
+        // Set ownerId on each gadget so getGadgetDescription can find powers/skills
+        context.gadgets.forEach(gadget => {
+            gadget.ownerId = this.actor._id;
+        });
+
+        // Provide all items for helpers (getPowerModifiers, getSkillSubskills, etc.)
+        const allItems = Array.from(this.actor.items);
+        context.items = allItems;
+
+        // Provide wealth data from CONFIG
+        context.wealthData = CONFIG.wealth;
+
+        // Ensure wealth fields are initialized in the database
+        await this._ensureWealthInitialized();
+
+        // Ensure wealth values are always numbers (Foundry form handling can convert to string)
+        if (context.system.wealth !== undefined && context.system.wealth !== null) {
+            context.system.wealth = parseInt(context.system.wealth);
+        }
+        if (context.system.wealthYear !== undefined && context.system.wealthYear !== null) {
+            context.system.wealthYear = parseInt(context.system.wealthYear);
+        }
+
+        // Debug: Log wealth value in getData
+        console.log('getData - wealth value:', context.system.wealth, 'type:', typeof context.system.wealth);
+
+        // Check if actor needs attribute initialization and fix it in the database
+        await this._ensureAttributesInitialized();
+
+        // Ensure attributes are properly initialized in the context for rendering
+        // This fixes issues where older actors might have undefined or malformed attribute data
+        const defaultAttributes = {
+            dex: { value: 0, factorCost: 7, label: 'Dexterity', type: 'physical', rolls: ['action', 'opposing'] },
+            str: { value: 0, factorCost: 6, label: 'Strength', type: 'physical', rolls: ['effect'] },
+            body: { value: 0, factorCost: 6, label: 'Body', type: 'physical', rolls: ['resistance'] },
+            int: { value: 0, factorCost: 7, label: 'Intelligence', type: 'mental', rolls: ['action', 'opposing'] },
+            will: { value: 0, factorCost: 6, label: 'Will', type: 'mental', rolls: ['effect'] },
+            mind: { value: 0, factorCost: 6, label: 'Mind', type: 'mental', rolls: ['resistance'] },
+            infl: { value: 0, factorCost: 7, label: 'Influence', type: 'mystical', rolls: ['action', 'opposing'] },
+            aura: { value: 0, factorCost: 6, label: 'Aura', type: 'mystical', rolls: ['effect'] },
+            spirit: { value: 0, factorCost: 6, label: 'Spirit', type: 'mystical', rolls: ['resistance'] }
+        };
+
+        if (!context.system.attributes) {
+            context.system.attributes = {};
+        }
+
+        for (const [key, defaultAttr] of Object.entries(defaultAttributes)) {
+            if (!context.system.attributes[key]) {
+                context.system.attributes[key] = { ...defaultAttr };
+            } else {
+                // Ensure the value property exists
+                if (context.system.attributes[key].value === undefined || context.system.attributes[key].value === null) {
+                    context.system.attributes[key].value = 0;
+                }
+            }
+        }
+
+        return context;
+    }
+
+    /** @override */
+    activateListeners(html) {
+        super.activateListeners(html);
+
+        // Item delete handler with cascade delete for modifiers
+        html.on('click', '.item-delete', async (ev) => {
+            const li = $(ev.currentTarget).parents('.item');
+            const item = this.actor.items.get(li.data('itemId'));
+
+            // If deleting a power or skill, also delete all associated bonuses/limitations
+            if (item.type === 'power' || item.type === 'skill') {
+                const modifiers = this.actor.items.filter(i =>
+                    (i.type === 'bonus' || i.type === 'limitation') &&
+                    i.system.parent === item._id
+                );
+                const modifierIds = modifiers.map(m => m._id);
+                if (modifierIds.length > 0) {
+                    await this.actor.deleteEmbeddedDocuments('Item', modifierIds);
+                }
+            }
+
+            await item.delete();
+            li.slideUp(200, () => this.render(false));
+        });
+
+        // Power/Skill APs increment
+        html.on('click', '.ap-plus', async (ev) => {
+            ev.preventDefault();
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && (item.type === 'skill' || item.type === 'power')) {
+                const newValue = (item.system.aps || 0) + 1;
+
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
+                await item.update({ 'system.aps': newValue });
+                this.render(false);
+            }
+        });
+
+        // Power/Skill APs decrement
+        html.on('click', '.ap-minus', async (ev) => {
+            ev.preventDefault();
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && (item.type === 'skill' || item.type === 'power') && (item.system.aps || 0) > 0) {
+                const newValue = (item.system.aps || 0) - 1;
+
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
+                await item.update({ 'system.aps': newValue });
+                this.render(false);
+            }
+        });
+
+        // Power/Skill isLinked checkbox
+        html.on('change', 'input[name="system.isLinked"]', async (ev) => {
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item) {
+                await item.update({ 'system.isLinked': ev.currentTarget.checked });
+                this.render(false);
+            }
+        });
+
+        // Subskill isTrained checkbox
+        html.on('change', '.subskill-checkbox', async (ev) => {
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item && item.type === 'subskill') {
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
+                await item.update({ 'system.isTrained': ev.currentTarget.checked });
+                this.render(false);
+            }
+        });
+
+        // Enable drag-and-drop for Bonuses/Limitations onto Powers
+        this._enablePowerRowDropZones(html);
+
+        // Skill accordion toggle
+        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => {
+            ev.preventDefault();
+            const skillRow = $(ev.currentTarget).closest('.skill-row');
+            const skillId = skillRow.data('itemId');
+            const isExpanded = skillRow.data('expanded');
+            const icon = $(ev.currentTarget);
+
+            if (isExpanded) {
+                // Collapse - hide subskills
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
+                icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                skillRow.data('expanded', false);
+            } else {
+                // Expand - show subskills
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
+                icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                skillRow.data('expanded', true);
+            }
+        });
+
+        // Wealth inflation adjustment checkbox
+        html.on('change', '.wealth-inflation-checkbox', async (ev) => {
+            ev.preventDefault();
+            const isChecked = ev.currentTarget.checked;
+
+            // Store current wealth selection to restore after render
+            const currentWealth = parseInt(this.actor.system.wealth ?? 0);
+            console.log('Checkbox change - current wealth:', currentWealth, 'checked:', isChecked);
+
+            // If unchecking, reset year to 1990
+            if (!isChecked) {
+                await this.actor.update({
+                    'system.wealthAdjustForInflation': false,
+                    'system.wealthYear': 1990,
+                    'system.wealth': currentWealth  // Preserve wealth selection
+                });
+            } else {
+                await this.actor.update({
+                    'system.wealthAdjustForInflation': true,
+                    'system.wealth': currentWealth  // Preserve wealth selection
+                });
+            }
+            console.log('After update - wealth:', this.actor.system.wealth);
+        });
+
+        // Wealth year selection
+        html.on('change', '.wealth-year-select', async (ev) => {
+            ev.preventDefault();
+            const selectedYear = parseInt(ev.currentTarget.value);
+
+            // Store current wealth selection to restore after render
+            const currentWealth = parseInt(this.actor.system.wealth ?? 0);
+            console.log('Year change - current wealth:', currentWealth, 'new year:', selectedYear);
+
+            await this.actor.update({
+                'system.wealthYear': selectedYear,
+                'system.wealth': currentWealth  // Preserve wealth selection
+            });
+            console.log('After update - wealth:', this.actor.system.wealth);
+        });
+
+        // Wealth radio button selection
+        html.on('change', '.wealth-radio', async (ev) => {
+            ev.preventDefault();
+            const selectedAP = parseInt(ev.currentTarget.value);
+            await this.actor.update({ 'system.wealth': selectedAP });
+        });
+
+        // Restore accordion state after render
+        this._restoreAccordionState(html);
+    }
+
+    /**
+     * Enable each power row as a drop zone for Bonuses and Limitations
+     * @param {jQuery} html
+     * @private
+     */
+    _enablePowerRowDropZones(html) {
+        const powerRows = html.find('.tab.powers .item-row');
+
+        powerRows.each((i, row) => {
+            row.addEventListener('dragover', this._onDragOver.bind(this));
+            row.addEventListener('drop', this._onDropOnPower.bind(this));
+        });
+    }
+
+    /**
+     * Handle dragover event to allow dropping
+     * @param {DragEvent} event
+     * @private
+     */
+    _onDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+    }
+
+    /**
+     * Handle dropping a Bonus or Limitation onto a Power
+     * @param {DragEvent} event
+     * @private
+     */
+    async _onDropOnPower(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Get the power ID from the row
+        const row = event.currentTarget;
+        const powerId = row.dataset.itemId;
+
+        if (!powerId) return;
+
+        // Get the dropped item data
+        const data = TextEditor.getDragEventData(event);
+        const droppedItem = await Item.implementation.fromDropData(data);
+
+        if (!droppedItem) return;
+
+        // Only allow Bonuses and Limitations
+        if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
+            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            return;
+        }
+
+        // Create the item data with parent set to the power
+        const itemData = droppedItem.toObject();
+        itemData.system.parent = powerId;
+
+        // Create the item on the actor
+        await this.actor.createEmbeddedDocuments('Item', [itemData]);
+
+        ui.notifications.info(`${droppedItem.name} attached to power.`);
+        this.render(false);
+    }
+
+    /**
+     * Ensure actor attributes are properly initialized in the database
+     * This fixes actors created before the attribute system was fully implemented
+     */
+    async _ensureAttributesInitialized() {
+        const actor = this.actor;
+        const attributes = actor.system.attributes;
+
+        // Check if any attributes are missing or have undefined values
+        let needsUpdate = false;
+        const updates = {};
+
+        const attributeKeys = ['dex', 'str', 'body', 'int', 'will', 'mind', 'infl', 'aura', 'spirit'];
+
+        for (const key of attributeKeys) {
+            if (!attributes || !attributes[key] || attributes[key].value === undefined || attributes[key].value === null) {
+                needsUpdate = true;
+                // Only update if value is actually missing - preserve existing values
+                if (!attributes || !attributes[key] || attributes[key].value === undefined || attributes[key].value === null) {
+                    updates[`system.attributes.${key}.value`] = 0;
+                }
+            }
+        }
+
+        // Update the actor if needed
+        if (needsUpdate) {
+            console.log('MEGS Character Creator: Initializing missing attributes for actor', actor.name);
+            await actor.update(updates);
+        }
+    }
+
+    /**
+     * Ensure wealth fields are properly initialized in the database
+     * This fixes actors created before the wealth system was implemented
+     */
+    async _ensureWealthInitialized() {
+        const actor = this.actor;
+        let needsUpdate = false;
+        const updates = {};
+
+        // Check if wealth fields are missing or invalid
+        if (actor.system.wealth === undefined || actor.system.wealth === null) {
+            needsUpdate = true;
+            updates['system.wealth'] = 0;
+        }
+
+        if (actor.system.wealthYear === undefined || actor.system.wealthYear === null) {
+            needsUpdate = true;
+            updates['system.wealthYear'] = 1990;
+        }
+
+        if (actor.system.wealthAdjustForInflation === undefined || actor.system.wealthAdjustForInflation === null) {
+            needsUpdate = true;
+            updates['system.wealthAdjustForInflation'] = false;
+        }
+
+        // Update the actor if needed
+        if (needsUpdate) {
+            console.log('MEGS Character Creator: Initializing wealth fields for actor', actor.name);
+            await actor.update(updates);
+        }
+    }
+
+    /**
+     * Update wealth table dollar values dynamically without full re-render
+     * @param {jQuery} html
+     * @private
+     */
+    _updateWealthTableValues(html) {
+        const wealthData = CONFIG.wealth;
+        const currentYear = this.actor.system.wealthYear || 1990;
+
+        if (!wealthData || !wealthData.wealth_table) return;
+
+        // Update each row's dollar value
+        wealthData.wealth_table.forEach(row => {
+            const dollarValue = row[currentYear];
+            if (dollarValue !== undefined) {
+                const formattedValue = dollarValue.toLocaleString('en-US');
+                html.find(`.wealth-value-col[data-ap="${row.ap}"]`).text(`$${formattedValue}`);
+            }
+        });
+    }
+
+    /**
+     * Save the current accordion state for skills
+     * @param {jQuery} html
+     * @private
+     */
+    _saveAccordionState(html) {
+        const state = {};
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const isExpanded = $(row).data('expanded');
+            state[skillId] = isExpanded;
+        });
+        this._accordionState = state;
+    }
+
+    /**
+     * Restore the accordion state for skills after render
+     * @param {jQuery} html
+     * @private
+     */
+    _restoreAccordionState(html) {
+        if (!this._accordionState) return;
+
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const wasExpanded = this._accordionState[skillId];
+
+            if (wasExpanded) {
+                // Restore expanded state
+                $(row).data('expanded', true);
+                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
+            }
+        });
     }
 }

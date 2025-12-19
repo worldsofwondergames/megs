@@ -212,13 +212,22 @@ export class MEGSItemSheet extends ItemSheet {
         // Initialize subskill checkbox states based on skill APs
         if (this.object.type === 'skill') {
             const skillAps = this.object.system.aps || 0;
+            const isEditMode = this.object.getFlag('megs', 'edit-mode');
             const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
 
             checkboxes.each(function() {
                 const checkbox = $(this);
-                if (skillAps === 0) {
-                    // When skill has 0 APs: ensure checkboxes are checked and disabled
-                    checkbox.prop('checked', true);
+
+                if (!isEditMode || skillAps === 0) {
+                    // Disable checkboxes if not in edit mode or skill has 0 APs
+                    checkbox.prop('disabled', true);
+                    if (skillAps === 0) {
+                        // Force checked when skill has 0 APs
+                        checkbox.prop('checked', true);
+                    }
+                } else {
+                    // Enable checkboxes when in edit mode and skill has 1+ APs
+                    checkbox.prop('disabled', false);
                 }
             });
         }

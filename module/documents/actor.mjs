@@ -303,8 +303,8 @@ export class MEGSActor extends Actor {
         }
 
         // Calculate totals
-        const totalBudget = baseBudget + drawbacksValue;
-        const totalSpent = attributesCost + wealthCost + itemsCost;
+        const totalBudget = baseBudget;
+        const totalSpent = attributesCost + wealthCost + itemsCost - drawbacksValue;
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation

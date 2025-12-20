@@ -102,9 +102,3 @@ See `character-creator-sheet.mjs` and `character-creator-sheet.hbs` for the corr
 - `templates/item/item-skill-sheet.hbs` - Skill item sheet template (may need updates)
 - `module/documents/actor.mjs` - Cost calculation (already updated)
 - `module/megs.mjs` - Handlebars helpers (already updated with new helpers)
-
-TODO:
-
-- Skill item sheet displayed Factor Cost value should change based on the number of checkboxes checked/unchecked
-- When APs of Skill hit zero, isTrained values for all Subskills should be set to true
-- Actor sheet Skills tab should present Skills and Subskills in an accordian like the Character Builder sheet. However, do not display the Base Cost, Factor Cost, and Total Cost columns; show the accordian, the name column (do not show the icons for either Skill or Subskill), APs (in both editable and non-editable depending on which mode) and the rightmost column with the die and edit icons like the current page. The Subskill row should show the isTrained checkbox for the subskill and the name.

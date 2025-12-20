@@ -308,18 +308,18 @@ export class MEGSActor extends Actor {
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation
-        if (MEGS.debug.enabled) {
-            console.log('HP Budget Calculation:', {
-                attributesCost,
-                wealthCost,
-                itemsCost,
-                totalSpent,
-                baseBudget,
-                drawbacksValue,
-                totalBudget,
-                remaining
-            });
-        }
+        console.log(`HP Budget Debug for ${this.name}:`, {
+            baseBudget,
+            attributesCost,
+            wealthCost,
+            itemsCost,
+            drawbacksValue,
+            'itemsCost + attributesCost + wealthCost': itemsCost + attributesCost + wealthCost,
+            totalSpent,
+            totalBudget,
+            remaining,
+            'expected remaining': totalBudget - totalSpent
+        });
 
         // Calculate net traits cost (advantages - drawbacks)
         const traitsCost = advantagesCost - drawbacksValue;

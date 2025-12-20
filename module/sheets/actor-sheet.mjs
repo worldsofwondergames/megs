@@ -462,50 +462,14 @@ export class MEGSActorSheet extends ActorSheet {
         html.on('click', '.item-create', this._onItemCreate.bind(this));
 
         // Delete Inventory Item with cascade delete for modifiers
-        html.on('click', '.item-delete', async (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-
-            // If deleting a power or skill, also delete all associated bonuses/limitations
-            if (item.type === 'power' || item.type === 'skill') {
-                const modifiers = this.actor.items.filter(i =>
-                    (i.type === 'bonus' || i.type === 'limitation') &&
-                    i.system.parent === item._id
-                );
-                const modifierIds = modifiers.map(m => m._id);
-                if (modifierIds.length > 0) {
-                    await this.actor.deleteEmbeddedDocuments('Item', modifierIds);
-                }
-            }
-
-            await item.delete();
-            li.slideUp(200, () => this.render(false));
-        });
+        html.on('click', '.item-delete', (ev) => this._handleItemDelete(ev));
 
         // Skill APs increment/decrement
         html.on('click', '.ap-plus', (ev) => this._handleApChange(ev, html, 1));
         html.on('click', '.ap-minus', (ev) => this._handleApChange(ev, html, -1));
 
         // Skill accordion toggle
-        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => {
-            ev.preventDefault();
-            const skillRow = $(ev.currentTarget).closest('.skill-row');
-            const skillId = skillRow.data('itemId');
-            const isExpanded = skillRow.data('expanded');
-            const icon = $(ev.currentTarget);
-
-            if (isExpanded) {
-                // Collapse - hide subskills
-                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
-                icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
-                skillRow.data('expanded', false);
-            } else {
-                // Expand - show subskills
-                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
-                icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
-                skillRow.data('expanded', true);
-            }
-        });
+        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => this._handleSkillAccordionToggle(ev, html));
 
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
@@ -632,6 +596,57 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         return { effectValue: 0, actionValue: currentActionValue };
+    }
+
+    /**
+     * Handle item deletion with cascade delete for modifiers
+     * @param {Event} event The click event
+     * @private
+     */
+    async _handleItemDelete(event) {
+        const li = $(event.currentTarget).parents('.item');
+        const item = this.actor.items.get(li.data('itemId'));
+
+        // If deleting a power or skill, also delete all associated bonuses/limitations
+        if (item.type === 'power' || item.type === 'skill') {
+            const modifiers = this.actor.items.filter(i =>
+                (i.type === 'bonus' || i.type === 'limitation') &&
+                i.system.parent === item._id
+            );
+            const modifierIds = modifiers.map(m => m._id);
+            if (modifierIds.length > 0) {
+                await this.actor.deleteEmbeddedDocuments('Item', modifierIds);
+            }
+        }
+
+        await item.delete();
+        li.slideUp(200, () => this.render(false));
+    }
+
+    /**
+     * Handle skill accordion toggle
+     * @param {Event} event The click event
+     * @param {jQuery} html The HTML element
+     * @private
+     */
+    _handleSkillAccordionToggle(event, html) {
+        event.preventDefault();
+        const skillRow = $(event.currentTarget).closest('.skill-row');
+        const skillId = skillRow.data('itemId');
+        const isExpanded = skillRow.data('expanded');
+        const icon = $(event.currentTarget);
+
+        if (isExpanded) {
+            // Collapse - hide subskills
+            html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
+            icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+            skillRow.data('expanded', false);
+        } else {
+            // Expand - show subskills
+            html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
+            icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+            skillRow.data('expanded', true);
+        }
     }
 
     /**

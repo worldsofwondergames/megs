@@ -382,14 +382,12 @@ export class MEGSItem extends Item {
                             console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
                         }
 
-                        if (itemCost > 0) {
-                            if (item.type === MEGS.itemTypes.power ||
-                                item.type === MEGS.itemTypes.skill ||
-                                item.type === MEGS.itemTypes.advantage) {
-                                totalCost += itemCost;
-                            } else if (item.type === MEGS.itemTypes.drawback) {
-                                totalCost -= itemCost;
-                            }
+                        // Add all child items (drawbacks are negative, so they reduce cost automatically)
+                        if (item.type === MEGS.itemTypes.power ||
+                            item.type === MEGS.itemTypes.skill ||
+                            item.type === MEGS.itemTypes.advantage ||
+                            item.type === MEGS.itemTypes.drawback) {
+                            totalCost += itemCost;
                         }
                     }
                 });
@@ -465,6 +463,13 @@ export class MEGSItem extends Item {
             } else {
                 systemData.totalCost = systemData.baseCost;
             }
+
+            // Drawbacks should always have negative costs (they reduce HP spent)
+            // Ensure they're negative regardless of current sign
+            if (this.type === MEGS.itemTypes.drawback && systemData.totalCost > 0) {
+                systemData.totalCost = -systemData.totalCost;
+            }
+
             this.totalCost = systemData.totalCost;
         }
     }

@@ -217,9 +217,11 @@ describe('Character Budget Calculations', () => {
         actor.prepareBaseData();
         actor.prepareDerivedData();
 
-        // Drawbacks reduce total spent, not increase budget
-        expect(actor.system.heroPointBudget.drawbacks).toBe(25);
-        expect(actor.system.heroPointBudget.total).toBe(450); // base budget unchanged
+        // Drawbacks have negative costs that reduce total spent
+        expect(actor.system.heroPointBudget.drawbacks).toBe(-25); // Negative value
+        expect(actor.system.heroPointBudget.totalSpent).toBe(-25); // Reduced by drawback
+        expect(actor.system.heroPointBudget.total).toBe(450); // Base budget unchanged
+        expect(actor.system.heroPointBudget.remaining).toBe(475); // 450 - (-25) = 475
     });
 
     test('calculates total spent and remaining correctly', () => {

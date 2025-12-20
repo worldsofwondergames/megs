@@ -263,48 +263,47 @@ export class MEGSActor extends Actor {
         // Calculate HP spent on wealth (FC 2)
         const wealthCost = MEGS.getAPCost(this.system.wealth ?? 0, 2) || 0;
 
-        // Calculate HP spent on items (powers, skills, advantages, gadgets)
+        // Calculate HP spent on items (powers, skills, advantages, gadgets, drawbacks)
         let itemsCost = 0;
         let powersCost = 0;
         let skillsCost = 0;
         let advantagesCost = 0;
         let gadgetsCost = 0;
-        let drawbacksValue = 0;
+        let drawbacksCost = 0;
 
         if (this.items) {
             this.items.forEach(item => {
-                if (item.system.totalCost) {
-                    if (item.type === MEGS.itemTypes.drawback && !item.system.parent) {
-                        // Drawbacks add HP back to the budget (only count top-level drawbacks)
-                        drawbacksValue += item.system.totalCost;
-                    } else {
-                        // Track powers, skills, advantages, and gadgets separately for character creator
-                        // Only count items that don't have a parent (child items are counted in their parent's cost)
-                        if (item.type === MEGS.itemTypes.power && !item.system.parent) {
-                            powersCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.skill && !item.system.parent) {
-                            skillsCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.advantage && !item.system.parent) {
-                            advantagesCost += item.system.totalCost;
-                        } else if (item.type === MEGS.itemTypes.gadget && !item.system.parent) {
-                            gadgetsCost += item.system.totalCost;
-                        }
-                        // All other items cost HP (excluding subskills and child items)
-                        // Child items are already counted in their parent's cost
-                        if (item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
-                            if (MEGS.debug.enabled) {
-                                console.log(`Item contributing to cost: ${item.name} (${item.type}) - ${item.system.totalCost} HP`);
-                            }
-                            itemsCost += item.system.totalCost;
-                        }
+                // Only count top-level items (child items are counted in their parent's cost)
+                if (item.system.totalCost && item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
+                    let cost = item.system.totalCost;
+
+                    // Ensure drawbacks are always negative (they reduce HP spent)
+                    if (item.type === MEGS.itemTypes.drawback && cost > 0) {
+                        cost = -cost;
                     }
+
+                    // Track item types separately for character creator display
+                    if (item.type === MEGS.itemTypes.power) {
+                        powersCost += cost;
+                    } else if (item.type === MEGS.itemTypes.skill) {
+                        skillsCost += cost;
+                    } else if (item.type === MEGS.itemTypes.advantage) {
+                        advantagesCost += cost;
+                    } else if (item.type === MEGS.itemTypes.gadget) {
+                        gadgetsCost += cost;
+                    } else if (item.type === MEGS.itemTypes.drawback) {
+                        drawbacksCost += cost; // Negative value
+                    }
+
+                    // Add to total items cost (drawbacks will reduce it since they're negative)
+                    itemsCost += cost;
                 }
             });
         }
 
-        // Calculate totals
+        // Calculate totals - drawbacks are already negative, so simple addition works
         const totalBudget = baseBudget;
-        const totalSpent = attributesCost + wealthCost + itemsCost - drawbacksValue;
+        const totalSpent = attributesCost + wealthCost + itemsCost;
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation
@@ -313,21 +312,20 @@ export class MEGSActor extends Actor {
             attributesCost,
             wealthCost,
             itemsCost,
-            drawbacksValue,
-            'itemsCost + attributesCost + wealthCost': itemsCost + attributesCost + wealthCost,
+            drawbacksCost,
             totalSpent,
             totalBudget,
             remaining,
-            'expected remaining': totalBudget - totalSpent
+            'Math check': `${totalBudget} - ${totalSpent} = ${totalBudget - totalSpent}`
         });
 
-        // Calculate net traits cost (advantages - drawbacks)
-        const traitsCost = advantagesCost - drawbacksValue;
+        // Calculate net traits cost (advantages + drawbacks, where drawbacks are negative)
+        const traitsCost = advantagesCost + drawbacksCost;
 
         // Store in actor system data for display
         this.system.heroPointBudget = {
             base: baseBudget,
-            drawbacks: drawbacksValue,
+            drawbacks: drawbacksCost, // Negative value shows it reduces cost
             total: totalBudget,
             attributesCost: attributesCost,
             wealthCost: wealthCost,

@@ -56,22 +56,10 @@ export class MEGSActorSheet extends ActorSheet {
         context.system = actorData.system;
         context.flags = actorData.flags;
 
-        // Prepare actor data and items.
-        if (actorData.type === MEGS.characterTypes.hero) {
-            this._prepareItems(context);
-            this._prepareCharacterData(context);
-            this._prepareInitiative(context);
-        }
-
-        // Prepare Villain data and items.
-        if (actorData.type === MEGS.characterTypes.villain) {
-            this._prepareItems(context);
-            this._prepareCharacterData(context);
-            this._prepareInitiative(context);
-        }
-
-        // Prepare NPC data and items.
-        if (actorData.type === MEGS.characterTypes.npc) {
+        // Prepare character data and items for hero, villain, and npc types.
+        if (actorData.type === MEGS.characterTypes.hero ||
+            actorData.type === MEGS.characterTypes.villain ||
+            actorData.type === MEGS.characterTypes.npc) {
             this._prepareItems(context);
             this._prepareCharacterData(context);
             this._prepareInitiative(context);
@@ -96,52 +84,8 @@ export class MEGSActorSheet extends ActorSheet {
             });
             context.characters = this._sortArray(context.characters);
 
-            context.locations = [];
-            if (context.system.ownerId) {
-                const owner = game.actors.get(context.system.ownerId);
-                if (owner) {
-                    // get list of vehicle items from owner actor to link
-                    if (owner.items) {
-                        context.system.linkedItem = undefined;
-
-                        owner.items.forEach((element) => {
-                            if (element.type === MEGS.itemTypes.gadget) {
-                                // store linked vehicle item
-                                if (element._id === context.system.linkedItemId) {
-                                    context.system.linkedItem = element;
-                                }
-
-                                // add to list for header
-                                context.locations[element.name] = element._id;
-                            }
-                        });
-                        context.locations = this._sortArray(context.locations);
-                    }
-                }
-            }
-
-            context.vehicles = [];
-            if (context.system.ownerId) {
-                const owner = game.actors.get(context.system.ownerId);
-                if (owner) {
-                    if (owner.items) {
-                        context.system.linkedItem = undefined;
-
-                        owner.items.forEach((element) => {
-                            if (element.type === MEGS.itemTypes.gadget) {
-                                // store linked vehicle item
-                                if (element._id === context.system.linkedItemId) {
-                                    context.system.linkedItem = element;
-                                }
-
-                                // add to list for header
-                                context.vehicles[element.name] = element._id;
-                            }
-                        });
-                        context.vehicles = this._sortArray(context.vehicles);
-                    }
-                }
-            }
+            this._populateLinkedGadgets(context, 'locations');
+            this._populateLinkedGadgets(context, 'vehicles');
         }
 
         // Add roll data for TinyMCE editors.
@@ -198,6 +142,35 @@ export class MEGSActorSheet extends ActorSheet {
             }
         }
         return gadgetArray;
+    }
+
+    /**
+     * Populate linked gadgets list for vehicles and locations
+     * @param {Object} context The context object
+     * @param {string} propertyName The property name to populate ('locations' or 'vehicles')
+     * @private
+     */
+    _populateLinkedGadgets(context, propertyName) {
+        context[propertyName] = [];
+        if (context.system.ownerId) {
+            const owner = game.actors.get(context.system.ownerId);
+            if (owner && owner.items) {
+                context.system.linkedItem = undefined;
+
+                owner.items.forEach((element) => {
+                    if (element.type === MEGS.itemTypes.gadget) {
+                        // store linked vehicle item
+                        if (element._id === context.system.linkedItemId) {
+                            context.system.linkedItem = element;
+                        }
+
+                        // add to list for header
+                        context[propertyName][element.name] = element._id;
+                    }
+                });
+                context[propertyName] = this._sortArray(context[propertyName]);
+            }
+        }
     }
 
     /**

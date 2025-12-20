@@ -483,36 +483,8 @@ export class MEGSActorSheet extends ActorSheet {
         });
 
         // Skill APs increment/decrement
-        html.on('click', '.ap-plus', async (ev) => {
-            ev.preventDefault();
-            const itemId = $(ev.currentTarget).data('itemId');
-            const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power')) {
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
-                const newValue = (item.system.aps || 0) + 1;
-                await item.update({ 'system.aps': newValue });
-                this.render(false);
-            }
-        });
-        html.on('click', '.ap-minus', async (ev) => {
-            ev.preventDefault();
-            const itemId = $(ev.currentTarget).data('itemId');
-            const item = this.actor.items.get(itemId);
-            if (
-                item &&
-                (item.type === 'skill' || item.type === 'power') &&
-                (item.system.aps || 0) > 0
-            ) {
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
-                const newValue = (item.system.aps || 0) - 1;
-                await item.update({ 'system.aps': newValue });
-                this.render(false);
-            }
-        });
+        html.on('click', '.ap-plus', (ev) => this._handleApChange(ev, html, 1));
+        html.on('click', '.ap-minus', (ev) => this._handleApChange(ev, html, -1));
 
         // Skill accordion toggle
         html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => {
@@ -598,6 +570,71 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /**
+     * Handle AP increment/decrement for skills and powers
+     * @param {Event} event The click event
+     * @param {jQuery} html The HTML element
+     * @param {number} delta The change amount (+1 or -1)
+     * @private
+     */
+    async _handleApChange(event, html, delta) {
+        event.preventDefault();
+        const itemId = $(event.currentTarget).data('itemId');
+        const item = this.actor.items.get(itemId);
+
+        if (!item || (item.type !== 'skill' && item.type !== 'power')) {
+            return;
+        }
+
+        const currentAps = item.system.aps || 0;
+        const newValue = currentAps + delta;
+
+        // Don't allow negative values
+        if (newValue < 0) {
+            return;
+        }
+
+        // Save accordion state before render
+        this._saveAccordionState(html);
+
+        await item.update({ 'system.aps': newValue });
+        this.render(false);
+    }
+
+    /**
+     * Get action and effect values from gadget attributes
+     * @param {Object} gadget The gadget item
+     * @param {number} currentActionValue Current action value
+     * @returns {Object} Object with effectValue and actionValue
+     * @private
+     */
+    _getGadgetValues(gadget, currentActionValue) {
+        const attributePairs = [
+            { effect: 'str', action: 'dex', actorFallback: 'dex' },
+            { effect: 'will', action: 'int', actorFallback: 'int' },
+            { effect: 'aura', action: 'infl', actorFallback: 'infl' }
+        ];
+
+        for (const pair of attributePairs) {
+            if (gadget.system.attributes[pair.effect] > 0) {
+                const effectValue = gadget.system.attributes[pair.effect];
+                let actionValue = currentActionValue;
+
+                if (actionValue === 0) {
+                    if (gadget.system.attributes[pair.action] > 0) {
+                        actionValue = gadget.system.attributes[pair.action];
+                    } else {
+                        actionValue = this.object.system.attributes[pair.actorFallback];
+                    }
+                }
+
+                return { effectValue, actionValue };
+            }
+        }
+
+        return { effectValue: 0, actionValue: currentActionValue };
+    }
+
+    /**
      * Handle clickable rolls.
      * @param {Event} event   The originating click event
      * @private
@@ -647,42 +684,12 @@ export class MEGSActorSheet extends ActorSheet {
                 const gadget = this._getOwnedItemById(dataset.gadgetid);
 
                 if (gadget) {
-                    if (gadget.system.attributes.str > 0) {
-                        effectValue = gadget.system.attributes.str;
-
-                        if (actionValue === 0) {
-                            if (gadget.system.attributes.dex > 0) {
-                                actionValue = gadget.system.attributes.dex;
-                            } else {
-                                actionValue = this.object.system.attributes.dex;
-                            }
-                        }
-                    } else if (gadget.system.attributes.will > 0) {
-                        effectValue = gadget.system.attributes.will;
-
-                        if (actionValue === 0) {
-                            if (gadget.system.attributes.int > 0) {
-                                actionValue = gadget.system.attributes.int;
-                            } else {
-                                actionValue = this.object.system.attributes.int;
-                            }
-                        }
-                    } else if (gadget.system.attributes.aura > 0) {
-                        effectValue = gadget.system.attributes.aura;
-
-                        if (actionValue === 0) {
-                            if (gadget.system.attributes.infl > 0) {
-                                actionValue = gadget.system.attributes.infl;
-                            } else {
-                                actionValue = this.object.system.attributes.infl;
-                            }
-                        }
-                    }
+                    const values = this._getGadgetValues(gadget, actionValue);
+                    effectValue = values.effectValue;
+                    actionValue = values.actionValue;
                 } else {
                     console.error('No gadget with ID ' + dataset.gadgetid + ' found');
                 }
-            } else {
-                // TODO
             }
         }
 

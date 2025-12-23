@@ -494,11 +494,17 @@ Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
 /* -------------------------------------------- */
 Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items) {
     // Calculate effective Factor Cost for a skill
-    // FC = Base FC - (number of unchecked subskills)
+    // FC = Base FC - (number of unchecked subskills) - (linking bonus)
     // Minimum FC is always 1
-    const baseFc = skill.system.factorCost || 0;
+    let baseFc = skill.system.factorCost || 0;
+    let effectiveFc = baseFc;
 
-    if (!items) return baseFc;
+    // Apply linking reduction (-2, minimum 1)
+    if (skill.system.isLinked === 'true' || skill.system.isLinked === true) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    if (!items) return effectiveFc;
 
     // Count unchecked subskills (isTrained = false or undefined)
     const uncheckedCount = items.filter(item =>
@@ -507,15 +513,24 @@ Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items)
         !item.system.isTrained
     ).length;
 
-    return Math.max(1, baseFc - uncheckedCount);
+    return Math.max(1, effectiveFc - uncheckedCount);
 });
 
 Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
     // Generate tooltip text explaining the Factor Cost calculation for skills
     const baseFc = skill.system.factorCost || 0;
     let tooltip = `Base FC: ${baseFc}`;
+    let effectiveFc = baseFc;
+
+    // Check if linked
+    const isLinked = skill.system.isLinked === 'true' || skill.system.isLinked === true;
+    if (isLinked) {
+        tooltip += '\nLinked: -2';
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
 
     if (!items) {
+        tooltip += `\nEffective FC: ${effectiveFc}`;
         return tooltip;
     }
 
@@ -528,9 +543,9 @@ Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
 
     if (uncheckedCount > 0) {
         tooltip += `\nUnchecked subskills: -${uncheckedCount}`;
+        effectiveFc = Math.max(1, effectiveFc - uncheckedCount);
     }
 
-    const effectiveFc = Math.max(1, baseFc - uncheckedCount);
     tooltip += `\nEffective FC: ${effectiveFc}`;
 
     return tooltip;

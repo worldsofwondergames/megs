@@ -122,7 +122,10 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item) {
-                await item.update({ 'system.isLinked': ev.currentTarget.checked });
+                // Convert boolean to string to match data type in template.json
+                const isLinked = ev.currentTarget.checked ? 'true' : 'false';
+                await item.update({ 'system.isLinked': isLinked });
+                // Re-render to show updated costs
                 this.render(false);
             }
         });

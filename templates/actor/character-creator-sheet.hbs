@@ -20,7 +20,7 @@
                 <div class="resource flex-group-center">
                     <label for="system.heroPointBudget.totalSpent" class="resource-label">HP Spent</label>
                     <div class="resource-content flexrow flex-center flex-between">
-                        <span class="resource-value">{{formatNumber system.heroPointBudget.totalSpent}}</span>
+                        <span class="resource-value hp-spent-tooltip" title="{{getHPSpentTooltip system.heroPointBudget}}">{{formatNumber system.heroPointBudget.totalSpent}}</span>
                     </div>
                 </div>
 

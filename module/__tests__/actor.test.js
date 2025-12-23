@@ -188,7 +188,7 @@ describe('Character Budget Calculations', () => {
         expect(actor.system.heroPointBudget.itemsCost).toBe(70); // 50 + 20
     });
 
-    test('handles drawbacks correctly in budget', () => {
+    test('handles drawbacks with positive cost (converts to negative)', () => {
         const actor = new MEGSActor({
             system: {
                 attributes: {
@@ -209,6 +209,7 @@ describe('Character Budget Calculations', () => {
 
         const drawback = {
             _id: 'drawback1',
+            name: 'Test Drawback',
             type: MEGS.itemTypes.drawback,
             system: { totalCost: 25, parent: null }
         };
@@ -217,11 +218,87 @@ describe('Character Budget Calculations', () => {
         actor.prepareBaseData();
         actor.prepareDerivedData();
 
-        // Drawbacks have negative costs that reduce total spent
-        expect(actor.system.heroPointBudget.drawbacks).toBe(-25); // Negative value
-        expect(actor.system.heroPointBudget.totalSpent).toBe(-25); // Reduced by drawback
-        expect(actor.system.heroPointBudget.total).toBe(450); // Base budget unchanged
+        // Positive cost should be converted to negative
+        expect(actor.system.heroPointBudget.drawbacks).toBe(-25);
+        expect(actor.system.heroPointBudget.totalSpent).toBe(-25);
+        expect(actor.system.heroPointBudget.total).toBe(450);
         expect(actor.system.heroPointBudget.remaining).toBe(475); // 450 - (-25) = 475
+    });
+
+    test('handles drawbacks with negative cost (stays negative)', () => {
+        const actor = new MEGSActor({
+            system: {
+                attributes: {
+                    dex: { value: 0, factorCost: 7 },
+                    str: { value: 0, factorCost: 6 },
+                    body: { value: 0, factorCost: 6 },
+                    int: { value: 0, factorCost: 7 },
+                    will: { value: 0, factorCost: 6 },
+                    mind: { value: 0, factorCost: 6 },
+                    infl: { value: 0, factorCost: 7 },
+                    aura: { value: 0, factorCost: 6 },
+                    spirit: { value: 0, factorCost: 6 }
+                },
+                wealth: 0,
+                creationBudget: { base: 450 }
+            }
+        });
+
+        const drawback = {
+            _id: 'drawback1',
+            name: 'Test Drawback',
+            type: MEGS.itemTypes.drawback,
+            system: { totalCost: -50, parent: null }
+        };
+
+        actor.items = [drawback];
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        // Already negative cost should stay negative
+        expect(actor.system.heroPointBudget.drawbacks).toBe(-50);
+        expect(actor.system.heroPointBudget.totalSpent).toBe(-50);
+        expect(actor.system.heroPointBudget.remaining).toBe(500); // 450 - (-50) = 500
+    });
+
+    test('logs error for drawback with zero cost', () => {
+        const originalError = console.error;
+        let errorMessage = '';
+        console.error = (msg) => { errorMessage = msg; };
+
+        const actor = new MEGSActor({
+            system: {
+                attributes: {
+                    dex: { value: 0, factorCost: 7 },
+                    str: { value: 0, factorCost: 6 },
+                    body: { value: 0, factorCost: 6 },
+                    int: { value: 0, factorCost: 7 },
+                    will: { value: 0, factorCost: 6 },
+                    mind: { value: 0, factorCost: 6 },
+                    infl: { value: 0, factorCost: 7 },
+                    aura: { value: 0, factorCost: 6 },
+                    spirit: { value: 0, factorCost: 6 }
+                },
+                wealth: 0,
+                creationBudget: { base: 450 }
+            }
+        });
+
+        const drawback = {
+            _id: 'drawback1',
+            name: 'Broken Drawback',
+            type: MEGS.itemTypes.drawback,
+            system: { totalCost: 0, parent: null }
+        };
+
+        actor.items = [drawback];
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        // Should log an error for zero cost
+        expect(errorMessage).toBe('Drawback "Broken Drawback" has zero cost - this is likely a configuration error');
+
+        console.error = originalError;
     });
 
     test('calculates total spent and remaining correctly', () => {

@@ -465,9 +465,14 @@ export class MEGSItem extends Item {
             }
 
             // Drawbacks should always have negative costs (they reduce HP spent)
-            // Ensure they're negative regardless of current sign
-            if (this.type === MEGS.itemTypes.drawback && systemData.totalCost > 0) {
-                systemData.totalCost = -systemData.totalCost;
+            if (this.type === MEGS.itemTypes.drawback) {
+                if (systemData.totalCost === 0) {
+                    console.error(`Drawback "${this.name}" has zero cost - this is likely a configuration error`);
+                } else if (systemData.totalCost > 0) {
+                    // Positive cost, make it negative
+                    systemData.totalCost = -systemData.totalCost;
+                }
+                // If already negative, leave it as-is
             }
 
             this.totalCost = systemData.totalCost;

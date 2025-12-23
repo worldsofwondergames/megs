@@ -274,12 +274,18 @@ export class MEGSActor extends Actor {
         if (this.items) {
             this.items.forEach(item => {
                 // Only count top-level items (child items are counted in their parent's cost)
-                if (item.system.totalCost && item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
+                if (item.system.totalCost !== undefined && item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
                     let cost = item.system.totalCost;
 
                     // Ensure drawbacks are always negative (they reduce HP spent)
-                    if (item.type === MEGS.itemTypes.drawback && cost > 0) {
-                        cost = -cost;
+                    if (item.type === MEGS.itemTypes.drawback) {
+                        if (cost === 0) {
+                            console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                        } else if (cost > 0) {
+                            // Positive cost, make it negative
+                            cost = -cost;
+                        }
+                        // If already negative, leave it as-is
                     }
 
                     // Track item types separately for character creator display

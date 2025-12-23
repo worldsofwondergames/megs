@@ -261,22 +261,8 @@ Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
 
 Handlebars.registerHelper('getSkillDisplayName', function (skill) {
     let displayName = skill.name;
-    if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
-        let subskillText = ' (';
-        skill.subskills.forEach((subskill) => {
-            if (subskill.system.aps > 0) {
-                if (subskillText !== ' (') {
-                    subskillText += ' ,';
-                }
-                // No need to show " Weapons" after every weapon type
-                subskillText += subskill.name.replace(' Weapons', '') + ' ' + subskill.system.aps;
-            }
-        });
-        subskillText += ')';
-        if (subskillText !== ' ()') {
-            displayName += subskillText;
-        }
-    }
+
+    // Add asterisk for linked skills
     if (skill.system.isLinked === 'true') {
         displayName += '*';
     }
@@ -565,6 +551,33 @@ Handlebars.registerHelper('debugLog', function (label, value) {
     return value;
 });
 
+Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
+    // Generate tooltip text explaining the HP Spent calculation
+    if (!budget) return '';
+
+    const attrs = budget.attributesCost || 0;
+    const wealth = budget.wealthCost || 0;
+    const powers = budget.powersCost || 0;
+    const skills = budget.skillsCost || 0;
+    const advantages = budget.advantagesCost || 0;
+    const drawbacks = budget.drawbacks || 0;
+    const gadgets = budget.gadgetsCost || 0;
+    const total = budget.totalSpent || 0;
+
+    let tooltip = 'HP Spent Breakdown:\n';
+    tooltip += `Attributes: ${attrs} HP\n`;
+    tooltip += `Wealth: ${wealth} HP\n`;
+    tooltip += `Powers: ${powers} HP\n`;
+    tooltip += `Skills: ${skills} HP\n`;
+    tooltip += `Advantages: ${advantages} HP\n`;
+    tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    tooltip += `Gadgets: ${gadgets} HP\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Total: ${total} HP`;
+
+    return tooltip;
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;
@@ -819,7 +832,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     }
     if (attributesCost > 0) {
         console.log(`  Total Attributes: ${attributesCost} HP`);
-        tooltip += 'Attributes: ' + attributesCost + '\\n';
+        tooltip += 'Attributes: ' + attributesCost + '\n';
         totalBeforeBonus += attributesCost;
     }
 
@@ -829,7 +842,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         const chartCost = MEGS.getAPCost(systemData.actionValue, fc) || 0;
         const avCost = 5 + chartCost;
         console.log(`  AV: 5 (base) + ${systemData.actionValue} APs @ FC ${fc} = ${chartCost} HP → Total: ${avCost} HP`);
-        tooltip += `AV: ${avCost}\\n`;
+        tooltip += `AV: ${avCost}\n`;
         totalBeforeBonus += avCost;
     }
 
@@ -837,7 +850,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (systemData.effectValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const evCost = 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
-        tooltip += 'EV: ' + evCost + '\\n';
+        tooltip += 'EV: ' + evCost + '\n';
         totalBeforeBonus += evCost;
     }
 
@@ -846,7 +859,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (rangeValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const rangeCost = 5 + (MEGS.getAPCost(rangeValue, fc) || 0);
-        tooltip += 'Range: ' + rangeCost + '\\n';
+        tooltip += 'Range: ' + rangeCost + '\n';
         totalBeforeBonus += rangeCost;
     }
 
@@ -873,37 +886,69 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         });
 
         if (powersCost > 0) {
-            tooltip += 'Powers: ' + powersCost + '\\n';
+            tooltip += 'Powers: ' + powersCost + '\n';
             totalBeforeBonus += powersCost;
         }
         if (skillsCost > 0) {
-            tooltip += 'Skills: ' + skillsCost + '\\n';
+            tooltip += 'Skills: ' + skillsCost + '\n';
             totalBeforeBonus += skillsCost;
         }
         if (advantagesCost > 0) {
-            tooltip += 'Advantages: ' + advantagesCost + '\\n';
+            tooltip += 'Advantages: ' + advantagesCost + '\n';
             totalBeforeBonus += advantagesCost;
         }
         if (drawbacksCost > 0) {
-            tooltip += 'Drawbacks: -' + drawbacksCost + '\\n';
+            tooltip += 'Drawbacks: -' + drawbacksCost + '\n';
             totalBeforeBonus -= drawbacksCost;
         }
     }
 
     // Add total before bonus
-    tooltip += '---\\n';
-    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\\n';
+    tooltip += '---\n';
+    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\n';
 
     // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
     const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
     console.log(`  Total before bonus: ${totalBeforeBonus} HP`);
     console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
-    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\\n';
+    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\n';
 
     // Add final cost
     const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
     console.log(`  Final Cost: ${totalBeforeBonus} ÷ ${gadgetBonus} = ${finalCost} HP`);
     tooltip += 'Final Cost: ' + finalCost;
+
+    return tooltip;
+});
+
+Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {
+    if (!power || !power.system) return '';
+
+    const systemData = power.system;
+    let tooltip = '';
+
+    // Base Factor Cost
+    const baseFactor = systemData.factorCost || 0;
+    tooltip += 'Base Factor Cost: ' + baseFactor + '\n';
+
+    // Bonuses
+    const bonusMod = systemData.bonusMod || 0;
+    if (bonusMod !== 0) {
+        tooltip += 'Bonuses: ' + (bonusMod > 0 ? '+' : '') + bonusMod + '\n';
+    }
+
+    // Limitations
+    const limitationMod = systemData.limitationMod || 0;
+    if (limitationMod !== 0) {
+        tooltip += 'Limitations: ' + (limitationMod > 0 ? '+' : '') + limitationMod + '\n';
+    }
+
+    // Show calculation if there are modifiers
+    if (bonusMod !== 0 || limitationMod !== 0) {
+        tooltip += '---\n';
+        const effectiveFactor = systemData.effectiveFactorCost || baseFactor;
+        tooltip += 'Effective Factor Cost: ' + effectiveFactor;
+    }
 
     return tooltip;
 });

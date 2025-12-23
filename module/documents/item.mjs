@@ -34,6 +34,28 @@ export class MEGSItem extends Item {
         }
     }
 
+    /** @override */
+    async _onUpdate(changed, options, userId) {
+        await super._onUpdate(changed, options, userId);
+
+        // When a skill's APs reach 0, set all subskills to isTrained = true
+        if (this.type === MEGS.itemTypes.skill && changed.system?.aps === 0 && this.parent) {
+            const subskills = this.parent.items.filter(i =>
+                i.type === MEGS.itemTypes.subskill && i.system.parent === this.id
+            );
+
+            // Update all subskills to trained
+            const updates = subskills.map(subskill => ({
+                _id: subskill.id,
+                'system.isTrained': true
+            }));
+
+            if (updates.length > 0) {
+                await this.parent.updateEmbeddedDocuments('Item', updates);
+            }
+        }
+    }
+
 
     async _initializeSkillData() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
@@ -228,6 +250,17 @@ export class MEGSItem extends Item {
             }
         }
 
+        // Import constants for all item types (including subskills)
+        systemData.powerTypes = MEGS.powerTypes;
+        systemData.powerSources = MEGS.powerSources;
+        systemData.ranges = MEGS.ranges;
+        systemData.yesNoOptions = MEGS.yesNoOptions;
+
+        systemData.attributesForLink = {};
+        for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
+            systemData.attributesForLink[key] = game.i18n.localize(value);
+        }
+
         // Subskills don't have costs - skip all cost calculations
         if (this.type === MEGS.itemTypes.subskill) {
             return;
@@ -343,20 +376,27 @@ export class MEGSItem extends Item {
                         } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                             // For advantages/drawbacks, use their totalCost or baseCost
                             itemCost = item.system.totalCost || item.system.baseCost || 0;
+
+                            // Ensure drawbacks are always negative
+                            if (item.type === MEGS.itemTypes.drawback) {
+                                if (itemCost === 0) {
+                                    console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                                } else if (itemCost > 0) {
+                                    itemCost = -itemCost;
+                                }
+                            }
                         }
 
                         if (MEGS.debug.enabled) {
                             console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
                         }
 
-                        if (itemCost > 0) {
-                            if (item.type === MEGS.itemTypes.power ||
-                                item.type === MEGS.itemTypes.skill ||
-                                item.type === MEGS.itemTypes.advantage) {
-                                totalCost += itemCost;
-                            } else if (item.type === MEGS.itemTypes.drawback) {
-                                totalCost -= itemCost;
-                            }
+                        // Add all child items (drawbacks are negative, so they reduce cost automatically)
+                        if (item.type === MEGS.itemTypes.power ||
+                            item.type === MEGS.itemTypes.skill ||
+                            item.type === MEGS.itemTypes.advantage ||
+                            item.type === MEGS.itemTypes.drawback) {
+                            totalCost += itemCost;
                         }
                     }
                 });
@@ -393,9 +433,22 @@ export class MEGSItem extends Item {
                     console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
                 }
 
+                // For skills with subskills, calculate effective Factor Cost
+                // Formula: Base Factor Cost - (Number of Untrained Subskills)
+                let effectiveFC = systemData.factorCost;
+                if (this.type === MEGS.itemTypes.skill && this.parent) {
+                    const subskills = this.parent.items.filter(i =>
+                        i.type === MEGS.itemTypes.subskill && i.system.parent === this.id
+                    );
+                    if (subskills.length > 0) {
+                        const trainedCount = subskills.filter(s => s.system.isTrained).length;
+                        const untrainedCount = subskills.length - trainedCount;
+                        effectiveFC = systemData.factorCost - untrainedCount;
+                    }
+                }
+
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                let effectiveFC = systemData.factorCost;
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
                     effectiveFC = Math.max(1, effectiveFC - 2);
                 }
@@ -419,19 +472,23 @@ export class MEGSItem extends Item {
             } else {
                 systemData.totalCost = systemData.baseCost;
             }
+
+            // Drawbacks should always have negative costs (they reduce HP spent)
+            if (this.type === MEGS.itemTypes.drawback) {
+                console.log(`[DRAWBACK] "${this.name}" - baseCost: ${systemData.baseCost}, totalCost before: ${systemData.totalCost}`);
+                if (systemData.totalCost === 0) {
+                    console.error(`Drawback "${this.name}" has zero cost - this is likely a configuration error`);
+                } else if (systemData.totalCost > 0) {
+                    // Positive cost, make it negative
+                    systemData.totalCost = -systemData.totalCost;
+                    console.log(`[DRAWBACK] "${this.name}" - converted to negative: ${systemData.totalCost}`);
+                } else {
+                    console.log(`[DRAWBACK] "${this.name}" - already negative: ${systemData.totalCost}`);
+                }
+                // If already negative, leave it as-is
+            }
+
             this.totalCost = systemData.totalCost;
-        }
-
-        // import constants
-        systemData.powerTypes = MEGS.powerTypes;
-        systemData.powerSources = MEGS.powerSources;
-        systemData.ranges = MEGS.ranges;
-
-        systemData.yesNoOptions = MEGS.yesNoOptions;
-
-        systemData.attributesForLink = {};
-        for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
-            systemData.attributesForLink[key] = game.i18n.localize(value);
         }
     }
 

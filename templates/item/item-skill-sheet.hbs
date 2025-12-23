@@ -21,18 +21,11 @@
                 </h1>
             </div>
             {{#if hasActor}}
-                {{#if system.aps}}
-                    <!-- TODO skill that is auto should be gray die -->
-                    <div class="d10 grid-span-1 rollable " data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}">
-                        &nbsp;
-                    </div>
-                {{else}}
-                    {{#if isUnskilled}}
-                        {{#if (compare system.useUnskilled "===" "true")}}
-                            <div class="d10 grid-span-1 rollable unskilled" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}" data-unskilled="true">
-                                &nbsp;
-                            </div>
-                        {{/if}}
+                {{#if isUnskilled}}
+                    {{#if (compare system.useUnskilled "===" "true")}}
+                        <div class="d10 grid-span-1 rollable unskilled" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}" data-unskilled="true">
+                            &nbsp;
+                        </div>
                     {{/if}}
                 {{/if}}
             {{/if}}
@@ -145,10 +138,7 @@
             <ol class='items-list'>
                 <li class='item flexrow items-header grid-8col'>
                     <div class='item-name grid-span-5'>{{localize 'MEGS.Name'}}</div>
-                    <div class='item-aps grid-span-1'>{{localize 'MEGS.APs'}}</div>
-                    {{#if showHeroPointCosts}}
-                        <div class='item-total-cost grid-span-1'>{{localize 'MEGS.TotalCost'}}</div>
-                    {{/if}}
+                    <div class='item-trained grid-span-1'>{{localize 'MEGS.Trained'}}</div>
                     <div class='item-controls grid-span-1'>
                         {{#if flags.megs.edit-mode}}
                             <a class='item-control item-create' title='{{localize "DOCUMENT.Create" type=' Subskill'}}' data-type='subskill'>
@@ -168,26 +158,13 @@
                                 {{subskill.name}}
                             </a>
                         </div>
-                        <div class='item-aps'>
-                            {{#if subskill.isUnskilled}}
-                                &mdash;
+                        <div class='item-trained'>
+                            {{#if flags.megs.edit-mode}}
+                                <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if (compare ../system.aps "===" 0)}}disabled{{/if}} />
                             {{else}}
-                                {{#if subskill.system.aps}}
-                                    {{subskill.system.aps}}
-                                {{else}}
-                                    &mdash;
-                                {{/if}}
+                                <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" disabled />
                             {{/if}}
                         </div>
-                        {{#if showHeroPointCosts}}
-                            <div class='item-total-cost'>
-                                {{#if subskill.system.aps}}
-                                    {{subskill.system.totalCost}}
-                                {{else}}
-                                    &mdash;
-                                {{/if}}
-                            </div>
-                        {{/if}}
                         <div class='item-controls'>
                             {{#if subskill.isRollable}}
                                 <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{subskill.name}}
@@ -196,12 +173,10 @@
                                     {{#if (compare subskill.system.type '===' 'auto')}}
                                         <img src="/systems/megs/assets/images/icons/d10grey.svg" class="svg-icon" />
                                     {{else}}
-                                        {{#if subskill.isUnskilled}}
-                                            <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" />
+                                        {{#if subskill.system.isTrained}}
+                                            <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" />
                                         {{else}}
-                                            {{#if (compare subskill.effectiveAPs ">" 0)}}
-                                                <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" />
-                                            {{/if}}
+                                            <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" />
                                         {{/if}}
                                     {{/if}}
                                 </a>

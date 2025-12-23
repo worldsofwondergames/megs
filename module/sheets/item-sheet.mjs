@@ -96,30 +96,33 @@ export class MEGSItemSheet extends ItemSheet {
 
         if (itemData.type === MEGS.itemTypes.subskill) {
             context.skillHasRanks = false;
+            context.parentSkillAPs = 0;
 
-            // if has APs, those are effective
-            if (this.object.system.aps > 0) {
-                context.effectiveAPs = this.object.system.aps;
-                context.isUnskilled = false;
-            } else {
-                // check parent for APs
-                const actor = game.actors.get(context.document.system.actorId);
-                if (actor) {
-                    var skill = actor.items.filter((obj) => {
-                        return obj._id === context.document.system.parent;
-                    })[0];
+            // Always display parent skill's APs
+            const actor = game.actors.get(context.document.system.actorId);
+            if (actor) {
+                var skill = actor.items.filter((obj) => {
+                    return obj._id === context.document.system.parent;
+                })[0];
+                if (skill) {
+                    // Always use parent skill APs for display
+                    context.parentSkillAPs = skill.system.aps || 0;
+
+                    // effectiveAPs is used for rolling
                     if (skill.system.aps > 0) {
                         context.effectiveAPs = skill.system.aps;
                         context.isUnskilled = false;
                         context.skillHasRanks = true;
                     } else {
-                        // if no APs for parent, fall back to linked skill
+                        // if no APs for parent, fall back to linked attribute for rolling
                         context.effectiveAPs = actor.system.attributes[skill.system.link].value;
                         context.isUnskilled = true;
                     }
                 } else {
                     context.effectiveAPs = 0;
                 }
+            } else {
+                context.effectiveAPs = 0;
             }
 
             context.minAPs = 0;
@@ -194,8 +197,7 @@ export class MEGSItemSheet extends ItemSheet {
             const isDice = skill.system.type === MEGS.powerTypes.dice.toLowerCase();
             const isBoth = skill.system.type === MEGS.powerTypes.both.toLowerCase();
             const isRollable =
-                itemData.system.aps > 0 || // if subskill has APs
-                skill.system.aps > 0 || // or skill has APs
+                (itemData.system.isTrained && skill.system.aps > 0) || // if subskill is trained and parent skill has APs
                 itemData.system.useUnskilled === 'true'; // or subskill can be rolled unskilled
 
             return (isDice || isBoth) && isRollable;
@@ -210,6 +212,30 @@ export class MEGSItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Initialize subskill checkbox states based on skill APs
+        if (this.object.type === 'skill') {
+            const skillAps = this.object.system.aps || 0;
+            // Check the custom edit-mode flag (not Foundry's isEditable)
+            const isEditMode = this.object.getFlag('megs', 'edit-mode') === true;
+            const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
+
+            checkboxes.each(function() {
+                const checkbox = $(this);
+
+                if (skillAps === 0) {
+                    // When skill has 0 APs: disable and force checked
+                    checkbox.prop('disabled', true);
+                    checkbox.prop('checked', true);
+                } else if (isEditMode) {
+                    // When skill has 1+ APs and edit mode is on: enable
+                    checkbox.prop('disabled', false);
+                } else {
+                    // When skill has 1+ APs but edit mode is off: disable
+                    checkbox.prop('disabled', true);
+                }
+            });
+        }
+
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
@@ -220,6 +246,24 @@ export class MEGSItemSheet extends ItemSheet {
             const value = checkbox.checked ? 'true' : 'false';
             await this.object.update({ 'system.settings.hideZeroAPSkills': value });
             this.render(false);
+        });
+
+        // Handle subskill trained checkbox changes
+        html.on('change', '.subskills input[type="checkbox"][name^="items."]', async (ev) => {
+            ev.preventDefault();
+            const checkbox = ev.currentTarget;
+            const name = checkbox.name;
+            // Extract subskill ID from name like "items.{id}.system.isTrained"
+            const match = name.match(/^items\.(.+?)\.system\.isTrained$/);
+            if (match && this.object.parent) {
+                const subskillId = match[1];
+                const subskill = this.object.parent.items.get(subskillId);
+                if (subskill) {
+                    await subskill.update({ 'system.isTrained': checkbox.checked });
+                    // Re-render to update effective Factor Cost display
+                    this.render(false);
+                }
+            }
         });
 
         // Skill APs increment/decrement
@@ -355,7 +399,7 @@ export class MEGSItemSheet extends ItemSheet {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.traitData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
-                    this.render(true);
+                    this.render(false);
                 }
             } else if (isStandaloneGadget && isVirtualPower) {
                 // Standalone gadget - delete virtual power from powerData
@@ -366,7 +410,7 @@ export class MEGSItemSheet extends ItemSheet {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.powerData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
-                    this.render(true);
+                    this.render(false);
                 }
             } else if (this.object.parent) {
                 // Gadget owned by actor - delete real item
@@ -559,6 +603,8 @@ export class MEGSItemSheet extends ItemSheet {
         // Initialize containers.
         const bonuses = [];
         const limitations = [];
+        let totalBonusMod = 0;
+        let totalLimitationMod = 0;
 
         if (this.object.parent && this.object.parent.items) {
             // Iterate through items, allocating to containers
@@ -568,11 +614,13 @@ export class MEGSItemSheet extends ItemSheet {
                     i.img = i.img || Item.DEFAULT_ICON;
                     if (i.type === MEGS.itemTypes.bonus) {
                         bonuses.push(i);
+                        totalBonusMod += i.system.factorCostMod || 0;
                         // Link parent power's item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                     if (i.type === MEGS.itemTypes.limitation) {
                         limitations.push(i);
+                        totalLimitationMod += i.system.factorCostMod || 0;
 
                         // Link parent power's item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
@@ -583,6 +631,19 @@ export class MEGSItemSheet extends ItemSheet {
             // Assign and return
             context.bonuses = bonuses;
             context.limitations = limitations;
+
+            // Calculate effective Factor Cost
+            const baseFactor = context.system.factorCost || 0;
+            context.system.effectiveFactorCost = baseFactor + totalBonusMod + totalLimitationMod;
+
+            // Store modifier totals for tooltip
+            context.system.bonusMod = totalBonusMod;
+            context.system.limitationMod = totalLimitationMod;
+        } else {
+            // No modifiers, effective = base
+            context.system.effectiveFactorCost = context.system.factorCost || 0;
+            context.system.bonusMod = 0;
+            context.system.limitationMod = 0;
         }
     }
 
@@ -598,17 +659,14 @@ export class MEGSItemSheet extends ItemSheet {
                 for (let i of this.object.parent.items) {
                     if (i.type === MEGS.itemTypes.subskill) {
                         if (i.system.parent === context.item._id) {
-                            // TODO parent ID
-                            // if subskill has APs
-                            // or skill has APs
-                            // or subskill can be rolled unskilled
+                            // Subskills inherit APs from parent skill
+                            // Determine rollability: skill has APs and subskill is trained, OR subskill can be used unskilled
                             if (
-                                i.system.aps > 0 ||
-                                context.item.system.aps > 0 ||
+                                (i.system.isTrained && context.item.system.aps > 0) ||
                                 i.system.useUnskilled === 'true'
                             ) {
                                 i.isRollable = true;
-                                if (i.system.aps === 0 && context.item.system.aps === 0) {
+                                if (context.item.system.aps === 0) {
                                     // unskilled
                                     i.isUnskilled = true;
                                     const actor = context.document.parent;
@@ -616,16 +674,14 @@ export class MEGSItemSheet extends ItemSheet {
                                         actor.system.attributes[context.item.system.link].value;
                                 } else {
                                     i.isUnskilled = false;
-                                    i.effectiveAPs = Math.max(
-                                        i.system.aps,
-                                        context.item.system.aps
-                                    );
+                                    i.effectiveAPs = context.item.system.aps;
                                 }
                             } else {
                                 i.isUnskilled = false;
                                 i.isRollable = false;
                                 i.effectiveAPs = 0;
                             }
+                            // Always add all subskills to the list
                             subskills.push(i);
                         }
                     }
@@ -644,6 +700,18 @@ export class MEGSItemSheet extends ItemSheet {
             });
 
             context.subskills = subskills;
+
+            // Calculate effective Factor Cost based on trained subskills
+            // Formula: Base Factor Cost - (Number of Untrained Subskills)
+            if (subskills.length > 0) {
+                const trainedCount = subskills.filter(s => s.system.isTrained).length;
+                const untrainedCount = subskills.length - trainedCount;
+                const baseFactor = context.item.system.factorCost || 0;
+                context.system.effectiveFactorCost = baseFactor - untrainedCount;
+            } else {
+                // No subskills, use base factor cost
+                context.system.effectiveFactorCost = context.item.system.factorCost || 0;
+            }
         }
     }
 
@@ -863,7 +931,7 @@ export class MEGSItemSheet extends ItemSheet {
             context.filteredSkills = skills;
         } else {
             skills.forEach((skill) => {
-                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                if (skill.system.aps > 0) {
                     context.filteredSkills.push(skill);
                 }
             });
@@ -876,23 +944,6 @@ export class MEGSItemSheet extends ItemSheet {
         context.drawbacks = drawbacks;
         context.subskills = subskills;
         context.gadgets = gadgets;
-    }
-
-    /**
-     * Check if any subskills have APs > 0
-     * @param {*} skill
-     * @returns {boolean}
-     */
-    _doSubskillsHaveAPs(skill) {
-        let doSubskillsHaveAPs = false;
-        if (skill.subskills && skill.subskills.length > 0) {
-            skill.subskills.forEach((subskill) => {
-                if (subskill.system.aps > 0) {
-                    doSubskillsHaveAPs = true;
-                }
-            });
-        }
-        return doSubskillsHaveAPs;
     }
 
     /**
@@ -934,7 +985,7 @@ export class MEGSItemSheet extends ItemSheet {
             subItem = await MEGSItem.create(itemData, {});
         }
         subItem.apps[this.appId] = this;
-        this.render(true);
+        this.render(false);
         return subItem;
     }
 
@@ -1158,7 +1209,7 @@ export class MEGSItemSheet extends ItemSheet {
         itemData.system.parent = this.object._id; // link subitem to item
         itemData = itemData instanceof Array ? itemData : [itemData];
         const item = await this.object.parent.createEmbeddedDocuments('Item', itemData);
-        this.render(true);
+        this.render(false);
         return item;
     }
 

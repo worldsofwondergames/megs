@@ -20,7 +20,7 @@
                 <div class="resource flex-group-center">
                     <label for="system.heroPointBudget.totalSpent" class="resource-label">HP Spent</label>
                     <div class="resource-content flexrow flex-center flex-between">
-                        <span class="resource-value">{{formatNumber system.heroPointBudget.totalSpent}}</span>
+                        <span class="resource-value hp-spent-tooltip" title="{{getHPSpentTooltip system.heroPointBudget}}">{{formatNumber system.heroPointBudget.totalSpent}}</span>
                     </div>
                 </div>
 
@@ -317,7 +317,7 @@
             <section class="traits-summary">
                 <div class="summary-row">
                     <label class="summary-label">Net Traits Cost:</label>
-                    <span class="summary-value">{{subtract system.heroPointBudget.advantagesCost system.heroPointBudget.drawbacks}} HP</span>
+                    <span class="summary-value">{{system.heroPointBudget.traitsCost}} HP</span>
                 </div>
             </section>
 
@@ -358,7 +358,7 @@
                 <div class="resource flex-group-center">
                     <div class="grid-2col-header">
                         {{localize "MEGS.Drawbacks"}}
-                        <span class="header-cost">({{negate system.heroPointBudget.drawbacks}} HP)</span>
+                        <span class="header-cost">({{system.heroPointBudget.drawbacks}} HP)</span>
                     </div>
                     <ol class='items-list'>
                         <li class='item flexrow items-header'>
@@ -372,7 +372,7 @@
                                     {{item.name}}
                                 </div>
                                 <div class='item-cost'>
-                                    {{negate item.system.totalCost}}
+                                    {{item.system.totalCost}}
                                 </div>
                                 <div class='item-controls'>
                                     <a class='item-control item-delete' title='Delete {{item.name}}'>

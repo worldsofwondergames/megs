@@ -1,8 +1,10 @@
+import { MEGSActorSheet } from './actor-sheet.mjs';
+
 /**
- * Extend the basic ActorSheet with some very simple modifications
- * @extends {ActorSheet}
+ * Extend the MEGSActorSheet to inherit shared handlers
+ * @extends {MEGSActorSheet}
  */
-export class MEGSCharacterBuilderSheet extends ActorSheet {
+export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
     /** @override */
     static get defaultOptions() {
         let newOptions = super.defaultOptions;
@@ -110,58 +112,10 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
-        // Item delete handler with cascade delete for modifiers
-        html.on('click', '.item-delete', async (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-
-            // If deleting a power or skill, also delete all associated bonuses/limitations
-            if (item.type === 'power' || item.type === 'skill') {
-                const modifiers = this.actor.items.filter(i =>
-                    (i.type === 'bonus' || i.type === 'limitation') &&
-                    i.system.parent === item._id
-                );
-                const modifierIds = modifiers.map(m => m._id);
-                if (modifierIds.length > 0) {
-                    await this.actor.deleteEmbeddedDocuments('Item', modifierIds);
-                }
-            }
-
-            await item.delete();
-            li.slideUp(200, () => this.render(false));
-        });
-
-        // Power/Skill APs increment
-        html.on('click', '.ap-plus', async (ev) => {
-            ev.preventDefault();
-            const itemId = $(ev.currentTarget).data('itemId');
-            const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power')) {
-                const newValue = (item.system.aps || 0) + 1;
-
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
-                await item.update({ 'system.aps': newValue });
-                this.render(false);
-            }
-        });
-
-        // Power/Skill APs decrement
-        html.on('click', '.ap-minus', async (ev) => {
-            ev.preventDefault();
-            const itemId = $(ev.currentTarget).data('itemId');
-            const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power') && (item.system.aps || 0) > 0) {
-                const newValue = (item.system.aps || 0) - 1;
-
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
-                await item.update({ 'system.aps': newValue });
-                this.render(false);
-            }
-        });
+        // Inherited from MEGSActorSheet:
+        // - .item-delete handler with cascade delete
+        // - .ap-plus and .ap-minus handlers
+        // - .tab.skills .skill-row .toggle-icon accordion toggle
 
         // Power/Skill isLinked checkbox
         html.on('change', 'input[name="system.isLinked"]', async (ev) => {
@@ -188,27 +142,6 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
 
         // Enable drag-and-drop for Bonuses/Limitations onto Powers
         this._enablePowerRowDropZones(html);
-
-        // Skill accordion toggle
-        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => {
-            ev.preventDefault();
-            const skillRow = $(ev.currentTarget).closest('.skill-row');
-            const skillId = skillRow.data('itemId');
-            const isExpanded = skillRow.data('expanded');
-            const icon = $(ev.currentTarget);
-
-            if (isExpanded) {
-                // Collapse - hide subskills
-                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
-                icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
-                skillRow.data('expanded', false);
-            } else {
-                // Expand - show subskills
-                html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
-                icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
-                skillRow.data('expanded', true);
-            }
-        });
 
         // Wealth inflation adjustment checkbox
         html.on('change', '.wealth-inflation-checkbox', async (ev) => {
@@ -408,39 +341,5 @@ export class MEGSCharacterBuilderSheet extends ActorSheet {
         });
     }
 
-    /**
-     * Save the current accordion state for skills
-     * @param {jQuery} html
-     * @private
-     */
-    _saveAccordionState(html) {
-        const state = {};
-        html.find('.tab.skills .skill-row').each((i, row) => {
-            const skillId = $(row).data('itemId');
-            const isExpanded = $(row).data('expanded');
-            state[skillId] = isExpanded;
-        });
-        this._accordionState = state;
-    }
-
-    /**
-     * Restore the accordion state for skills after render
-     * @param {jQuery} html
-     * @private
-     */
-    _restoreAccordionState(html) {
-        if (!this._accordionState) return;
-
-        html.find('.tab.skills .skill-row').each((i, row) => {
-            const skillId = $(row).data('itemId');
-            const wasExpanded = this._accordionState[skillId];
-
-            if (wasExpanded) {
-                // Restore expanded state
-                $(row).data('expanded', true);
-                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
-                html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
-            }
-        });
-    }
+    // _saveAccordionState and _restoreAccordionState are inherited from MEGSActorSheet
 }

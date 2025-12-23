@@ -42,7 +42,11 @@
             {{#if flags.megs.edit-mode}}
                 {{> plusMinusInput id='factorCost' classes='current-input' min=0 value=system.factorCost}}
             {{else}}
-                <div>{{system.factorCost}}</div>
+                {{#if hasActor}}
+                    <div class="factor-cost-tooltip" title="{{getPowerFactorCostTooltip this}}">{{system.effectiveFactorCost}}</div>
+                {{else}}
+                    <div>{{system.factorCost}}</div>
+                {{/if}}
             {{/if}}
         </div>
 

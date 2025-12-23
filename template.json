@@ -341,7 +341,7 @@
             "useUnskilled": true
         },
         "subskill": {
-            "templates": ["baseItem", "purchasable", "scalable", "hasParent"],
+            "templates": ["baseItem", "hasParent"],
             "type": "subskill",
             "linkedSkill": "",
             "useUnskilled": true,

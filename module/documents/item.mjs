@@ -376,6 +376,15 @@ export class MEGSItem extends Item {
                         } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                             // For advantages/drawbacks, use their totalCost or baseCost
                             itemCost = item.system.totalCost || item.system.baseCost || 0;
+
+                            // Ensure drawbacks are always negative
+                            if (item.type === MEGS.itemTypes.drawback) {
+                                if (itemCost === 0) {
+                                    console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                                } else if (itemCost > 0) {
+                                    itemCost = -itemCost;
+                                }
+                            }
                         }
 
                         if (MEGS.debug.enabled) {

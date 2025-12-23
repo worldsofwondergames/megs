@@ -619,6 +619,9 @@ body.game .app h4.window-title {
 .megs .items-list .item:last-child {
     border-bottom: none;
 }
+.megs .items-list .item .item-name {
+    padding-left: 5px;
+}
 .megs .items-list .item .item-name .item-image {
     flex: 0 0 24px;
     height: 24px;

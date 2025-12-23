@@ -298,6 +298,7 @@ export class MEGSActor extends Actor {
                     } else if (item.type === MEGS.itemTypes.gadget) {
                         gadgetsCost += cost;
                     } else if (item.type === MEGS.itemTypes.drawback) {
+                        console.log(`[ACTOR BUDGET] Drawback "${item.name}" - cost: ${cost}, totalCost: ${item.system.totalCost}`);
                         drawbacksCost += cost; // Negative value
                     }
 

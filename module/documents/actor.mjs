@@ -201,8 +201,9 @@ export class MEGSActor extends Actor {
                 effectiveFC = Math.max(1, effectiveFC - uncheckedCount);
             }
 
-            // Apply linking reduction (-2, minimum 1) for powers
-            if (item.type === MEGS.itemTypes.power && (systemData.isLinked === 'true' || systemData.isLinked === true)) {
+            // Apply linking reduction (-2, minimum 1) for powers and skills
+            if ((item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+                (systemData.isLinked === 'true' || systemData.isLinked === true)) {
                 effectiveFC = Math.max(1, effectiveFC - 2);
             }
 
@@ -298,7 +299,6 @@ export class MEGSActor extends Actor {
                     } else if (item.type === MEGS.itemTypes.gadget) {
                         gadgetsCost += cost;
                     } else if (item.type === MEGS.itemTypes.drawback) {
-                        console.log(`[ACTOR BUDGET] Drawback "${item.name}" - cost: ${cost}, totalCost: ${item.system.totalCost}`);
                         drawbacksCost += cost; // Negative value
                     }
 

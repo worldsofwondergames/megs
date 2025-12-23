@@ -449,16 +449,8 @@ export class MEGSItem extends Item {
 
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                const ownerName = this.parent ? this.parent.name : 'no parent';
-                const ownerType = this.parent ? this.parent.type : 'unknown';
-                const parentItem = systemData.parent ? `(parent: ${systemData.parent})` : '(no item parent)';
-                console.log(`[LINKING] ${this.name} (${this.type}) - Owner: ${ownerName} (${ownerType}) ${parentItem} - isLinked: ${systemData.isLinked}, type: ${typeof systemData.isLinked}`);
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
-                    const oldFC = effectiveFC;
                     effectiveFC = Math.max(1, effectiveFC - 2);
-                    console.log(`[LINKING] ${this.name} - FC reduced from ${oldFC} to ${effectiveFC}`);
-                } else {
-                    console.log(`[LINKING] ${this.name} - Not linked, FC remains ${effectiveFC}`);
                 }
 
                 // Calculate total cost using AP Purchase Chart
@@ -467,18 +459,15 @@ export class MEGSItem extends Item {
                 // If APs > 0 and FC == 0: Base cost only power (e.g., Self-Link)
                 if ((systemData.aps || 0) === 0) {
                     systemData.totalCost = 0;
-                    console.log(`[TOTAL COST] ${this.name} - APs=0, totalCost=0`);
                 } else if (effectiveFC > 0) {
                     // Use AP Purchase Chart for APs cost
                     const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
                         ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
                         : (effectiveFC * (systemData.aps || 0)); // Fallback to linear if chart not available
                     systemData.totalCost = systemData.baseCost + apCost;
-                    console.log(`[TOTAL COST] ${this.name} - APs=${systemData.aps}, effectiveFC=${effectiveFC}, baseCost=${systemData.baseCost}, apCost=${apCost}, totalCost=${systemData.totalCost}`);
                 } else {
                     // Base cost only power (no Factor Cost or FC is 0)
                     systemData.totalCost = systemData.baseCost || 0;
-                    console.log(`[TOTAL COST] ${this.name} - effectiveFC=0, totalCost=${systemData.totalCost}`);
                 }
             } else {
                 systemData.totalCost = systemData.baseCost;

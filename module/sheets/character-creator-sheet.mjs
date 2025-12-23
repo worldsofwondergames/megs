@@ -125,15 +125,8 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item) {
-                console.log(`[CHECKBOX] Item: ${item.name}, Current isLinked: ${item.system.isLinked}, Checkbox checked: ${ev.currentTarget.checked}`);
-
-                // Use boolean directly (same as powers)
                 const isLinked = ev.currentTarget.checked;
-                console.log(`[CHECKBOX] Setting isLinked to: ${isLinked}`);
-
-                // Update the item directly
                 await item.update({ 'system.isLinked': isLinked });
-                console.log(`[CHECKBOX] After update - ${item.name} isLinked: ${item.system.isLinked}`);
             }
         });
 

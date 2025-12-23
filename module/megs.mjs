@@ -308,6 +308,30 @@ Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
     return attributeValue !== powerAPs;
 });
 
+Handlebars.registerHelper('isLinkedSkillMismatch', function (skill, actor) {
+    // Check if skill is linked
+    if (!skill.system.isLinked || skill.system.isLinked === false || skill.system.isLinked === 'false') {
+        return false;
+    }
+
+    // Check if link is valid
+    const link = skill.system.link;
+    if (!link || link === 'none' || link === 'special' || link === '') {
+        return false;
+    }
+
+    // Get the linked attribute value from the actor
+    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
+        return false;
+    }
+
+    const attributeValue = actor.system.attributes[link].value || 0;
+    const skillAPs = skill.system.aps || 0;
+
+    // Return true if there's a mismatch
+    return attributeValue !== skillAPs;
+});
+
 Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
     // Filter items to find bonuses and limitations that belong to this power
     if (!items) return [];

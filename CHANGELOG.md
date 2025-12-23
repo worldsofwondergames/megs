@@ -60,6 +60,8 @@
 - Owner dropdown on vehicle/location sheets now alphabetized by name
 - Changed configure sheet icon from cog to document icon
 - Settings moved from tab to header button with cog icon on gadgets
+- Skills can now be linked to attributes in Character Creator sheet (matching powers linking feature)
+- Linked skills display asterisk, reduce Factor Cost by 2, and show validation warnings if APs mismatch
 - Minor styling changes
 - Localized still more hard-coded English strings
 

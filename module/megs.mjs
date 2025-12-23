@@ -521,6 +521,28 @@ Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items)
     return Math.max(1, effectiveFc - uncheckedCount);
 });
 
+Handlebars.registerHelper('getSkillTotalCost', function (skill, items) {
+    // Calculate total cost for a skill using effective Factor Cost
+    const baseCost = skill.system.baseCost || 0;
+    const aps = skill.system.aps || 0;
+
+    // Get effective FC (with linking and subskill reductions)
+    const effectiveFc = Handlebars.helpers.getSkillEffectiveFactorCost(skill, items);
+
+    // Calculate total cost
+    if (aps === 0) {
+        return 0;
+    } else if (effectiveFc > 0) {
+        // Use AP Purchase Chart
+        const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+            ? MEGS.getAPCost(aps, effectiveFc)
+            : (effectiveFc * aps); // Fallback
+        return baseCost + apCost;
+    } else {
+        return baseCost;
+    }
+});
+
 Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
     // Generate tooltip text explaining the Factor Cost calculation for skills
     const baseFc = skill.system.factorCost || 0;

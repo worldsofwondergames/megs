@@ -1119,6 +1119,11 @@ details summary.no-arrow {
     text-align: center;
 }
 
+/* HP Spent tooltip hover effect */
+.megs .hp-spent-tooltip {
+    cursor: pointer;
+}
+
 /* Character Creator Attributes Summary */
 .megs .attributes-summary {
     margin-bottom: 10px;

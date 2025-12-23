@@ -551,6 +551,33 @@ Handlebars.registerHelper('debugLog', function (label, value) {
     return value;
 });
 
+Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
+    // Generate tooltip text explaining the HP Spent calculation
+    if (!budget) return '';
+
+    const attrs = budget.attributesCost || 0;
+    const wealth = budget.wealthCost || 0;
+    const powers = budget.powersCost || 0;
+    const skills = budget.skillsCost || 0;
+    const advantages = budget.advantagesCost || 0;
+    const drawbacks = budget.drawbacks || 0;
+    const gadgets = budget.gadgetsCost || 0;
+    const total = budget.totalSpent || 0;
+
+    let tooltip = 'HP Spent Breakdown:\n';
+    tooltip += `Attributes: ${attrs} HP\n`;
+    tooltip += `Wealth: ${wealth} HP\n`;
+    tooltip += `Powers: ${powers} HP\n`;
+    tooltip += `Skills: ${skills} HP\n`;
+    tooltip += `Advantages: ${advantages} HP\n`;
+    tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    tooltip += `Gadgets: ${gadgets} HP\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Total: ${total} HP`;
+
+    return tooltip;
+});
+
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
     let baseFc = power.system.factorCost || 0;

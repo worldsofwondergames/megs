@@ -124,8 +124,8 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             if (item) {
                 console.log(`[CHECKBOX] Item: ${item.name}, Current isLinked: ${item.system.isLinked}, Checkbox checked: ${ev.currentTarget.checked}`);
 
-                // Convert boolean to string to match data type in template.json
-                const isLinked = ev.currentTarget.checked ? 'true' : 'false';
+                // Use boolean directly (same as powers)
+                const isLinked = ev.currentTarget.checked;
                 console.log(`[CHECKBOX] Setting isLinked to: ${isLinked}`);
 
                 // Update via actor to ensure proper data flow

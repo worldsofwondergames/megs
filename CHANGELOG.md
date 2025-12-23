@@ -60,8 +60,6 @@
 - Owner dropdown on vehicle/location sheets now alphabetized by name
 - Changed configure sheet icon from cog to document icon
 - Settings moved from tab to header button with cog icon on gadgets
-- Skills can now be linked to attributes in Character Creator sheet (matching powers linking feature)
-- Linked skills display asterisk, reduce Factor Cost by 2, and show validation warnings if APs mismatch
 - Minor styling changes
 - Localized still more hard-coded English strings
 
@@ -90,7 +88,9 @@
 - Character creator sheet with comprehensive point-buy character creation
     - Attributes tab with increment/decrement controls and individual AP cost display
     - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
-    - Skills tab with accordion display for subskills and cost tracking
+    - Skills tab with accordion display for subskills, linking support, and cost tracking
+        - Link checkbox to link skills to attributes (reduces Factor Cost by 2)
+        - Linked skills display asterisk and show validation warnings if APs don't match linked attribute
     - Traits tab with two-column layout for Advantages and Drawbacks
     - Gadgets tab with drag-and-drop support and automatic cost calculation
         - Display gadget name with attribute/power/skill summary

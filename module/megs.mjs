@@ -174,6 +174,11 @@ Handlebars.registerHelper('trueFalseToYesNo', function (str) {
     return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
 });
 
+Handlebars.registerHelper('isTrue', function (value) {
+    // Convert string 'true'/'false' or boolean to boolean for checkbox checked attribute
+    return value === 'true' || value === true;
+});
+
 Handlebars.registerHelper('sum', function () {
     return Array.prototype.slice.call(arguments, 0, -1).reduce((acc, num) => (acc += num));
 });

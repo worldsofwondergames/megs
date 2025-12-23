@@ -198,7 +198,7 @@
                             {{getPowerDisplayName item}}
                         </div>
                         <div class='item-linked'>
-                            <input type="checkbox" name="system.isLinked" {{checked item.system.isLinked}} data-item-id="{{item._id}}" />
+                            <input type="checkbox" name="system.isLinked" {{#if (isTrue item.system.isLinked)}}checked{{/if}} data-item-id="{{item._id}}" />
                         </div>
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}
@@ -277,7 +277,7 @@
                             {{getSkillDisplayName item}}
                         </div>
                         <div class='item-linked'>
-                            <input type="checkbox" name="system.isLinked" {{checked item.system.isLinked}} data-item-id="{{item._id}}" />
+                            <input type="checkbox" name="system.isLinked" {{#if (isTrue item.system.isLinked)}}checked{{/if}} data-item-id="{{item._id}}" />
                         </div>
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}

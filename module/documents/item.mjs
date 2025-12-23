@@ -464,15 +464,18 @@ export class MEGSItem extends Item {
                 // If APs > 0 and FC == 0: Base cost only power (e.g., Self-Link)
                 if ((systemData.aps || 0) === 0) {
                     systemData.totalCost = 0;
+                    console.log(`[TOTAL COST] ${this.name} - APs=0, totalCost=0`);
                 } else if (effectiveFC > 0) {
                     // Use AP Purchase Chart for APs cost
                     const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
                         ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
                         : (effectiveFC * (systemData.aps || 0)); // Fallback to linear if chart not available
                     systemData.totalCost = systemData.baseCost + apCost;
+                    console.log(`[TOTAL COST] ${this.name} - APs=${systemData.aps}, effectiveFC=${effectiveFC}, baseCost=${systemData.baseCost}, apCost=${apCost}, totalCost=${systemData.totalCost}`);
                 } else {
                     // Base cost only power (no Factor Cost or FC is 0)
                     systemData.totalCost = systemData.baseCost || 0;
+                    console.log(`[TOTAL COST] ${this.name} - effectiveFC=0, totalCost=${systemData.totalCost}`);
                 }
             } else {
                 systemData.totalCost = systemData.baseCost;

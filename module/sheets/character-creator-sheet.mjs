@@ -128,16 +128,11 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
                 const isLinked = ev.currentTarget.checked;
                 console.log(`[CHECKBOX] Setting isLinked to: ${isLinked}`);
 
-                // Update via actor to ensure proper data flow
-                const result = await this.actor.updateEmbeddedDocuments('Item', [{
-                    _id: itemId,
-                    'system.isLinked': isLinked
-                }]);
-                console.log(`[CHECKBOX] Update result:`, result);
+                // Update the item directly and trigger manual re-render (same pattern as subskill checkbox)
+                await item.update({ 'system.isLinked': isLinked });
+                console.log(`[CHECKBOX] After update - ${item.name} isLinked: ${item.system.isLinked}`);
 
-                // Verify the update worked
-                const updatedItem = this.actor.items.get(itemId);
-                console.log(`[CHECKBOX] After update - ${updatedItem.name} isLinked: ${updatedItem.system.isLinked}`);
+                this.render(false);
             }
         });
 

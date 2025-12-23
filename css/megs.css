@@ -619,6 +619,9 @@ body.game .app h4.window-title {
 .megs .items-list .item:last-child {
     border-bottom: none;
 }
+.megs .items-list .item .item-name {
+    padding-left: 8px;
+}
 .megs .items-list .item .item-name .item-image {
     flex: 0 0 24px;
     height: 24px;
@@ -1116,6 +1119,11 @@ details summary.no-arrow {
     text-align: center;
 }
 
+/* HP Spent tooltip hover effect */
+.megs .hp-spent-tooltip {
+    cursor: pointer;
+}
+
 /* Character Creator Attributes Summary */
 .megs .attributes-summary {
     margin-bottom: 10px;
@@ -1415,7 +1423,7 @@ details summary.no-arrow {
     flex: 1;
 }
 
-.megs .wealth-summary .inflation-controls-left input[type="checkbox"] {
+.megs .wealth-summary .inflation-controls-left input[type='checkbox'] {
     width: auto;
     margin: 0;
 }
@@ -1505,8 +1513,37 @@ details summary.no-arrow {
     padding-right: 20px;
 }
 
-.megs .wealth-table input[type="radio"] {
+.megs .wealth-table input[type='radio'] {
     width: auto;
     margin: 0;
     cursor: pointer;
+}
+
+/* Actor Sheet Skills Tab Accordion Styles */
+.megs.sheet.actor .tab.skills .items-list .skill-row {
+    background-color: #e8f4f8;
+}
+.megs.sheet.actor .tab.skills .items-list .subskill-row {
+    background-color: #ffffff;
+}
+.megs.sheet.actor .tab.skills .items-list .item-toggle {
+    flex: 0 0 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.megs.sheet.actor .tab.skills .items-list .toggle-icon {
+    color: #666;
+    font-size: 0.85em;
+    transition: transform 0.2s ease;
+}
+.megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
+    color: #000;
+}
+
+/* Power Factor Cost Tooltip */
+.factor-cost-tooltip {
+    cursor: pointer;
+    white-space: pre-line;
 }

@@ -85,24 +85,31 @@ test('_calculateInitiativeBonus returns correct value', () => {
 });
 
 describe('Character Budget Calculations', () => {
-    test('calculates attribute costs correctly with FC 7', () => {
-        const actor = new MEGSActor({
+    // Helper function to create test actor with default attributes
+    const createTestActor = (attributeOverrides = {}, wealth = 0, budget = 450) => {
+        const defaultAttributes = {
+            dex: { value: 0, factorCost: 7 },
+            str: { value: 0, factorCost: 6 },
+            body: { value: 0, factorCost: 6 },
+            int: { value: 0, factorCost: 7 },
+            will: { value: 0, factorCost: 6 },
+            mind: { value: 0, factorCost: 6 },
+            infl: { value: 0, factorCost: 7 },
+            aura: { value: 0, factorCost: 6 },
+            spirit: { value: 0, factorCost: 6 }
+        };
+
+        return new MEGSActor({
             system: {
-                attributes: {
-                    dex: { value: 5, factorCost: 7 },
-                    str: { value: 0, factorCost: 6 },
-                    body: { value: 0, factorCost: 6 },
-                    int: { value: 0, factorCost: 7 },
-                    will: { value: 0, factorCost: 6 },
-                    mind: { value: 0, factorCost: 6 },
-                    infl: { value: 0, factorCost: 7 },
-                    aura: { value: 0, factorCost: 6 },
-                    spirit: { value: 0, factorCost: 6 }
-                },
-                wealth: 0,
-                creationBudget: { base: 450 }
+                attributes: { ...defaultAttributes, ...attributeOverrides },
+                wealth,
+                creationBudget: { base: budget }
             }
         });
+    };
+
+    test('calculates attribute costs correctly with FC 7', () => {
+        const actor = createTestActor({ dex: { value: 5, factorCost: 7 } });
 
         actor.items = [];
         actor.prepareBaseData();
@@ -113,23 +120,7 @@ describe('Character Budget Calculations', () => {
     });
 
     test('calculates attribute costs correctly with FC 6', () => {
-        const actor = new MEGSActor({
-            system: {
-                attributes: {
-                    dex: { value: 0, factorCost: 7 },
-                    str: { value: 6, factorCost: 6 },
-                    body: { value: 0, factorCost: 6 },
-                    int: { value: 0, factorCost: 7 },
-                    will: { value: 0, factorCost: 6 },
-                    mind: { value: 0, factorCost: 6 },
-                    infl: { value: 0, factorCost: 7 },
-                    aura: { value: 0, factorCost: 6 },
-                    spirit: { value: 0, factorCost: 6 }
-                },
-                wealth: 0,
-                creationBudget: { base: 450 }
-            }
-        });
+        const actor = createTestActor({ str: { value: 6, factorCost: 6 } });
 
         actor.items = [];
         actor.prepareBaseData();
@@ -140,23 +131,7 @@ describe('Character Budget Calculations', () => {
     });
 
     test('excludes child items from budget totals', () => {
-        const actor = new MEGSActor({
-            system: {
-                attributes: {
-                    dex: { value: 0, factorCost: 7 },
-                    str: { value: 0, factorCost: 6 },
-                    body: { value: 0, factorCost: 6 },
-                    int: { value: 0, factorCost: 7 },
-                    will: { value: 0, factorCost: 6 },
-                    mind: { value: 0, factorCost: 6 },
-                    infl: { value: 0, factorCost: 7 },
-                    aura: { value: 0, factorCost: 6 },
-                    spirit: { value: 0, factorCost: 6 }
-                },
-                wealth: 0,
-                creationBudget: { base: 450 }
-            }
-        });
+        const actor = createTestActor();
 
         // Create a gadget and a power that belongs to the gadget
         const gadget = {
@@ -188,27 +163,12 @@ describe('Character Budget Calculations', () => {
         expect(actor.system.heroPointBudget.itemsCost).toBe(70); // 50 + 20
     });
 
-    test('handles drawbacks correctly in budget', () => {
-        const actor = new MEGSActor({
-            system: {
-                attributes: {
-                    dex: { value: 0, factorCost: 7 },
-                    str: { value: 0, factorCost: 6 },
-                    body: { value: 0, factorCost: 6 },
-                    int: { value: 0, factorCost: 7 },
-                    will: { value: 0, factorCost: 6 },
-                    mind: { value: 0, factorCost: 6 },
-                    infl: { value: 0, factorCost: 7 },
-                    aura: { value: 0, factorCost: 6 },
-                    spirit: { value: 0, factorCost: 6 }
-                },
-                wealth: 0,
-                creationBudget: { base: 450 }
-            }
-        });
+    test('handles drawbacks with positive cost (converts to negative)', () => {
+        const actor = createTestActor();
 
         const drawback = {
             _id: 'drawback1',
+            name: 'Test Drawback',
             type: MEGS.itemTypes.drawback,
             system: { totalCost: 25, parent: null }
         };
@@ -217,29 +177,63 @@ describe('Character Budget Calculations', () => {
         actor.prepareBaseData();
         actor.prepareDerivedData();
 
-        // Drawbacks add to total budget
-        expect(actor.system.heroPointBudget.drawbacks).toBe(25);
-        expect(actor.system.heroPointBudget.total).toBe(475); // 450 + 25
+        // Positive cost should be converted to negative
+        expect(actor.system.heroPointBudget.drawbacks).toBe(-25);
+        expect(actor.system.heroPointBudget.totalSpent).toBe(-25);
+        expect(actor.system.heroPointBudget.total).toBe(450);
+        expect(actor.system.heroPointBudget.remaining).toBe(475); // 450 - (-25) = 475
+    });
+
+    test('handles drawbacks with negative cost (stays negative)', () => {
+        const actor = createTestActor();
+
+        const drawback = {
+            _id: 'drawback1',
+            name: 'Test Drawback',
+            type: MEGS.itemTypes.drawback,
+            system: { totalCost: -50, parent: null }
+        };
+
+        actor.items = [drawback];
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        // Already negative cost should stay negative
+        expect(actor.system.heroPointBudget.drawbacks).toBe(-50);
+        expect(actor.system.heroPointBudget.totalSpent).toBe(-50);
+        expect(actor.system.heroPointBudget.remaining).toBe(500); // 450 - (-50) = 500
+    });
+
+    test('logs error for drawback with zero cost', () => {
+        const originalError = console.error;
+        let errorMessage = '';
+        console.error = (msg) => { errorMessage = msg; };
+
+        const actor = createTestActor();
+
+        const drawback = {
+            _id: 'drawback1',
+            name: 'Broken Drawback',
+            type: MEGS.itemTypes.drawback,
+            system: { totalCost: 0, parent: null }
+        };
+
+        actor.items = [drawback];
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        // Should log an error for zero cost
+        expect(errorMessage).toBe('Drawback "Broken Drawback" has zero cost - this is likely a configuration error');
+
+        console.error = originalError;
     });
 
     test('calculates total spent and remaining correctly', () => {
-        const actor = new MEGSActor({
-            system: {
-                attributes: {
-                    dex: { value: 3, factorCost: 7 },
-                    str: { value: 2, factorCost: 6 },
-                    body: { value: 2, factorCost: 6 },
-                    int: { value: 0, factorCost: 7 },
-                    will: { value: 0, factorCost: 6 },
-                    mind: { value: 0, factorCost: 6 },
-                    infl: { value: 0, factorCost: 7 },
-                    aura: { value: 0, factorCost: 6 },
-                    spirit: { value: 0, factorCost: 6 }
-                },
-                wealth: 2, // 2 APs @ FC 2 = 2 HP
-                creationBudget: { base: 450 }
-            }
-        });
+        const actor = createTestActor({
+            dex: { value: 3, factorCost: 7 },
+            str: { value: 2, factorCost: 6 },
+            body: { value: 2, factorCost: 6 }
+        }, 2); // 2 APs wealth @ FC 2 = 2 HP
 
         const power = {
             _id: 'power1',

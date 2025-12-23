@@ -125,6 +125,8 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
                 // Convert boolean to string to match data type in template.json
                 const isLinked = ev.currentTarget.checked ? 'true' : 'false';
                 await item.update({ 'system.isLinked': isLinked });
+                // Force data preparation to recalculate costs
+                this.actor.prepareData();
                 // Re-render to show updated costs
                 this.render(false);
             }

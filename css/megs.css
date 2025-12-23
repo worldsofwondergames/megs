@@ -620,7 +620,7 @@ body.game .app h4.window-title {
     border-bottom: none;
 }
 .megs .items-list .item .item-name {
-    padding-left: 5px;
+    padding-left: 8px;
 }
 .megs .items-list .item .item-name .item-image {
     flex: 0 0 24px;
@@ -1418,7 +1418,7 @@ details summary.no-arrow {
     flex: 1;
 }
 
-.megs .wealth-summary .inflation-controls-left input[type="checkbox"] {
+.megs .wealth-summary .inflation-controls-left input[type='checkbox'] {
     width: auto;
     margin: 0;
 }
@@ -1508,7 +1508,7 @@ details summary.no-arrow {
     padding-right: 20px;
 }
 
-.megs .wealth-table input[type="radio"] {
+.megs .wealth-table input[type='radio'] {
     width: auto;
     margin: 0;
     cursor: pointer;
@@ -1516,29 +1516,29 @@ details summary.no-arrow {
 
 /* Actor Sheet Skills Tab Accordion Styles */
 .megs.sheet.actor .tab.skills .items-list .skill-row {
-  background-color: #e8f4f8;
+    background-color: #e8f4f8;
 }
 .megs.sheet.actor .tab.skills .items-list .subskill-row {
-  background-color: #ffffff;
+    background-color: #ffffff;
 }
 .megs.sheet.actor .tab.skills .items-list .item-toggle {
-  flex: 0 0 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+    flex: 0 0 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 .megs.sheet.actor .tab.skills .items-list .toggle-icon {
-  color: #666;
-  font-size: 0.85em;
-  transition: transform 0.2s ease;
+    color: #666;
+    font-size: 0.85em;
+    transition: transform 0.2s ease;
 }
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
-  color: #000;
+    color: #000;
 }
 
 /* Power Factor Cost Tooltip */
 .factor-cost-tooltip {
-  cursor: pointer;
-  white-space: pre-line;
+    cursor: pointer;
+    white-space: pre-line;
 }

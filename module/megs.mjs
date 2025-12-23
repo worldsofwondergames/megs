@@ -543,6 +543,17 @@ Handlebars.registerHelper('getSkillTotalCost', function (skill, items) {
     }
 });
 
+Handlebars.registerHelper('getTotalSkillsCost', function (skills, items) {
+    // Calculate total cost for all skills (excluding gadget skills)
+    if (!skills || !Array.isArray(skills)) return 0;
+
+    return skills.reduce((total, skill) => {
+        if (skill.system.parent) return total; // Skip gadget skills
+        const cost = Handlebars.helpers.getSkillTotalCost(skill, items);
+        return total + cost;
+    }, 0);
+});
+
 Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
     // Generate tooltip text explaining the Factor Cost calculation for skills
     const baseFc = skill.system.factorCost || 0;

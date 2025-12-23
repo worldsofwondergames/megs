@@ -449,7 +449,10 @@ export class MEGSItem extends Item {
 
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                console.log(`[LINKING] ${this.name} (${this.type}) - isLinked: ${systemData.isLinked}, type: ${typeof systemData.isLinked}`);
+                const ownerName = this.parent ? this.parent.name : 'no parent';
+                const ownerType = this.parent ? this.parent.type : 'unknown';
+                const parentItem = systemData.parent ? `(parent: ${systemData.parent})` : '(no item parent)';
+                console.log(`[LINKING] ${this.name} (${this.type}) - Owner: ${ownerName} (${ownerType}) ${parentItem} - isLinked: ${systemData.isLinked}, type: ${typeof systemData.isLinked}`);
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
                     const oldFC = effectiveFC;
                     effectiveFC = Math.max(1, effectiveFC - 2);

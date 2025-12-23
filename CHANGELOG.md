@@ -88,7 +88,9 @@
 - Character creator sheet with comprehensive point-buy character creation
     - Attributes tab with increment/decrement controls and individual AP cost display
     - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
-    - Skills tab with accordion display for subskills and cost tracking
+    - Skills tab with accordion display for subskills, linking support, and cost tracking
+        - Link checkbox to link skills to attributes (reduces Factor Cost by 2)
+        - Linked skills display asterisk and show validation warnings if APs don't match linked attribute
     - Traits tab with two-column layout for Advantages and Drawbacks
     - Gadgets tab with drag-and-drop support and automatic cost calculation
         - Display gadget name with attribute/power/skill summary

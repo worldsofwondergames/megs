@@ -174,6 +174,11 @@ Handlebars.registerHelper('trueFalseToYesNo', function (str) {
     return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
 });
 
+Handlebars.registerHelper('isTrue', function (value) {
+    // Convert string 'true'/'false' or boolean to boolean for checkbox checked attribute
+    return value === 'true' || value === true;
+});
+
 Handlebars.registerHelper('sum', function () {
     return Array.prototype.slice.call(arguments, 0, -1).reduce((acc, num) => (acc += num));
 });
@@ -306,6 +311,30 @@ Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
 
     // Return true if there's a mismatch
     return attributeValue !== powerAPs;
+});
+
+Handlebars.registerHelper('isLinkedSkillMismatch', function (skill, actor) {
+    // Check if skill is linked
+    if (!skill.system.isLinked || skill.system.isLinked === false || skill.system.isLinked === 'false') {
+        return false;
+    }
+
+    // Check if link is valid
+    const link = skill.system.link;
+    if (!link || link === 'none' || link === 'special' || link === '') {
+        return false;
+    }
+
+    // Get the linked attribute value from the actor
+    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
+        return false;
+    }
+
+    const attributeValue = actor.system.attributes[link].value || 0;
+    const skillAPs = skill.system.aps || 0;
+
+    // Return true if there's a mismatch
+    return attributeValue !== skillAPs;
 });
 
 Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
@@ -470,11 +499,17 @@ Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
 /* -------------------------------------------- */
 Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items) {
     // Calculate effective Factor Cost for a skill
-    // FC = Base FC - (number of unchecked subskills)
+    // FC = Base FC - (number of unchecked subskills) - (linking bonus)
     // Minimum FC is always 1
-    const baseFc = skill.system.factorCost || 0;
+    let baseFc = skill.system.factorCost || 0;
+    let effectiveFc = baseFc;
 
-    if (!items) return baseFc;
+    // Apply linking reduction (-2, minimum 1)
+    if (skill.system.isLinked === 'true' || skill.system.isLinked === true) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    if (!items) return effectiveFc;
 
     // Count unchecked subskills (isTrained = false or undefined)
     const uncheckedCount = items.filter(item =>
@@ -483,15 +518,57 @@ Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items)
         !item.system.isTrained
     ).length;
 
-    return Math.max(1, baseFc - uncheckedCount);
+    return Math.max(1, effectiveFc - uncheckedCount);
+});
+
+Handlebars.registerHelper('getSkillTotalCost', function (skill, items) {
+    // Calculate total cost for a skill using effective Factor Cost
+    const baseCost = skill.system.baseCost || 0;
+    const aps = skill.system.aps || 0;
+
+    // Get effective FC (with linking and subskill reductions)
+    const effectiveFc = Handlebars.helpers.getSkillEffectiveFactorCost(skill, items);
+
+    // Calculate total cost
+    if (aps === 0) {
+        return 0;
+    } else if (effectiveFc > 0) {
+        // Use AP Purchase Chart
+        const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+            ? MEGS.getAPCost(aps, effectiveFc)
+            : (effectiveFc * aps); // Fallback
+        return baseCost + apCost;
+    } else {
+        return baseCost;
+    }
+});
+
+Handlebars.registerHelper('getTotalSkillsCost', function (skills, items) {
+    // Calculate total cost for all skills (excluding gadget skills)
+    if (!skills || !Array.isArray(skills)) return 0;
+
+    return skills.reduce((total, skill) => {
+        if (skill.system.parent) return total; // Skip gadget skills
+        const cost = Handlebars.helpers.getSkillTotalCost(skill, items);
+        return total + cost;
+    }, 0);
 });
 
 Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
     // Generate tooltip text explaining the Factor Cost calculation for skills
     const baseFc = skill.system.factorCost || 0;
     let tooltip = `Base FC: ${baseFc}`;
+    let effectiveFc = baseFc;
+
+    // Check if linked
+    const isLinked = skill.system.isLinked === 'true' || skill.system.isLinked === true;
+    if (isLinked) {
+        tooltip += '\nLinked: -2';
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
 
     if (!items) {
+        tooltip += `\nEffective FC: ${effectiveFc}`;
         return tooltip;
     }
 
@@ -504,9 +581,9 @@ Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
 
     if (uncheckedCount > 0) {
         tooltip += `\nUnchecked subskills: -${uncheckedCount}`;
+        effectiveFc = Math.max(1, effectiveFc - uncheckedCount);
     }
 
-    const effectiveFc = Math.max(1, baseFc - uncheckedCount);
     tooltip += `\nEffective FC: ${effectiveFc}`;
 
     return tooltip;

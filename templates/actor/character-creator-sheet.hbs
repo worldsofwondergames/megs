@@ -198,7 +198,7 @@
                             {{getPowerDisplayName item}}
                         </div>
                         <div class='item-linked'>
-                            <input type="checkbox" name="system.isLinked" {{checked item.system.isLinked}} data-item-id="{{item._id}}" />
+                            <input type="checkbox" name="system.isLinked" {{#if (isTrue item.system.isLinked)}}checked{{/if}} data-item-id="{{item._id}}" />
                         </div>
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}
@@ -253,7 +253,7 @@
             <section class="skills-summary">
                 <div class="summary-row">
                     <label class="summary-label">Total Skills Cost:</label>
-                    <span class="summary-value">{{system.heroPointBudget.skillsCost}} HP</span>
+                    <span class="summary-value">{{getTotalSkillsCost skills items}} HP</span>
                 </div>
             </section>
 
@@ -262,6 +262,7 @@
                 <li class='item flexrow items-header'>
                     <div class='item-toggle'></div>
                     <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                    <div class='item-linked'>{{localize 'MEGS.Link'}}?</div>
                     <div class='item-base-cost'>{{localize 'MEGS.Base'}}<br>{{localize 'MEGS.Cost'}}</div>
                     <div class='item-factor-cost'>{{localize 'MEGS.Factor'}}<br>{{localize 'MEGS.Cost'}}</div>
                     <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
@@ -273,7 +274,10 @@
                             <i class='fas fa-chevron-right toggle-icon'></i>
                         </div>
                         <div class='item-name'>
-                            {{item.name}}
+                            {{getSkillDisplayName item}}
+                        </div>
+                        <div class='item-linked'>
+                            <input type="checkbox" name="system.isLinked" {{#if (isTrue item.system.isLinked)}}checked{{/if}} data-item-id="{{item._id}}" />
                         </div>
                         <div class='item-base-cost'>
                             {{item.system.baseCost}}
@@ -281,7 +285,7 @@
                         <div class='item-factor-cost factor-cost-calculated' title='{{getSkillFactorCostTooltip item ../items}}'>
                             {{getSkillEffectiveFactorCost item ../items}}
                         </div>
-                        <div class='item-aps'>
+                        <div class='item-aps {{#if (isLinkedSkillMismatch item ../actor)}}link-mismatch{{/if}}'>
                             <div class="quantity skill-input">
                                 <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
                                 <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
@@ -289,7 +293,7 @@
                             </div>
                         </div>
                         <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
-                            {{item.system.totalCost}}
+                            {{getSkillTotalCost item ../items}}
                         </div>
                     </li>
                     {{!-- Display Subskills under the Skill --}}

@@ -119,6 +119,9 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
 
         // Power/Skill isLinked checkbox
         html.on('change', 'input[name="system.isLinked"]', async (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item) {
@@ -128,11 +131,9 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
                 const isLinked = ev.currentTarget.checked;
                 console.log(`[CHECKBOX] Setting isLinked to: ${isLinked}`);
 
-                // Update the item directly and trigger manual re-render (same pattern as subskill checkbox)
+                // Update the item directly
                 await item.update({ 'system.isLinked': isLinked });
                 console.log(`[CHECKBOX] After update - ${item.name} isLinked: ${item.system.isLinked}`);
-
-                this.render(false);
             }
         });
 

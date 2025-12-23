@@ -449,8 +449,13 @@ export class MEGSItem extends Item {
 
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
+                console.log(`[LINKING] ${this.name} (${this.type}) - isLinked: ${systemData.isLinked}, type: ${typeof systemData.isLinked}`);
                 if (systemData.isLinked === 'true' || systemData.isLinked === true) {
+                    const oldFC = effectiveFC;
                     effectiveFC = Math.max(1, effectiveFC - 2);
+                    console.log(`[LINKING] ${this.name} - FC reduced from ${oldFC} to ${effectiveFC}`);
+                } else {
+                    console.log(`[LINKING] ${this.name} - Not linked, FC remains ${effectiveFC}`);
                 }
 
                 // Calculate total cost using AP Purchase Chart

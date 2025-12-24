@@ -87,9 +87,19 @@ export class MEGSItem extends Item {
             await this._addTraitsToGadget();
         } else {
             console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created, duplicateSource:`, this._stats.duplicateSource);
-            // Standalone gadget - initialize skillData/subskillData only if not a duplicate
-            if (!this._stats.duplicateSource) {
+            console.log(`[MEGS] Existing powerData:`, Object.keys(this.system.powerData || {}).length);
+            console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
+
+            // Standalone gadget - initialize skillData/subskillData only if not already populated
+            // (e.g., from toObject() when dragging from character to sidebar)
+            const hasPowerData = this.system.powerData && Object.keys(this.system.powerData).length > 0;
+            const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
+
+            if (!hasPowerData && !hasSkillData) {
+                console.log(`[MEGS] No existing data found, initializing with defaults`);
                 await this._initializeSkillData();
+            } else {
+                console.log(`[MEGS] Existing data found, preserving it`);
             }
         }
     }

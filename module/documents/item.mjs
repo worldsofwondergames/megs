@@ -13,6 +13,58 @@ export class MEGSItem extends Item {
     }
 
     /** @override */
+    toObject(source = true) {
+        const data = super.toObject(source);
+
+        // If this is a gadget with a parent (on a character), serialize child items
+        if (this.type === MEGS.itemTypes.gadget && this.parent) {
+            const skillData = {};
+            const subskillData = {};
+            const subskillTrainingData = {};
+            const powerData = {};
+            const traitData = {};
+
+            // Get all child items
+            const childItems = this.parent.items.filter(i => i.system.parent === this.id);
+
+            for (let item of childItems) {
+                if (item.type === MEGS.itemTypes.skill) {
+                    skillData[item.name] = item.system.aps;
+                } else if (item.type === MEGS.itemTypes.subskill) {
+                    subskillData[item.name] = item.system.aps;
+                    // Preserve training status
+                    subskillTrainingData[item.name] = item.system.isTrained;
+                } else if (item.type === MEGS.itemTypes.power) {
+                    // Serialize the entire power
+                    powerData[item.id] = {
+                        name: item.name,
+                        type: item.type,
+                        img: item.img,
+                        system: foundry.utils.deepClone(item.system)
+                    };
+                } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
+                    // Serialize advantages and drawbacks as traits
+                    traitData[item.id] = {
+                        name: item.name,
+                        type: item.type,
+                        img: item.img,
+                        system: foundry.utils.deepClone(item.system)
+                    };
+                }
+            }
+
+            // Add serialized data to the object
+            data.system.skillData = skillData;
+            data.system.subskillData = subskillData;
+            data.system.subskillTrainingData = subskillTrainingData;
+            data.system.powerData = powerData;
+            data.system.traitData = traitData;
+        }
+
+        return data;
+    }
+
+    /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
 
@@ -87,6 +139,7 @@ export class MEGSItem extends Item {
         // Get virtual skill data if it exists
         const skillData = this.system.skillData || {};
         const subskillData = this.system.subskillData || {};
+        const subskillTrainingData = this.system.subskillTrainingData || {};
 
         let skills = [];
         let subskills = [];
@@ -124,7 +177,7 @@ export class MEGSItem extends Item {
                             type: j.type,
                             linkedSkill: i.name,
                             useUnskilled: j.useUnskilled,
-                            isTrained: true,
+                            isTrained: subskillTrainingData[j.name] !== undefined ? subskillTrainingData[j.name] : true,
                         },
                     };
                     subskills.push(subskillObj);

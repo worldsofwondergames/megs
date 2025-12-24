@@ -277,12 +277,12 @@ export class MEGSItemSheet extends ItemSheet {
             if (isVirtual) {
                 // Check if this is a virtual power
                 if (itemId.startsWith('virtual-power-')) {
-                    const powerKey = itemId.replace('virtual-power-', '');
-                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+                    const powerName = itemId.replace('virtual-power-', '');
+                    const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
 
-                    if (powerData.hasOwnProperty(powerKey)) {
-                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) + 1;
-                        await this.object.update({ 'system.powerData': powerData });
+                    if (powerAPs.hasOwnProperty(powerName)) {
+                        powerAPs[powerName] = (powerAPs[powerName] || 0) + 1;
+                        await this.object.update({ 'system.powerAPs': powerAPs });
                         this.render(false);
                     }
                 } else {
@@ -320,12 +320,12 @@ export class MEGSItemSheet extends ItemSheet {
             if (isVirtual) {
                 // Check if this is a virtual power
                 if (itemId.startsWith('virtual-power-')) {
-                    const powerKey = itemId.replace('virtual-power-', '');
-                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+                    const powerName = itemId.replace('virtual-power-', '');
+                    const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
 
-                    if (powerData.hasOwnProperty(powerKey) && (powerData[powerKey].system.aps || 0) > 0) {
-                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) - 1;
-                        await this.object.update({ 'system.powerData': powerData });
+                    if (powerAPs.hasOwnProperty(powerName) && (powerAPs[powerName] || 0) > 0) {
+                        powerAPs[powerName] = (powerAPs[powerName] || 0) - 1;
+                        await this.object.update({ 'system.powerAPs': powerAPs });
                         this.render(false);
                     }
                 } else {
@@ -402,16 +402,19 @@ export class MEGSItemSheet extends ItemSheet {
                     this.render(false);
                 }
             } else if (isStandaloneGadget && isVirtualPower) {
-                // Standalone gadget - delete virtual power from powerData
-                const key = itemId.replace('virtual-power-', '');
-                const powerData = this.object.system.powerData || {};
+                // Standalone gadget - delete virtual power from all flattened fields
+                const powerName = itemId.replace('virtual-power-', '');
 
-                if (powerData[key]) {
-                    // Use Foundry's key deletion syntax
-                    const updateKey = `system.powerData.-=${key}`;
-                    await this.object.update({ [updateKey]: null });
-                    this.render(false);
-                }
+                // Delete from all power-related fields
+                await this.object.update({
+                    [`system.powerAPs.-=${powerName}`]: null,
+                    [`system.powerBaseCosts.-=${powerName}`]: null,
+                    [`system.powerFactorCosts.-=${powerName}`]: null,
+                    [`system.powerRanges.-=${powerName}`]: null,
+                    [`system.powerIsLinked.-=${powerName}`]: null,
+                    [`system.powerLinks.-=${powerName}`]: null
+                });
+                this.render(false);
             } else if (this.object.parent) {
                 // Gadget owned by actor - delete real item
                 const item = this.object.parent.items.get(itemId);
@@ -805,16 +808,29 @@ export class MEGSItemSheet extends ItemSheet {
      */
     _createVirtualPowersFromData(context) {
         const virtualItems = [];
-        const powerData = context.system.powerData || {};
+        // Read from flattened fields
+        const powerAPs = context.system.powerAPs || {};
+        const powerBaseCosts = context.system.powerBaseCosts || {};
+        const powerFactorCosts = context.system.powerFactorCosts || {};
+        const powerRanges = context.system.powerRanges || {};
+        const powerIsLinked = context.system.powerIsLinked || {};
+        const powerLinks = context.system.powerLinks || {};
 
-        // Create virtual power items
-        for (let [key, power] of Object.entries(powerData)) {
+        // Create virtual power items from flattened data
+        for (let powerName of Object.keys(powerAPs)) {
             const virtualPower = {
-                _id: `virtual-power-${key}`,
-                name: power.name,
+                _id: `virtual-power-${powerName}`,
+                name: powerName,
                 type: MEGS.itemTypes.power,
-                img: power.img || Item.DEFAULT_ICON,
-                system: power.system,
+                img: 'systems/megs/assets/images/icons/power.png',
+                system: {
+                    aps: powerAPs[powerName] || 0,
+                    baseCost: powerBaseCosts[powerName] || 0,
+                    factorCost: powerFactorCosts[powerName] || 0,
+                    range: powerRanges[powerName] || '',
+                    isLinked: powerIsLinked[powerName] || false,
+                    link: powerLinks[powerName] || ''
+                },
                 isVirtual: true
             };
             virtualItems.push(virtualPower);
@@ -856,7 +872,7 @@ export class MEGSItemSheet extends ItemSheet {
             if (context.system.skillData) {
                 items = items.concat(this._createVirtualSkillsFromData(context));
             }
-            if (context.system.powerData) {
+            if (context.system.powerAPs) {
                 items = items.concat(this._createVirtualPowersFromData(context));
             }
             if (context.system.traitData) {
@@ -1180,18 +1196,31 @@ export class MEGSItemSheet extends ItemSheet {
      * @private
      */
     async _onDropPowerToStandaloneGadget(itemData) {
-        const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+        // Duplicate all flattened power fields
+        const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
+        const powerBaseCosts = foundry.utils.duplicate(this.object.system.powerBaseCosts || {});
+        const powerFactorCosts = foundry.utils.duplicate(this.object.system.powerFactorCosts || {});
+        const powerRanges = foundry.utils.duplicate(this.object.system.powerRanges || {});
+        const powerIsLinked = foundry.utils.duplicate(this.object.system.powerIsLinked || {});
+        const powerLinks = foundry.utils.duplicate(this.object.system.powerLinks || {});
 
-        // Store the complete item data using a unique key (name + type + timestamp)
-        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
-        powerData[key] = {
-            name: itemData.name,
-            type: itemData.type,
-            img: itemData.img,
-            system: itemData.system
-        };
+        // Use power name as key
+        const powerName = itemData.name;
+        powerAPs[powerName] = itemData.system.aps || 0;
+        powerBaseCosts[powerName] = itemData.system.baseCost || 0;
+        powerFactorCosts[powerName] = itemData.system.factorCost || 0;
+        powerRanges[powerName] = itemData.system.range || '';
+        powerIsLinked[powerName] = itemData.system.isLinked || false;
+        powerLinks[powerName] = itemData.system.link || '';
 
-        await this.object.update({ 'system.powerData': powerData });
+        await this.object.update({
+            'system.powerAPs': powerAPs,
+            'system.powerBaseCosts': powerBaseCosts,
+            'system.powerFactorCosts': powerFactorCosts,
+            'system.powerRanges': powerRanges,
+            'system.powerIsLinked': powerIsLinked,
+            'system.powerLinks': powerLinks
+        });
         this.render(false);
     }
 

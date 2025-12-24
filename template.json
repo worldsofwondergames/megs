@@ -400,7 +400,12 @@
             },
             "skillData": {},
             "subskillData": {},
-            "powerData": {},
+            "powerAPs": {},
+            "powerBaseCosts": {},
+            "powerFactorCosts": {},
+            "powerRanges": {},
+            "powerIsLinked": {},
+            "powerLinks": {},
             "traitData": {},
             "weapon": {
                 "isWeapon": false,

@@ -152,7 +152,9 @@
 
         "Superspeed": "Superspeed",
         "MartialArtist": "Martial Artist",
-        "LightningReflexes": "Lightning Reflexes"
+        "LightningReflexes": "Lightning Reflexes",
+
+        "InitiativeRerolled": "Initiative rerolled for Round {round}"
     },
 
     "TYPES": {
@@ -184,6 +186,10 @@
         "showActiveEffects": {
             "name": "Show active effects",
             "label": "Check to show active effects"
+        },
+        "rerollInitiativeEachRound": {
+            "name": "Reroll Initiative Each Round",
+            "label": "When enabled, all combatants reroll initiative at the start of each round (after round 1) and can spend Hero Points on the roll"
         }
     }
 }

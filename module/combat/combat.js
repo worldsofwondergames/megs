@@ -70,6 +70,53 @@ export default class MEGSCombat extends Combat {
         return super.nextRound();
     }
 
+    /** @override */
+    async _onStartRound() {
+        await super._onStartRound();
+
+        // Check if initiative reroll is enabled
+        const shouldReroll = game.settings.get('megs', 'rerollInitiativeEachRound');
+
+        // Only reroll if:
+        // 1. Setting is enabled
+        // 2. We're past round 1 (initial initiative already rolled)
+        // 3. Combat is active
+        if (shouldReroll && this.round > 1 && this.started) {
+            await this._rerollInitiativeForRound();
+        }
+    }
+
+    /**
+     * Reroll initiative for all combatants at the start of a new round
+     * @private
+     */
+    async _rerollInitiativeForRound() {
+        // Only GM should trigger this
+        if (!game.users.activeGM?.isSelf) return;
+
+        // Get all combatant IDs
+        const combatantIds = this.combatants.map((c) => c.id);
+
+        if (combatantIds.length === 0) return;
+
+        // Post chat message announcing initiative reroll
+        await ChatMessage.create({
+            content: game.i18n.format('MEGS.InitiativeRerolled', { round: this.round }),
+            speaker: { alias: game.i18n.localize('MEGS.Initiative') },
+            whisper: [],
+        });
+
+        // Roll initiative for all combatants
+        // This will trigger Hero Point dialogs for each combatant
+        await this.rollInitiative(combatantIds, {
+            updateTurn: false,
+            messageOptions: {},
+        });
+
+        // Reset turn to 0 to start at the top of the new initiative order
+        await this.update({ turn: 0 });
+    }
+
     // https://discord.com/channels/170995199584108546/670336275496042502/1220016156396621914
     /** @override */
     async rollInitiative(ids, { formula = null, updateTurn = true, messageOptions = {} } = {}) {

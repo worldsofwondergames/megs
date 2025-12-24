@@ -1237,4 +1237,13 @@ function registerSystemSettings() {
         type: Boolean,
         default: false,
     });
+    game.settings.register('megs', 'rerollInitiativeEachRound', {
+        config: true,
+        scope: 'world',
+        name: 'SETTINGS.rerollInitiativeEachRound.name',
+        hint: 'SETTINGS.rerollInitiativeEachRound.label',
+        type: Boolean,
+        default: false,
+        requiresReload: false,
+    });
 }

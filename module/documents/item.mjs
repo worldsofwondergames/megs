@@ -16,62 +16,81 @@ export class MEGSItem extends Item {
     toObject(source = true) {
         const data = super.toObject(source);
 
-        // If this is a gadget with a parent (on a character), serialize child items
-        if (this.type === MEGS.itemTypes.gadget && this.parent) {
-            console.log(`[MEGS] toObject() called for gadget ${this.name} on actor ${this.parent.name}`);
+        if (this.type === MEGS.itemTypes.gadget) {
+            if (this.parent) {
+                // Gadget on character - serialize child items
+                console.log(`[MEGS] toObject() called for gadget ${this.name} on actor ${this.parent.name}`);
 
-            const skillData = {};
-            const subskillData = {};
-            const subskillTrainingData = {};
-            // Flatten power data to primitives only (like skills)
-            const powerAPs = {};
-            const powerBaseCosts = {};
-            const powerFactorCosts = {};
-            const powerRanges = {};
-            const powerIsLinked = {};
-            const powerLinks = {};
-            const traitData = {};
+                const skillData = {};
+                const subskillData = {};
+                const subskillTrainingData = {};
+                // Flatten power data to primitives only (like skills)
+                const powerAPs = {};
+                const powerBaseCosts = {};
+                const powerFactorCosts = {};
+                const powerRanges = {};
+                const powerIsLinked = {};
+                const powerLinks = {};
+                const traitData = {};
 
-            // Get all child items
-            const childItems = this.parent.items.filter(i => i.system.parent === this.id);
-            console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
+                // Get all child items
+                const childItems = this.parent.items.filter(i => i.system.parent === this.id);
+                console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
 
-            for (let item of childItems) {
-                if (item.type === MEGS.itemTypes.skill) {
-                    skillData[item.name] = item.system.aps;
-                } else if (item.type === MEGS.itemTypes.subskill) {
-                    subskillData[item.name] = item.system.aps;
-                    // Preserve training status
-                    subskillTrainingData[item.name] = item.system.isTrained;
-                } else if (item.type === MEGS.itemTypes.power) {
-                    console.log(`[MEGS] Serializing power: ${item.name}`);
-                    // Store each property in separate flat fields (primitives only)
-                    powerAPs[item.name] = item.system.aps || 0;
-                    powerBaseCosts[item.name] = item.system.baseCost || 0;
-                    powerFactorCosts[item.name] = item.system.factorCost || 0;
-                    powerRanges[item.name] = item.system.range || '';
-                    powerIsLinked[item.name] = item.system.isLinked || false;
-                    powerLinks[item.name] = item.system.link || '';
-                } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
-                    console.log(`[MEGS] Serializing trait: ${item.name}`);
-                    // Store traits - keep simple for now
-                    traitData[item.name] = item.system.baseCost || 0;
+                for (let item of childItems) {
+                    if (item.type === MEGS.itemTypes.skill) {
+                        skillData[item.name] = item.system.aps;
+                    } else if (item.type === MEGS.itemTypes.subskill) {
+                        subskillData[item.name] = item.system.aps;
+                        // Preserve training status
+                        subskillTrainingData[item.name] = item.system.isTrained;
+                    } else if (item.type === MEGS.itemTypes.power) {
+                        console.log(`[MEGS] Serializing power: ${item.name}`);
+                        // Store each property in separate flat fields (primitives only)
+                        powerAPs[item.name] = item.system.aps || 0;
+                        powerBaseCosts[item.name] = item.system.baseCost || 0;
+                        powerFactorCosts[item.name] = item.system.factorCost || 0;
+                        powerRanges[item.name] = item.system.range || '';
+                        powerIsLinked[item.name] = item.system.isLinked || false;
+                        powerLinks[item.name] = item.system.link || '';
+                    } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
+                        console.log(`[MEGS] Serializing trait: ${item.name}`);
+                        // Store traits - keep simple for now
+                        traitData[item.name] = item.system.baseCost || 0;
+                    }
                 }
+
+                console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
+
+                // Store ALL data in system - all primitives now
+                data.system.skillData = skillData;
+                data.system.subskillData = subskillData;
+                data.system.subskillTrainingData = subskillTrainingData;
+                data.system.powerAPs = powerAPs;
+                data.system.powerBaseCosts = powerBaseCosts;
+                data.system.powerFactorCosts = powerFactorCosts;
+                data.system.powerRanges = powerRanges;
+                data.system.powerIsLinked = powerIsLinked;
+                data.system.powerLinks = powerLinks;
+                data.system.traitData = traitData;
+            } else {
+                // Standalone gadget - ensure virtual data is preserved during drag
+                console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
+                console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
+                console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
+
+                // Explicitly set the flattened data (already in system from database)
+                data.system.skillData = this.system.skillData || {};
+                data.system.subskillData = this.system.subskillData || {};
+                data.system.subskillTrainingData = this.system.subskillTrainingData || {};
+                data.system.powerAPs = this.system.powerAPs || {};
+                data.system.powerBaseCosts = this.system.powerBaseCosts || {};
+                data.system.powerFactorCosts = this.system.powerFactorCosts || {};
+                data.system.powerRanges = this.system.powerRanges || {};
+                data.system.powerIsLinked = this.system.powerIsLinked || {};
+                data.system.powerLinks = this.system.powerLinks || {};
+                data.system.traitData = this.system.traitData || {};
             }
-
-            console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
-
-            // Store ALL data in system - all primitives now
-            data.system.skillData = skillData;
-            data.system.subskillData = subskillData;
-            data.system.subskillTrainingData = subskillTrainingData;
-            data.system.powerAPs = powerAPs;
-            data.system.powerBaseCosts = powerBaseCosts;
-            data.system.powerFactorCosts = powerFactorCosts;
-            data.system.powerRanges = powerRanges;
-            data.system.powerIsLinked = powerIsLinked;
-            data.system.powerLinks = powerLinks;
-            data.system.traitData = traitData;
         }
 
         return data;

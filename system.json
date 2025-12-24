@@ -42,8 +42,8 @@
     "packs": [],
     "packFolders": [],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/MEGS-1.0.0-Release/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-1.0.0-Release/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/fix-reliability-display-bug/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/fix-reliability-display-bug/",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

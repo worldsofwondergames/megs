@@ -190,9 +190,19 @@ Planned features:
 - Character builder improvements
 - UI/UX overhaul
 
+## Git Workflow
+
+### CRITICAL: When Starting Work on a New Branch
+**FIRST ACTION:** Before making any code changes, update system.json URLs to point to the current branch:
+1. Use `git branch --show-current` to get the exact branch name
+2. Update the `manifest` and `download` URLs in system.json to reference the current branch
+3. This ensures testing uses the correct branch code
+
+### When Finishing Work (Final Cleanup)
+When the user requests final cleanup, return URLs in system.json to the base branch (usually MEGS-1.0.0-Release or main).
+
 ## Issue Tracking
 Issues are tracked on GitHub: https://github.com/worldsofwondergames/megs/issues
-- When a branch is checked out, change all GitHub URL instances in system.json to point to the current branch. When prompted, change them back.
 - If I tell you to commit a change, go ahead and push it as well
 - Avoid SCSS changes if possible. If it does not seem possible, prompt me before making the change.
 - Update CHANGELOG.md with any significant changes you commit and push. Do not add anything relating to development documentation including Claude docs

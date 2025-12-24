@@ -79,7 +79,24 @@ export class MEGSItem extends Item {
                 console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
                 console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
 
-                // Explicitly set the flattened data (already in system from database)
+                // Store in FLAGS during drag - Foundry strips system data when creating on actors
+                // but preserves flags, then _onCreate will move to system
+                data.flags = data.flags || {};
+                data.flags.megs = data.flags.megs || {};
+                data.flags.megs._transferData = {
+                    skillData: this.system.skillData || {},
+                    subskillData: this.system.subskillData || {},
+                    subskillTrainingData: this.system.subskillTrainingData || {},
+                    powerAPs: this.system.powerAPs || {},
+                    powerBaseCosts: this.system.powerBaseCosts || {},
+                    powerFactorCosts: this.system.powerFactorCosts || {},
+                    powerRanges: this.system.powerRanges || {},
+                    powerIsLinked: this.system.powerIsLinked || {},
+                    powerLinks: this.system.powerLinks || {},
+                    traitData: this.system.traitData || {}
+                };
+
+                // Also keep in system for standalone gadgets
                 data.system.skillData = this.system.skillData || {};
                 data.system.subskillData = this.system.subskillData || {};
                 data.system.subskillTrainingData = this.system.subskillTrainingData || {};
@@ -105,6 +122,31 @@ export class MEGSItem extends Item {
 
         if (this.parent) {
             console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
+
+            // Check if we have transfer data in flags (from dragging standalone gadget)
+            const transferData = this.getFlag('megs', '_transferData');
+            if (transferData) {
+                console.log(`[MEGS] Found transfer data in flags, restoring to system`);
+                console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);
+                console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
+
+                // Move data from flags to system
+                await this.update({
+                    'system.skillData': transferData.skillData || {},
+                    'system.subskillData': transferData.subskillData || {},
+                    'system.subskillTrainingData': transferData.subskillTrainingData || {},
+                    'system.powerAPs': transferData.powerAPs || {},
+                    'system.powerBaseCosts': transferData.powerBaseCosts || {},
+                    'system.powerFactorCosts': transferData.powerFactorCosts || {},
+                    'system.powerRanges': transferData.powerRanges || {},
+                    'system.powerIsLinked': transferData.powerIsLinked || {},
+                    'system.powerLinks': transferData.powerLinks || {},
+                    'system.traitData': transferData.traitData || {},
+                    'flags.megs.-=_transferData': null  // Remove transfer flag
+                });
+                console.log(`[MEGS] Transfer complete, data restored to system`);
+            }
+
             console.log(`[MEGS] powerAPs keys:`, Object.keys(this.system.powerAPs || {}));
             console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
 

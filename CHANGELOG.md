@@ -52,6 +52,7 @@
 
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
+- Gadgets dragged to the Items sidebar now retain their powers and skills, which are recreated when dragged to another character
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)
 - Gadgets can now have powers with optional Powers tab (drag-and-drop only, toggle in Settings)
 - Gadgets can now have traits with optional Traits tab (toggle in Settings)

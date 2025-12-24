@@ -21,6 +21,19 @@ export class MEGSItem extends Item {
             const hasParent = !!this.parent;
             const parentName = this.parent?.name || 'none';
             console.log(`[MEGS] _preCreate for gadget, parent: ${parentName}, powerData in creation data:`, Object.keys(data.system?.powerData || {}).length);
+
+            // Force powerData/skillData to be set in the source data
+            // Foundry might be stripping these complex objects, so we explicitly set them
+            if (data.system?.powerData && Object.keys(data.system.powerData).length > 0) {
+                console.log(`[MEGS] Forcing powerData into source via updateSource`);
+                this.updateSource({
+                    'system.powerData': data.system.powerData,
+                    'system.skillData': data.system.skillData || {},
+                    'system.subskillData': data.system.subskillData || {},
+                    'system.subskillTrainingData': data.system.subskillTrainingData || {},
+                    'system.traitData': data.system.traitData || {}
+                });
+            }
         }
     }
 

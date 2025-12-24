@@ -72,13 +72,21 @@ export class MEGSItem extends Item {
         if (this.type !== MEGS.itemTypes.gadget) return;
 
         if (this.parent) {
+            console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
+            console.log(`[MEGS] powerData keys:`, Object.keys(this.system.powerData || {}));
+            console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
+            console.log(`[MEGS] traitData keys:`, Object.keys(this.system.traitData || {}));
+
             // Gadget owned by actor - create actual skill, power, and trait items
             const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
+            console.log(`[MEGS] Found ${existingItems.length} existing child items`);
             if (existingItems.length > 0) return;
+
             await this._addSkillsToGadget();
             await this._addPowersToGadget();
             await this._addTraitsToGadget();
         } else {
+            console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created, duplicateSource:`, this._stats.duplicateSource);
             // Standalone gadget - initialize skillData/subskillData only if not a duplicate
             if (!this._stats.duplicateSource) {
                 await this._initializeSkillData();
@@ -206,12 +214,15 @@ export class MEGSItem extends Item {
         // Get virtual power data if it exists
         const powerData = this.system.powerData || {};
 
+        console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerData).length} powers`);
+
         // If no powers to add, return early
         if (Object.keys(powerData).length === 0) return;
 
         let powers = [];
 
         for (let [key, power] of Object.entries(powerData)) {
+            console.log(`[MEGS] Adding power: ${power.name}`);
             const powerObj = {
                 name: power.name,
                 type: power.type,
@@ -225,6 +236,7 @@ export class MEGSItem extends Item {
         }
 
         // Create powers on the parent actor
+        console.log(`[MEGS] Creating ${powers.length} power items on actor`);
         await this.parent.createEmbeddedDocuments('Item', powers);
     }
 

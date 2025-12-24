@@ -140,33 +140,34 @@ export class MEGSItem extends Item {
                 await this._initializeSkillData();
             } else {
                 console.log(`[MEGS] Existing data found, preserving it`);
-                // Persist flags (complex data) and system (simple data) to database
-                const updateData = {};
 
-                // Persist skill data to system (simple key-value data)
-                if (this.system.skillData) updateData['system.skillData'] = this.system.skillData;
-                if (this.system.subskillData) updateData['system.subskillData'] = this.system.subskillData;
-                if (this.system.subskillTrainingData) updateData['system.subskillTrainingData'] = this.system.subskillTrainingData;
-
-                // Persist power/trait data to flags (complex nested data)
+                // Get the data from flags (set by toObject)
                 const flagPowerData = this.getFlag('megs', 'powerData');
                 const flagTraitData = this.getFlag('megs', 'traitData');
+
+                console.log(`[MEGS] powerData from getFlag:`, (flagPowerData || []).length, 'powers');
+                console.log(`[MEGS] Persisting using setFlag...`);
+
+                // Use setFlag to persist flags - more reliable than update()
                 if (flagPowerData && flagPowerData.length > 0) {
-                    updateData['flags.megs.powerData'] = flagPowerData;
+                    await this.setFlag('megs', 'powerData', flagPowerData);
                 }
                 if (flagTraitData && flagTraitData.length > 0) {
-                    updateData['flags.megs.traitData'] = flagTraitData;
+                    await this.setFlag('megs', 'traitData', flagTraitData);
                 }
 
-                if (Object.keys(updateData).length > 0) {
-                    console.log(`[MEGS] Persisting data to database:`, Object.keys(updateData));
-                    console.log(`[MEGS] powerData being saved:`, (flagPowerData || []).length, 'powers');
-                    await this.update(updateData);
-                    console.log(`[MEGS] Update complete. Verifying data...`);
-                    const verifyPower = this.getFlag('megs', 'powerData') || [];
-                    console.log(`[MEGS] After update - powerData in flags:`, verifyPower.length);
-                    console.log(`[MEGS] After update - skillData:`, Object.keys(this.system.skillData || {}).length);
+                // Persist simple skill data to system
+                if (this.system.skillData && Object.keys(this.system.skillData).length > 0) {
+                    await this.update({
+                        'system.skillData': this.system.skillData,
+                        'system.subskillData': this.system.subskillData || {},
+                        'system.subskillTrainingData': this.system.subskillTrainingData || {}
+                    });
                 }
+
+                console.log(`[MEGS] Persistence complete. Verifying...`);
+                const verifyPower = this.getFlag('megs', 'powerData') || [];
+                console.log(`[MEGS] After setFlag - powerData in flags:`, verifyPower.length);
             }
         }
     }

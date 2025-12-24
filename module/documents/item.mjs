@@ -107,6 +107,19 @@ export class MEGSItem extends Item {
                 await this._initializeSkillData();
             } else {
                 console.log(`[MEGS] Existing data found, preserving it`);
+                // The data from toObject() is in memory but needs to be persisted to the database
+                // This ensures it's saved and available when the gadget is later dragged to a character
+                const updateData = {};
+                if (this.system.powerData) updateData['system.powerData'] = this.system.powerData;
+                if (this.system.skillData) updateData['system.skillData'] = this.system.skillData;
+                if (this.system.subskillData) updateData['system.subskillData'] = this.system.subskillData;
+                if (this.system.subskillTrainingData) updateData['system.subskillTrainingData'] = this.system.subskillTrainingData;
+                if (this.system.traitData) updateData['system.traitData'] = this.system.traitData;
+
+                if (Object.keys(updateData).length > 0) {
+                    console.log(`[MEGS] Persisting data to database:`, Object.keys(updateData));
+                    await this.update(updateData);
+                }
             }
         }
     }

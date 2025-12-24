@@ -118,7 +118,11 @@ export class MEGSItem extends Item {
 
                 if (Object.keys(updateData).length > 0) {
                     console.log(`[MEGS] Persisting data to database:`, Object.keys(updateData));
+                    console.log(`[MEGS] powerData being saved:`, Object.keys(this.system.powerData || {}).length, 'powers');
                     await this.update(updateData);
+                    console.log(`[MEGS] Update complete. Verifying data...`);
+                    console.log(`[MEGS] After update - powerData:`, Object.keys(this.system.powerData || {}).length);
+                    console.log(`[MEGS] After update - skillData:`, Object.keys(this.system.skillData || {}).length);
                 }
             }
         }

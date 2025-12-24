@@ -152,7 +152,9 @@
 
         "Superspeed": "Supervelocidade",
         "MartialArtist": "Artista Marcial",
-        "LightningReflexes": "Reflexos de Relâmpago"
+        "LightningReflexes": "Reflexos de Relâmpago",
+
+        "InitiativeRerolled": "Iniciativa rolada novamente para a Rodada {round}"
     },
 
     "TYPES": {
@@ -184,6 +186,10 @@
         "showActiveEffects": {
             "name": "SMostrar efeitos ativos",
             "label": "Marque para mostrar os efeitos ativos"
+        },
+        "rerollInitiativeEachRound": {
+            "name": "Rolar Iniciativa Novamente a Cada Rodada",
+            "label": "Quando ativado, todos os combatentes rolam a iniciativa novamente no início de cada rodada (após a rodada 1) e podem gastar Pontos Heróicos na rolagem"
         }
     }
 }

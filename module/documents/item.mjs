@@ -13,21 +13,6 @@ export class MEGSItem extends Item {
     }
 
     /** @override */
-    async _preCreate(data, options, user) {
-        await super._preCreate(data, options, user);
-
-        // Log creation data for all gadgets
-        if (this.type === MEGS.itemTypes.gadget) {
-            const hasParent = !!this.parent;
-            const parentName = this.parent?.name || 'none';
-            const flagsData = data.flags?.megs?.powerData || [];
-            console.log(`[MEGS] _preCreate for gadget, parent: ${parentName}`);
-            console.log(`[MEGS] - flags.megs.powerData in creation data:`, flagsData.length);
-            console.log(`[MEGS] - Full flags object:`, data.flags);
-        }
-    }
-
-    /** @override */
     toObject(source = true) {
         const data = super.toObject(source);
 
@@ -38,8 +23,14 @@ export class MEGSItem extends Item {
             const skillData = {};
             const subskillData = {};
             const subskillTrainingData = {};
-            const powerData = [];  // Changed to array
-            const traitData = [];  // Changed to array
+            // Flatten power data to primitives only (like skills)
+            const powerAPs = {};
+            const powerBaseCosts = {};
+            const powerFactorCosts = {};
+            const powerRanges = {};
+            const powerIsLinked = {};
+            const powerLinks = {};
+            const traitData = {};
 
             // Get all child items
             const childItems = this.parent.items.filter(i => i.system.parent === this.id);
@@ -54,50 +45,33 @@ export class MEGSItem extends Item {
                     subskillTrainingData[item.name] = item.system.isTrained;
                 } else if (item.type === MEGS.itemTypes.power) {
                     console.log(`[MEGS] Serializing power: ${item.name}`);
-                    // Store ONLY essential data, not the entire complex system object
-                    // System field has too many nested structures that get stripped
-                    powerData.push({
-                        id: item.id,
-                        name: item.name,
-                        type: item.type,
-                        img: item.img,
-                        // Store only the key system fields we need
-                        aps: item.system.aps,
-                        baseCost: item.system.baseCost,
-                        factorCost: item.system.factorCost,
-                        powerType: item.system.powerType,
-                        powerSource: item.system.powerSource,
-                        range: item.system.range,
-                        isLinked: item.system.isLinked,
-                        link: item.system.link
-                    });
+                    // Store each property in separate flat fields (primitives only)
+                    powerAPs[item.name] = item.system.aps || 0;
+                    powerBaseCosts[item.name] = item.system.baseCost || 0;
+                    powerFactorCosts[item.name] = item.system.factorCost || 0;
+                    powerRanges[item.name] = item.system.range || '';
+                    powerIsLinked[item.name] = item.system.isLinked || false;
+                    powerLinks[item.name] = item.system.link || '';
                 } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                     console.log(`[MEGS] Serializing trait: ${item.name}`);
-                    // Store as array element
-                    const itemData = item.toObject();
-                    traitData.push({
-                        id: item.id,
-                        name: itemData.name,
-                        type: itemData.type,
-                        img: itemData.img,
-                        system: itemData.system
-                    });
+                    // Store traits - keep simple for now
+                    traitData[item.name] = item.system.baseCost || 0;
                 }
             }
 
-            console.log(`[MEGS] Serialized ${powerData.length} powers, ${Object.keys(skillData).length} skills`);
+            console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
 
-            // Store complex data in flags instead of system - Foundry strips complex objects from system
-            // Flags are designed for arbitrary data and bypass schema validation
-            data.flags = data.flags || {};
-            data.flags.megs = data.flags.megs || {};
-            data.flags.megs.powerData = powerData;
-            data.flags.megs.traitData = traitData;
-
-            // Simple key-value data can stay in system
+            // Store ALL data in system - all primitives now
             data.system.skillData = skillData;
             data.system.subskillData = subskillData;
             data.system.subskillTrainingData = subskillTrainingData;
+            data.system.powerAPs = powerAPs;
+            data.system.powerBaseCosts = powerBaseCosts;
+            data.system.powerFactorCosts = powerFactorCosts;
+            data.system.powerRanges = powerRanges;
+            data.system.powerIsLinked = powerIsLinked;
+            data.system.powerLinks = powerLinks;
+            data.system.traitData = traitData;
         }
 
         return data;
@@ -112,8 +86,7 @@ export class MEGSItem extends Item {
 
         if (this.parent) {
             console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
-            const flagPowerData = this.getFlag('megs', 'powerData') || [];
-            console.log(`[MEGS] powerData in flags:`, flagPowerData.length);
+            console.log(`[MEGS] powerAPs keys:`, Object.keys(this.system.powerAPs || {}));
             console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
 
             // Gadget owned by actor - create actual skill, power, and trait items
@@ -125,49 +98,33 @@ export class MEGSItem extends Item {
             await this._addPowersToGadget();
             await this._addTraitsToGadget();
         } else {
-            console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created, duplicateSource:`, this._stats.duplicateSource);
-            const flagPowerData = this.getFlag('megs', 'powerData') || [];
-            console.log(`[MEGS] Existing powerData in flags:`, flagPowerData.length);
+            console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created`);
+            console.log(`[MEGS] Existing powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
             console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
 
-            // Standalone gadget - initialize skillData/subskillData only if not already populated
-            // (e.g., from toObject() when dragging from character to sidebar)
-            const hasPowerData = flagPowerData.length > 0;
+            // Standalone gadget - initialize skillData only if not already populated
+            // (data comes from toObject() when dragging from character to sidebar)
+            const hasPowerData = this.system.powerAPs && Object.keys(this.system.powerAPs).length > 0;
             const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
 
             if (!hasPowerData && !hasSkillData) {
                 console.log(`[MEGS] No existing data found, initializing with defaults`);
                 await this._initializeSkillData();
             } else {
-                console.log(`[MEGS] Existing data found, preserving it`);
-
-                // Get the data from flags (set by toObject)
-                const flagPowerData = this.getFlag('megs', 'powerData');
-                const flagTraitData = this.getFlag('megs', 'traitData');
-
-                console.log(`[MEGS] powerData from getFlag:`, (flagPowerData || []).length, 'powers');
-                console.log(`[MEGS] Persisting using setFlag...`);
-
-                // Use setFlag to persist flags - more reliable than update()
-                if (flagPowerData && flagPowerData.length > 0) {
-                    await this.setFlag('megs', 'powerData', flagPowerData);
-                }
-                if (flagTraitData && flagTraitData.length > 0) {
-                    await this.setFlag('megs', 'traitData', flagTraitData);
-                }
-
-                // Persist simple skill data to system
-                if (this.system.skillData && Object.keys(this.system.skillData).length > 0) {
-                    await this.update({
-                        'system.skillData': this.system.skillData,
-                        'system.subskillData': this.system.subskillData || {},
-                        'system.subskillTrainingData': this.system.subskillTrainingData || {}
-                    });
-                }
-
-                console.log(`[MEGS] Persistence complete. Verifying...`);
-                const verifyPower = this.getFlag('megs', 'powerData') || [];
-                console.log(`[MEGS] After setFlag - powerData in flags:`, verifyPower.length);
+                console.log(`[MEGS] Existing data found (from toObject), persisting to database`);
+                // Data came from toObject() but needs to be explicitly saved
+                await this.update({
+                    'system.skillData': this.system.skillData || {},
+                    'system.subskillData': this.system.subskillData || {},
+                    'system.subskillTrainingData': this.system.subskillTrainingData || {},
+                    'system.powerAPs': this.system.powerAPs || {},
+                    'system.powerBaseCosts': this.system.powerBaseCosts || {},
+                    'system.powerFactorCosts': this.system.powerFactorCosts || {},
+                    'system.powerRanges': this.system.powerRanges || {},
+                    'system.powerIsLinked': this.system.powerIsLinked || {},
+                    'system.powerLinks': this.system.powerLinks || {},
+                    'system.traitData': this.system.traitData || {}
+                });
             }
         }
     }
@@ -289,32 +246,36 @@ export class MEGSItem extends Item {
     }
 
     async _addPowersToGadget() {
-        // Get virtual power data from flags (complex data)
-        const powerData = this.getFlag('megs', 'powerData') || [];
+        // Get virtual power data from flattened system fields
+        const powerAPs = this.system.powerAPs || {};
+        const powerBaseCosts = this.system.powerBaseCosts || {};
+        const powerFactorCosts = this.system.powerFactorCosts || {};
+        const powerRanges = this.system.powerRanges || {};
+        const powerIsLinked = this.system.powerIsLinked || {};
+        const powerLinks = this.system.powerLinks || {};
 
-        console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${powerData.length} powers`);
+        console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerAPs).length} powers`);
 
         // If no powers to add, return early
-        if (powerData.length === 0) return;
+        if (Object.keys(powerAPs).length === 0) return;
 
         let powers = [];
 
-        for (let power of powerData) {
-            console.log(`[MEGS] Adding power: ${power.name}`);
+        // Iterate over power names
+        for (let powerName in powerAPs) {
+            console.log(`[MEGS] Adding power: ${powerName}`);
             const powerObj = {
-                name: power.name,
-                type: power.type || 'power',
-                img: power.img || Item.DEFAULT_ICON,
+                name: powerName,
+                type: 'power',
+                img: 'systems/megs/assets/images/icons/power.png',
                 system: {
                     parent: this.id,  // Set parent to this gadget's ID
-                    aps: power.aps || 0,
-                    baseCost: power.baseCost || 0,
-                    factorCost: power.factorCost || 0,
-                    powerType: power.powerType || '',
-                    powerSource: power.powerSource || '',
-                    range: power.range || '',
-                    isLinked: power.isLinked || false,
-                    link: power.link || ''
+                    aps: powerAPs[powerName] || 0,
+                    baseCost: powerBaseCosts[powerName] || 0,
+                    factorCost: powerFactorCosts[powerName] || 0,
+                    range: powerRanges[powerName] || '',
+                    isLinked: powerIsLinked[powerName] || false,
+                    link: powerLinks[powerName] || ''
                 }
             };
             powers.push(powerObj);
@@ -326,22 +287,25 @@ export class MEGSItem extends Item {
     }
 
     async _addTraitsToGadget() {
-        // Get virtual trait data from flags (complex data)
-        const traitData = this.getFlag('megs', 'traitData') || [];
+        // Get virtual trait data from system (same as skills)
+        const traitData = this.system.traitData || {};
 
         // If no traits to add, return early
-        if (traitData.length === 0) return;
+        if (Object.keys(traitData).length === 0) return;
 
         let traits = [];
 
-        for (let trait of traitData) {
+        // Iterate over trait names (same pattern as skills)
+        for (let traitName in traitData) {
+            const trait = traitData[traitName];
             const traitObj = {
-                name: trait.name,
-                type: trait.type,
-                img: trait.img || Item.DEFAULT_ICON,
+                name: traitName,
+                type: trait.type || 'advantage',
+                img: trait.type === 'drawback' ? 'icons/svg/degen.svg' : 'icons/svg/regen.svg',
                 system: {
-                    ...trait.system,
-                    parent: this.id  // Set parent to this gadget's ID
+                    parent: this.id,  // Set parent to this gadget's ID
+                    baseCost: trait.baseCost || 0,
+                    text: trait.text || ''
                 }
             };
             traits.push(traitObj);

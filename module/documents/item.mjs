@@ -13,6 +13,17 @@ export class MEGSItem extends Item {
     }
 
     /** @override */
+    async _preCreate(data, options, user) {
+        await super._preCreate(data, options, user);
+
+        // If this is a standalone gadget being created with powerData/skillData,
+        // ensure it's properly set in the creation data
+        if (this.type === MEGS.itemTypes.gadget && !this.parent) {
+            console.log(`[MEGS] _preCreate for standalone gadget, powerData:`, Object.keys(data.system?.powerData || {}).length);
+        }
+    }
+
+    /** @override */
     toObject(source = true) {
         const data = super.toObject(source);
 

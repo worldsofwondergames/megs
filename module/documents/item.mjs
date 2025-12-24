@@ -19,7 +19,9 @@ export class MEGSItem extends Item {
         if (this.type === MEGS.itemTypes.gadget) {
             if (this.parent) {
                 // Gadget on character - serialize child items
-                console.log(`[MEGS] toObject() called for gadget ${this.name} on actor ${this.parent.name}`);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] toObject() called for gadget ${this.name} on actor ${this.parent.name}`);
+                }
 
                 const skillData = {};
                 const subskillData = {};
@@ -35,7 +37,9 @@ export class MEGSItem extends Item {
 
                 // Get all child items
                 const childItems = this.parent.items.filter(i => i.system.parent === this.id);
-                console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
+                }
 
                 for (let item of childItems) {
                     if (item.type === MEGS.itemTypes.skill) {
@@ -45,7 +49,9 @@ export class MEGSItem extends Item {
                         // Preserve training status
                         subskillTrainingData[item.name] = item.system.isTrained;
                     } else if (item.type === MEGS.itemTypes.power) {
-                        console.log(`[MEGS] Serializing power: ${item.name}`);
+                        if (MEGS.debug.enabled) {
+                            console.log(`[MEGS] Serializing power: ${item.name}`);
+                        }
                         // Store each property in separate flat fields (primitives only)
                         powerAPs[item.name] = item.system.aps || 0;
                         powerBaseCosts[item.name] = item.system.baseCost || 0;
@@ -54,13 +60,17 @@ export class MEGSItem extends Item {
                         powerIsLinked[item.name] = item.system.isLinked || false;
                         powerLinks[item.name] = item.system.link || '';
                     } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
-                        console.log(`[MEGS] Serializing trait: ${item.name}`);
+                        if (MEGS.debug.enabled) {
+                            console.log(`[MEGS] Serializing trait: ${item.name}`);
+                        }
                         // Store traits - keep simple for now
                         traitData[item.name] = item.system.baseCost || 0;
                     }
                 }
 
-                console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
+                }
 
                 // Store ALL data in system - all primitives now
                 data.system.skillData = skillData;
@@ -75,9 +85,11 @@ export class MEGSItem extends Item {
                 data.system.traitData = traitData;
             } else {
                 // Standalone gadget - ensure virtual data is preserved during drag
-                console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
-                console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
-                console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
+                    console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
+                    console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
+                }
 
                 // Store in FLAGS during drag - Foundry strips system data when creating on actors
                 // but preserves flags, then _onCreate will move to system
@@ -121,14 +133,18 @@ export class MEGSItem extends Item {
         if (this.type !== MEGS.itemTypes.gadget) return;
 
         if (this.parent) {
-            console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
+            }
 
             // Check if we have transfer data in flags (from dragging standalone gadget)
             const transferData = this.getFlag('megs', '_transferData');
             if (transferData) {
-                console.log(`[MEGS] Found transfer data in flags, restoring to system`);
-                console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);
-                console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Found transfer data in flags, restoring to system`);
+                    console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);
+                    console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
+                }
 
                 // Move data from flags to system
                 await this.update({
@@ -144,24 +160,32 @@ export class MEGSItem extends Item {
                     'system.traitData': transferData.traitData || {},
                     'flags.megs.-=_transferData': null  // Remove transfer flag
                 });
-                console.log(`[MEGS] Transfer complete, data restored to system`);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Transfer complete, data restored to system`);
+                }
             }
 
-            console.log(`[MEGS] powerAPs keys:`, Object.keys(this.system.powerAPs || {}));
-            console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] powerAPs keys:`, Object.keys(this.system.powerAPs || {}));
+                console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
+            }
 
             // Gadget owned by actor - create actual skill, power, and trait items
             const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
-            console.log(`[MEGS] Found ${existingItems.length} existing child items`);
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Found ${existingItems.length} existing child items`);
+            }
             if (existingItems.length > 0) return;
 
             await this._addSkillsToGadget();
             await this._addPowersToGadget();
             await this._addTraitsToGadget();
         } else {
-            console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created`);
-            console.log(`[MEGS] Existing powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
-            console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created`);
+                console.log(`[MEGS] Existing powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
+                console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
+            }
 
             // Standalone gadget - initialize skillData only if not already populated
             // (data comes from toObject() when dragging from character to sidebar)
@@ -169,10 +193,14 @@ export class MEGSItem extends Item {
             const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
 
             if (!hasPowerData && !hasSkillData) {
-                console.log(`[MEGS] No existing data found, initializing with defaults`);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] No existing data found, initializing with defaults`);
+                }
                 await this._initializeSkillData();
             } else {
-                console.log(`[MEGS] Existing data found (from toObject), persisting to database`);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Existing data found (from toObject), persisting to database`);
+                }
                 // Data came from toObject() but needs to be explicitly saved
                 await this.update({
                     'system.skillData': this.system.skillData || {},
@@ -315,7 +343,9 @@ export class MEGSItem extends Item {
         const powerIsLinked = this.system.powerIsLinked || {};
         const powerLinks = this.system.powerLinks || {};
 
-        console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerAPs).length} powers`);
+        if (MEGS.debug.enabled) {
+            console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerAPs).length} powers`);
+        }
 
         // If no powers to add, return early
         if (Object.keys(powerAPs).length === 0) return;
@@ -324,7 +354,9 @@ export class MEGSItem extends Item {
 
         // Iterate over power names
         for (let powerName in powerAPs) {
-            console.log(`[MEGS] Adding power: ${powerName}`);
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Adding power: ${powerName}`);
+            }
             const powerObj = {
                 name: powerName,
                 type: 'power',
@@ -343,7 +375,9 @@ export class MEGSItem extends Item {
         }
 
         // Create powers on the parent actor
-        console.log(`[MEGS] Creating ${powers.length} power items on actor`);
+        if (MEGS.debug.enabled) {
+            console.log(`[MEGS] Creating ${powers.length} power items on actor`);
+        }
         await this.parent.createEmbeddedDocuments('Item', powers);
     }
 

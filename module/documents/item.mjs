@@ -21,19 +21,6 @@ export class MEGSItem extends Item {
             const hasParent = !!this.parent;
             const parentName = this.parent?.name || 'none';
             console.log(`[MEGS] _preCreate for gadget, parent: ${parentName}, powerData in creation data:`, Object.keys(data.system?.powerData || {}).length);
-
-            // Force powerData/skillData to be set in the source data
-            // Foundry might be stripping these complex objects, so we explicitly set them
-            if (data.system?.powerData && Object.keys(data.system.powerData).length > 0) {
-                console.log(`[MEGS] Forcing powerData into source via updateSource`);
-                this.updateSource({
-                    'system.powerData': data.system.powerData,
-                    'system.skillData': data.system.skillData || {},
-                    'system.subskillData': data.system.subskillData || {},
-                    'system.subskillTrainingData': data.system.subskillTrainingData || {},
-                    'system.traitData': data.system.traitData || {}
-                });
-            }
         }
     }
 
@@ -64,21 +51,23 @@ export class MEGSItem extends Item {
                     subskillTrainingData[item.name] = item.system.isTrained;
                 } else if (item.type === MEGS.itemTypes.power) {
                     console.log(`[MEGS] Serializing power: ${item.name}`);
-                    // Serialize the entire power
+                    // Use toObject() for clean serialization instead of deepClone
+                    const itemData = item.toObject();
                     powerData[item.id] = {
-                        name: item.name,
-                        type: item.type,
-                        img: item.img,
-                        system: foundry.utils.deepClone(item.system)
+                        name: itemData.name,
+                        type: itemData.type,
+                        img: itemData.img,
+                        system: itemData.system
                     };
                 } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                     console.log(`[MEGS] Serializing trait: ${item.name}`);
-                    // Serialize advantages and drawbacks as traits
+                    // Use toObject() for clean serialization
+                    const itemData = item.toObject();
                     traitData[item.id] = {
-                        name: item.name,
-                        type: item.type,
-                        img: item.img,
-                        system: foundry.utils.deepClone(item.system)
+                        name: itemData.name,
+                        type: itemData.type,
+                        img: itemData.img,
+                        system: itemData.system
                     };
                 }
             }

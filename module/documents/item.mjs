@@ -18,6 +18,8 @@ export class MEGSItem extends Item {
 
         // If this is a gadget with a parent (on a character), serialize child items
         if (this.type === MEGS.itemTypes.gadget && this.parent) {
+            console.log(`[MEGS] toObject() called for gadget ${this.name} on actor ${this.parent.name}`);
+
             const skillData = {};
             const subskillData = {};
             const subskillTrainingData = {};
@@ -26,6 +28,7 @@ export class MEGSItem extends Item {
 
             // Get all child items
             const childItems = this.parent.items.filter(i => i.system.parent === this.id);
+            console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
 
             for (let item of childItems) {
                 if (item.type === MEGS.itemTypes.skill) {
@@ -35,6 +38,7 @@ export class MEGSItem extends Item {
                     // Preserve training status
                     subskillTrainingData[item.name] = item.system.isTrained;
                 } else if (item.type === MEGS.itemTypes.power) {
+                    console.log(`[MEGS] Serializing power: ${item.name}`);
                     // Serialize the entire power
                     powerData[item.id] = {
                         name: item.name,
@@ -43,6 +47,7 @@ export class MEGSItem extends Item {
                         system: foundry.utils.deepClone(item.system)
                     };
                 } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
+                    console.log(`[MEGS] Serializing trait: ${item.name}`);
                     // Serialize advantages and drawbacks as traits
                     traitData[item.id] = {
                         name: item.name,
@@ -52,6 +57,8 @@ export class MEGSItem extends Item {
                     };
                 }
             }
+
+            console.log(`[MEGS] Serialized ${Object.keys(powerData).length} powers, ${Object.keys(skillData).length} skills`);
 
             // Add serialized data to the object
             data.system.skillData = skillData;

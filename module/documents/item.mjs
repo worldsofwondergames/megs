@@ -54,15 +54,22 @@ export class MEGSItem extends Item {
                     subskillTrainingData[item.name] = item.system.isTrained;
                 } else if (item.type === MEGS.itemTypes.power) {
                     console.log(`[MEGS] Serializing power: ${item.name}`);
-                    // Use toObject() for clean serialization
-                    // Store as array element instead of object with dynamic keys
-                    const itemData = item.toObject();
+                    // Store ONLY essential data, not the entire complex system object
+                    // System field has too many nested structures that get stripped
                     powerData.push({
                         id: item.id,
-                        name: itemData.name,
-                        type: itemData.type,
-                        img: itemData.img,
-                        system: itemData.system
+                        name: item.name,
+                        type: item.type,
+                        img: item.img,
+                        // Store only the key system fields we need
+                        aps: item.system.aps,
+                        baseCost: item.system.baseCost,
+                        factorCost: item.system.factorCost,
+                        powerType: item.system.powerType,
+                        powerSource: item.system.powerSource,
+                        range: item.system.range,
+                        isLinked: item.system.isLinked,
+                        link: item.system.link
                     });
                 } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                     console.log(`[MEGS] Serializing trait: ${item.name}`);
@@ -285,11 +292,18 @@ export class MEGSItem extends Item {
             console.log(`[MEGS] Adding power: ${power.name}`);
             const powerObj = {
                 name: power.name,
-                type: power.type,
+                type: power.type || 'power',
                 img: power.img || Item.DEFAULT_ICON,
                 system: {
-                    ...power.system,
-                    parent: this.id  // Set parent to this gadget's ID
+                    parent: this.id,  // Set parent to this gadget's ID
+                    aps: power.aps || 0,
+                    baseCost: power.baseCost || 0,
+                    factorCost: power.factorCost || 0,
+                    powerType: power.powerType || '',
+                    powerSource: power.powerSource || '',
+                    range: power.range || '',
+                    isLinked: power.isLinked || false,
+                    link: power.link || ''
                 }
             };
             powers.push(powerObj);

@@ -193,9 +193,12 @@ Planned features:
 ## Git Workflow
 
 ### CRITICAL: When Starting Work on a New Branch
-**FIRST ACTION:** Before making any code changes, update system.json URLs to point to the current branch:
+**FIRST ACTION:** Before making any code changes, update ALL GitHub URLs in system.json to point to the current branch:
 1. Use `git branch --show-current` to get the exact branch name
-2. Update the `manifest` and `download` URLs in system.json to reference the current branch
+2. Update ALL three URLs in system.json to reference the current branch:
+   - `media[0].url` (line ~19)
+   - `manifest` (line ~45)
+   - `download` (line ~46)
 3. This ensures testing uses the correct branch code
 
 ### When Finishing Work (Final Cleanup)

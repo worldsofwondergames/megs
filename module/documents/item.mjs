@@ -140,21 +140,31 @@ export class MEGSItem extends Item {
                 await this._initializeSkillData();
             } else {
                 console.log(`[MEGS] Existing data found, preserving it`);
-                // The data from toObject() is in memory but needs to be persisted to the database
-                // This ensures it's saved and available when the gadget is later dragged to a character
+                // Persist flags (complex data) and system (simple data) to database
                 const updateData = {};
-                if (this.system.powerData) updateData['system.powerData'] = this.system.powerData;
+
+                // Persist skill data to system (simple key-value data)
                 if (this.system.skillData) updateData['system.skillData'] = this.system.skillData;
                 if (this.system.subskillData) updateData['system.subskillData'] = this.system.subskillData;
                 if (this.system.subskillTrainingData) updateData['system.subskillTrainingData'] = this.system.subskillTrainingData;
-                if (this.system.traitData) updateData['system.traitData'] = this.system.traitData;
+
+                // Persist power/trait data to flags (complex nested data)
+                const flagPowerData = this.getFlag('megs', 'powerData');
+                const flagTraitData = this.getFlag('megs', 'traitData');
+                if (flagPowerData && flagPowerData.length > 0) {
+                    updateData['flags.megs.powerData'] = flagPowerData;
+                }
+                if (flagTraitData && flagTraitData.length > 0) {
+                    updateData['flags.megs.traitData'] = flagTraitData;
+                }
 
                 if (Object.keys(updateData).length > 0) {
                     console.log(`[MEGS] Persisting data to database:`, Object.keys(updateData));
-                    console.log(`[MEGS] powerData being saved:`, Object.keys(this.system.powerData || {}).length, 'powers');
+                    console.log(`[MEGS] powerData being saved:`, (flagPowerData || []).length, 'powers');
                     await this.update(updateData);
                     console.log(`[MEGS] Update complete. Verifying data...`);
-                    console.log(`[MEGS] After update - powerData:`, Object.keys(this.system.powerData || {}).length);
+                    const verifyPower = this.getFlag('megs', 'powerData') || [];
+                    console.log(`[MEGS] After update - powerData in flags:`, verifyPower.length);
                     console.log(`[MEGS] After update - skillData:`, Object.keys(this.system.skillData || {}).length);
                 }
             }

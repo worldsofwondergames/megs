@@ -77,12 +77,17 @@ export class MEGSItem extends Item {
 
             console.log(`[MEGS] Serialized ${powerData.length} powers, ${Object.keys(skillData).length} skills`);
 
-            // Add serialized data to the object
+            // Store complex data in flags instead of system - Foundry strips complex objects from system
+            // Flags are designed for arbitrary data and bypass schema validation
+            data.flags = data.flags || {};
+            data.flags.megs = data.flags.megs || {};
+            data.flags.megs.powerData = powerData;
+            data.flags.megs.traitData = traitData;
+
+            // Simple key-value data can stay in system
             data.system.skillData = skillData;
             data.system.subskillData = subskillData;
             data.system.subskillTrainingData = subskillTrainingData;
-            data.system.powerData = powerData;
-            data.system.traitData = traitData;
         }
 
         return data;
@@ -97,11 +102,9 @@ export class MEGSItem extends Item {
 
         if (this.parent) {
             console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
-            console.log(`[MEGS] this.system.powerData length:`, (this.system.powerData || []).length);
-            console.log(`[MEGS] this.system.skillData keys:`, Object.keys(this.system.skillData || {}));
-            console.log(`[MEGS] this.system.traitData length:`, (this.system.traitData || []).length);
-            console.log(`[MEGS] RAW this.system:`, this.system);
-            console.log(`[MEGS] data parameter powerData length:`, (data.system?.powerData || []).length);
+            const flagPowerData = this.getFlag('megs', 'powerData') || [];
+            console.log(`[MEGS] powerData in flags:`, flagPowerData.length);
+            console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
 
             // Gadget owned by actor - create actual skill, power, and trait items
             const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
@@ -113,12 +116,13 @@ export class MEGSItem extends Item {
             await this._addTraitsToGadget();
         } else {
             console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created, duplicateSource:`, this._stats.duplicateSource);
-            console.log(`[MEGS] Existing powerData:`, (this.system.powerData || []).length);
+            const flagPowerData = this.getFlag('megs', 'powerData') || [];
+            console.log(`[MEGS] Existing powerData in flags:`, flagPowerData.length);
             console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
 
             // Standalone gadget - initialize skillData/subskillData only if not already populated
             // (e.g., from toObject() when dragging from character to sidebar)
-            const hasPowerData = this.system.powerData && this.system.powerData.length > 0;
+            const hasPowerData = flagPowerData.length > 0;
             const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
 
             if (!hasPowerData && !hasSkillData) {
@@ -264,8 +268,8 @@ export class MEGSItem extends Item {
     }
 
     async _addPowersToGadget() {
-        // Get virtual power data if it exists (now an array)
-        const powerData = this.system.powerData || [];
+        // Get virtual power data from flags (complex data)
+        const powerData = this.getFlag('megs', 'powerData') || [];
 
         console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${powerData.length} powers`);
 
@@ -294,8 +298,8 @@ export class MEGSItem extends Item {
     }
 
     async _addTraitsToGadget() {
-        // Get virtual trait data if it exists (now an array)
-        const traitData = this.system.traitData || [];
+        // Get virtual trait data from flags (complex data)
+        const traitData = this.getFlag('megs', 'traitData') || [];
 
         // If no traits to add, return early
         if (traitData.length === 0) return;

@@ -94,9 +94,11 @@ export class MEGSItem extends Item {
 
         if (this.parent) {
             console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
-            console.log(`[MEGS] powerData keys:`, Object.keys(this.system.powerData || {}));
-            console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
-            console.log(`[MEGS] traitData keys:`, Object.keys(this.system.traitData || {}));
+            console.log(`[MEGS] this.system.powerData keys:`, Object.keys(this.system.powerData || {}));
+            console.log(`[MEGS] this.system.skillData keys:`, Object.keys(this.system.skillData || {}));
+            console.log(`[MEGS] this.system.traitData keys:`, Object.keys(this.system.traitData || {}));
+            console.log(`[MEGS] RAW this.system:`, this.system);
+            console.log(`[MEGS] data parameter powerData:`, Object.keys(data.system?.powerData || {}));
 
             // Gadget owned by actor - create actual skill, power, and trait items
             const existingItems = this.parent.items.filter(i => i.system.parent === this.id);

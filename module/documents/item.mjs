@@ -35,8 +35,8 @@ export class MEGSItem extends Item {
             const skillData = {};
             const subskillData = {};
             const subskillTrainingData = {};
-            const powerData = {};
-            const traitData = {};
+            const powerData = [];  // Changed to array
+            const traitData = [];  // Changed to array
 
             // Get all child items
             const childItems = this.parent.items.filter(i => i.system.parent === this.id);
@@ -51,28 +51,31 @@ export class MEGSItem extends Item {
                     subskillTrainingData[item.name] = item.system.isTrained;
                 } else if (item.type === MEGS.itemTypes.power) {
                     console.log(`[MEGS] Serializing power: ${item.name}`);
-                    // Use toObject() for clean serialization instead of deepClone
+                    // Use toObject() for clean serialization
+                    // Store as array element instead of object with dynamic keys
                     const itemData = item.toObject();
-                    powerData[item.id] = {
+                    powerData.push({
+                        id: item.id,
                         name: itemData.name,
                         type: itemData.type,
                         img: itemData.img,
                         system: itemData.system
-                    };
+                    });
                 } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                     console.log(`[MEGS] Serializing trait: ${item.name}`);
-                    // Use toObject() for clean serialization
+                    // Store as array element
                     const itemData = item.toObject();
-                    traitData[item.id] = {
+                    traitData.push({
+                        id: item.id,
                         name: itemData.name,
                         type: itemData.type,
                         img: itemData.img,
                         system: itemData.system
-                    };
+                    });
                 }
             }
 
-            console.log(`[MEGS] Serialized ${Object.keys(powerData).length} powers, ${Object.keys(skillData).length} skills`);
+            console.log(`[MEGS] Serialized ${powerData.length} powers, ${Object.keys(skillData).length} skills`);
 
             // Add serialized data to the object
             data.system.skillData = skillData;
@@ -94,11 +97,11 @@ export class MEGSItem extends Item {
 
         if (this.parent) {
             console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
-            console.log(`[MEGS] this.system.powerData keys:`, Object.keys(this.system.powerData || {}));
+            console.log(`[MEGS] this.system.powerData length:`, (this.system.powerData || []).length);
             console.log(`[MEGS] this.system.skillData keys:`, Object.keys(this.system.skillData || {}));
-            console.log(`[MEGS] this.system.traitData keys:`, Object.keys(this.system.traitData || {}));
+            console.log(`[MEGS] this.system.traitData length:`, (this.system.traitData || []).length);
             console.log(`[MEGS] RAW this.system:`, this.system);
-            console.log(`[MEGS] data parameter powerData:`, Object.keys(data.system?.powerData || {}));
+            console.log(`[MEGS] data parameter powerData length:`, (data.system?.powerData || []).length);
 
             // Gadget owned by actor - create actual skill, power, and trait items
             const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
@@ -110,12 +113,12 @@ export class MEGSItem extends Item {
             await this._addTraitsToGadget();
         } else {
             console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created, duplicateSource:`, this._stats.duplicateSource);
-            console.log(`[MEGS] Existing powerData:`, Object.keys(this.system.powerData || {}).length);
+            console.log(`[MEGS] Existing powerData:`, (this.system.powerData || []).length);
             console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
 
             // Standalone gadget - initialize skillData/subskillData only if not already populated
             // (e.g., from toObject() when dragging from character to sidebar)
-            const hasPowerData = this.system.powerData && Object.keys(this.system.powerData).length > 0;
+            const hasPowerData = this.system.powerData && this.system.powerData.length > 0;
             const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
 
             if (!hasPowerData && !hasSkillData) {
@@ -261,17 +264,17 @@ export class MEGSItem extends Item {
     }
 
     async _addPowersToGadget() {
-        // Get virtual power data if it exists
-        const powerData = this.system.powerData || {};
+        // Get virtual power data if it exists (now an array)
+        const powerData = this.system.powerData || [];
 
-        console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerData).length} powers`);
+        console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${powerData.length} powers`);
 
         // If no powers to add, return early
-        if (Object.keys(powerData).length === 0) return;
+        if (powerData.length === 0) return;
 
         let powers = [];
 
-        for (let [key, power] of Object.entries(powerData)) {
+        for (let power of powerData) {
             console.log(`[MEGS] Adding power: ${power.name}`);
             const powerObj = {
                 name: power.name,
@@ -291,15 +294,15 @@ export class MEGSItem extends Item {
     }
 
     async _addTraitsToGadget() {
-        // Get virtual trait data if it exists
-        const traitData = this.system.traitData || {};
+        // Get virtual trait data if it exists (now an array)
+        const traitData = this.system.traitData || [];
 
         // If no traits to add, return early
-        if (Object.keys(traitData).length === 0) return;
+        if (traitData.length === 0) return;
 
         let traits = [];
 
-        for (let [key, trait] of Object.entries(traitData)) {
+        for (let trait of traitData) {
             const traitObj = {
                 name: trait.name,
                 type: trait.type,

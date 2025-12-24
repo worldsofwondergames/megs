@@ -16,10 +16,11 @@ export class MEGSItem extends Item {
     async _preCreate(data, options, user) {
         await super._preCreate(data, options, user);
 
-        // If this is a standalone gadget being created with powerData/skillData,
-        // ensure it's properly set in the creation data
-        if (this.type === MEGS.itemTypes.gadget && !this.parent) {
-            console.log(`[MEGS] _preCreate for standalone gadget, powerData:`, Object.keys(data.system?.powerData || {}).length);
+        // Log creation data for all gadgets
+        if (this.type === MEGS.itemTypes.gadget) {
+            const hasParent = !!this.parent;
+            const parentName = this.parent?.name || 'none';
+            console.log(`[MEGS] _preCreate for gadget, parent: ${parentName}, powerData in creation data:`, Object.keys(data.system?.powerData || {}).length);
         }
     }
 

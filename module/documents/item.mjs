@@ -20,7 +20,10 @@ export class MEGSItem extends Item {
         if (this.type === MEGS.itemTypes.gadget) {
             const hasParent = !!this.parent;
             const parentName = this.parent?.name || 'none';
-            console.log(`[MEGS] _preCreate for gadget, parent: ${parentName}, powerData in creation data:`, Object.keys(data.system?.powerData || {}).length);
+            const flagsData = data.flags?.megs?.powerData || [];
+            console.log(`[MEGS] _preCreate for gadget, parent: ${parentName}`);
+            console.log(`[MEGS] - flags.megs.powerData in creation data:`, flagsData.length);
+            console.log(`[MEGS] - Full flags object:`, data.flags);
         }
     }
 

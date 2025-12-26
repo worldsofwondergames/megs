@@ -178,7 +178,7 @@
                         {{selectOptions reliabilityScores selected=system.reliability localize=true}}
                     </select>
                 {{else}}
-                    {{system.reliability}}
+                    {{lookup reliabilityScores system.reliability}}
                 {{/if}}
             </div>
 

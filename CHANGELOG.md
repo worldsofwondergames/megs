@@ -121,6 +121,7 @@
 
 ### Bug Fixes
 
+- Fixed modifiers not displaying when dragged onto standalone powers or skills
 - Fixed gadget power and skill data preservation when dragging from sidebar to character sheet
 - Fixed trait (advantage/drawback) type and cost data being lost during gadget transfer
 - Fixed validation in AP cost calculation to handle items without Factor Cost

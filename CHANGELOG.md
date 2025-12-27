@@ -83,6 +83,8 @@
 
 ### Enhancements
 
+- Skills can now have modifiers (bonuses and limitations) just like powers
+- Modifiers can be added to standalone powers and skills (not owned by actors)
 - Added double-click to activate TinyMCE editors for biography and item descriptions
 - Hide R# display in gadget summaries when reliability is 0
 - Automatic cleanup of child items when parent gadget or skill is deleted

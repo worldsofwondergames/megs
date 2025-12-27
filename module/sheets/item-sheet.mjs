@@ -212,6 +212,13 @@ export class MEGSItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Double-click description text to enable edit mode
+        html.on('dblclick', '.description-text', (ev) => {
+            if (this.object.isOwner) {
+                this._toggleEditMode(ev);
+            }
+        });
+
         // Initialize subskill checkbox states based on skill APs
         if (this.object.type === 'skill') {
             const skillAps = this.object.system.aps || 0;

@@ -12,9 +12,8 @@ export class MEGSActorSheet extends ActorSheet {
     constructor(object, options) {
         super(object, options);
         if (this.actor) {
-            // Default to view mode (edit-mode OFF) so users can see read-only content
-            // and double-click to enable editing
-            this.actor.setFlag('megs', 'edit-mode', false);
+            const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
+            this.actor.setFlag('megs', 'edit-mode', isUnlocked);
         }
     }
 
@@ -447,14 +446,13 @@ export class MEGSActorSheet extends ActorSheet {
 
         html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
 
-        // Double-click biography to enable edit mode
-        // Use delegation on the entire html element to catch events even from tabs that load later
-        html.on('dblclick', (ev) => {
-            // Check if the click or any parent has the biography-display class
-            const target = $(ev.target);
-            if (target.closest('.biography-display').length > 0) {
-                console.log('[MEGS] Biography double-click detected');
-                this._toggleEditMode(ev);
+        // Double-click TinyMCE editor content to activate editing
+        html.on('dblclick', '.editor-content', (ev) => {
+            // Find the associated edit button and click it
+            const editorContainer = $(ev.currentTarget).closest('.editor');
+            const editButton = editorContainer.find('.editor-edit');
+            if (editButton.length > 0 && !editButton.hasClass('active')) {
+                editButton.click();
             }
         });
 

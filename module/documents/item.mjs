@@ -63,8 +63,16 @@ export class MEGSItem extends Item {
                         if (MEGS.debug.enabled) {
                             console.log(`[MEGS] Serializing trait: ${item.name}`);
                         }
-                        // Store traits - keep simple for now
-                        traitData[item.name] = item.system.baseCost || 0;
+                        // Store full trait data as object (matching item-sheet format)
+                        traitData[item.name] = {
+                            name: item.name,
+                            type: item.type,
+                            img: item.img,
+                            system: {
+                                baseCost: item.system.baseCost || 0,
+                                text: item.system.text || ''
+                            }
+                        };
                     }
                 }
 
@@ -72,7 +80,24 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
                 }
 
-                // Store ALL data in system - all primitives now
+                // Store in both FLAGS and system
+                // FLAGS preserves data when dragging to sidebar, system for in-world items
+                data.flags = data.flags || {};
+                data.flags.megs = data.flags.megs || {};
+                data.flags.megs._transferData = {
+                    skillData: skillData,
+                    subskillData: subskillData,
+                    subskillTrainingData: subskillTrainingData,
+                    powerAPs: powerAPs,
+                    powerBaseCosts: powerBaseCosts,
+                    powerFactorCosts: powerFactorCosts,
+                    powerRanges: powerRanges,
+                    powerIsLinked: powerIsLinked,
+                    powerLinks: powerLinks,
+                    traitData: traitData
+                };
+
+                // Also store in system for direct access
                 data.system.skillData = skillData;
                 data.system.subskillData = subskillData;
                 data.system.subskillTrainingData = subskillTrainingData;
@@ -89,6 +114,8 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
                     console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
                     console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
+                    console.log(`[MEGS] powerAPs data:`, this.system.powerAPs);
+                    console.log(`[MEGS] skillData data:`, this.system.skillData);
                 }
 
                 // Store in FLAGS during drag - Foundry strips system data when creating on actors
@@ -126,6 +153,31 @@ export class MEGSItem extends Item {
     }
 
     /** @override */
+    async _preCreate(data, options, userId) {
+        await super._preCreate(data, options, userId);
+
+        // For gadgets being created on actors, check if we have power/skill data in the source
+        if (this.type === MEGS.itemTypes.gadget && data.flags?.megs?._transferData) {
+            const transferData = data.flags.megs._transferData;
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] _preCreate: Found transfer data in creation data`);
+                console.log(`[MEGS] _preCreate powerAPs:`, transferData.powerAPs);
+                console.log(`[MEGS] _preCreate skillData:`, transferData.skillData);
+            }
+
+            // Store in a global temporary cache that _onCreate can access
+            if (!globalThis.MEGS_TRANSFER_CACHE) globalThis.MEGS_TRANSFER_CACHE = {};
+            // Use the item ID as the cache key since it's available
+            const cacheKey = this.id;
+            globalThis.MEGS_TRANSFER_CACHE[cacheKey] = transferData;
+
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] _preCreate: Stored data in global cache with item ID:`, cacheKey);
+            }
+        }
+    }
+
+    /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
 
@@ -137,8 +189,27 @@ export class MEGSItem extends Item {
                 console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
             }
 
-            // Check if we have transfer data in flags (from dragging standalone gadget)
-            const transferData = this.getFlag('megs', '_transferData');
+            // Check if we have a cache key from the preCreateItem hook (passed via options)
+            let transferData = null;
+            const cacheKey = options.megsCacheKey;
+
+            if (cacheKey && globalThis.MEGS_TRANSFER_CACHE?.[cacheKey]) {
+                const cached = globalThis.MEGS_TRANSFER_CACHE[cacheKey];
+                transferData = cached.transferData;
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Retrieved transfer data from global cache using options key:`, cacheKey);
+                    console.log(`[MEGS] Cache powerAPs:`, transferData.powerAPs);
+                    console.log(`[MEGS] Cache skillData:`, transferData.skillData);
+                }
+                // Clean up the cache
+                delete globalThis.MEGS_TRANSFER_CACHE[cacheKey];
+            } else {
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] No cache key in options. Key:`, cacheKey);
+                    console.log(`[MEGS] Global cache keys:`, Object.keys(globalThis.MEGS_TRANSFER_CACHE || {}));
+                }
+            }
+
             if (transferData) {
                 if (MEGS.debug.enabled) {
                     console.log(`[MEGS] Found transfer data in flags, restoring to system`);
@@ -146,18 +217,31 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
                 }
 
-                // Move data from flags to system
+                // Update system fields with transfer data
+                // Note: We update this.system directly first, then persist to DB
+                this.system.skillData = transferData.skillData || {};
+                this.system.subskillData = transferData.subskillData || {};
+                this.system.subskillTrainingData = transferData.subskillTrainingData || {};
+                this.system.powerAPs = transferData.powerAPs || {};
+                this.system.powerBaseCosts = transferData.powerBaseCosts || {};
+                this.system.powerFactorCosts = transferData.powerFactorCosts || {};
+                this.system.powerRanges = transferData.powerRanges || {};
+                this.system.powerIsLinked = transferData.powerIsLinked || {};
+                this.system.powerLinks = transferData.powerLinks || {};
+                this.system.traitData = transferData.traitData || {};
+
+                // Persist to database and remove transfer flag
                 await this.update({
-                    'system.skillData': transferData.skillData || {},
-                    'system.subskillData': transferData.subskillData || {},
-                    'system.subskillTrainingData': transferData.subskillTrainingData || {},
-                    'system.powerAPs': transferData.powerAPs || {},
-                    'system.powerBaseCosts': transferData.powerBaseCosts || {},
-                    'system.powerFactorCosts': transferData.powerFactorCosts || {},
-                    'system.powerRanges': transferData.powerRanges || {},
-                    'system.powerIsLinked': transferData.powerIsLinked || {},
-                    'system.powerLinks': transferData.powerLinks || {},
-                    'system.traitData': transferData.traitData || {},
+                    'system.skillData': this.system.skillData,
+                    'system.subskillData': this.system.subskillData,
+                    'system.subskillTrainingData': this.system.subskillTrainingData,
+                    'system.powerAPs': this.system.powerAPs,
+                    'system.powerBaseCosts': this.system.powerBaseCosts,
+                    'system.powerFactorCosts': this.system.powerFactorCosts,
+                    'system.powerRanges': this.system.powerRanges,
+                    'system.powerIsLinked': this.system.powerIsLinked,
+                    'system.powerLinks': this.system.powerLinks,
+                    'system.traitData': this.system.traitData,
                     'flags.megs.-=_transferData': null  // Remove transfer flag
                 });
                 if (MEGS.debug.enabled) {
@@ -240,6 +324,23 @@ export class MEGSItem extends Item {
         }
     }
 
+    /** @override */
+    async _onDelete(options, userId) {
+        await super._onDelete(options, userId);
+
+        // When a gadget or skill is deleted, also delete all child items
+        if ((this.type === MEGS.itemTypes.gadget || this.type === MEGS.itemTypes.skill) && this.parent) {
+            const childItems = this.parent.items.filter(i => i.system.parent === this.id);
+
+            if (childItems.length > 0) {
+                const childIds = childItems.map(i => i.id);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Deleting ${childIds.length} child items of ${this.type} ${this.name}`);
+                }
+                await this.parent.deleteEmbeddedDocuments('Item', childIds);
+            }
+        }
+    }
 
     async _initializeSkillData() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
@@ -390,17 +491,17 @@ export class MEGSItem extends Item {
 
         let traits = [];
 
-        // Iterate over trait names (same pattern as skills)
-        for (let traitName in traitData) {
-            const trait = traitData[traitName];
+        // Iterate over trait keys (keys may include timestamp for uniqueness)
+        for (let traitKey in traitData) {
+            const trait = traitData[traitKey];
             const traitObj = {
-                name: traitName,
+                name: trait.name || traitKey,  // Use trait.name if available, fallback to key
                 type: trait.type || 'advantage',
-                img: trait.type === 'drawback' ? 'icons/svg/degen.svg' : 'icons/svg/regen.svg',
+                img: trait.img || (trait.type === 'drawback' ? 'icons/svg/degen.svg' : 'icons/svg/regen.svg'),
                 system: {
                     parent: this.id,  // Set parent to this gadget's ID
-                    baseCost: trait.baseCost || 0,
-                    text: trait.text || ''
+                    baseCost: trait.system?.baseCost || trait.baseCost || 0,  // Handle both formats
+                    text: trait.system?.text || trait.text || ''  // Handle both formats
                 }
             };
             traits.push(traitObj);

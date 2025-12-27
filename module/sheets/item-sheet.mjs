@@ -212,6 +212,16 @@ export class MEGSItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Double-click TinyMCE editor content to activate editing
+        html.on('dblclick', '.editor-content', (ev) => {
+            // Find the associated edit button and click it
+            const editorContainer = $(ev.currentTarget).closest('.editor');
+            const editButton = editorContainer.find('.editor-edit');
+            if (editButton.length > 0 && !editButton.hasClass('active')) {
+                editButton.click();
+            }
+        });
+
         // Initialize subskill checkbox states based on skill APs
         if (this.object.type === 'skill') {
             const skillAps = this.object.system.aps || 0;

@@ -396,12 +396,28 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (!itemId) return;
 
-            // Check if this is a standalone gadget with virtual items
+            // Check if this is a standalone item with virtual items
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
+            const isStandalonePowerOrSkill = !this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill);
             const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
             const isVirtualPower = itemId.startsWith && itemId.startsWith('virtual-power-');
+            const isVirtualBonus = itemId.startsWith && itemId.startsWith('virtual-bonus-');
+            const isVirtualLimitation = itemId.startsWith && itemId.startsWith('virtual-limitation-');
 
-            if (isStandaloneGadget && isVirtualTrait) {
+            if (isStandalonePowerOrSkill && (isVirtualBonus || isVirtualLimitation)) {
+                // Standalone power/skill - delete virtual modifier from flattened array
+                const index = parseInt(itemId.split('-')[2]);
+                const arrayKey = isVirtualBonus ? 'bonuses' : 'limitations';
+                const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+                // Remove the modifier at the index
+                modifiers.splice(index, 1);
+
+                await this.object.update({
+                    [`system.${arrayKey}`]: modifiers
+                });
+                this.render(false);
+            } else if (isStandaloneGadget && isVirtualTrait) {
                 // Standalone gadget - delete virtual trait from traitData
                 const key = itemId.replace('virtual-trait-', '');
                 const traitData = this.object.system.traitData || {};
@@ -646,8 +662,9 @@ export class MEGSItemSheet extends ItemSheet {
             const bonusArray = context.system.bonuses || [];
             const limitationArray = context.system.limitations || [];
 
-            for (const bonus of bonusArray) {
+            bonusArray.forEach((bonus, index) => {
                 bonuses.push({
+                    _id: `virtual-bonus-${index}`,
                     name: bonus.name,
                     img: bonus.img || Item.DEFAULT_ICON,
                     system: {
@@ -656,10 +673,11 @@ export class MEGSItemSheet extends ItemSheet {
                     }
                 });
                 totalBonusMod += bonus.factorCostMod || 0;
-            }
+            });
 
-            for (const limitation of limitationArray) {
+            limitationArray.forEach((limitation, index) => {
                 limitations.push({
+                    _id: `virtual-limitation-${index}`,
                     name: limitation.name,
                     img: limitation.img || Item.DEFAULT_ICON,
                     system: {
@@ -668,7 +686,7 @@ export class MEGSItemSheet extends ItemSheet {
                     }
                 });
                 totalLimitationMod += limitation.factorCostMod || 0;
-            }
+            });
         }
 
         // Assign and return

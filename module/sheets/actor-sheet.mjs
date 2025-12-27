@@ -12,8 +12,9 @@ export class MEGSActorSheet extends ActorSheet {
     constructor(object, options) {
         super(object, options);
         if (this.actor) {
-            const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
-            this.actor.setFlag('megs', 'edit-mode', isUnlocked);
+            // Default to view mode (edit-mode OFF) so users can see read-only content
+            // and double-click to enable editing
+            this.actor.setFlag('megs', 'edit-mode', false);
         }
     }
 

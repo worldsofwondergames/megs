@@ -448,9 +448,8 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Double-click biography to enable edit mode
         html.on('dblclick', '.biography-display', (ev) => {
-            if (this.actor.isOwner) {
-                this._toggleEditMode(ev);
-            }
+            console.log('[MEGS] Biography double-click detected');
+            this._toggleEditMode(ev);
         });
 
         // Render the item sheet for viewing/editing prior to the editable check.

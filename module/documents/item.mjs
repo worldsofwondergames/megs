@@ -16,6 +16,14 @@ export class MEGSItem extends Item {
     toObject(source = true) {
         const data = super.toObject(source);
 
+        // Handle standalone powers and skills with embedded modifiers/subskills
+        if ((this.type === MEGS.itemTypes.power || this.type === MEGS.itemTypes.skill) && !this.parent) {
+            // Preserve embedded items (bonuses, limitations, subskills) via flags
+            data.flags = data.flags || {};
+            data.flags.megs = data.flags.megs || {};
+            data.flags.megs._embeddedItems = this.items.map(item => item.toObject());
+        }
+
         if (this.type === MEGS.itemTypes.gadget) {
             if (this.parent) {
                 // Gadget on character - serialize child items
@@ -180,6 +188,17 @@ export class MEGSItem extends Item {
     /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
+
+        // Handle standalone powers/skills with embedded items
+        if ((this.type === MEGS.itemTypes.power || this.type === MEGS.itemTypes.skill) && !this.parent) {
+            const embeddedItems = this.flags.megs?._embeddedItems;
+            if (embeddedItems && embeddedItems.length > 0) {
+                // Recreate embedded items
+                await this.createEmbeddedDocuments('Item', embeddedItems);
+                // Clean up the flag
+                await this.unsetFlag('megs', '_embeddedItems');
+            }
+        }
 
         // Only process new gadgets
         if (this.type !== MEGS.itemTypes.gadget) return;

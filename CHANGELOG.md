@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 1.0.0
+
+### Enhancements
+- Added double-click to activate TinyMCE editors for biography and item descriptions
+- Hide R# display in gadget summaries when reliability is 0
+- Automatic cleanup of child items when parent gadget or skill is deleted
+- Fixed trait (advantage/drawback) preservation when transferring gadgets between actors and sidebar
+- Fixed empty gadget descriptions no longer display empty parentheses in character creator
+
+### Bug Fixes
+- Fixed gadget power and skill data preservation when dragging from sidebar to character sheet
+- Fixed trait type and cost data being lost during gadget transfer
+
 ## 0.4.0 (May 15, 2024)
 
 - Officially entered beta with a very barebones system

@@ -24,11 +24,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab" data-group="primary" data-tab="description">
-            {{#if flags.megs.edit-mode}}
-                {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-            {{else}}
-                <div class="description-text editable-on-dblclick">{{{system.description}}}</div>
-            {{/if}}
+            {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Attributes Tab --}}

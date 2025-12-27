@@ -853,15 +853,19 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         description += 'Ammo ' + gadget.system.weapon.ammo;
     }
 
-    // reliability
+    // reliability (don't display if R# is 0)
     if (gadget.system.reliability != null && gadget.system.reliability !== '') {
-        if (description) {
-            description += ', ';
+        const rNumber = CONFIG.reliabilityScores[gadget.system.reliability];
+        if (rNumber > 0) {
+            if (description) {
+                description += ', ';
+            }
+            description += 'R#' + rNumber;
         }
-        description += 'R # ' + CONFIG.reliabilityScores[gadget.system.reliability];
     }
 
-    return description;
+    // Return empty string if description is empty or just whitespace
+    return description.trim();
 });
 
 Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
@@ -1127,6 +1131,33 @@ Hooks.once('ready', function () {
         }
     });
     Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
+
+    // Hook to preserve gadget power/skill data when dragging from sidebar to actor
+    Hooks.on('preCreateItem', (item, data, options, userId) => {
+        if (item.type === 'gadget' && item.parent && data.flags?.megs?._transferData) {
+            const transferData = data.flags.megs._transferData;
+            if (MEGS.debug.enabled) {
+                console.log('[MEGS] preCreateItem hook: Found gadget with transfer data');
+                console.log('[MEGS] powerAPs:', transferData.powerAPs);
+            }
+
+            // Store in global cache using a combination of parent ID and item name
+            if (!globalThis.MEGS_TRANSFER_CACHE) globalThis.MEGS_TRANSFER_CACHE = {};
+            const cacheKey = `${item.parent.id}_${item.name}_${Date.now()}`;
+            globalThis.MEGS_TRANSFER_CACHE[cacheKey] = {
+                transferData,
+                itemName: item.name,
+                parentId: item.parent.id
+            };
+
+            // Store the cache key in options so _onCreate can find it
+            options.megsCacheKey = cacheKey;
+
+            if (MEGS.debug.enabled) {
+                console.log('[MEGS] Stored in cache with key:', cacheKey);
+            }
+        }
+    });
 });
 
 /**

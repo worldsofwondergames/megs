@@ -853,12 +853,15 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         description += 'Ammo ' + gadget.system.weapon.ammo;
     }
 
-    // reliability
+    // reliability (don't display if R# is 0)
     if (gadget.system.reliability != null && gadget.system.reliability !== '') {
-        if (description) {
-            description += ', ';
+        const rNumber = CONFIG.reliabilityScores[gadget.system.reliability];
+        if (rNumber > 0) {
+            if (description) {
+                description += ', ';
+            }
+            description += 'R # ' + rNumber;
         }
-        description += 'R # ' + CONFIG.reliabilityScores[gadget.system.reliability];
     }
 
     return description;

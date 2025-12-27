@@ -1092,7 +1092,7 @@ export class MEGSItemSheet extends ItemSheet {
         const data = TextEditor.getDragEventData(event);
         const actor = this.object.parent;
         const allowed = Hooks.call('dropActorSheetData', actor, this, data);
-        const isDroppable = this.object.type === MEGS.itemTypes.power;
+        const isDroppable = this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill;
         const item = await Item.implementation.fromDropData(data);
         const isSubItem =
             item.type === MEGS.itemTypes.bonus ||
@@ -1172,6 +1172,18 @@ export class MEGSItemSheet extends ItemSheet {
             return false;
         }
 
+        // Handle standalone powers and skills accepting modifiers and subskills
+        if (!this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill)) {
+            const isModifier = itemData.type === MEGS.itemTypes.bonus || itemData.type === MEGS.itemTypes.limitation;
+            const isSubskill = itemData.type === MEGS.itemTypes.subskill && this.object.type === MEGS.itemTypes.skill;
+
+            if (isModifier || isSubskill) {
+                return this._onDropModifierToStandaloneItem(itemData);
+            }
+            // For other item types, prevent the drop
+            return false;
+        }
+
         if (!this.object.parent || !this.object.parent.isOwner) return false;
 
         // Handle item sorting within the same Actor
@@ -1238,6 +1250,22 @@ export class MEGSItemSheet extends ItemSheet {
             'system.powerLinks': powerLinks
         });
         this.render(false);
+    }
+
+    /**
+     * Handle dropping a modifier (bonus/limitation) or subskill onto a standalone power/skill
+     * @param {object} itemData The modifier or subskill item data
+     * @returns {Promise<Item>}
+     * @private
+     */
+    async _onDropModifierToStandaloneItem(itemData) {
+        // Set the parent reference to link the modifier to this power/skill
+        itemData.system.parent = this.object._id;
+
+        // Create the modifier as an embedded item within this standalone power/skill
+        const createdItems = await this.object.createEmbeddedDocuments('Item', [itemData]);
+        this.render(false);
+        return createdItems[0];
     }
 
     /* -------------------------------------------- */

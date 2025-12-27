@@ -163,18 +163,31 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
                 }
 
-                // Move data from flags to system
+                // Update system fields with transfer data
+                // Note: We update this.system directly first, then persist to DB
+                this.system.skillData = transferData.skillData || {};
+                this.system.subskillData = transferData.subskillData || {};
+                this.system.subskillTrainingData = transferData.subskillTrainingData || {};
+                this.system.powerAPs = transferData.powerAPs || {};
+                this.system.powerBaseCosts = transferData.powerBaseCosts || {};
+                this.system.powerFactorCosts = transferData.powerFactorCosts || {};
+                this.system.powerRanges = transferData.powerRanges || {};
+                this.system.powerIsLinked = transferData.powerIsLinked || {};
+                this.system.powerLinks = transferData.powerLinks || {};
+                this.system.traitData = transferData.traitData || {};
+
+                // Persist to database and remove transfer flag
                 await this.update({
-                    'system.skillData': transferData.skillData || {},
-                    'system.subskillData': transferData.subskillData || {},
-                    'system.subskillTrainingData': transferData.subskillTrainingData || {},
-                    'system.powerAPs': transferData.powerAPs || {},
-                    'system.powerBaseCosts': transferData.powerBaseCosts || {},
-                    'system.powerFactorCosts': transferData.powerFactorCosts || {},
-                    'system.powerRanges': transferData.powerRanges || {},
-                    'system.powerIsLinked': transferData.powerIsLinked || {},
-                    'system.powerLinks': transferData.powerLinks || {},
-                    'system.traitData': transferData.traitData || {},
+                    'system.skillData': this.system.skillData,
+                    'system.subskillData': this.system.subskillData,
+                    'system.subskillTrainingData': this.system.subskillTrainingData,
+                    'system.powerAPs': this.system.powerAPs,
+                    'system.powerBaseCosts': this.system.powerBaseCosts,
+                    'system.powerFactorCosts': this.system.powerFactorCosts,
+                    'system.powerRanges': this.system.powerRanges,
+                    'system.powerIsLinked': this.system.powerIsLinked,
+                    'system.powerLinks': this.system.powerLinks,
+                    'system.traitData': this.system.traitData,
                     'flags.megs.-=_transferData': null  // Remove transfer flag
                 });
                 if (MEGS.debug.enabled) {

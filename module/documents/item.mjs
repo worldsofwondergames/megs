@@ -17,11 +17,11 @@ export class MEGSItem extends Item {
         const data = super.toObject(source);
 
         // Handle standalone powers and skills with embedded modifiers/subskills
-        if ((this.type === MEGS.itemTypes.power || this.type === MEGS.itemTypes.skill) && !this.parent) {
+        if ((this.type === MEGS.itemTypes.power || this.type === MEGS.itemTypes.skill) && !this.parent && this.items?.size > 0) {
             // Preserve embedded items (bonuses, limitations, subskills) via flags
             data.flags = data.flags || {};
             data.flags.megs = data.flags.megs || {};
-            data.flags.megs._embeddedItems = this.items.map(item => item.toObject());
+            data.flags.megs._embeddedItems = Array.from(this.items).map(item => item.toObject());
         }
 
         if (this.type === MEGS.itemTypes.gadget) {

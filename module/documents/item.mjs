@@ -181,21 +181,24 @@ export class MEGSItem extends Item {
                 console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
             }
 
-            // Check if we have transfer data in the global cache using this item's ID
+            // Check if we have a cache key from the preCreateItem hook (passed via options)
             let transferData = null;
+            const cacheKey = options.megsCacheKey;
 
-            if (globalThis.MEGS_TRANSFER_CACHE?.[this.id]) {
-                transferData = globalThis.MEGS_TRANSFER_CACHE[this.id];
+            if (cacheKey && globalThis.MEGS_TRANSFER_CACHE?.[cacheKey]) {
+                const cached = globalThis.MEGS_TRANSFER_CACHE[cacheKey];
+                transferData = cached.transferData;
                 if (MEGS.debug.enabled) {
-                    console.log(`[MEGS] Retrieved transfer data from global cache using item ID:`, this.id);
+                    console.log(`[MEGS] Retrieved transfer data from global cache using options key:`, cacheKey);
                     console.log(`[MEGS] Cache powerAPs:`, transferData.powerAPs);
                     console.log(`[MEGS] Cache skillData:`, transferData.skillData);
                 }
                 // Clean up the cache
-                delete globalThis.MEGS_TRANSFER_CACHE[this.id];
+                delete globalThis.MEGS_TRANSFER_CACHE[cacheKey];
             } else {
                 if (MEGS.debug.enabled) {
-                    console.log(`[MEGS] No data in global cache for item ID:`, this.id);
+                    console.log(`[MEGS] No cache key in options. Key:`, cacheKey);
+                    console.log(`[MEGS] Global cache keys:`, Object.keys(globalThis.MEGS_TRANSFER_CACHE || {}));
                 }
             }
 

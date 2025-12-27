@@ -156,6 +156,12 @@ export class MEGSItem extends Item {
                 console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
             }
 
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Checking system data directly:`);
+                console.log(`[MEGS] - system.powerAPs:`, this.system.powerAPs);
+                console.log(`[MEGS] - system.skillData:`, this.system.skillData);
+            }
+
             // Check if we have transfer data in flags (from dragging standalone gadget)
             const transferData = this.getFlag('megs', '_transferData');
             if (MEGS.debug.enabled) {
@@ -165,7 +171,16 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] Transfer data skillData:`, transferData.skillData);
                 }
             }
-            if (transferData) {
+
+            // Try to use data from system first, then fall back to transfer data
+            const hasPowerData = this.system.powerAPs && Object.keys(this.system.powerAPs).length > 0;
+            const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
+
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Has power data in system: ${hasPowerData}, Has skill data in system: ${hasSkillData}`);
+            }
+
+            if (transferData && !hasPowerData && !hasSkillData) {
                 if (MEGS.debug.enabled) {
                     console.log(`[MEGS] Found transfer data in flags, restoring to system`);
                     console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);

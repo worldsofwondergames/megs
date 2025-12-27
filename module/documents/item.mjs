@@ -145,6 +145,39 @@ export class MEGSItem extends Item {
     }
 
     /** @override */
+    async _preCreate(data, options, userId) {
+        await super._preCreate(data, options, userId);
+
+        // For gadgets being created on actors, check if we have power/skill data in the source
+        if (this.type === MEGS.itemTypes.gadget && data.flags?.megs?._transferData) {
+            const transferData = data.flags.megs._transferData;
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] _preCreate: Found transfer data in creation data`);
+                console.log(`[MEGS] _preCreate powerAPs:`, transferData.powerAPs);
+                console.log(`[MEGS] _preCreate skillData:`, transferData.skillData);
+            }
+
+            // Inject the data into the creation data before the item is created
+            this.updateSource({
+                'system.skillData': transferData.skillData || {},
+                'system.subskillData': transferData.subskillData || {},
+                'system.subskillTrainingData': transferData.subskillTrainingData || {},
+                'system.powerAPs': transferData.powerAPs || {},
+                'system.powerBaseCosts': transferData.powerBaseCosts || {},
+                'system.powerFactorCosts': transferData.powerFactorCosts || {},
+                'system.powerRanges': transferData.powerRanges || {},
+                'system.powerIsLinked': transferData.powerIsLinked || {},
+                'system.powerLinks': transferData.powerLinks || {},
+                'system.traitData': transferData.traitData || {}
+            });
+
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] _preCreate: Injected data into creation source`);
+            }
+        }
+    }
+
+    /** @override */
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
 

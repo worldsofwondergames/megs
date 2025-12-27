@@ -146,8 +146,6 @@ export class MEGSItem extends Item {
 
     /** @override */
     async _preCreate(data, options, userId) {
-        await super._preCreate(data, options, userId);
-
         // For gadgets being created on actors, check if we have power/skill data in the source
         if (this.type === MEGS.itemTypes.gadget && data.flags?.megs?._transferData) {
             const transferData = data.flags.megs._transferData;
@@ -157,24 +155,23 @@ export class MEGSItem extends Item {
                 console.log(`[MEGS] _preCreate skillData:`, transferData.skillData);
             }
 
-            // Inject the data into the creation data before the item is created
-            this.updateSource({
-                'system.skillData': transferData.skillData || {},
-                'system.subskillData': transferData.subskillData || {},
-                'system.subskillTrainingData': transferData.subskillTrainingData || {},
-                'system.powerAPs': transferData.powerAPs || {},
-                'system.powerBaseCosts': transferData.powerBaseCosts || {},
-                'system.powerFactorCosts': transferData.powerFactorCosts || {},
-                'system.powerRanges': transferData.powerRanges || {},
-                'system.powerIsLinked': transferData.powerIsLinked || {},
-                'system.powerLinks': transferData.powerLinks || {},
-                'system.traitData': transferData.traitData || {}
-            });
+            // Store in a global temporary cache that _onCreate can access
+            if (!globalThis.MEGS_TRANSFER_CACHE) globalThis.MEGS_TRANSFER_CACHE = {};
+            // Use a unique key based on gadget name + timestamp
+            const cacheKey = `${data.name}_${Date.now()}`;
+            globalThis.MEGS_TRANSFER_CACHE[cacheKey] = transferData;
+
+            // Store the cache key in flags so _onCreate can find it
+            data.flags = data.flags || {};
+            data.flags.megs = data.flags.megs || {};
+            data.flags.megs._cacheKey = cacheKey;
 
             if (MEGS.debug.enabled) {
-                console.log(`[MEGS] _preCreate: Injected data into creation source`);
+                console.log(`[MEGS] _preCreate: Stored data in global cache with key:`, cacheKey);
             }
         }
+
+        await super._preCreate(data, options, userId);
     }
 
     /** @override */
@@ -189,31 +186,28 @@ export class MEGSItem extends Item {
                 console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
             }
 
-            if (MEGS.debug.enabled) {
-                console.log(`[MEGS] Checking system data directly:`);
-                console.log(`[MEGS] - system.powerAPs:`, this.system.powerAPs);
-                console.log(`[MEGS] - system.skillData:`, this.system.skillData);
-            }
+            // Check if we have a cache key from _preCreate
+            const cacheKey = this.getFlag('megs', '_cacheKey');
+            let transferData = null;
 
-            // Check if we have transfer data in flags (from dragging standalone gadget)
-            const transferData = this.getFlag('megs', '_transferData');
-            if (MEGS.debug.enabled) {
-                console.log(`[MEGS] Checking for transfer data - found:`, transferData ? 'YES' : 'NO');
-                if (transferData) {
-                    console.log(`[MEGS] Transfer data powerAPs:`, transferData.powerAPs);
-                    console.log(`[MEGS] Transfer data skillData:`, transferData.skillData);
+            if (cacheKey && globalThis.MEGS_TRANSFER_CACHE?.[cacheKey]) {
+                transferData = globalThis.MEGS_TRANSFER_CACHE[cacheKey];
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Retrieved transfer data from global cache`);
+                    console.log(`[MEGS] Cache powerAPs:`, transferData.powerAPs);
+                    console.log(`[MEGS] Cache skillData:`, transferData.skillData);
+                }
+                // Clean up the cache
+                delete globalThis.MEGS_TRANSFER_CACHE[cacheKey];
+            } else {
+                // Fall back to checking FLAGS directly
+                transferData = this.getFlag('megs', '_transferData');
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] No cache key, checking FLAGS - found:`, transferData ? 'YES' : 'NO');
                 }
             }
 
-            // Try to use data from system first, then fall back to transfer data
-            const hasPowerData = this.system.powerAPs && Object.keys(this.system.powerAPs).length > 0;
-            const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
-
-            if (MEGS.debug.enabled) {
-                console.log(`[MEGS] Has power data in system: ${hasPowerData}, Has skill data in system: ${hasSkillData}`);
-            }
-
-            if (transferData && !hasPowerData && !hasSkillData) {
+            if (transferData) {
                 if (MEGS.debug.enabled) {
                     console.log(`[MEGS] Found transfer data in flags, restoring to system`);
                     console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);

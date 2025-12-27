@@ -860,11 +860,12 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
             if (description) {
                 description += ', ';
             }
-            description += 'R # ' + rNumber;
+            description += 'R#' + rNumber;
         }
     }
 
-    return description;
+    // Return empty string if description is empty or just whitespace
+    return description.trim();
 });
 
 Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {

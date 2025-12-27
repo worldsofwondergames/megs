@@ -128,7 +128,7 @@
             {{#if flags.megs.edit-mode}}
                 {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
             {{else}}
-                <div class="description-text">{{{system.description}}}</div>
+                <div class="description-text editable-on-dblclick">{{{system.description}}}</div>
             {{/if}}
         </div>
     </section>

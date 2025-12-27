@@ -446,6 +446,13 @@ export class MEGSActorSheet extends ActorSheet {
 
         html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
 
+        // Double-click biography to enable edit mode
+        html.on('dblclick', '.biography-display', (ev) => {
+            if (this.actor.isOwner) {
+                this._toggleEditMode(ev);
+            }
+        });
+
         // Render the item sheet for viewing/editing prior to the editable check.
         html.on('click', '.item-edit', (ev) => {
             const li = $(ev.currentTarget).parents('.item');

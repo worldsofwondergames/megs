@@ -446,6 +446,16 @@ export class MEGSActorSheet extends ActorSheet {
 
         html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
 
+        // Double-click TinyMCE editor content to activate editing
+        html.on('dblclick', '.editor-content', (ev) => {
+            // Find the associated edit button and click it
+            const editorContainer = $(ev.currentTarget).closest('.editor');
+            const editButton = editorContainer.find('.editor-edit');
+            if (editButton.length > 0 && !editButton.hasClass('active')) {
+                editButton.click();
+            }
+        });
+
         // Render the item sheet for viewing/editing prior to the editable check.
         html.on('click', '.item-edit', (ev) => {
             const li = $(ev.currentTarget).parents('.item');
@@ -785,6 +795,7 @@ export class MEGSActorSheet extends ActorSheet {
     _toggleEditMode(_e) {
         const currentValue = this.actor.getFlag('megs', 'edit-mode');
         this.actor.setFlag('megs', 'edit-mode', !currentValue);
+        this.render(false);
     }
 
     /**

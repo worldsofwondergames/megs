@@ -181,6 +181,51 @@ export class MEGSItem extends Item {
     async _onCreate(data, options, userId) {
         await super._onCreate(data, options, userId);
 
+        // Handle powers/skills with flattened modifiers being added to actors
+        if ((this.type === MEGS.itemTypes.power || this.type === MEGS.itemTypes.skill) && this.parent) {
+            const bonuses = this.system.bonuses || [];
+            const limitations = this.system.limitations || [];
+
+            // Create embedded items from flattened arrays
+            const itemsToCreate = [];
+
+            for (const bonus of bonuses) {
+                itemsToCreate.push({
+                    name: bonus.name,
+                    type: MEGS.itemTypes.bonus,
+                    img: bonus.img,
+                    system: {
+                        parent: this._id,
+                        factorCostMod: bonus.factorCostMod || 0,
+                        text: bonus.text || ''
+                    }
+                });
+            }
+
+            for (const limitation of limitations) {
+                itemsToCreate.push({
+                    name: limitation.name,
+                    type: MEGS.itemTypes.limitation,
+                    img: limitation.img,
+                    system: {
+                        parent: this._id,
+                        factorCostMod: limitation.factorCostMod || 0,
+                        text: limitation.text || ''
+                    }
+                });
+            }
+
+            if (itemsToCreate.length > 0) {
+                await this.parent.createEmbeddedDocuments('Item', itemsToCreate);
+
+                // Clear the arrays since modifiers are now embedded items
+                await this.update({
+                    'system.bonuses': [],
+                    'system.limitations': []
+                });
+            }
+        }
+
         // Only process new gadgets
         if (this.type !== MEGS.itemTypes.gadget) return;
 

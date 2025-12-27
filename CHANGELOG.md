@@ -50,6 +50,8 @@
 
 ### Enhancements
 
+- Skills can now have modifiers (bonuses and limitations) just like powers
+- Powers and skills preserve their modifiers when dragged between actors and the Items sidebar
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets dragged to the Items sidebar now retain their powers and skills, which are recreated when dragged to another character

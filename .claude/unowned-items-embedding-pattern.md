@@ -608,13 +608,15 @@ Flattened array items can't be "opened" for editing (they're not real items). Hi
 
 ### Key Differences from Gadget Pattern
 
-1. **No Transfer Cache Needed**: Arrays persist automatically in system data
-2. **Simpler Serialization**: Don't need toObject/onCreate handling
+1. **Simpler Data Structure**: One array per modifier type instead of multiple fields
+2. **Transfer Conversion**: Uses `_onCreate()` to convert arrays to embedded items when added to actors
 3. **Index-based IDs**: Simpler than name-based keys
 4. **Template Reuse**: Same template works for both owned and standalone
 
 ### Files Modified
 
+- **module/documents/item.mjs**:
+  - Line 184-227: `_onCreate()` - converts flattened arrays to embedded items when added to actors
 - **module/sheets/item-sheet.mjs**:
   - Line 1261-1290: `_onDropModifierToStandaloneItem()` - stores in arrays
   - Line 644-674: `_prepareModifiers()` - reads from both sources
@@ -634,3 +636,4 @@ Flattened array items can't be "opened" for editing (they're not real items). Hi
 4. **Virtual IDs**: Essential for template compatibility and delete operations
 5. **Conditional UI**: Hide edit controls that don't make sense for flattened data
 6. **Index-based is Simpler**: When order doesn't matter, index-based IDs are easier than name-based keys
+7. **Transfer Conversion Required**: Use `_onCreate()` to convert flattened arrays to embedded items when items are added to actors to ensure modifiers persist correctly

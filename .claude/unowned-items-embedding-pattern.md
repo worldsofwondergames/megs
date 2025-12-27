@@ -328,16 +328,16 @@ async _onDropModifierToStandaloneItem(itemData) {
 ## Summary: When to Use Each Approach
 
 ### Use Embedded Documents API When:
-- Child items are simple modifiers
-- Don't need to display in standalone item sidebar
-- Don't need to calculate costs when item is standalone
-- Example: Bonuses/Limitations on standalone Powers/Skills
+- Child items are on items owned by actors
+- Full item sheets need to be opened and edited
+- Example: Bonuses/Limitations on Powers/Skills that belong to actors
 
 ### Use Flattened Data Pattern When:
+- Standalone items (not owned by actors) need child items
 - Child items need to display in item sidebar
 - Need to calculate costs involving child items
 - Child items must survive drag to/from actors
-- Example: Powers/Skills/Traits on Gadgets
+- Example: Powers/Skills/Traits on Gadgets, Modifiers on standalone Powers/Skills
 
 ---
 
@@ -423,3 +423,214 @@ This pattern was developed through issue #176 and PR #183 for retaining gadget p
 
 - **#176**: When gadgets are dragged from a character to the right dock area, retain powers and skills
 - **#183**: Pull request implementing the solution
+- **#44**: Skills can have modifiers as well (implemented modifiers for standalone powers/skills)
+
+---
+
+## Case Study: Powers and Skills with Modifiers
+
+This case study demonstrates implementing the flattened data pattern for a simpler use case than gadgets.
+
+### Initial Approach (Failed)
+
+**Attempt**: Use Foundry's embedded documents API
+```javascript
+async _onDropModifierToStandaloneItem(itemData) {
+    itemData.system.parent = this.object._id;
+    const createdItems = await this.object.createEmbeddedDocuments('Item', [itemData]);
+}
+```
+
+**Result**: `Error: Item is not a valid embedded Document within the Item Document`
+
+**Lesson**: Foundry does NOT support embedded Items on standalone Items (items without a parent actor).
+
+### Solution: Flattened Arrays (Simplified Pattern)
+
+Unlike gadgets which needed multiple flattened fields for different attributes, powers and skills already had a simpler structure in their template:
+
+```javascript
+"hasModifiers": {
+    "bonuses": [],           // Already exists!
+    "customBonuses": [],
+    "limitations": [],       // Already exists!
+    "customLimitations": []
+}
+```
+
+### Implementation Steps
+
+#### 1. Drop Handler - Store in Arrays
+```javascript
+async _onDropModifierToStandaloneItem(itemData) {
+    const isBonus = itemData.type === MEGS.itemTypes.bonus;
+    const arrayKey = isBonus ? 'bonuses' : 'limitations';
+
+    const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+    modifiers.push({
+        name: itemData.name,
+        img: itemData.img,
+        factorCostMod: itemData.system.factorCostMod || 0,
+        text: itemData.system.text || ''
+    });
+
+    await this.object.update({
+        [`system.${arrayKey}`]: modifiers
+    });
+}
+```
+
+#### 2. Data Preparation - Dual Source Reading
+
+The `_prepareModifiers()` method needs to handle both:
+- **Items on actors**: Read from embedded items collection
+- **Standalone items**: Read from flattened arrays
+
+```javascript
+_prepareModifiers(context) {
+    const bonuses = [];
+    const limitations = [];
+
+    if (this.object.parent && this.object.parent.items) {
+        // For items on actors - use embedded items
+        for (let i of this.object.parent.items) {
+            if (i.system.parent === this.item._id) {
+                if (i.type === MEGS.itemTypes.bonus) {
+                    bonuses.push(i);  // Real item object
+                }
+            }
+        }
+    } else {
+        // For standalone items - use flattened arrays
+        const bonusArray = context.system.bonuses || [];
+
+        bonusArray.forEach((bonus, index) => {
+            bonuses.push({
+                _id: `virtual-bonus-${index}`,  // Virtual ID for template
+                name: bonus.name,
+                img: bonus.img || Item.DEFAULT_ICON,
+                system: {
+                    factorCostMod: bonus.factorCostMod || 0,
+                    text: bonus.text || ''
+                }
+            });
+        });
+    }
+
+    context.bonuses = bonuses;
+}
+```
+
+**Key Insight**: Create pseudo-item objects with virtual IDs for template compatibility.
+
+#### 3. Virtual IDs for Template Display
+
+Templates expect items with `_id` fields for `data-item-id` attributes:
+
+```handlebars
+{{#each bonuses as |item id|}}
+    <li class='item flexrow' data-item-id='{{item._id}}'>
+        {{item.name}}
+    </li>
+{{/each}}
+```
+
+**Solution**: Generate virtual IDs with index: `virtual-bonus-0`, `virtual-bonus-1`, etc.
+
+This allows:
+- Templates to work unchanged
+- Delete handler to identify which array element to remove
+
+#### 4. Delete Handler - Parse Virtual IDs
+
+```javascript
+html.on('click', '.item-delete', async (ev) => {
+    const itemId = li.attr('data-item-id');
+
+    const isStandalonePowerOrSkill = !this.object.parent &&
+        (this.object.type === MEGS.itemTypes.power ||
+         this.object.type === MEGS.itemTypes.skill);
+    const isVirtualBonus = itemId.startsWith('virtual-bonus-');
+    const isVirtualLimitation = itemId.startsWith('virtual-limitation-');
+
+    if (isStandalonePowerOrSkill && (isVirtualBonus || isVirtualLimitation)) {
+        const index = parseInt(itemId.split('-')[2]);  // Extract index
+        const arrayKey = isVirtualBonus ? 'bonuses' : 'limitations';
+
+        const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+        modifiers.splice(index, 1);  // Remove by index
+
+        await this.object.update({[`system.${arrayKey}`]: modifiers});
+    } else if (this.object.parent) {
+        // Real embedded item on actor
+        const item = this.object.parent.items.get(itemId);
+        await item.delete();
+    }
+});
+```
+
+#### 5. Conditional Edit Controls in Templates
+
+Flattened array items can't be "opened" for editing (they're not real items). Hide edit icons for standalone items:
+
+```handlebars
+{{#each bonuses as |item id|}}
+    <li class='item flexrow' data-item-id='{{item._id}}'>
+        <div class='item-name'>
+            {{#if ../hasActor}}
+                <a class='item-edit' title='Edit'>{{item.name}}</a>
+            {{else}}
+                <span>{{item.name}}</span>
+            {{/if}}
+        </div>
+        <div class='item-controls'>
+            {{#if ../hasActor}}
+                <a class='item-control item-edit'><i class='fas fa-edit'></i></a>
+            {{/if}}
+            {{#if ../flags.megs.edit-mode}}
+                <a class='item-control item-delete'><i class='fas fa-trash'></i></a>
+            {{/if}}
+        </div>
+    </li>
+{{/each}}
+```
+
+### Comparison: Powers/Skills vs Gadgets
+
+| Aspect | Gadgets | Powers/Skills Modifiers |
+|--------|---------|------------------------|
+| **Data Structure** | Multiple flattened fields per type | Single array per type |
+| **Template Fields** | `powerAPs`, `powerBaseCosts`, etc. | `bonuses[]`, `limitations[]` |
+| **Virtual IDs** | Based on name: `virtual-power-${name}` | Based on index: `virtual-bonus-${index}` |
+| **Delete Method** | Delete by key using `.-=${key}` | Delete by index using `splice()` |
+| **Complexity** | High (multiple fields to sync) | Low (one array per type) |
+
+### Key Differences from Gadget Pattern
+
+1. **No Transfer Cache Needed**: Arrays persist automatically in system data
+2. **Simpler Serialization**: Don't need toObject/onCreate handling
+3. **Index-based IDs**: Simpler than name-based keys
+4. **Template Reuse**: Same template works for both owned and standalone
+
+### Files Modified
+
+- **module/sheets/item-sheet.mjs**:
+  - Line 1261-1290: `_onDropModifierToStandaloneItem()` - stores in arrays
+  - Line 644-674: `_prepareModifiers()` - reads from both sources
+  - Line 407-419: Delete handler for virtual modifiers
+- **templates/item/item-power-sheet.hbs**:
+  - Line 225-237: Conditional edit controls for bonuses
+  - Line 270-283: Conditional edit controls for limitations
+- **templates/item/item-skill-sheet.hbs**:
+  - Line 227-231: Conditional edit controls for bonuses
+  - Line 271-275: Conditional edit controls for limitations
+
+### Lessons Learned
+
+1. **Check Foundry Limitations First**: Not all embedded document operations work on standalone items
+2. **Leverage Existing Templates**: `hasModifiers` template already had the arrays we needed
+3. **Dual-Mode Reading**: Support both embedded items and flattened arrays in the same method
+4. **Virtual IDs**: Essential for template compatibility and delete operations
+5. **Conditional UI**: Hide edit controls that don't make sense for flattened data
+6. **Index-based is Simpler**: When order doesn't matter, index-based IDs are easier than name-based keys

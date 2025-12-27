@@ -72,7 +72,24 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
                 }
 
-                // Store ALL data in system - all primitives now
+                // Store in both FLAGS and system
+                // FLAGS preserves data when dragging to sidebar, system for in-world items
+                data.flags = data.flags || {};
+                data.flags.megs = data.flags.megs || {};
+                data.flags.megs._transferData = {
+                    skillData: skillData,
+                    subskillData: subskillData,
+                    subskillTrainingData: subskillTrainingData,
+                    powerAPs: powerAPs,
+                    powerBaseCosts: powerBaseCosts,
+                    powerFactorCosts: powerFactorCosts,
+                    powerRanges: powerRanges,
+                    powerIsLinked: powerIsLinked,
+                    powerLinks: powerLinks,
+                    traitData: traitData
+                };
+
+                // Also store in system for direct access
                 data.system.skillData = skillData;
                 data.system.subskillData = subskillData;
                 data.system.subskillTrainingData = subskillTrainingData;

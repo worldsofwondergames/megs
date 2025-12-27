@@ -412,7 +412,7 @@
                 {{#each gadgets as |item id|}}
                     <li class='item flexrow item-row' data-item-id='{{item._id}}'>
                         <div class='item-name'>
-                            <strong>{{item.name}}</strong> ({{getGadgetDescription item}})
+                            <strong>{{item.name}}</strong>{{#if (getGadgetDescription item)}} ({{getGadgetDescription item}}){{/if}}
                         </div>
                         <div class='item-gadget-cost gadget-cost-tooltip' title='{{getGadgetCostTooltip item}}'>
                             {{item.system.totalCost}}

@@ -200,10 +200,9 @@
 
         {{!-- Modifiers Tab --}}
         <div class="tab modifiers" data-group="primary" data-tab="modifiers">
-            {{#if hasActor}}
-                <div class="resources grid grid-2col">
+            <div class="resources grid grid-2col">
 
-                    <div class="resource flex-group-center">
+                <div class="resource flex-group-center">
                         <div class="grid-2col-header">Bonuses</div>
                         <ol class='items-list'>
                             <li class='item flexrow items-header'>
@@ -221,18 +220,22 @@
                 <li class='item flexrow item-row' data-item-id='{{item._id}}'>
                     <div class='item-name'>
                         <div class='item-image'>
-                            <a class='rollable' data-roll-type='item'>
-                                <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
-                            </a>
+                            <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
                         </div>
-                        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
-                            {{item.name}}
-                        </a>
+                        {{#if ../hasActor}}
+                            <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                                {{item.name}}
+                            </a>
+                        {{else}}
+                            <span>{{item.name}}</span>
+                        {{/if}}
                     </div>
                     <div class='item-controls'>
-                        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
-                            <i class='fas fa-edit'></i>
-                        </a>
+                        {{#if ../hasActor}}
+                            <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                                <i class='fas fa-edit'></i>
+                            </a>
+                        {{/if}}
                         {{#if ../flags.megs.edit-mode}}
                             <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
                                 <i class='fas fa-trash'></i>
@@ -262,18 +265,22 @@
                     <li class='item flexrow item-row' data-item-id='{{item._id}}'>
                         <div class='item-name'>
                             <div class='item-image'>
-                                <a class='rollable' data-roll-type='item'>
-                                    <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
-                                </a>
+                                <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
                             </div>
-                            <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
-                                {{item.name}}
-                            </a>
+                            {{#if ../hasActor}}
+                                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                                    {{item.name}}
+                                </a>
+                            {{else}}
+                                <span>{{item.name}}</span>
+                            {{/if}}
                         </div>
                         <div class='item-controls'>
-                            <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
-                                <i class='fas fa-edit'></i>
-                            </a>
+                            {{#if ../hasActor}}
+                                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                                    <i class='fas fa-edit'></i>
+                                </a>
+                            {{/if}}
                             {{#if ../flags.megs.edit-mode}}
                                 <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
                                     <i class='fas fa-trash'></i>
@@ -286,10 +293,6 @@
         </div>
 
         </div>
-        </div>
-        {{else}}
-            <div class="message-panel">Due to technical limitations, Modifiers cannot be added to an unowned Power. Please add this Power to a character in order to add Modifiers.</div>
-            {{/if}}
 
             </div>
     </section>

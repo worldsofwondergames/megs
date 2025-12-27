@@ -92,6 +92,7 @@ export class MEGSItemSheet extends ItemSheet {
             }
 
             this._prepareSubskills(context);
+            this._prepareModifiers(context);
         }
 
         if (itemData.type === MEGS.itemTypes.subskill) {
@@ -395,12 +396,28 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (!itemId) return;
 
-            // Check if this is a standalone gadget with virtual items
+            // Check if this is a standalone item with virtual items
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
+            const isStandalonePowerOrSkill = !this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill);
             const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
             const isVirtualPower = itemId.startsWith && itemId.startsWith('virtual-power-');
+            const isVirtualBonus = itemId.startsWith && itemId.startsWith('virtual-bonus-');
+            const isVirtualLimitation = itemId.startsWith && itemId.startsWith('virtual-limitation-');
 
-            if (isStandaloneGadget && isVirtualTrait) {
+            if (isStandalonePowerOrSkill && (isVirtualBonus || isVirtualLimitation)) {
+                // Standalone power/skill - delete virtual modifier from flattened array
+                const index = parseInt(itemId.split('-')[2]);
+                const arrayKey = isVirtualBonus ? 'bonuses' : 'limitations';
+                const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+                // Remove the modifier at the index
+                modifiers.splice(index, 1);
+
+                await this.object.update({
+                    [`system.${arrayKey}`]: modifiers
+                });
+                this.render(false);
+            } else if (isStandaloneGadget && isVirtualTrait) {
                 // Standalone gadget - delete virtual trait from traitData
                 const key = itemId.replace('virtual-trait-', '');
                 const traitData = this.object.system.traitData || {};
@@ -610,8 +627,8 @@ export class MEGSItemSheet extends ItemSheet {
      * @param {*} context
      */
     _prepareModifiers(context) {
-        // only powers can have modifiers
-        if (this.object.type !== MEGS.itemTypes.power) return;
+        // only powers and skills can have modifiers
+        if (this.object.type !== MEGS.itemTypes.power && this.object.type !== MEGS.itemTypes.skill) return;
 
         // Initialize containers.
         const bonuses = [];
@@ -619,45 +636,70 @@ export class MEGSItemSheet extends ItemSheet {
         let totalBonusMod = 0;
         let totalLimitationMod = 0;
 
+        // For items on actors/gadgets, read from embedded items collection
         if (this.object.parent && this.object.parent.items) {
             // Iterate through items, allocating to containers
             for (let i of this.object.parent.items) {
-                // if modifier belongs to this power
+                // if modifier belongs to this power/skill
                 if (i.system.parent === this.item._id) {
                     i.img = i.img || Item.DEFAULT_ICON;
                     if (i.type === MEGS.itemTypes.bonus) {
                         bonuses.push(i);
                         totalBonusMod += i.system.factorCostMod || 0;
-                        // Link parent power's item sheet to sub-item object so it updates on any changes
+                        // Link parent power/skill item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                     if (i.type === MEGS.itemTypes.limitation) {
                         limitations.push(i);
                         totalLimitationMod += i.system.factorCostMod || 0;
-
-                        // Link parent power's item sheet to sub-item object so it updates on any changes
+                        // Link parent power/skill item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                 }
             }
-
-            // Assign and return
-            context.bonuses = bonuses;
-            context.limitations = limitations;
-
-            // Calculate effective Factor Cost
-            const baseFactor = context.system.factorCost || 0;
-            context.system.effectiveFactorCost = baseFactor + totalBonusMod + totalLimitationMod;
-
-            // Store modifier totals for tooltip
-            context.system.bonusMod = totalBonusMod;
-            context.system.limitationMod = totalLimitationMod;
         } else {
-            // No modifiers, effective = base
-            context.system.effectiveFactorCost = context.system.factorCost || 0;
-            context.system.bonusMod = 0;
-            context.system.limitationMod = 0;
+            // For standalone items, read from flattened arrays
+            const bonusArray = context.system.bonuses || [];
+            const limitationArray = context.system.limitations || [];
+
+            bonusArray.forEach((bonus, index) => {
+                bonuses.push({
+                    _id: `virtual-bonus-${index}`,
+                    name: bonus.name,
+                    img: bonus.img || Item.DEFAULT_ICON,
+                    system: {
+                        factorCostMod: bonus.factorCostMod || 0,
+                        text: bonus.text || ''
+                    }
+                });
+                totalBonusMod += bonus.factorCostMod || 0;
+            });
+
+            limitationArray.forEach((limitation, index) => {
+                limitations.push({
+                    _id: `virtual-limitation-${index}`,
+                    name: limitation.name,
+                    img: limitation.img || Item.DEFAULT_ICON,
+                    system: {
+                        factorCostMod: limitation.factorCostMod || 0,
+                        text: limitation.text || ''
+                    }
+                });
+                totalLimitationMod += limitation.factorCostMod || 0;
+            });
         }
+
+        // Assign and return
+        context.bonuses = bonuses;
+        context.limitations = limitations;
+
+        // Calculate effective Factor Cost
+        const baseFactor = context.system.factorCost || 0;
+        context.system.effectiveFactorCost = baseFactor + totalBonusMod + totalLimitationMod;
+
+        // Store modifier totals for tooltip
+        context.system.bonusMod = totalBonusMod;
+        context.system.limitationMod = totalLimitationMod;
     }
 
     /**
@@ -1086,7 +1128,7 @@ export class MEGSItemSheet extends ItemSheet {
         const data = TextEditor.getDragEventData(event);
         const actor = this.object.parent;
         const allowed = Hooks.call('dropActorSheetData', actor, this, data);
-        const isDroppable = this.object.type === MEGS.itemTypes.power;
+        const isDroppable = this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill;
         const item = await Item.implementation.fromDropData(data);
         const isSubItem =
             item.type === MEGS.itemTypes.bonus ||
@@ -1166,6 +1208,18 @@ export class MEGSItemSheet extends ItemSheet {
             return false;
         }
 
+        // Handle standalone powers and skills accepting modifiers and subskills
+        if (!this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill)) {
+            const isModifier = itemData.type === MEGS.itemTypes.bonus || itemData.type === MEGS.itemTypes.limitation;
+            const isSubskill = itemData.type === MEGS.itemTypes.subskill && this.object.type === MEGS.itemTypes.skill;
+
+            if (isModifier || isSubskill) {
+                return this._onDropModifierToStandaloneItem(itemData);
+            }
+            // For other item types, prevent the drop
+            return false;
+        }
+
         if (!this.object.parent || !this.object.parent.isOwner) return false;
 
         // Handle item sorting within the same Actor
@@ -1231,6 +1285,43 @@ export class MEGSItemSheet extends ItemSheet {
             'system.powerIsLinked': powerIsLinked,
             'system.powerLinks': powerLinks
         });
+        this.render(false);
+    }
+
+    /**
+     * Handle dropping a modifier (bonus/limitation) or subskill onto a standalone power/skill
+     * @param {object} itemData The modifier or subskill item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onDropModifierToStandaloneItem(itemData) {
+        // For subskills on standalone skills, we can't use embedded items
+        // Just show a message that skill must be on an actor
+        if (itemData.type === MEGS.itemTypes.subskill) {
+            ui.notifications.warn('Subskills can only be added to skills on characters.');
+            return;
+        }
+
+        // For bonuses and limitations, store in the flattened arrays
+        const isBonus = itemData.type === MEGS.itemTypes.bonus;
+        const arrayKey = isBonus ? 'bonuses' : 'limitations';
+
+        // Get existing array
+        const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+        // Add new modifier data
+        modifiers.push({
+            name: itemData.name,
+            img: itemData.img,
+            factorCostMod: itemData.system.factorCostMod || 0,
+            text: itemData.system.text || ''
+        });
+
+        // Update the item
+        await this.object.update({
+            [`system.${arrayKey}`]: modifiers
+        });
+
         this.render(false);
     }
 

@@ -42,6 +42,7 @@
         <a class="item" data-tab="characteristics">{{localize 'MEGS.Characteristics'}}</a>
         <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
         <a class="item" data-tab="subskills">{{localize 'MEGS.Subskills'}}</a>
+        <a class="item" data-tab="modifiers">{{localize 'MEGS.Modifiers'}}</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -196,5 +197,99 @@
                 {{/each}}
             </ol>
         </div>
+
+        {{!-- Modifiers Tab --}}
+        <div class="tab modifiers" data-group="primary" data-tab="modifiers">
+            <div class="resources grid grid-2col">
+                <div class="resource flex-group-center">
+                    <div class="grid-2col-header">Bonuses</div>
+                        <ol class='items-list'>
+                            <li class='item flexrow items-header'>
+                                <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                                <div class='item-controls'>
+                                    {{#if flags.megs.edit-mode}}
+                                        <a class='item-control item-create' title='{{localize "DOCUMENT.Create" type=' Bonus'}}' data-type='bonus'>
+                                            <i class='fas fa-plus'></i>
+                                            {{localize 'DOCUMENT.New' type='item'}}
+                                        </a>
+                                    {{else}}
+                                        &nbsp;
+                                    {{/if}}
+                                </div>
+                            </li>
+                            {{#each bonuses as |item id|}}
+                                <li class='item flexrow' data-item-id='{{item._id}}'>
+                                    <div class='item-name'>
+                                        <div class='item-image'>
+                                            <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
+                                        </div>
+                                        <h4>
+                                            {{#if ../hasActor}}
+                                                <a class='item-edit' title='{{localize "DOCUMENT.Update" type=' Bonus'}}'>{{item.name}}</a>
+                                            {{else}}
+                                                <span>{{item.name}}</span>
+                                            {{/if}}
+                                        </h4>
+                                    </div>
+                                    <div class='item-controls'>
+                                        {{#if ../flags.megs.edit-mode}}
+                                            <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}' data-item-id='{{item._id}}'>
+                                                <i class='fas fa-trash'></i>
+                                            </a>
+                                        {{else}}
+                                            &nbsp;
+                                        {{/if}}
+                                    </div>
+                                </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+
+                    <div class="resource flex-group-center">
+                        <div class="grid-2col-header">Limitations</div>
+                        <ol class='items-list'>
+                            <li class='item flexrow items-header'>
+                                <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                                <div class='item-controls'>
+                                    {{#if flags.megs.edit-mode}}
+                                        <a class='item-control item-create' title='{{localize "DOCUMENT.Create" type=' Limitation'}}' data-type='limitation'>
+                                            <i class='fas fa-plus'></i>
+                                            {{localize 'DOCUMENT.New' type='item'}}
+                                        </a>
+                                    {{else}}
+                                        &nbsp;
+                                    {{/if}}
+                                </div>
+                            </li>
+                            {{#each limitations as |item id|}}
+                                <li class='item flexrow' data-item-id='{{item._id}}'>
+                                    <div class='item-name'>
+                                        <div class='item-image'>
+                                            <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
+                                        </div>
+                                        <h4>
+                                            {{#if ../hasActor}}
+                                                <a class='item-edit' title='{{localize "DOCUMENT.Update" type=' Limitation'}}'>{{item.name}}</a>
+                                            {{else}}
+                                                <span>{{item.name}}</span>
+                                            {{/if}}
+                                        </h4>
+                                    </div>
+                                    <div class='item-controls'>
+                                        {{#if ../flags.megs.edit-mode}}
+                                            <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}' data-item-id='{{item._id}}'>
+                                                <i class='fas fa-trash'></i>
+                                            </a>
+                                        {{else}}
+                                            &nbsp;
+                                        {{/if}}
+                                    </div>
+                                </li>
+                            {{/each}}
+                        </ol>
+                    </div>
+                </div>
+        </div>
+
     </section>
 </form>

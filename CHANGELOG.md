@@ -50,6 +50,8 @@
 
 ### Enhancements
 
+- Skills can now have modifiers (bonuses and limitations) just like powers
+- Powers and skills preserve their modifiers when dragged between actors and the Items sidebar
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets dragged to the Items sidebar now retain their powers and skills, which are recreated when dragged to another character
@@ -83,6 +85,9 @@
 
 ### Enhancements
 
+- Skills can now have modifiers (bonuses and limitations) just like powers
+- Modifiers can be added to standalone powers and skills (not owned by actors)
+- Standalone powers and skills preserve their modifiers when dragged to/from actors
 - Added double-click to activate TinyMCE editors for biography and item descriptions
 - Hide R# display in gadget summaries when reliability is 0
 - Automatic cleanup of child items when parent gadget or skill is deleted
@@ -119,6 +124,8 @@
 
 ### Bug Fixes
 
+- Fixed modifiers not displaying when dragged onto standalone powers or skills
+- Standalone powers and skills use flattened arrays for modifiers instead of embedded items
 - Fixed gadget power and skill data preservation when dragging from sidebar to character sheet
 - Fixed trait (advantage/drawback) type and cost data being lost during gadget transfer
 - Fixed validation in AP cost calculation to handle items without Factor Cost

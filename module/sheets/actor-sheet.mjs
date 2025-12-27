@@ -449,9 +449,18 @@ export class MEGSActorSheet extends ActorSheet {
         // Double-click biography to enable edit mode
         const biographyDisplay = html.find('.biography-display');
         console.log('[MEGS] Biography display element found:', biographyDisplay.length);
+        console.log('[MEGS] Biography element:', biographyDisplay);
 
-        html.on('dblclick', '.biography-display, .biography-display *', (ev) => {
-            console.log('[MEGS] Biography double-click detected on:', ev.target);
+        if (biographyDisplay.length > 0) {
+            biographyDisplay.on('dblclick', (ev) => {
+                console.log('[MEGS] Biography double-click detected via direct binding');
+                this._toggleEditMode(ev);
+            });
+        }
+
+        // Also try delegation as backup
+        html.on('dblclick', '.biography-display', (ev) => {
+            console.log('[MEGS] Biography double-click detected via delegation');
             this._toggleEditMode(ev);
         });
 

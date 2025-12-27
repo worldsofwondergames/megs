@@ -620,19 +620,10 @@ export class MEGSItemSheet extends ItemSheet {
         let totalBonusMod = 0;
         let totalLimitationMod = 0;
 
-        // Determine which items collection to search for modifiers
-        // If item has a parent (actor or gadget), use parent's items
-        // If item is standalone, use its own items collection
-        let itemsToSearch = null;
+        // For items on actors/gadgets, read from embedded items collection
         if (this.object.parent && this.object.parent.items) {
-            itemsToSearch = this.object.parent.items;
-        } else if (this.object.items) {
-            itemsToSearch = this.object.items;
-        }
-
-        if (itemsToSearch) {
             // Iterate through items, allocating to containers
-            for (let i of itemsToSearch) {
+            for (let i of this.object.parent.items) {
                 // if modifier belongs to this power/skill
                 if (i.system.parent === this.item._id) {
                     i.img = i.img || Item.DEFAULT_ICON;
@@ -645,11 +636,38 @@ export class MEGSItemSheet extends ItemSheet {
                     if (i.type === MEGS.itemTypes.limitation) {
                         limitations.push(i);
                         totalLimitationMod += i.system.factorCostMod || 0;
-
                         // Link parent power/skill item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                 }
+            }
+        } else {
+            // For standalone items, read from flattened arrays
+            const bonusArray = context.system.bonuses || [];
+            const limitationArray = context.system.limitations || [];
+
+            for (const bonus of bonusArray) {
+                bonuses.push({
+                    name: bonus.name,
+                    img: bonus.img || Item.DEFAULT_ICON,
+                    system: {
+                        factorCostMod: bonus.factorCostMod || 0,
+                        text: bonus.text || ''
+                    }
+                });
+                totalBonusMod += bonus.factorCostMod || 0;
+            }
+
+            for (const limitation of limitationArray) {
+                limitations.push({
+                    name: limitation.name,
+                    img: limitation.img || Item.DEFAULT_ICON,
+                    system: {
+                        factorCostMod: limitation.factorCostMod || 0,
+                        text: limitation.text || ''
+                    }
+                });
+                totalLimitationMod += limitation.factorCostMod || 0;
             }
         }
 
@@ -1255,17 +1273,38 @@ export class MEGSItemSheet extends ItemSheet {
     /**
      * Handle dropping a modifier (bonus/limitation) or subskill onto a standalone power/skill
      * @param {object} itemData The modifier or subskill item data
-     * @returns {Promise<Item>}
+     * @returns {Promise<void>}
      * @private
      */
     async _onDropModifierToStandaloneItem(itemData) {
-        // Set the parent reference to link the modifier to this power/skill
-        itemData.system.parent = this.object._id;
+        // For subskills on standalone skills, we can't use embedded items
+        // Just show a message that skill must be on an actor
+        if (itemData.type === MEGS.itemTypes.subskill) {
+            ui.notifications.warn('Subskills can only be added to skills on characters.');
+            return;
+        }
 
-        // Create the modifier as an embedded item within this standalone power/skill
-        const createdItems = await this.object.createEmbeddedDocuments('Item', [itemData]);
+        // For bonuses and limitations, store in the flattened arrays
+        const isBonus = itemData.type === MEGS.itemTypes.bonus;
+        const arrayKey = isBonus ? 'bonuses' : 'limitations';
+
+        // Get existing array
+        const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+        // Add new modifier data
+        modifiers.push({
+            name: itemData.name,
+            img: itemData.img,
+            factorCostMod: itemData.system.factorCostMod || 0,
+            text: itemData.system.text || ''
+        });
+
+        // Update the item
+        await this.object.update({
+            [`system.${arrayKey}`]: modifiers
+        });
+
         this.render(false);
-        return createdItems[0];
     }
 
     /* -------------------------------------------- */

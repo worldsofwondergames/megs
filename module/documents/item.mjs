@@ -324,6 +324,23 @@ export class MEGSItem extends Item {
         }
     }
 
+    /** @override */
+    async _onDelete(options, userId) {
+        await super._onDelete(options, userId);
+
+        // When a gadget or skill is deleted, also delete all child items
+        if ((this.type === MEGS.itemTypes.gadget || this.type === MEGS.itemTypes.skill) && this.parent) {
+            const childItems = this.parent.items.filter(i => i.system.parent === this.id);
+
+            if (childItems.length > 0) {
+                const childIds = childItems.map(i => i.id);
+                if (MEGS.debug.enabled) {
+                    console.log(`[MEGS] Deleting ${childIds.length} child items of ${this.type} ${this.name}`);
+                }
+                await this.parent.deleteEmbeddedDocuments('Item', childIds);
+            }
+        }
+    }
 
     async _initializeSkillData() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');

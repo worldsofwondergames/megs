@@ -6,7 +6,7 @@ export const MEGS = {};
  * @type {Object}
  */
 MEGS.debug = {
-    enabled: true, // Set to true to enable debug console logging
+    enabled: false, // Set to true to enable debug console logging
 };
 
 /**

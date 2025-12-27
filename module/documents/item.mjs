@@ -106,6 +106,8 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
                     console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
                     console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
+                    console.log(`[MEGS] powerAPs data:`, this.system.powerAPs);
+                    console.log(`[MEGS] skillData data:`, this.system.skillData);
                 }
 
                 // Store in FLAGS during drag - Foundry strips system data when creating on actors
@@ -156,6 +158,13 @@ export class MEGSItem extends Item {
 
             // Check if we have transfer data in flags (from dragging standalone gadget)
             const transferData = this.getFlag('megs', '_transferData');
+            if (MEGS.debug.enabled) {
+                console.log(`[MEGS] Checking for transfer data - found:`, transferData ? 'YES' : 'NO');
+                if (transferData) {
+                    console.log(`[MEGS] Transfer data powerAPs:`, transferData.powerAPs);
+                    console.log(`[MEGS] Transfer data skillData:`, transferData.skillData);
+                }
+            }
             if (transferData) {
                 if (MEGS.debug.enabled) {
                     console.log(`[MEGS] Found transfer data in flags, restoring to system`);

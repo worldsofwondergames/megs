@@ -63,8 +63,12 @@ export class MEGSItem extends Item {
                         if (MEGS.debug.enabled) {
                             console.log(`[MEGS] Serializing trait: ${item.name}`);
                         }
-                        // Store traits - keep simple for now
-                        traitData[item.name] = item.system.baseCost || 0;
+                        // Store full trait data as object
+                        traitData[item.name] = {
+                            type: item.type,
+                            baseCost: item.system.baseCost || 0,
+                            text: item.system.text || ''
+                        };
                     }
                 }
 

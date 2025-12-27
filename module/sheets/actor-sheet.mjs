@@ -448,21 +448,14 @@ export class MEGSActorSheet extends ActorSheet {
         html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
 
         // Double-click biography to enable edit mode
-        const biographyDisplay = html.find('.biography-display');
-        console.log('[MEGS] Biography display element found:', biographyDisplay.length);
-        console.log('[MEGS] Biography element:', biographyDisplay);
-
-        if (biographyDisplay.length > 0) {
-            biographyDisplay.on('dblclick', (ev) => {
-                console.log('[MEGS] Biography double-click detected via direct binding');
+        // Use delegation on the entire html element to catch events even from tabs that load later
+        html.on('dblclick', (ev) => {
+            // Check if the click or any parent has the biography-display class
+            const target = $(ev.target);
+            if (target.closest('.biography-display').length > 0) {
+                console.log('[MEGS] Biography double-click detected');
                 this._toggleEditMode(ev);
-            });
-        }
-
-        // Also try delegation as backup
-        html.on('dblclick', '.biography-display', (ev) => {
-            console.log('[MEGS] Biography double-click detected via delegation');
-            this._toggleEditMode(ev);
+            }
         });
 
         // Render the item sheet for viewing/editing prior to the editable check.

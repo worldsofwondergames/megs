@@ -63,11 +63,15 @@ export class MEGSItem extends Item {
                         if (MEGS.debug.enabled) {
                             console.log(`[MEGS] Serializing trait: ${item.name}`);
                         }
-                        // Store full trait data as object
+                        // Store full trait data as object (matching item-sheet format)
                         traitData[item.name] = {
+                            name: item.name,
                             type: item.type,
-                            baseCost: item.system.baseCost || 0,
-                            text: item.system.text || ''
+                            img: item.img,
+                            system: {
+                                baseCost: item.system.baseCost || 0,
+                                text: item.system.text || ''
+                            }
                         };
                     }
                 }
@@ -470,17 +474,17 @@ export class MEGSItem extends Item {
 
         let traits = [];
 
-        // Iterate over trait names (same pattern as skills)
-        for (let traitName in traitData) {
-            const trait = traitData[traitName];
+        // Iterate over trait keys (keys may include timestamp for uniqueness)
+        for (let traitKey in traitData) {
+            const trait = traitData[traitKey];
             const traitObj = {
-                name: traitName,
+                name: trait.name || traitKey,  // Use trait.name if available, fallback to key
                 type: trait.type || 'advantage',
-                img: trait.type === 'drawback' ? 'icons/svg/degen.svg' : 'icons/svg/regen.svg',
+                img: trait.img || (trait.type === 'drawback' ? 'icons/svg/degen.svg' : 'icons/svg/regen.svg'),
                 system: {
                     parent: this.id,  // Set parent to this gadget's ID
-                    baseCost: trait.baseCost || 0,
-                    text: trait.text || ''
+                    baseCost: trait.system?.baseCost || trait.baseCost || 0,  // Handle both formats
+                    text: trait.system?.text || trait.text || ''  // Handle both formats
                 }
             };
             traits.push(traitObj);

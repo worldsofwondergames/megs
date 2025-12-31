@@ -314,7 +314,7 @@ export class MEGSActor extends Actor {
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation
-        if (MEGS.debug.enabled) {
+        if (game.settings.get('megs', 'debugLogging')) {
             console.log(`HP Budget Debug for ${this.name}:`, {
                 baseBudget,
                 attributesCost,

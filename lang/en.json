@@ -184,6 +184,10 @@
         "showActiveEffects": {
             "name": "Show active effects",
             "label": "Check to show active effects"
+        },
+        "debugLogging": {
+            "name": "Enable debug logging",
+            "label": "Check to enable debug console logging throughout the system"
         }
     }
 }

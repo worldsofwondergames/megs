@@ -1136,7 +1136,7 @@ Hooks.once('ready', function () {
     Hooks.on('preCreateItem', (item, data, options, userId) => {
         if (item.type === 'gadget' && item.parent && data.flags?.megs?._transferData) {
             const transferData = data.flags.megs._transferData;
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log('[MEGS] preCreateItem hook: Found gadget with transfer data');
                 console.log('[MEGS] powerAPs:', transferData.powerAPs);
             }
@@ -1153,7 +1153,7 @@ Hooks.once('ready', function () {
             // Store the cache key in options so _onCreate can find it
             options.megsCacheKey = cacheKey;
 
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log('[MEGS] Stored in cache with key:', cacheKey);
             }
         }
@@ -1265,6 +1265,14 @@ function registerSystemSettings() {
         scope: 'client',
         name: 'SETTINGS.showActiveEffects.name',
         hint: 'SETTINGS.showActiveEffects.label',
+        type: Boolean,
+        default: false,
+    });
+    game.settings.register('megs', 'debugLogging', {
+        config: true,
+        scope: 'client',
+        name: 'SETTINGS.debugLogging.name',
+        hint: 'SETTINGS.debugLogging.label',
         type: Boolean,
         default: false,
     });

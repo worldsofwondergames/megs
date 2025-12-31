@@ -184,6 +184,10 @@
         "showActiveEffects": {
             "name": "SMostrar efeitos ativos",
             "label": "Marque para mostrar os efeitos ativos"
+        },
+        "debugLogging": {
+            "name": "Ativar registro de depuração",
+            "label": "Marque para ativar o registro de depuração do console em todo o sistema"
         }
     }
 }

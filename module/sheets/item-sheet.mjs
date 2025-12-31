@@ -434,7 +434,7 @@ export class MEGSItemSheet extends ItemSheet {
             const typeDisplay = typeof itemType === 'string' ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : 'Item';
             const confirmed = await Dialog.confirm({
                 title: `Delete ${typeDisplay}: ${itemName}`,
-                content: `<p><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+                content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
                 defaultYes: false,
                 options: {
                     classes: ['megs', 'dialog']

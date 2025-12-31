@@ -25,9 +25,12 @@ export async function onManageActiveEffect(event, owner) {
             return effect.sheet.render(true);
         case 'delete':
             const confirmed = await Dialog.confirm({
-                title: 'Delete Active Effect?',
-                content: `<p>Are you sure you want to delete <strong>${effect.name}</strong>?</p>`,
-                defaultYes: false
+                title: `Delete Active Effect: ${effect.name}`,
+                content: `<p><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+                defaultYes: false,
+                options: {
+                    classes: ['megs', 'dialog']
+                }
             });
             if (confirmed) {
                 return effect.delete();

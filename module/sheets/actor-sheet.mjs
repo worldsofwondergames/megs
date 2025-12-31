@@ -621,9 +621,12 @@ export class MEGSActorSheet extends ActorSheet {
 
         const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
         const confirmed = await Dialog.confirm({
-            title: `Delete ${type}?`,
-            content: `<p>Are you sure you want to delete <strong>${item.name}</strong>?</p>`,
-            defaultYes: false
+            title: `Delete ${type}: ${item.name}`,
+            content: `<p><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+            defaultYes: false,
+            options: {
+                classes: ['megs', 'dialog']
+            }
         });
 
         if (!confirmed) return;

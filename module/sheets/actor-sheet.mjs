@@ -617,6 +617,17 @@ export class MEGSActorSheet extends ActorSheet {
         const li = $(event.currentTarget).parents('.item');
         const item = this.actor.items.get(li.data('itemId'));
 
+        if (!item) return;
+
+        const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+        const confirmed = await Dialog.confirm({
+            title: `Delete ${type}?`,
+            content: `<p>Are you sure you want to delete <strong>${item.name}</strong>?</p>`,
+            defaultYes: false
+        });
+
+        if (!confirmed) return;
+
         // If deleting a power or skill, also delete all associated bonuses/limitations
         if (item.type === 'power' || item.type === 'skill') {
             const modifiers = this.actor.items.filter(i =>

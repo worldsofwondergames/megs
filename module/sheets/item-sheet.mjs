@@ -396,6 +396,10 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (!itemId) return;
 
+            // Determine the item name for the confirmation dialog
+            let itemName = 'Item';
+            let itemType = 'Item';
+
             // Check if this is a standalone item with virtual items
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
             const isStandalonePowerOrSkill = !this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill);
@@ -403,6 +407,38 @@ export class MEGSItemSheet extends ItemSheet {
             const isVirtualPower = itemId.startsWith && itemId.startsWith('virtual-power-');
             const isVirtualBonus = itemId.startsWith && itemId.startsWith('virtual-bonus-');
             const isVirtualLimitation = itemId.startsWith && itemId.startsWith('virtual-limitation-');
+
+            // Get the item name for the dialog
+            if (isVirtualTrait) {
+                const key = itemId.replace('virtual-trait-', '');
+                itemName = key;
+                itemType = game.i18n.localize('MEGS.Trait');
+            } else if (isVirtualPower) {
+                const powerName = itemId.replace('virtual-power-', '');
+                itemName = powerName;
+                itemType = game.i18n.localize('MEGS.Power');
+            } else if (isVirtualBonus) {
+                itemType = game.i18n.localize('MEGS.Bonus');
+                itemName = itemType;
+            } else if (isVirtualLimitation) {
+                itemType = game.i18n.localize('MEGS.Limitation');
+                itemName = itemType;
+            } else if (this.object.parent) {
+                const item = this.object.parent.items.get(itemId);
+                if (item) {
+                    itemName = item.name;
+                    itemType = item.type;
+                }
+            }
+
+            const typeDisplay = typeof itemType === 'string' ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : 'Item';
+            const confirmed = await Dialog.confirm({
+                title: `Delete ${typeDisplay}?`,
+                content: `<p>Are you sure you want to delete <strong>${itemName}</strong>?</p>`,
+                defaultYes: false
+            });
+
+            if (!confirmed) return;
 
             if (isStandalonePowerOrSkill && (isVirtualBonus || isVirtualLimitation)) {
                 // Standalone power/skill - delete virtual modifier from flattened array

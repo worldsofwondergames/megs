@@ -165,6 +165,7 @@ export class MEGSItemSheet extends ItemSheet {
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
+        context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
 
         return context;
     }

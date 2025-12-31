@@ -188,6 +188,10 @@
         "debugLogging": {
             "name": "Ativar registro de depuração",
             "label": "Marque para ativar o registro de depuração do console em todo o sistema"
+        },
+        "allowSkillDeletion": {
+            "name": "Permitir exclusão de habilidades",
+            "label": "Marque para permitir a exclusão de habilidades e sub-habilidades das fichas de personagens e gadgets"
         }
     }
 }

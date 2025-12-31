@@ -1276,4 +1276,12 @@ function registerSystemSettings() {
         type: Boolean,
         default: false,
     });
+    game.settings.register('megs', 'allowSkillDeletion', {
+        config: true,
+        scope: 'world',
+        name: 'SETTINGS.allowSkillDeletion.name',
+        hint: 'SETTINGS.allowSkillDeletion.label',
+        type: Boolean,
+        default: true,
+    });
 }

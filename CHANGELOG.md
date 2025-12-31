@@ -50,6 +50,7 @@
 
 ### Enhancements
 
+- Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added system setting to enable/disable debug logging (replaces hardcoded flag)
 - Added confirmation dialog when deleting items, powers, skills, traits, and effects
 - Skills can now have modifiers (bonuses and limitations) just like powers

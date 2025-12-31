@@ -116,6 +116,9 @@ export class MEGSActorSheet extends ActorSheet {
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
         context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
 
+        // Debug logging
+        console.log('Actor Sheet getData - allowSkillDeletion:', context.allowSkillDeletion);
+
         return context;
     }
 

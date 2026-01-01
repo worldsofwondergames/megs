@@ -136,7 +136,7 @@
         "Spent": "gasto",
         "Submit": "Enviar",
         "Subskill": "Sub-Perícia",
-        "SubskillDisabledTooltip": "A sub-perícia não pode ser treinada até que a perícia principal tenha APs",
+        "SubskillDisabledTooltip": "As sub-perícias têm automaticamente os mesmos APs que sua perícia principal. Treinar sub-perícias individuais requer que a perícia principal tenha APs primeiro.",
         "Subskills": "Sub-Perícias",
         "Success": "Êxito",
         "Total": "Total",

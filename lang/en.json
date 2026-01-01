@@ -136,7 +136,7 @@
         "Spent": "spent",
         "Submit": "Submit",
         "Subskill": "Subskill",
-        "SubskillDisabledTooltip": "Subskill cannot be trained until the parent skill has APs",
+        "SubskillDisabledTooltip": "Subskills automatically have the same APs as their parent skill. Training individual subskills requires the parent skill to have APs first.",
         "Success": "Success",
         "Subskills": "Subskills",
         "Total": "Total",

@@ -122,7 +122,9 @@ MEGS.getAPCost = function(aps, factorCost) {
     // Validate inputs - 0 APs is valid (costs 0), but FC must be 1-10
     if (aps === null || aps === undefined || aps < 0 ||
         factorCost === null || factorCost === undefined || factorCost < 1 || factorCost > 10) {
-        console.warn(`Invalid AP cost lookup: ${aps} APs at FC ${factorCost}`);
+        if (game.settings.get('megs', 'debugLogging')) {
+            console.warn(`Invalid AP cost lookup: ${aps} APs at FC ${factorCost}`);
+        }
         return 0;
     }
 

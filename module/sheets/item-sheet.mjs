@@ -48,9 +48,9 @@ export class MEGSItemSheet extends ItemSheet {
     /* -------------------------------------------- */
 
     /** @override */
-    getData() {
+    async getData() {
         // Retrieve base data structure.
-        const context = super.getData();
+        const context = await super.getData();
 
         // Use a safe clone of the item data for further operations.
         const itemData = context.data;
@@ -166,6 +166,17 @@ export class MEGSItemSheet extends ItemSheet {
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
         context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
+
+        // Enrich description text for proper display of links and other enriched content
+        if (context.system.description) {
+            context.enrichedDescription = await foundry.applications.ux.TextEditor.enrichHTML(context.system.description, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.item
+            });
+        } else {
+            context.enrichedDescription = '';
+        }
 
         return context;
     }

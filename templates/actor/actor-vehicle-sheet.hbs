@@ -125,8 +125,8 @@
     <section class="grid-1col description-item">
         <div class="flex-group-left">
             <div class="indentLeft">
-                {{#if system.linkedItem.system.description}}
-                    {{{system.linkedItem.system.description}}}
+                {{#if enrichedLinkedDescription}}
+                    {{{enrichedLinkedDescription}}}
                 {{else}}
                     ({{localize 'MEGS.None'}})
                 {{/if}}

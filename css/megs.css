@@ -609,9 +609,6 @@ body.game .app h4.window-title {
     text-align: center;
     margin: 0 6px;
 }
-.megs .items-list .item-row .item-controls {
-    margin-top: 5px;
-}
 .megs .items-list .item {
     align-items: center;
     padding: 0 2px;

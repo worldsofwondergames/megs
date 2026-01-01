@@ -1283,5 +1283,13 @@ function registerSystemSettings() {
         hint: 'SETTINGS.allowSkillDeletion.label',
         type: Boolean,
         default: true,
+        onChange: () => {
+            // Re-render all open actor and item sheets when setting changes
+            Object.values(ui.windows).forEach(app => {
+                if (app instanceof ActorSheet || app instanceof ItemSheet) {
+                    app.render(false);
+                }
+            });
+        }
     });
 }

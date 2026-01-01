@@ -136,6 +136,7 @@
         "Spent": "spent",
         "Submit": "Submit",
         "Subskill": "Subskill",
+        "SubskillDisabledTooltip": "Subskill cannot be trained until the parent skill has APs",
         "Success": "Success",
         "Subskills": "Subskills",
         "Total": "Total",

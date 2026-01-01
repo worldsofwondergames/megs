@@ -136,7 +136,7 @@
         "Spent": "spent",
         "Submit": "Submit",
         "Subskill": "Subskill",
-        "SubskillDisabledTooltip": "Subskills automatically have the same APs as their parent skill. Training individual subskills requires the parent skill to have APs first.",
+        "SubskillDisabledTooltip": "To specialize in a Subskill, first select at least one AP in the related Skill.",
         "Success": "Success",
         "Subskills": "Subskills",
         "Total": "Total",

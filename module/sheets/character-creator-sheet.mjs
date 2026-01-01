@@ -105,6 +105,17 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             }
         }
 
+        // Enrich biography text for proper display of links and other enriched content
+        if (context.system.biography) {
+            context.enrichedBiography = await foundry.applications.ux.TextEditor.enrichHTML(context.system.biography, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.actor
+            });
+        } else {
+            context.enrichedBiography = '';
+        }
+
         return context;
     }
 

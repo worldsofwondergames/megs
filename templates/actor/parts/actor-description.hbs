@@ -92,8 +92,8 @@
         <div class='flex-group-left'>
             <label for='system.biography' class='resource-label flexlarge align-left' data-label='{{system.biography}}'>{{localize 'MEGS.Biography'}}</label>
             <div class='indentLeft'>
-                {{#if system.biography}}
-                    {{{system.biography}}}
+                {{#if enrichedBiography}}
+                    {{{enrichedBiography}}}
                 {{else}}
                     ({{localize 'MEGS.None'}})
                 {{/if}}

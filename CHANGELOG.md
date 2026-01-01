@@ -50,11 +50,6 @@
 
 ### Enhancements
 
-- Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
-- Added system setting to enable/disable debug logging (replaces hardcoded flag)
-- Added confirmation dialog when deleting items, powers, skills, traits, and effects
-- Skills can now have modifiers (bonuses and limitations) just like powers
-- Powers and skills preserve their modifiers when dragged between actors and the Items sidebar
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
 - Gadgets dragged to the Items sidebar now retain their powers and skills, which are recreated when dragged to another character
@@ -124,6 +119,10 @@
     - Child items (powers, skills, advantages, drawbacks) included in total
     - Gadget Bonus correctly applied: ÷4 if can be Taken Away, ÷2 if cannot
 - Test coverage for gadget cost calculations including rulebook example (Machinegun)
+- Added enriched text support for biography and description fields using Foundry's TextEditor.enrichHTML
+- Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
+- Added system setting to enable/disable debug logging (replaces hardcoded flag)
+- Added confirmation dialog when deleting items, powers, skills, traits, and effects
 
 ### Bug Fixes
 
@@ -131,17 +130,12 @@
 - Standalone powers and skills use flattened arrays for modifiers instead of embedded items
 - Fixed gadget power and skill data preservation when dragging from sidebar to character sheet
 - Fixed trait (advantage/drawback) type and cost data being lost during gadget transfer
-- Fixed validation in AP cost calculation to handle items without Factor Cost
 - Prevented NaN errors in cost calculations by adding null-safe attribute access
 - Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
 - Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
 - Fixed gadget cost calculation converting reliability from index to actual R# value
 - Fixed Hardened Defenses boolean comparison to handle string "false" correctly
 - Fixed gadget range cost to support both systemData.range and systemData.weapon.range fields
-- Fixed HP budget double-counting child items belonging to gadgets
-- Fixed gadget child item cost calculation to compute directly during data preparation
-- Fixed subskills incorrectly triggering invalid Factor Cost validation errors
-- Added support for base cost only powers without Factor Cost
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
 - Ensured current condition tracks (currentBody, currentMind, currentSpirit) are initialized in prepareBaseData()
 

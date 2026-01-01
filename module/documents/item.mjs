@@ -19,7 +19,7 @@ export class MEGSItem extends Item {
         if (this.type === MEGS.itemTypes.gadget) {
             if (this.parent) {
                 // Gadget on character - serialize child items
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] toObject() called for gadget ${this.name} on actor ${this.parent.name}`);
                 }
 
@@ -37,7 +37,7 @@ export class MEGSItem extends Item {
 
                 // Get all child items
                 const childItems = this.parent.items.filter(i => i.system.parent === this.id);
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
                 }
 
@@ -49,7 +49,7 @@ export class MEGSItem extends Item {
                         // Preserve training status
                         subskillTrainingData[item.name] = item.system.isTrained;
                     } else if (item.type === MEGS.itemTypes.power) {
-                        if (MEGS.debug.enabled) {
+                        if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`[MEGS] Serializing power: ${item.name}`);
                         }
                         // Store each property in separate flat fields (primitives only)
@@ -60,7 +60,7 @@ export class MEGSItem extends Item {
                         powerIsLinked[item.name] = item.system.isLinked || false;
                         powerLinks[item.name] = item.system.link || '';
                     } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
-                        if (MEGS.debug.enabled) {
+                        if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`[MEGS] Serializing trait: ${item.name}`);
                         }
                         // Store full trait data as object (matching item-sheet format)
@@ -76,7 +76,7 @@ export class MEGSItem extends Item {
                     }
                 }
 
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Serialized ${Object.keys(powerAPs).length} powers, ${Object.keys(skillData).length} skills`);
                 }
 
@@ -110,7 +110,7 @@ export class MEGSItem extends Item {
                 data.system.traitData = traitData;
             } else {
                 // Standalone gadget - ensure virtual data is preserved during drag
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
                     console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
                     console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
@@ -159,7 +159,7 @@ export class MEGSItem extends Item {
         // For gadgets being created on actors, check if we have power/skill data in the source
         if (this.type === MEGS.itemTypes.gadget && data.flags?.megs?._transferData) {
             const transferData = data.flags.megs._transferData;
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] _preCreate: Found transfer data in creation data`);
                 console.log(`[MEGS] _preCreate powerAPs:`, transferData.powerAPs);
                 console.log(`[MEGS] _preCreate skillData:`, transferData.skillData);
@@ -171,7 +171,7 @@ export class MEGSItem extends Item {
             const cacheKey = this.id;
             globalThis.MEGS_TRANSFER_CACHE[cacheKey] = transferData;
 
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] _preCreate: Stored data in global cache with item ID:`, cacheKey);
             }
         }
@@ -230,7 +230,7 @@ export class MEGSItem extends Item {
         if (this.type !== MEGS.itemTypes.gadget) return;
 
         if (this.parent) {
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] Gadget ${this.name} (${this.id}) added to actor ${this.parent.name}`);
             }
 
@@ -241,7 +241,7 @@ export class MEGSItem extends Item {
             if (cacheKey && globalThis.MEGS_TRANSFER_CACHE?.[cacheKey]) {
                 const cached = globalThis.MEGS_TRANSFER_CACHE[cacheKey];
                 transferData = cached.transferData;
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Retrieved transfer data from global cache using options key:`, cacheKey);
                     console.log(`[MEGS] Cache powerAPs:`, transferData.powerAPs);
                     console.log(`[MEGS] Cache skillData:`, transferData.skillData);
@@ -249,14 +249,14 @@ export class MEGSItem extends Item {
                 // Clean up the cache
                 delete globalThis.MEGS_TRANSFER_CACHE[cacheKey];
             } else {
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] No cache key in options. Key:`, cacheKey);
                     console.log(`[MEGS] Global cache keys:`, Object.keys(globalThis.MEGS_TRANSFER_CACHE || {}));
                 }
             }
 
             if (transferData) {
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Found transfer data in flags, restoring to system`);
                     console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);
                     console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
@@ -289,19 +289,19 @@ export class MEGSItem extends Item {
                     'system.traitData': this.system.traitData,
                     'flags.megs.-=_transferData': null  // Remove transfer flag
                 });
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Transfer complete, data restored to system`);
                 }
             }
 
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] powerAPs keys:`, Object.keys(this.system.powerAPs || {}));
                 console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
             }
 
             // Gadget owned by actor - create actual skill, power, and trait items
             const existingItems = this.parent.items.filter(i => i.system.parent === this.id);
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] Found ${existingItems.length} existing child items`);
             }
             if (existingItems.length > 0) return;
@@ -310,7 +310,7 @@ export class MEGSItem extends Item {
             await this._addPowersToGadget();
             await this._addTraitsToGadget();
         } else {
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created`);
                 console.log(`[MEGS] Existing powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
                 console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
@@ -322,12 +322,12 @@ export class MEGSItem extends Item {
             const hasSkillData = this.system.skillData && Object.keys(this.system.skillData).length > 0;
 
             if (!hasPowerData && !hasSkillData) {
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] No existing data found, initializing with defaults`);
                 }
                 await this._initializeSkillData();
             } else {
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Existing data found (from toObject), persisting to database`);
                 }
                 // Data came from toObject() but needs to be explicitly saved
@@ -379,7 +379,7 @@ export class MEGSItem extends Item {
 
             if (childItems.length > 0) {
                 const childIds = childItems.map(i => i.id);
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] Deleting ${childIds.length} child items of ${this.type} ${this.name}`);
                 }
                 await this.parent.deleteEmbeddedDocuments('Item', childIds);
@@ -489,7 +489,7 @@ export class MEGSItem extends Item {
         const powerIsLinked = this.system.powerIsLinked || {};
         const powerLinks = this.system.powerLinks || {};
 
-        if (MEGS.debug.enabled) {
+        if (game.settings.get('megs', 'debugLogging')) {
             console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerAPs).length} powers`);
         }
 
@@ -500,7 +500,7 @@ export class MEGSItem extends Item {
 
         // Iterate over power names
         for (let powerName in powerAPs) {
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] Adding power: ${powerName}`);
             }
             const powerObj = {
@@ -521,7 +521,7 @@ export class MEGSItem extends Item {
         }
 
         // Create powers on the parent actor
-        if (MEGS.debug.enabled) {
+        if (game.settings.get('megs', 'debugLogging')) {
             console.log(`[MEGS] Creating ${powers.length} power items on actor`);
         }
         await this.parent.createEmbeddedDocuments('Item', powers);
@@ -631,7 +631,7 @@ export class MEGSItem extends Item {
             const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
             const reliabilityMod = this._getReliabilityModifier(reliability);
 
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[${this.name}] Cost Calculation - Reliability Index: ${reliabilityIndex}, R#: ${reliability}, Mod: ${reliabilityMod}`);
             }
 
@@ -639,18 +639,18 @@ export class MEGSItem extends Item {
             if (systemData.attributes) {
                 for (const [key, attr] of Object.entries(systemData.attributes)) {
                     if (attr.value > 0) {
-                        if (MEGS.debug.enabled) {
+                        if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
                         }
                         let fc = attr.factorCost + reliabilityMod;
-                        if (MEGS.debug.enabled) {
+                        if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    After reliability mod: FC=${fc}`);
                         }
 
                         // Italicized attributes (alwaysSubstitute) add +2 FC
                         if (attr.alwaysSubstitute) {
                             fc += 2;
-                            if (MEGS.debug.enabled) {
+                            if (game.settings.get('megs', 'debugLogging')) {
                                 console.log(`    +2 for alwaysSubstitute → FC=${fc}`);
                             }
                         }
@@ -658,14 +658,14 @@ export class MEGSItem extends Item {
                         // Hardened Defenses add +2 to BODY FC
                         if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                             fc += 2;
-                            if (MEGS.debug.enabled) {
+                            if (game.settings.get('megs', 'debugLogging')) {
                                 console.log(`    +2 for Hardened Defenses → FC=${fc}`);
                             }
                         }
 
                         fc = Math.max(1, fc); // Minimum FC of 1
                         const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
-                        if (MEGS.debug.enabled) {
+                        if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
                         }
                         totalCost += attrCost;
@@ -698,11 +698,11 @@ export class MEGSItem extends Item {
 
             // Add child item costs (only direct children: powers, skills, advantages, drawbacks)
             // Bonuses, limitations, and subskills are counted as part of their parent item's cost
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`  Checking for child items - has parent: ${!!this.parent}, has parent.items: ${!!this.parent?.items}`);
             }
             if (this.parent && this.parent.items) {
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`  Parent has ${this.parent.items.size} items`);
                 }
                 let childItemsFound = 0;
@@ -716,8 +716,8 @@ export class MEGSItem extends Item {
                             item.system.aps > 0) {
                             // Check if factorCost is missing or invalid
                             if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
-                                console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
-                                if (MEGS.debug.enabled) {
+                                if (game.settings.get('megs', 'debugLogging')) {
+                                    console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
                                     console.log(`     Full system data:`, item.system);
                                 }
                             }
@@ -735,14 +735,16 @@ export class MEGSItem extends Item {
                             // Ensure drawbacks are always negative
                             if (item.type === MEGS.itemTypes.drawback) {
                                 if (itemCost === 0) {
-                                    console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                                    if (game.settings.get('megs', 'debugLogging')) {
+                                        console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                                    }
                                 } else if (itemCost > 0) {
                                     itemCost = -itemCost;
                                 }
                             }
                         }
 
-                        if (MEGS.debug.enabled) {
+                        if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
                         }
 
@@ -755,23 +757,23 @@ export class MEGSItem extends Item {
                         }
                     }
                 });
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`  Total child items found: ${childItemsFound}`);
                 }
             } else {
-                if (MEGS.debug.enabled) {
+                if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`  Cannot check child items - parent or parent.items not available`);
                 }
             }
 
             // Apply Gadget Bonus (divide by 4 if can be Taken Away, 2 if cannot)
             const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`  Subtotal: ${totalCost} HP`);
                 console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
             }
             totalCost = Math.ceil(totalCost / gadgetBonus);
-            if (MEGS.debug.enabled) {
+            if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`  Final Cost: ${totalCost} HP`);
             }
 
@@ -785,7 +787,9 @@ export class MEGSItem extends Item {
                 // Only validate factorCost for actual powers and skills
                 if (this.type !== MEGS.itemTypes.subskill &&
                     (systemData.factorCost === 0 || systemData.factorCost === undefined || systemData.factorCost === null)) {
-                    console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
+                    if (game.settings.get('megs', 'debugLogging')) {
+                        console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
+                    }
                 }
 
                 // For skills with subskills, calculate effective Factor Cost
@@ -831,7 +835,9 @@ export class MEGSItem extends Item {
             // Drawbacks should always have negative costs (they reduce HP spent)
             if (this.type === MEGS.itemTypes.drawback) {
                 if (systemData.totalCost === 0) {
-                    console.error(`Drawback "${this.name}" has zero cost - this is likely a configuration error`);
+                    if (game.settings.get('megs', 'debugLogging')) {
+                        console.error(`Drawback "${this.name}" has zero cost - this is likely a configuration error`);
+                    }
                 } else if (systemData.totalCost > 0) {
                     // Positive cost, make it negative
                     systemData.totalCost = -systemData.totalCost;

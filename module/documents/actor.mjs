@@ -281,7 +281,9 @@ export class MEGSActor extends Actor {
                     // Ensure drawbacks are always negative (they reduce HP spent)
                     if (item.type === MEGS.itemTypes.drawback) {
                         if (cost === 0) {
-                            console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                            if (game.settings.get('megs', 'debugLogging')) {
+                                console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                            }
                         } else if (cost > 0) {
                             // Positive cost, make it negative
                             cost = -cost;
@@ -314,17 +316,19 @@ export class MEGSActor extends Actor {
         const remaining = totalBudget - totalSpent;
 
         // Debug logging for HP budget calculation
-        console.log(`HP Budget Debug for ${this.name}:`, {
-            baseBudget,
-            attributesCost,
-            wealthCost,
-            itemsCost,
-            drawbacksCost,
-            totalSpent,
-            totalBudget,
-            remaining,
-            'Math check': `${totalBudget} - ${totalSpent} = ${totalBudget - totalSpent}`
-        });
+        if (game.settings.get('megs', 'debugLogging')) {
+            console.log(`HP Budget Debug for ${this.name}:`, {
+                baseBudget,
+                attributesCost,
+                wealthCost,
+                itemsCost,
+                drawbacksCost,
+                totalSpent,
+                totalBudget,
+                remaining,
+                'Math check': `${totalBudget} - ${totalSpent} = ${totalBudget - totalSpent}`
+            });
+        }
 
         // Calculate net traits cost (advantages + drawbacks, where drawbacks are negative)
         const traitsCost = advantagesCost + drawbacksCost;

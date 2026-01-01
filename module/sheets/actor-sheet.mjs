@@ -89,7 +89,7 @@ export class MEGSActorSheet extends ActorSheet {
 
             // Enrich linked gadget description for display
             if (context.system.linkedItem?.system?.description) {
-                context.enrichedLinkedDescription = await TextEditor.enrichHTML(
+                context.enrichedLinkedDescription = await foundry.applications.ux.TextEditor.enrichHTML(
                     context.system.linkedItem.system.description,
                     {
                         async: true,
@@ -133,7 +133,7 @@ export class MEGSActorSheet extends ActorSheet {
         // Enrich biography text for proper display of links and other enriched content
         if (context.system.biography) {
             console.log('MEGS: Enriching biography:', context.system.biography);
-            context.enrichedBiography = await TextEditor.enrichHTML(context.system.biography, {
+            context.enrichedBiography = await foundry.applications.ux.TextEditor.enrichHTML(context.system.biography, {
                 async: true,
                 secrets: this.document.isOwner,
                 relativeTo: this.actor

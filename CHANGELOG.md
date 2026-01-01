@@ -55,36 +55,6 @@
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added system setting to enable/disable debug logging (replaces hardcoded flag)
 - Added confirmation dialog when deleting items, powers, skills, traits, and effects
-- Skills can now have modifiers (bonuses and limitations) just like powers
-- Powers and skills preserve their modifiers when dragged between actors and the Items sidebar
-- Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
-- Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
-- Gadgets dragged to the Items sidebar now retain their powers and skills, which are recreated when dragged to another character
-- Gadgets can now have skills with optional Skills tab (toggle in Settings)
-- Gadgets can now have powers with optional Powers tab (drag-and-drop only, toggle in Settings)
-- Gadgets can now have traits with optional Traits tab (toggle in Settings)
-- Increment/decrement buttons added for skills and powers on gadgets (in edit mode)
-- Vehicle and location actors display skills from linked gadgets (read-only)
-- Owner dropdown on vehicle/location sheets now alphabetized by name
-- Changed configure sheet icon from cog to document icon
-- Settings moved from tab to header button with cog icon on gadgets
-- Minor styling changes
-- Localized still more hard-coded English strings
-
-### Foundry VTT V13 Compatibility
-
-- Fixed deprecation warning for `renderTemplate` - now uses `foundry.applications.handlebars.renderTemplate`
-- Fixed deprecation warning for `roll.evaluate()` - removed deprecated `async` option
-- Fixed deprecation warning for chat message creation - now uses `rolls` array instead of deprecated `CHAT_MESSAGE_STYLES.ROLL`
-- Registered custom MegsRoll class with Foundry's dice system for proper serialization
-- Changed usage of other deprecated Foundry constants and functions
-
-### Bug Fixes
-
-- Fixed column shift calculation in dice roller that was producing incorrect results
-- Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
-- Added test coverage for edge case where roll is exactly on threshold
-- Fixed Dice So Nice integration to display the same dice values shown in chat messages (issue #169)
 
 ## 1.0.0 (February 1, 2026)
 

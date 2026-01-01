@@ -602,6 +602,7 @@ body.game .app h4.window-title {
     display: flex;
     flex: 0 0 100px;
     justify-content: flex-end;
+    align-items: center;
 }
 .megs .items-list .item-controls a {
     font-size: 20px;

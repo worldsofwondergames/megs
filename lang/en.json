@@ -136,6 +136,7 @@
         "Spent": "spent",
         "Submit": "Submit",
         "Subskill": "Subskill",
+        "SubskillDisabledTooltip": "To specialize in a Subskill, first select at least one AP in the related Skill.",
         "Success": "Success",
         "Subskills": "Subskills",
         "Total": "Total",
@@ -184,6 +185,14 @@
         "showActiveEffects": {
             "name": "Show active effects",
             "label": "Check to show active effects"
+        },
+        "debugLogging": {
+            "name": "Enable debug logging",
+            "label": "Check to enable debug console logging throughout the system"
+        },
+        "allowSkillDeletion": {
+            "name": "Allow skill deletion",
+            "label": "Check to allow deletion of skills and subskills from actor and gadget sheets"
         }
     }
 }

@@ -55,9 +55,11 @@
                         <i class='fas fa-edit'></i>
                     </a>
                 {{/unless}}
-                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=item.name}}'>
-                    <i class='fas fa-trash'></i>
-                </a>
+                {{#if ../allowSkillDeletion}}
+                    <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=item.name}}'>
+                        <i class='fas fa-trash'></i>
+                    </a>
+                {{/if}}
             </div>
         </li>
     {{/each}}

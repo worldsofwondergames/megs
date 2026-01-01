@@ -114,6 +114,7 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
+        context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
 
         return context;
     }
@@ -616,6 +617,20 @@ export class MEGSActorSheet extends ActorSheet {
     async _handleItemDelete(event) {
         const li = $(event.currentTarget).parents('.item');
         const item = this.actor.items.get(li.data('itemId'));
+
+        if (!item) return;
+
+        const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+        const confirmed = await Dialog.confirm({
+            title: `Delete ${type}: ${item.name}`,
+            content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+            defaultYes: false,
+            options: {
+                classes: ['megs', 'dialog']
+            }
+        });
+
+        if (!confirmed) return;
 
         // If deleting a power or skill, also delete all associated bonuses/limitations
         if (item.type === 'power' || item.type === 'skill') {

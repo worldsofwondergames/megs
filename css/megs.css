@@ -602,14 +602,12 @@ body.game .app h4.window-title {
     display: flex;
     flex: 0 0 100px;
     justify-content: flex-end;
+    align-items: center;
 }
 .megs .items-list .item-controls a {
     font-size: 20px;
     text-align: center;
     margin: 0 6px;
-}
-.megs .items-list .item-row .item-controls {
-    margin-top: 5px;
 }
 .megs .items-list .item {
     align-items: center;
@@ -1522,8 +1520,10 @@ details summary.no-arrow {
 /* Actor Sheet Skills Tab Accordion Styles */
 .megs.sheet.actor .tab.skills .items-list .skill-row {
     background-color: #e8f4f8;
+    min-height: 31px;
 }
 .megs.sheet.actor .tab.skills .items-list .subskill-row {
+    min-height: 27px;
     background-color: #ffffff;
 }
 .megs.sheet.actor .tab.skills .items-list .item-toggle {

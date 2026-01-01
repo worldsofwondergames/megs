@@ -169,7 +169,7 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Enrich description text for proper display of links and other enriched content
         if (context.system.description) {
-            context.enrichedDescription = await TextEditor.enrichHTML(context.system.description, {
+            context.enrichedDescription = await foundry.applications.ux.TextEditor.enrichHTML(context.system.description, {
                 async: true,
                 secrets: this.document.isOwner,
                 relativeTo: this.item

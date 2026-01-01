@@ -1520,7 +1520,7 @@ details summary.no-arrow {
 /* Actor Sheet Skills Tab Accordion Styles */
 .megs.sheet.actor .tab.skills .items-list .skill-row {
     background-color: #e8f4f8;
-    min-height: 27px;
+    min-height: 31px;
 }
 .megs.sheet.actor .tab.skills .items-list .subskill-row {
     min-height: 27px;

@@ -48,7 +48,7 @@ export class MEGSItemSheet extends ItemSheet {
     /* -------------------------------------------- */
 
     /** @override */
-    getData() {
+    async getData() {
         // Retrieve base data structure.
         const context = super.getData();
 
@@ -166,6 +166,17 @@ export class MEGSItemSheet extends ItemSheet {
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
         context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
+
+        // Enrich description text for proper display of links and other enriched content
+        if (context.system.description) {
+            context.enrichedDescription = await TextEditor.enrichHTML(context.system.description, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.item
+            });
+        } else {
+            context.enrichedDescription = '';
+        }
 
         return context;
     }

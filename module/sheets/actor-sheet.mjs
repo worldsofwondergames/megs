@@ -42,7 +42,7 @@ export class MEGSActorSheet extends ActorSheet {
     /* -------------------------------------------- */
 
     /** @override */
-    getData() {
+    async getData() {
         // Retrieve the data structure from the base sheet. You can inspect or log
         // the context variable to see the structure, but some key properties for
         // sheets are the actor object, the data object, whether or not it's
@@ -86,6 +86,20 @@ export class MEGSActorSheet extends ActorSheet {
 
             this._populateLinkedGadgets(context, 'locations');
             this._populateLinkedGadgets(context, 'vehicles');
+
+            // Enrich linked gadget description for display
+            if (context.system.linkedItem?.system?.description) {
+                context.enrichedLinkedDescription = await TextEditor.enrichHTML(
+                    context.system.linkedItem.system.description,
+                    {
+                        async: true,
+                        secrets: this.document.isOwner,
+                        relativeTo: this.actor
+                    }
+                );
+            } else {
+                context.enrichedLinkedDescription = '';
+            }
         }
 
         // Add roll data for TinyMCE editors.
@@ -115,6 +129,17 @@ export class MEGSActorSheet extends ActorSheet {
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
         context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
+
+        // Enrich biography text for proper display of links and other enriched content
+        if (context.system.biography) {
+            context.enrichedBiography = await TextEditor.enrichHTML(context.system.biography, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.actor
+            });
+        } else {
+            context.enrichedBiography = '';
+        }
 
         return context;
     }

@@ -50,6 +50,8 @@
 
 ### Enhancements
 
+- Added enriched text support for biography and description fields using Foundry's TextEditor.enrichHTML
+- Actor biographies and item descriptions now support entity links (@Actor, @Item, @JournalEntry), inline rolls, and content links
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added system setting to enable/disable debug logging (replaces hardcoded flag)
 - Added confirmation dialog when deleting items, powers, skills, traits, and effects

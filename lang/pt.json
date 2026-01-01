@@ -136,7 +136,7 @@
         "Spent": "gasto",
         "Submit": "Enviar",
         "Subskill": "Sub-Perícia",
-        "SubskillDisabledTooltip": "As sub-perícias têm automaticamente os mesmos APs que sua perícia principal. Treinar sub-perícias individuais requer que a perícia principal tenha APs primeiro.",
+        "SubskillDisabledTooltip": "Para se especializar em uma Sub-Perícia, primeiro selecione pelo menos um AP na Perícia relacionada.",
         "Subskills": "Sub-Perícias",
         "Success": "Êxito",
         "Total": "Total",

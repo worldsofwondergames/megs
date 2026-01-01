@@ -46,7 +46,7 @@
 - Linked powers now display asterisk
 - Cleanup minor code issues from static code analysis
 
-## 0.7.0 (December 15, 2025)
+## 1.0.0 (February 1, 2026)
 
 ### Enhancements
 
@@ -55,11 +55,6 @@
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added system setting to enable/disable debug logging (replaces hardcoded flag)
 - Added confirmation dialog when deleting items, powers, skills, traits, and effects
-
-## 1.0.0 (February 1, 2026)
-
-### Enhancements
-
 - Skills can now have modifiers (bonuses and limitations) just like powers
 - Modifiers can be added to standalone powers and skills (not owned by actors)
 - Standalone powers and skills preserve their modifiers when dragged to/from actors

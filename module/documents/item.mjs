@@ -716,8 +716,8 @@ export class MEGSItem extends Item {
                             item.system.aps > 0) {
                             // Check if factorCost is missing or invalid
                             if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
-                                console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
                                 if (game.settings.get('megs', 'debugLogging')) {
+                                    console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
                                     console.log(`     Full system data:`, item.system);
                                 }
                             }
@@ -735,7 +735,9 @@ export class MEGSItem extends Item {
                             // Ensure drawbacks are always negative
                             if (item.type === MEGS.itemTypes.drawback) {
                                 if (itemCost === 0) {
-                                    console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                                    if (game.settings.get('megs', 'debugLogging')) {
+                                        console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                                    }
                                 } else if (itemCost > 0) {
                                     itemCost = -itemCost;
                                 }
@@ -785,7 +787,9 @@ export class MEGSItem extends Item {
                 // Only validate factorCost for actual powers and skills
                 if (this.type !== MEGS.itemTypes.subskill &&
                     (systemData.factorCost === 0 || systemData.factorCost === undefined || systemData.factorCost === null)) {
-                    console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
+                    if (game.settings.get('megs', 'debugLogging')) {
+                        console.error(`❌ ${this.name} (${this.type}) has invalid factorCost: ${systemData.factorCost}, APs: ${systemData.aps}`);
+                    }
                 }
 
                 // For skills with subskills, calculate effective Factor Cost
@@ -831,7 +835,9 @@ export class MEGSItem extends Item {
             // Drawbacks should always have negative costs (they reduce HP spent)
             if (this.type === MEGS.itemTypes.drawback) {
                 if (systemData.totalCost === 0) {
-                    console.error(`Drawback "${this.name}" has zero cost - this is likely a configuration error`);
+                    if (game.settings.get('megs', 'debugLogging')) {
+                        console.error(`Drawback "${this.name}" has zero cost - this is likely a configuration error`);
+                    }
                 } else if (systemData.totalCost > 0) {
                     // Positive cost, make it negative
                     systemData.totalCost = -systemData.totalCost;

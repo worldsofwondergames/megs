@@ -281,7 +281,9 @@ export class MEGSActor extends Actor {
                     // Ensure drawbacks are always negative (they reduce HP spent)
                     if (item.type === MEGS.itemTypes.drawback) {
                         if (cost === 0) {
-                            console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                            if (game.settings.get('megs', 'debugLogging')) {
+                                console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                            }
                         } else if (cost > 0) {
                             // Positive cost, make it negative
                             cost = -cost;

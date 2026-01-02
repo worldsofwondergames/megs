@@ -1089,6 +1089,9 @@ details summary.no-arrow {
 }
 .megs.sheet.actor .tab.skills .items-list .item-aps {
   flex: 0 0 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .megs.sheet.actor .tab.skills .items-list .item-controls {
   flex: 0 0 100px;

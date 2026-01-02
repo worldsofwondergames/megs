@@ -143,6 +143,8 @@ export class MegsTableRolls {
                     },
                 },
                 default: 'button1',
+            }, {
+                classes: ['megs', 'dialog']
             }).render(true);
         } else if (game.user.targets.size > 1) {
             ui.notifications.warn(localize('MEGS.ErrorMessages.OnlyOneTarget'));
@@ -208,6 +210,8 @@ export class MegsTableRolls {
                 },
             },
             default: 'button1',
+        }, {
+            classes: ['megs', 'dialog']
         }).render(true);
     }
 

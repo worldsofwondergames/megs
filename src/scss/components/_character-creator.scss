@@ -1,0 +1,448 @@
+/*------------------------------------------------------------------------*/
+/* Character Creator / Character Builder Styles
+/*------------------------------------------------------------------------*/
+
+/* Attribute Cost Display */
+.attribute-cost {
+    background: rgba(0, 0, 0, 0.05);
+
+    .cost-value {
+        font-size: 0.85em;
+    }
+}
+
+/* HP Budget Input */
+.resource-value-input {
+    background: #e8f4f8;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+    text-align: center;
+}
+
+/* HP Spent tooltip hover effect */
+.hp-spent-tooltip {
+    cursor: pointer;
+}
+
+/* Attributes Summary */
+.attributes-summary {
+    margin-bottom: 10px;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+
+        .summary-label,
+        .summary-value {
+            font-size: 1.25em;
+        }
+    }
+}
+
+/* Powers Summary */
+.powers-summary {
+    margin-bottom: 10px;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+
+        .summary-label,
+        .summary-value {
+            font-size: 1.25em;
+        }
+    }
+}
+
+/* Skills Summary */
+.skills-summary {
+    margin-bottom: 10px;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+
+        .summary-label,
+        .summary-value {
+            font-size: 1.25em;
+        }
+    }
+}
+
+/* Traits Summary */
+.traits-summary {
+    margin-bottom: 10px;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+
+        .summary-label,
+        .summary-value {
+            font-size: 1.25em;
+        }
+    }
+}
+
+/* Gadgets Summary */
+.gadgets-summary {
+    margin-bottom: 10px;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+
+        .summary-label,
+        .summary-value {
+            font-size: 1.25em;
+        }
+    }
+}
+
+/*------------------------------------------------------------------------*/
+/* Character Creator - Gadgets Tab
+/*------------------------------------------------------------------------*/
+
+.character-creator .tab.gadgets {
+    .items-list {
+        .item-name {
+            flex: 1; /* Takes all remaining space */
+            display: block; /* Ensure content flows as inline text */
+        }
+
+        .item-gadget-cost {
+            flex: 0 0 60px; /* Fixed width just for "Cost" */
+            text-align: center;
+        }
+
+        .item-controls {
+            flex: 0 0 30px; /* Fixed width just for trash icon */
+        }
+    }
+
+    .gadget-cost-tooltip {
+        cursor: pointer;
+    }
+}
+
+/*------------------------------------------------------------------------*/
+/* Character Creator - Traits Tab
+/*------------------------------------------------------------------------*/
+
+.character-creator .tab.traits {
+    .grid-2col-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: $c-darkblue;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 3px;
+        margin-bottom: 5px;
+
+        .header-cost {
+            font-size: 0.85em;
+            font-weight: normal;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    }
+
+    .items-list {
+        .items-header {
+            background: $c-lightblue !important;
+            color: $c-darkblue !important;
+            padding: 4px 8px;
+            border: none !important;
+
+            > * {
+                font-size: 20px !important;
+            }
+        }
+
+        .item-name {
+            flex: 1;
+        }
+
+        .item-cost {
+            flex: 0 0 50px;
+            text-align: center;
+            font-size: inherit;
+        }
+
+        .item-controls {
+            flex: 0 0 30px;
+            text-align: center;
+        }
+    }
+}
+
+/*------------------------------------------------------------------------*/
+/* Character Creator - Powers Tab
+/*------------------------------------------------------------------------*/
+
+.character-creator .tab.powers .items-list {
+    .item-row {
+        min-height: 40px;
+    }
+
+    .item-name {
+        flex: 2.2;
+    }
+
+    .item-linked {
+        flex: 0 0 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .item-base-cost,
+    .item-factor-cost,
+    .item-total-cost {
+        flex: 1;
+    }
+
+    .item-aps {
+        flex: 1.15;
+    }
+
+    .item-controls {
+        flex: 0 0 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Power Modifiers (Bonuses/Limitations) */
+.megs.character-creator .tab.powers .items-list {
+    .modifier-row {
+        background: rgba(0, 0, 0, 0.02);
+        font-size: 0.9em;
+    }
+
+    .modifier-name {
+        margin-left: 25px;
+        padding-left: 0;
+        font-style: italic;
+        color: #666;
+    }
+}
+
+/* Factor Cost tooltip cursor */
+.character-creator .items-list .factor-cost-calculated {
+    cursor: pointer;
+}
+
+/* Total Cost tooltip cursor */
+.character-creator .items-list .total-cost-calculated {
+    cursor: pointer;
+}
+
+/*------------------------------------------------------------------------*/
+/* Character Creator - Skills Tab
+/*------------------------------------------------------------------------*/
+
+.character-creator .tab.skills .items-list {
+    .item-row {
+        min-height: 40px;
+    }
+
+    /* Skills table background colors */
+    .skill-row {
+        background-color: #e8f4f8; /* Light blue for skills */
+    }
+
+    .subskill-row {
+        background-color: $c-white; /* White for subskills */
+    }
+
+    .item-toggle {
+        flex: 0 0 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .item-name {
+        flex: 2.5;
+    }
+
+    .item-base-cost,
+    .item-factor-cost,
+    .item-total-cost {
+        flex: 1;
+    }
+
+    .item-aps {
+        flex: 1.15;
+    }
+
+    /* Skills accordion icon */
+    .toggle-icon {
+        color: #666;
+        font-size: 0.85em;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            color: $c-black;
+        }
+    }
+}
+
+/* Locked APs display */
+.character-creator .tab.skills .aps-locked {
+    display: block;
+    text-align: center;
+}
+
+/*------------------------------------------------------------------------*/
+/* Error styling for budget and linked power mismatches
+/*------------------------------------------------------------------------*/
+
+.over-budget,
+.link-mismatch {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+/*------------------------------------------------------------------------*/
+/* Character Creator - Wealth Tab
+/*------------------------------------------------------------------------*/
+
+.wealth-summary {
+    margin-bottom: 10px;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+    }
+
+    .inflation-controls-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+
+        input[type='checkbox'] {
+            width: auto;
+            margin: 0;
+        }
+
+        label {
+            margin: 0;
+            font-size: 1.1em;
+        }
+    }
+
+    .inflation-controls-right {
+        display: flex;
+        justify-content: flex-end;
+        flex: 0 0 100px;
+
+        select {
+            padding: 4px 8px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            width: 100%;
+            height: 35px;
+            line-height: normal;
+
+            &:disabled {
+                background-color: #e9ecef;
+                color: #6c757d;
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+.wealth-table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.wealth-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+
+    thead {
+        position: sticky;
+        top: 0;
+        background: $c-darkblue;
+        color: white;
+        z-index: 10;
+
+        th {
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+    }
+
+    tbody {
+        tr:nth-child(odd) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        tr:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        td {
+            padding: 6px 8px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+    }
+
+    .wealth-select-col {
+        width: 60px;
+    }
+
+    .wealth-ap-col {
+        width: 60px;
+    }
+
+    .wealth-cost-col {
+        width: 80px;
+    }
+
+    .wealth-value-col {
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    input[type='radio'] {
+        width: auto;
+        margin: 0;
+        cursor: pointer;
+    }
+}

@@ -834,8 +834,9 @@ export class MEGSActorSheet extends ActorSheet {
 
     _toggleEditMode(event) {
         // Save accordion state before toggling edit mode
-        const html = $(event.currentTarget).closest('form');
-        this._saveAccordionState(html);
+        if (this.element && this.element.length > 0) {
+            this._saveAccordionState(this.element);
+        }
 
         const currentValue = this.actor.getFlag('megs', 'edit-mode');
         this.actor.setFlag('megs', 'edit-mode', !currentValue);

@@ -4,7 +4,7 @@
 
 li.chat-message.megs {
     .message-content {
-        background: $c-white;
+        background: $c-white !important;
     }
 
     .chat-value {
@@ -30,11 +30,11 @@ li.chat-message.megs {
         padding: 3px;
 
         &.inverse {
-            background-color: $c-lightblue;
+            background-color: $c-lightblue !important;
         }
 
         &.success {
-            background-color: green;
+            background-color: green !important;
             color: $c-white;
             transition: 0.2s background linear;
 
@@ -44,7 +44,7 @@ li.chat-message.megs {
         }
 
         &.failure {
-            background-color: $c-red;
+            background-color: $c-red !important;
             color: $c-white;
             transition: 0.2s background linear;
 

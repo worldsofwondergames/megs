@@ -1496,7 +1496,7 @@ details summary.no-arrow {
 /* Chat Messages
 /*------------------------------------------------------------------------*/
 li.chat-message.megs .message-content {
-  background: #fff;
+  background: #fff !important;
 }
 li.chat-message.megs .chat-value {
   border: 1px solid #1f5079;
@@ -1518,10 +1518,10 @@ li.chat-message.megs .chat-result {
   padding: 3px;
 }
 li.chat-message.megs .chat-result.inverse {
-  background-color: #ddebf6;
+  background-color: #ddebf6 !important;
 }
 li.chat-message.megs .chat-result.success {
-  background-color: green;
+  background-color: green !important;
   color: #fff;
   transition: 0.2s background linear;
 }
@@ -1529,7 +1529,7 @@ li.chat-message.megs .chat-result.success:hover {
   background-color: lightgreen;
 }
 li.chat-message.megs .chat-result.failure {
-  background-color: #d63a28;
+  background-color: #d63a28 !important;
   color: #fff;
   transition: 0.2s background linear;
 }

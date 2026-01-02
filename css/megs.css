@@ -126,12 +126,6 @@ details summary.no-arrow {
   cursor: pointer;
 }
 
-.system-megs details summary.roll-dialog-summary {
-  margin: 9px 0 3px 0;
-  padding: 3px 0 3px 0;
-  background: #a9a7a7;
-}
-
 .grid,
 .grid-2col {
   display: grid;
@@ -1421,6 +1415,62 @@ details summary.no-arrow {
 /*------------------------------------------------------------------------*/
 /* Dialog Styles
 /*------------------------------------------------------------------------*/
+.megs-dialog {
+  font-family: "Roboto", sans-serif;
+  color: #1f5079;
+}
+.megs-dialog .form-group {
+  margin-bottom: 15px;
+}
+.megs-dialog .form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1f5079;
+  margin-bottom: 5px;
+  display: block;
+}
+.megs-dialog details {
+  margin-top: 10px;
+}
+.megs-dialog details summary.roll-dialog-summary {
+  margin: 9px 0 3px 0;
+  padding: 8px 10px;
+  background: #1f5079;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+.megs-dialog details summary.roll-dialog-summary:hover {
+  background: #5fa2d9;
+}
+.megs-dialog details[open] summary.roll-dialog-summary {
+  background: #5fa2d9;
+  margin-bottom: 10px;
+}
+.megs-dialog .flexrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.megs-dialog .flexrow input[type=range] {
+  flex: 1;
+}
+.megs-dialog .flexrow .range-value {
+  min-width: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #1f5079;
+}
+.megs-dialog select.resource-select {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #a9a7a7;
+  border-radius: 3px;
+}
+
 .megs-dialog .quantity {
   display: flex;
   border: 2px solid #a9a7a7;

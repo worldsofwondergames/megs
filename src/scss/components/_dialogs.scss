@@ -2,6 +2,73 @@
 /* Dialog Styles
 /*------------------------------------------------------------------------*/
 
+// Roll dialog container
+.megs-dialog {
+    font-family: $font-primary;
+    color: $c-darkblue;
+
+    .form-group {
+        margin-bottom: 15px;
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: $c-darkblue;
+            margin-bottom: 5px;
+            display: block;
+        }
+    }
+
+    details {
+        margin-top: 10px;
+
+        summary.roll-dialog-summary {
+            margin: 9px 0 3px 0;
+            padding: 8px 10px;
+            background: $c-darkblue;
+            color: $c-white;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background: $c-mediumblue;
+            }
+        }
+
+        &[open] summary.roll-dialog-summary {
+            background: $c-mediumblue;
+            margin-bottom: 10px;
+        }
+    }
+
+    .flexrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        .range-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: $c-darkblue;
+        }
+    }
+
+    select.resource-select {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid $c-grey;
+        border-radius: 3px;
+    }
+}
+
 // Roll dialog quantity styles
 .megs-dialog .quantity {
     display: flex;

@@ -1,12 +1,5 @@
 # CHANGELOG
 
-## Unreleased
-
-### Enhancements
-- Improved chat message styling with customized roll result headers
-- Added initiative bonus tooltip showing calculation breakdown (DEX + INT + INFL + modifiers)
-- Reduced font weight of resource labels for improved readability
-
 ## 0.4.0 (May 15, 2024)
 
 - Officially entered beta with a very barebones system
@@ -127,6 +120,9 @@
 - Added enriched text support for biography and description fields using Foundry's TextEditor.enrichHTML
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
+- Improved chat message styling with customized roll result headers
+- Added initiative bonus tooltip showing calculation breakdown (DEX + INT + INFL + modifiers)
+- Reduced font weight of resource labels for improved readability
 
 ### Bug Fixes
 

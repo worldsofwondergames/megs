@@ -1132,6 +1132,11 @@ Hooks.once('ready', function () {
     });
     Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
 
+    // Add .megs class to chat messages for styling
+    Hooks.on('renderChatMessage', (message, html, data) => {
+        html.addClass('megs');
+    });
+
     // Hook to preserve gadget power/skill data when dragging from sidebar to actor
     Hooks.on('preCreateItem', (item, data, options, userId) => {
         if (item.type === 'gadget' && item.parent && data.flags?.megs?._transferData) {

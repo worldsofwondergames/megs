@@ -7,8 +7,16 @@
         {{/if}}
         <div class="header-fields">
             <div class="resources grid grid-4col">
-                {{#if isRollable}}
-                    <div class="grid-span-3">
+                {{#if hasActor}}
+                    {{#if isUnskilled}}
+                        {{#if (compare system.useUnskilled "===" "true")}}
+                            <div class="grid-span-3">
+                        {{else}}
+                            <div class="grid-span-4">
+                        {{/if}}
+                    {{else}}
+                        <div class="grid-span-3">
+                    {{/if}}
                 {{else}}
                     <div class="grid-span-4">
                 {{/if}}

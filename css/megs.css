@@ -692,6 +692,9 @@ details summary.no-arrow {
   border: 0;
   text-align: center;
 }
+.megs .quantity.attribute-input .input-box {
+  font-size: 22px;
+}
 .megs .quantity.attribute-input button {
   background-color: #fff;
   color: #1f5079;

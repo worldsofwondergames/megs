@@ -538,7 +538,7 @@ details summary.no-arrow {
   padding: 0 8px;
 }
 .megs .resources .resource-label {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 24px;
   letter-spacing: 0.1em;
   display: block;
@@ -848,7 +848,7 @@ details summary.no-arrow {
   white-space: pre-line;
 }
 .megs .resource-label {
-  font-weight: bold;
+  font-weight: 600;
 }
 .megs .items-header {
   margin: 2px 0;

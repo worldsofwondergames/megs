@@ -20,9 +20,12 @@
     }
 
     .dialog-buttons {
+        position: sticky;
+        bottom: 0;
         background-color: $c-lightblue;
         border-top: 1px solid $c-grey;
         padding: 10px;
+        z-index: 10;
 
         button {
             background-color: $c-darkblue;

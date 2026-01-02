@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Unreleased
+
+### Enhancements
+- Improved chat message styling with customized roll result headers
+- Added initiative bonus tooltip showing calculation breakdown (DEX + INT + INFL + modifiers)
+- Reduced font weight of resource labels for improved readability
+
 ## 0.4.0 (May 15, 2024)
 
 - Officially entered beta with a very barebones system

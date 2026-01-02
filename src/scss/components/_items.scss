@@ -237,11 +237,23 @@ li.chat-message {
     }
 
     .item-toggle {
-        flex: 0 0 25px;
+        flex: 0 0 15px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
+    }
+
+    .item-name {
+        flex: 3;
+    }
+
+    .item-aps {
+        flex: 0 0 100px;
+    }
+
+    .item-controls {
+        flex: 0 0 30px;
     }
 
     .toggle-icon {

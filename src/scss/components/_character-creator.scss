@@ -287,6 +287,13 @@
         flex: 2.5;
     }
 
+    .item-linked {
+        flex: 0 0 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .item-base-cost,
     .item-factor-cost,
     .item-total-cost {

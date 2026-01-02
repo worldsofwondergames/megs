@@ -1424,7 +1424,7 @@ details summary.no-arrow {
 /* Dialog Styles
 /*------------------------------------------------------------------------*/
 .megs.dialog {
-  min-width: 410px;
+  min-width: 450px;
 }
 .megs.dialog .window-header {
   background-color: #1f5079;

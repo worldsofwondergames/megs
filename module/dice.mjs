@@ -580,10 +580,10 @@ export class MegsTableRolls {
 
         console.log('Calling show result from point: ' + callingPoint);
 
-        // Modify speaker to include the label
+        // Modify speaker to use the label (which already includes character name)
         const speaker = this.speaker ? foundry.utils.deepClone(this.speaker) : null;
         if (speaker && this.label) {
-            speaker.alias = `${speaker.alias} - ${this.label}`;
+            speaker.alias = this.label;
         }
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);

@@ -1557,7 +1557,16 @@ li.chat-message.megs .message-header {
   color: #fff !important;
   padding: 5px !important;
 }
-li.chat-message.megs .message-sender {
+li.chat-message.megs .message-header .message-sender {
+  color: #fff !important;
+}
+li.chat-message.megs .message-header .message-metadata {
+  color: #fff !important;
+}
+li.chat-message.megs .message-header .message-metadata .message-timestamp {
+  color: #fff !important;
+}
+li.chat-message.megs .message-header .message-metadata .message-delete {
   color: #fff !important;
 }
 li.chat-message.megs .megs-chat-roll {

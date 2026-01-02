@@ -1072,11 +1072,20 @@ details summary.no-arrow {
   background-color: #fff;
 }
 .megs.sheet.actor .tab.skills .items-list .item-toggle {
-  flex: 0 0 25px;
+  flex: 0 0 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.megs.sheet.actor .tab.skills .items-list .item-name {
+  flex: 3;
+}
+.megs.sheet.actor .tab.skills .items-list .item-aps {
+  flex: 0 0 100px;
+}
+.megs.sheet.actor .tab.skills .items-list .item-controls {
+  flex: 0 0 30px;
 }
 .megs.sheet.actor .tab.skills .items-list .toggle-icon {
   color: #666;

@@ -1552,11 +1552,13 @@ li.chat-message.megs .chat-result .d10 {
   font-weight: bold;
   text-align: center;
 }
-li.chat-message.megs .megs-chat-title {
-  padding: 5px 0 2px 2px;
-  background-color: #1f5079;
-  color: #fff;
-  text-align: center;
+li.chat-message.megs .message-header {
+  background-color: #1f5079 !important;
+  color: #fff !important;
+  padding: 5px !important;
+}
+li.chat-message.megs .message-sender {
+  color: #fff !important;
 }
 li.chat-message.megs .megs-chat-roll {
   margin: 0 3px 0 3px;

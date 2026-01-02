@@ -578,13 +578,16 @@ export class MegsTableRolls {
     async _showRollResultInChat(data, roll, callingPoint) {
         const rollChatTemplate = 'systems/megs/templates/chat/rollResult.hbs';
 
-        // what's being rolled (used for display)
-        data.title = this.label ? `${this.label}` : '';
-
         console.log('Calling show result from point: ' + callingPoint);
 
+        // Modify speaker to include the label
+        const speaker = this.speaker ? foundry.utils.deepClone(this.speaker) : null;
+        if (speaker && this.label) {
+            speaker.alias = `${speaker.alias} - ${this.label}`;
+        }
+
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-        await roll.toMessage(dialogHtml, { speaker: this.speaker });
+        await roll.toMessage(dialogHtml, { speaker });
     }
 
     /**

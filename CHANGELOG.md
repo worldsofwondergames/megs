@@ -121,8 +121,6 @@
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
 - Improved chat message styling with customized roll result headers
-- Added initiative bonus tooltip showing calculation breakdown (DEX + INT + INFL + modifiers)
-- Reduced font weight of resource labels for improved readability
 
 ### Bug Fixes
 
@@ -132,6 +130,7 @@
 - Fixed gadget range cost to support both systemData.range and systemData.weapon.range fields
 - Ensured current condition tracks (currentBody, currentMind, currentSpirit) are initialized in prepareBaseData()
 - Fixed empty gadget descriptions no longer display empty parentheses in character creator
+- Fixed initiative bonus tooltip showing calculation breakdown (DEX + INT + INFL + modifiers)
 
 ### Technical Debt
 

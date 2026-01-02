@@ -21,7 +21,7 @@ export class MEGSActorSheet extends ActorSheet {
     static get defaultOptions() {
         let newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
-        newOptions.width = 600;
+        newOptions.width = 667;
         newOptions.height = 600;
         newOptions.dragDrop = [{ dragSelector: '.item-list .item', dropSelector: null }];
         newOptions.tabs = [
@@ -832,7 +832,12 @@ export class MEGSActorSheet extends ActorSheet {
         }
     }
 
-    _toggleEditMode(_e) {
+    _toggleEditMode(event) {
+        // Save accordion state before toggling edit mode
+        if (this.element && this.element.length > 0) {
+            this._saveAccordionState(this.element);
+        }
+
         const currentValue = this.actor.getFlag('megs', 'edit-mode');
         this.actor.setFlag('megs', 'edit-mode', !currentValue);
         this.render(false);

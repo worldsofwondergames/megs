@@ -15,3 +15,6 @@ foundry
 # MEGS
 build/
 megs.iml
+
+# Claude Code
+.claude/

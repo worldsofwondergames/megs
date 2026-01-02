@@ -86,10 +86,7 @@
 - Skills can now have modifiers (bonuses and limitations) just like powers
 - Modifiers can be added to standalone powers and skills (not owned by actors)
 - Standalone powers and skills preserve their modifiers when dragged to/from actors
-- Added double-click to activate TinyMCE editors for biography and item descriptions
 - Hide R# display in gadget summaries when reliability is 0
-- Automatic cleanup of child items when parent gadget or skill is deleted
-- Fixed empty gadget descriptions no longer display empty parentheses in character creator
 - Implemented AP Purchase Chart for accurate MEGS character creation costs (issue #27)
 - Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
 - Hero Point budget tracking calculates total HP spent on attributes and items
@@ -118,27 +115,31 @@
     - Hardened Defenses add +2 to BODY Factor Cost
     - Child items (powers, skills, advantages, drawbacks) included in total
     - Gadget Bonus correctly applied: ÷4 if can be Taken Away, ÷2 if cannot
-- Test coverage for gadget cost calculations including rulebook example (Machinegun)
+- Added confirmation dialog when deleting items, powers, skills, traits, and effects
+- Added double-click to activate TinyMCE editors for biography and item descriptions
 - Added enriched text support for biography and description fields using Foundry's TextEditor.enrichHTML
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
-- Added system setting to enable/disable debug logging (replaces hardcoded flag)
-- Added confirmation dialog when deleting items, powers, skills, traits, and effects
+- Added comma formatting to HP Spent and HP Remaining values on character creator sheet
 
 ### Bug Fixes
 
-- Fixed modifiers not displaying when dragged onto standalone powers or skills
-- Standalone powers and skills use flattened arrays for modifiers instead of embedded items
-- Fixed gadget power and skill data preservation when dragging from sidebar to character sheet
-- Fixed trait (advantage/drawback) type and cost data being lost during gadget transfer
 - Prevented NaN errors in cost calculations by adding null-safe attribute access
 - Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
-- Fixed type consistency issues in wealth system to ensure radio button and dropdown selections persist correctly
-- Fixed gadget cost calculation converting reliability from index to actual R# value
 - Fixed Hardened Defenses boolean comparison to handle string "false" correctly
 - Fixed gadget range cost to support both systemData.range and systemData.weapon.range fields
-- Added comma formatting to HP Spent and HP Remaining values on character creator sheet
 - Ensured current condition tracks (currentBody, currentMind, currentSpirit) are initialized in prepareBaseData()
+- Fixed empty gadget descriptions no longer display empty parentheses in character creator
+
+### Technical Debt
+
+- Automatic cleanup of child items when parent gadget or skill is deleted
+- Migrated all CSS styles to SCSS source files to prevent build process from overwriting manual edits
+
+### Development Aids
+
+- Added system setting to enable/disable debug logging (replaces hardcoded flag)
 
 ### Testing
 
 - Added test coverage for character budget calculations, reliability number conversion, and base cost only powers
+- Test coverage for gadget cost calculations including rulebook example (Machinegun)

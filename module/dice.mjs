@@ -143,6 +143,8 @@ export class MegsTableRolls {
                     },
                 },
                 default: 'button1',
+            }, {
+                classes: ['megs', 'dialog']
             }).render(true);
         } else if (game.user.targets.size > 1) {
             ui.notifications.warn(localize('MEGS.ErrorMessages.OnlyOneTarget'));
@@ -208,6 +210,8 @@ export class MegsTableRolls {
                 },
             },
             default: 'button1',
+        }, {
+            classes: ['megs', 'dialog']
         }).render(true);
     }
 
@@ -541,6 +545,9 @@ export class MegsTableRolls {
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
                     yes: () => true,
                     no: () => false,
+                    options: {
+                        classes: ['megs', 'dialog']
+                    }
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs

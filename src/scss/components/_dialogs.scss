@@ -1,0 +1,161 @@
+/*------------------------------------------------------------------------*/
+/* Dialog Styles
+/*------------------------------------------------------------------------*/
+
+// Dialog window styling
+.megs.dialog {
+    min-width: 450px;
+
+    .window-header {
+        background-color: $c-darkblue;
+        color: $c-white;
+        font-family: $font-decorative;
+        font-size: 20px;
+        border-bottom: 2px solid $c-darkblue;
+    }
+
+    .window-content {
+        background-color: $c-white;
+        font-family: $font-primary;
+    }
+
+    .dialog-buttons {
+        position: sticky;
+        bottom: 0;
+        background-color: $c-lightblue;
+        border-top: 1px solid $c-grey;
+        padding: 10px;
+        z-index: 10;
+
+        button {
+            background-color: $c-darkblue;
+            color: $c-white;
+            border: 2px solid $c-darkblue;
+            padding: 8px 16px;
+            font-family: $font-primary;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: $c-mediumblue;
+                border-color: $c-mediumblue;
+            }
+
+            &:active {
+                background-color: darken($c-darkblue, 10%);
+            }
+        }
+    }
+}
+
+// Roll dialog container
+.megs-dialog {
+    font-family: $font-primary;
+    color: $c-darkblue;
+
+    .form-group {
+        margin-bottom: 15px;
+
+        label {
+            font-weight: normal;
+            color: $c-darkblue;
+            margin-bottom: 5px;
+            display: block;
+        }
+    }
+
+    details {
+        margin-top: 10px;
+
+        summary.roll-dialog-summary {
+            margin: 9px 0 3px 0;
+            padding: 8px 10px;
+            background: $c-darkblue;
+            color: $c-white;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background: $c-mediumblue;
+            }
+        }
+
+        &[open] summary.roll-dialog-summary {
+            background: $c-mediumblue;
+            margin-bottom: 10px;
+        }
+    }
+
+    .flexrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        .range-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: $c-darkblue;
+        }
+    }
+
+    select.resource-select {
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid $c-grey;
+        border-radius: 3px;
+    }
+}
+
+// Roll dialog quantity styles
+.megs-dialog .quantity {
+    display: flex;
+    border: 2px solid $c-grey;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    button {
+        background-color: $c-grey;
+        color: $c-white;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        width: 30px;
+        height: auto;
+        text-align: center;
+        transition: background-color 0.2s;
+        margin: 0;
+        border-radius: 0;
+        line-height: 0;
+
+        &:hover {
+            text-shadow: none;
+        }
+    }
+
+    .input-box {
+        flex: 1;
+        text-align: center;
+        border: none;
+        padding: 8px 4px;
+        font-size: 14px;
+        outline: none;
+
+        // Hide the number input spin buttons
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+}

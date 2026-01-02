@@ -495,7 +495,7 @@ select.resource-select {
         font-size: 22px;
 
         input {
-            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-family: $font-primary;
             font-size: 14px;
         }
 
@@ -526,7 +526,7 @@ select.resource-select {
 }
 
 div.tab.readableText label {
-    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-family: $font-primary;
 }
 
 /*------------------------------------------------------------------------*/
@@ -609,7 +609,7 @@ details[open] summary.item-summary {
 
 .init-table {
     display: table;
-    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-family: $font-primary;
     font-size: 14px;
     background-color: white;
     border: none;

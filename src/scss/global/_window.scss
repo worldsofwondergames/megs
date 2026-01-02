@@ -41,7 +41,7 @@
     }
 
     .message-panel {
-        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-family: $font-primary;
         font-size: 14px;
         color: $c-darkblue;
         padding: 10px 5px 0 5px;
@@ -52,7 +52,7 @@
     }
 
     .editor-content {
-        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-family: $font-primary;
         font-size: 14px;
         color: $c-darkblue;
         padding: 10px 5px 0 5px;
@@ -75,7 +75,7 @@
     }
 
     .description-text {
-        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-family: $font-primary;
         font-size: 14px;
         color: $c-darkblue;
         padding: 10px 5px 0 5px;
@@ -91,7 +91,7 @@
 
     input[type='checkbox'] {
         + label {
-            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-family: $font-primary;
             font-size: 13px;
         }
 
@@ -123,7 +123,7 @@ body.game .app h4.window-title {
 .indentLeft {
     padding-left: 15px;
     padding-top: 5px;
-    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-family: $font-primary;
     font-size: 16px;
 }
 

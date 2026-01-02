@@ -47,7 +47,7 @@
   color: #1f5079;
 }
 .megs .message-panel {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   color: #1f5079;
   padding: 10px 5px 0 5px;
@@ -56,7 +56,7 @@
   display: inline-block;
 }
 .megs .editor-content {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   color: #1f5079;
   padding: 10px 5px 0 5px;
@@ -73,7 +73,7 @@
   background-color: #ddebf6;
 }
 .megs .description-text {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   color: #1f5079;
   padding: 10px 5px 0 5px;
@@ -88,7 +88,7 @@
   vertical-align: middle;
 }
 .megs input[type=checkbox] + label {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 13px;
 }
 
@@ -110,7 +110,7 @@ body.game .app h4.window-title {
 .indentLeft {
   padding-left: 15px;
   padding-top: 5px;
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
 }
 
@@ -767,7 +767,7 @@ details summary.no-arrow {
   font-size: 22px;
 }
 .megs .sheet-body div.biography section.description-item input {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
 }
 .megs .sheet-body div.biography section.description-item select {
@@ -791,7 +791,7 @@ details summary.no-arrow {
   margin-left: 10px;
 }
 .megs div.tab.readableText label {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .megs details summary.item-summary {
   font-weight: bold;
@@ -851,7 +851,7 @@ details summary.no-arrow {
 }
 .megs .init-table {
   display: table;
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   background-color: white;
   border: none;
@@ -915,7 +915,7 @@ details summary.no-arrow {
   scrollbar-width: thin;
 }
 .megs .items-list .item-row {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #1f5079;
 }
 .megs .items-list > li.item-row:nth-of-type(odd) {
@@ -1398,7 +1398,7 @@ details summary.no-arrow {
 .megs .wealth-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .megs .wealth-table thead {
   position: sticky;

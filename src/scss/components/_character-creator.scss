@@ -397,7 +397,7 @@
 .wealth-table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-family: $font-primary;
 
     thead {
         position: sticky;

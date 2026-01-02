@@ -441,49 +441,6 @@ select.resource-select {
     }
 }
 
-// Roll dialog quantity styles
-.megs-dialog .quantity {
-    display: flex;
-    border: 2px solid $c-grey;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    button {
-        background-color: $c-grey;
-        color: $c-white;
-        border: none;
-        cursor: pointer;
-        font-size: 20px;
-        width: 30px;
-        height: auto;
-        text-align: center;
-        transition: background-color 0.2s;
-        margin: 0;
-        border-radius: 0;
-        line-height: 0;
-
-        &:hover {
-            text-shadow: none;
-        }
-    }
-
-    .input-box {
-        flex: 1;
-        text-align: center;
-        border: none;
-        padding: 8px 4px;
-        font-size: 14px;
-        outline: none;
-
-        // Hide the number input spin buttons
-        &::-webkit-inner-spin-button,
-        &::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-    }
-}
-
 /*------------------------------------------------------------------------*/
 /* Biography and Description Sections
 /*------------------------------------------------------------------------*/

@@ -20,3 +20,6 @@
     @import 'components/effects';
     @import 'components/character-creator';
 }
+
+/* Dialog styles (not nested under .megs) */
+@import 'components/dialogs';

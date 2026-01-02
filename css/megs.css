@@ -726,41 +726,6 @@ details summary.no-arrow {
 .megs .quantity.current-input input[type=number] {
   background-color: #ddebf6;
 }
-.megs .megs-dialog .quantity {
-  display: flex;
-  border: 2px solid #a9a7a7;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.megs .megs-dialog .quantity button {
-  background-color: #a9a7a7;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  width: 30px;
-  height: auto;
-  text-align: center;
-  transition: background-color 0.2s;
-  margin: 0;
-  border-radius: 0;
-  line-height: 0;
-}
-.megs .megs-dialog .quantity button:hover {
-  text-shadow: none;
-}
-.megs .megs-dialog .quantity .input-box {
-  flex: 1;
-  text-align: center;
-  border: none;
-  padding: 8px 4px;
-  font-size: 14px;
-  outline: none;
-}
-.megs .megs-dialog .quantity .input-box::-webkit-inner-spin-button, .megs .megs-dialog .quantity .input-box::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 .megs .sheet-body .grid-2col-header {
   font-size: 22px;
   color: #1f5079;
@@ -1450,4 +1415,44 @@ details summary.no-arrow {
   width: auto;
   margin: 0;
   cursor: pointer;
+}
+
+/* Dialog styles (not nested under .megs) */
+/*------------------------------------------------------------------------*/
+/* Dialog Styles
+/*------------------------------------------------------------------------*/
+.megs-dialog .quantity {
+  display: flex;
+  border: 2px solid #a9a7a7;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.megs-dialog .quantity button {
+  background-color: #a9a7a7;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  width: 30px;
+  height: auto;
+  text-align: center;
+  transition: background-color 0.2s;
+  margin: 0;
+  border-radius: 0;
+  line-height: 0;
+}
+.megs-dialog .quantity button:hover {
+  text-shadow: none;
+}
+.megs-dialog .quantity .input-box {
+  flex: 1;
+  text-align: center;
+  border: none;
+  padding: 8px 4px;
+  font-size: 14px;
+  outline: none;
+}
+.megs-dialog .quantity .input-box::-webkit-inner-spin-button, .megs-dialog .quantity .input-box::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

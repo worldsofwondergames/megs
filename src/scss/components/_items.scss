@@ -90,9 +90,11 @@
         align-items: center;
         padding: 0 2px;
         border-bottom: 1px solid $c-faint;
+        margin-bottom: 2px;
 
         &:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
 
         .item-name {

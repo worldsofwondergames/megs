@@ -963,9 +963,11 @@ details summary.no-arrow {
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #c9c7b8;
+  margin-bottom: 2px;
 }
 .megs .items-list .item:last-child {
   border-bottom: none;
+  margin-bottom: 0;
 }
 .megs .items-list .item .item-name {
   padding-left: 8px;

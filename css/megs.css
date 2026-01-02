@@ -680,8 +680,8 @@ details summary.no-arrow {
   flex: 1;
   text-align: center;
   border: none;
-  padding: 8px 10px;
-  font-size: 16px;
+  padding: 8px 4px;
+  font-size: 14px;
   outline: none;
 }
 .megs .quantity .input-box::-webkit-inner-spin-button, .megs .quantity .input-box::-webkit-outer-spin-button {
@@ -750,8 +750,8 @@ details summary.no-arrow {
   flex: 1;
   text-align: center;
   border: none;
-  padding: 8px 10px;
-  font-size: 16px;
+  padding: 8px 4px;
+  font-size: 14px;
   outline: none;
 }
 .megs .megs-dialog .quantity .input-box::-webkit-inner-spin-button, .megs .megs-dialog .quantity .input-box::-webkit-outer-spin-button {

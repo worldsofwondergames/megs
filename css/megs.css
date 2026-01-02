@@ -1438,9 +1438,12 @@ details summary.no-arrow {
   font-family: "Roboto", sans-serif;
 }
 .megs.dialog .dialog-buttons {
+  position: sticky;
+  bottom: 0;
   background-color: #ddebf6;
   border-top: 1px solid #a9a7a7;
   padding: 10px;
+  z-index: 10;
 }
 .megs.dialog .dialog-buttons button {
   background-color: #1f5079;

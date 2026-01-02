@@ -4,6 +4,8 @@
 
 // Dialog window styling
 .megs.dialog {
+    min-width: 410px;
+
     .window-header {
         background-color: $c-darkblue;
         color: $c-white;

@@ -21,9 +21,13 @@
                 </h1>
             </div>
             {{#if hasActor}}
-                {{#if isUnskilled}}
-                    {{#if (compare system.useUnskilled "===" "true")}}
+                {{#if isRollable}}
+                    {{#if isUnskilled}}
                         <div class="d10 grid-span-1 rollable unskilled" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}" data-unskilled="true">
+                            &nbsp;
+                        </div>
+                    {{else}}
+                        <div class="d10 grid-span-1 rollable" data-label="{{item.name}}" data-roll="1d10 + 1d10" data-value="{{effectiveAPs}}" data-link="{{system.link}}">
                             &nbsp;
                         </div>
                     {{/if}}

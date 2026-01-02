@@ -225,7 +225,7 @@ li.chat-message {
 /* Actor Sheet Skills Tab Accordion Styles
 /*------------------------------------------------------------------------*/
 
-.megs.sheet.actor .tab.skills .items-list {
+&.sheet.actor .tab.skills .items-list {
     .skill-row {
         background-color: #e8f4f8;
         min-height: 31px;

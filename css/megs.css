@@ -1063,27 +1063,27 @@ details summary.no-arrow {
 .megs li.chat-message .megs-chat-roll {
   margin: 0 3px 0 3px;
 }
-.megs .megs.sheet.actor .tab.skills .items-list .skill-row {
+.megs.sheet.actor .tab.skills .items-list .skill-row {
   background-color: #e8f4f8;
   min-height: 31px;
 }
-.megs .megs.sheet.actor .tab.skills .items-list .subskill-row {
+.megs.sheet.actor .tab.skills .items-list .subskill-row {
   min-height: 27px;
   background-color: #fff;
 }
-.megs .megs.sheet.actor .tab.skills .items-list .item-toggle {
+.megs.sheet.actor .tab.skills .items-list .item-toggle {
   flex: 0 0 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
-.megs .megs.sheet.actor .tab.skills .items-list .toggle-icon {
+.megs.sheet.actor .tab.skills .items-list .toggle-icon {
   color: #666;
   font-size: 0.85em;
   transition: transform 0.2s ease;
 }
-.megs .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
+.megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
   color: #000;
 }
 .megs .effects .item .effect-source,

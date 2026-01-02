@@ -1495,18 +1495,18 @@ details summary.no-arrow {
 /*------------------------------------------------------------------------*/
 /* Chat Messages
 /*------------------------------------------------------------------------*/
-li.chat-message.megs {
+li.chat-message {
   background: #fff !important;
   font-family: "Roboto", sans-serif !important;
   letter-spacing: normal !important;
 }
-li.chat-message.megs .message-content {
+li.chat-message .message-content {
   background: #fff !important;
 }
-li.chat-message.megs .chat-value {
+li.chat-message .chat-value {
   border: 1px solid #1f5079;
 }
-li.chat-message.megs .chat-value label {
+li.chat-message .chat-value label {
   width: 100%;
   color: #fff;
   background-color: #1f5079;
@@ -1514,34 +1514,34 @@ li.chat-message.megs .chat-value label {
   text-align: center;
   padding: 3px;
 }
-li.chat-message.megs .chat-value div {
+li.chat-message .chat-value div {
   color: #1f5079;
   padding: 3px;
 }
-li.chat-message.megs .chat-result {
+li.chat-message .chat-result {
   border: 1px solid #1f5079;
   padding: 3px;
 }
-li.chat-message.megs .chat-result.inverse {
+li.chat-message .chat-result.inverse {
   background-color: #ddebf6 !important;
 }
-li.chat-message.megs .chat-result.success {
+li.chat-message .chat-result.success {
   background-color: green !important;
   color: #fff;
   transition: 0.2s background linear;
 }
-li.chat-message.megs .chat-result.success:hover {
+li.chat-message .chat-result.success:hover {
   background-color: lightgreen;
 }
-li.chat-message.megs .chat-result.failure {
+li.chat-message .chat-result.failure {
   background-color: #d63a28 !important;
   color: #fff;
   transition: 0.2s background linear;
 }
-li.chat-message.megs .chat-result.failure:hover {
+li.chat-message .chat-result.failure:hover {
   background-color: rgb(252, 87, 69);
 }
-li.chat-message.megs .chat-result .d10 {
+li.chat-message .chat-result .d10 {
   display: inline-block;
   background-image: url(/icons/svg/d10-grey.svg);
   min-width: 24px;
@@ -1552,23 +1552,23 @@ li.chat-message.megs .chat-result .d10 {
   font-weight: bold;
   text-align: center;
 }
-li.chat-message.megs .message-header {
+li.chat-message .message-header {
   background-color: #1f5079 !important;
   color: #fff !important;
   padding: 5px !important;
 }
-li.chat-message.megs .message-header .message-sender {
+li.chat-message .message-header .message-sender {
   color: #fff !important;
 }
-li.chat-message.megs .message-header .message-metadata {
+li.chat-message .message-header .message-metadata {
   color: #fff !important;
 }
-li.chat-message.megs .message-header .message-metadata .message-timestamp {
+li.chat-message .message-header .message-metadata .message-timestamp {
   color: #fff !important;
 }
-li.chat-message.megs .message-header .message-metadata .message-delete {
+li.chat-message .message-header .message-metadata .message-delete {
   color: #fff !important;
 }
-li.chat-message.megs .megs-chat-roll {
+li.chat-message .megs-chat-roll {
   margin: 0 3px 0 3px;
 }

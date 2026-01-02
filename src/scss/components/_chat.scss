@@ -74,10 +74,22 @@ li.chat-message.megs {
         background-color: $c-darkblue !important;
         color: $c-white !important;
         padding: 5px !important;
-    }
 
-    .message-sender {
-        color: $c-white !important;
+        .message-sender {
+            color: $c-white !important;
+        }
+
+        .message-metadata {
+            color: $c-white !important;
+
+            .message-timestamp {
+                color: $c-white !important;
+            }
+
+            .message-delete {
+                color: $c-white !important;
+            }
+        }
     }
 
     .megs-chat-roll {

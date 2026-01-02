@@ -207,7 +207,6 @@ When the user requests final cleanup, return URLs in system.json to the base bra
 ## Issue Tracking
 Issues are tracked on GitHub: https://github.com/worldsofwondergames/megs/issues
 - If I tell you to commit a change, go ahead and push it as well
-- Avoid SCSS changes if possible. If it does not seem possible, prompt me before making the change.
 - Update CHANGELOG.md with any significant changes you commit and push. Do not add anything relating to development documentation including Claude docs
 - Do not include bug fixes for the current development branch in CHANGELOG.md - only add enhancements and new features
 - Never add any statements related to Claude or Claude Code in commit messages or CHANGELOG.md. Use succinct commit comments.

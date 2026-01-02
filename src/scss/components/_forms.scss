@@ -1,5 +1,9 @@
+/*------------------------------------------------------------------------*/
+/* Sheet Forms and Components
+/*------------------------------------------------------------------------*/
+
 .item-form {
-    font-family: $font-primary;
+    color: $c-darkblue;
 }
 
 .sheet-header {
@@ -11,31 +15,169 @@
     justify-content: flex-start;
     margin-bottom: 10px;
 
-    .profile-img {
-        flex: 0 0 100px;
-        height: 100px;
+    .profile-img,
+    .profile-img-no-click {
+        flex: 0 0 120px;
+        height: 120px;
         margin-right: 10px;
+        background-color: $c-white;
+    }
+
+    .profile-img:hover {
+        opacity: 0.5;
     }
 
     .header-fields {
         flex: 1;
+
+        select {
+            margin-top: 5px;
+        }
     }
 
     h1.charname {
-        height: 50px;
-        padding: 0px;
-        margin: 5px 0;
+        display: flex;
+        font-size: 32px;
+        padding: 0;
         border-bottom: 0;
-        input {
-            width: 100%;
-            height: 100%;
-            margin: 0;
+
+        &.isLocked {
+            background-color: $c-darkblue;
+        }
+
+        &.isUnlocked {
+            background-color: $c-white;
+        }
+
+        input[name='name'],
+        div[name='name'] {
+            float: left;
+            flex-grow: 1;
+            height: 50px;
+            margin: 5px 5px 0 0;
+        }
+
+        div[name='name'] {
+            padding: 5px 0 0 3px;
+            color: $c-white;
+        }
+
+        button {
+            background-size: cover;
+            float: right;
+            width: 50px;
+            height: 50px;
+            border: none;
+            margin-top: 5px;
+
+            &.isLocked {
+                background-image: url(/systems/megs/assets/images/icons/locked.png);
+            }
+
+            &.isUnlocked {
+                background-image: url(/systems/megs/assets/images/icons/unlocked.png);
+            }
+        }
+    }
+
+    .attribute-container {
+        display: inline-block;
+        width: calc(100% - 40px);
+        padding-right: 0;
+        padding-left: 5px;
+    }
+
+    button.reset {
+        width: 30px;
+        height: 30px;
+        vertical-align: bottom;
+        border: none;
+        cursor: pointer;
+        background-image: url(/systems/megs/assets/images/icons/reset.png);
+        background-size: 30px auto;
+        background-color: $c-white;
+    }
+
+    .attribute,
+    .header-fields .grid .d10 {
+        border: 2px solid $c-darkblue;
+        font-size: 22px;
+    }
+
+    .attribute label {
+        font-size: 24px;
+        display: block;
+        background: $c-darkblue;
+        text-align: center;
+        color: $c-white;
+        padding-bottom: 2px;
+    }
+
+    .attribute input,
+    .attribute select {
+        border: none;
+        padding: 0;
+    }
+
+    .attribute select {
+        width: 100%;
+        text-align: center;
+    }
+
+    // D10 roll button styles
+    .header-fields .grid .d10 {
+        display: inline-block;
+        background-image: url(/systems/megs/assets/images/icons/2d10-blue.png);
+        margin-right: 1px;
+        background-repeat: no-repeat;
+        background-size: 45px 45px;
+        background-position: center;
+        height: 55px;
+        border-radius: 25px;
+        border: solid #ccc 3px;
+        box-shadow:
+            0 1px 2px $c-white,
+            0 -1px 1px #666,
+            inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+            inset 0 1px 1px rgba(255, 255, 255, 0.8);
+        -webkit-box-shadow:
+            0 1px 2px $c-white,
+            0 -1px 1px #666,
+            inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+            inset 0 1px 1px rgba(255, 255, 255, 0.8);
+        transition: 0.2s background linear;
+
+        &.unskilled {
+            background-image: url(/systems/megs/assets/images/icons/2d10-blue-2.png);
+
+            &:hover {
+                background-image: url(/systems/megs/assets/images/icons/2d10-white-2.png);
+            }
+        }
+
+        &:hover {
+            background-image: url(/systems/megs/assets/images/icons/2d10-white.png);
+            background-color: $c-darkblue;
+            background-size: 50px 50px;
+            transition: 0.2s background linear;
         }
     }
 }
 
 .sheet-tabs {
     flex: 0;
+
+    a.item {
+        font-size: 24px;
+        color: $c-darkblue;
+
+        &:hover:not(.active) {
+            text-shadow:
+                0 0 3px $c-red,
+                0 0 5px $c-red,
+                0 0 7px $c-red;
+        }
+    }
 }
 
 .sheet-body,
@@ -52,4 +194,422 @@
     .tox-edit-area {
         padding: 0 8px;
     }
+}
+
+/*------------------------------------------------------------------------*/
+/* Resources and Attributes
+/*------------------------------------------------------------------------*/
+
+.resources {
+    .resource-label {
+        font-weight: bold;
+        font-size: 24px;
+        letter-spacing: 0.1em;
+        display: block;
+    }
+}
+
+select.resource-select {
+    width: 100%;
+    border: 0;
+    background-color: $c-lightblue;
+}
+
+.resource-content {
+    padding-top: 4px;
+
+    input {
+        font-size: 20px;
+    }
+
+    span {
+        font-size: 22px;
+        color: $c-darkblue;
+    }
+}
+
+.resource div {
+    font-size: 24px;
+}
+
+.sheet-body {
+    .initiative-and-hp {
+        .initiative,
+        .hero-points {
+            border: 2px solid $c-darkblue;
+            font-size: 22px;
+        }
+
+        label {
+            font-size: 24px;
+            display: block;
+            background: $c-darkblue;
+            text-align: center;
+            color: $c-white;
+            padding-bottom: 2px;
+        }
+
+        input {
+            border: none;
+            padding: 0;
+        }
+    }
+
+    .gadget-properties {
+        .gadget-property {
+            border: 2px solid $c-darkblue;
+            font-size: 22px;
+        }
+
+        label {
+            font-size: 24px;
+            display: block;
+            background: $c-darkblue;
+            text-align: center;
+            color: $c-white;
+            padding-bottom: 2px;
+        }
+
+        input,
+        select {
+            border: none;
+            padding: 0;
+        }
+
+        select {
+            width: 100%;
+            text-align: center;
+        }
+
+        &:hover {
+            box-shadow:
+                0 0 3px $c-red,
+                0 0 5px $c-red,
+                0 0 7px $c-red;
+        }
+    }
+
+    section.border-bottom {
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--color-border-light-primary);
+    }
+
+    .attributeRow:hover {
+        box-shadow:
+            0 0 3px $c-red,
+            0 0 5px $c-red,
+            0 0 7px $c-red;
+    }
+}
+
+.attributes .attribute {
+    border: 2px solid $c-darkblue;
+    font-size: 22px;
+
+    label {
+        font-size: 24px;
+        display: block;
+        background: $c-darkblue;
+        text-align: center;
+        color: $c-white;
+        padding-bottom: 2px;
+    }
+
+    input {
+        border: none;
+        padding: 0;
+    }
+
+    select {
+        width: 100%;
+        background-color: $c-lightblue;
+        border: 0;
+
+        &.numericSelected {
+            width: 75%;
+            float: left;
+        }
+    }
+
+    input.numericSelected {
+        width: 25%;
+        float: left;
+        font-size: 22px;
+        text-align: center;
+        color: $c-darkblue;
+        background-color: $c-lightblue;
+        border: 2px solid $c-grey;
+    }
+}
+
+.attribute-container {
+    padding: 4px 15px 0 15px;
+    box-shadow: none;
+}
+
+/*------------------------------------------------------------------------*/
+/* Quantity Controls (increment/decrement buttons)
+/*------------------------------------------------------------------------*/
+
+.quantity {
+    display: flex;
+    border: 2px solid $c-grey;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    button {
+        background-color: $c-grey;
+        color: $c-white;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        width: 30px;
+        height: auto;
+        text-align: center;
+        transition: background-color 0.2s;
+        margin: 0;
+        border-radius: 0;
+        line-height: 0;
+
+        &:hover {
+            text-shadow: none;
+        }
+    }
+
+    .input-box {
+        flex: 1;
+        text-align: center;
+        border: none;
+        padding: 8px 4px;
+        font-size: 14px;
+        outline: none;
+
+        // Hide the number input spin buttons
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    &.attribute-input {
+        border: 0;
+        text-align: center;
+
+        .input-box {
+            font-size: 22px;
+        }
+
+        button {
+            background-color: $c-white;
+            color: $c-darkblue;
+
+            &.attributeControl {
+                border-radius: 50%;
+                background-color: $c-darkblue;
+                color: $c-white;
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        input[type='number'] {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            width: 30px;
+
+            &.input-label {
+                border: none;
+                outline: none;
+                background-color: transparent;
+                width: 30px;
+            }
+        }
+    }
+
+    &.current-input {
+        button {
+            background-color: $c-darkblue;
+            color: $c-white;
+            border-color: $c-darkblue;
+        }
+
+        input[type='number'] {
+            background-color: $c-lightblue;
+        }
+    }
+}
+
+/*------------------------------------------------------------------------*/
+/* Biography and Description Sections
+/*------------------------------------------------------------------------*/
+
+.sheet-body {
+    .grid-2col-header {
+        font-size: 22px;
+        color: $c-darkblue;
+    }
+
+    div.biography section.description-item {
+        padding: 0 0 15px 0;
+        font-size: 22px;
+
+        input {
+            font-family: $font-primary;
+            font-size: 14px;
+        }
+
+        select {
+            width: 100%;
+            height: 32px;
+        }
+
+        div.wealth {
+            width: 100%;
+            display: flex;
+
+            input[type='range'] {
+                height: 38px;
+                margin: 0;
+                width: 100%;
+
+                + .range-value {
+                    flex: 0 1 48px;
+                    text-align: center;
+                    border: 1px solid $c-darkblue;
+                    padding: 2px;
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}
+
+div.tab.readableText label {
+    font-family: $font-primary;
+}
+
+/*------------------------------------------------------------------------*/
+/* Item Summaries (details/summary accordion)
+/*------------------------------------------------------------------------*/
+
+details summary.item-summary {
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    color: $c-white;
+    margin: 9px 0 3px 0;
+    padding: 3px 0 3px 5px;
+    background-color: $c-darkblue;
+}
+
+details[open] summary.item-summary {
+    background-color: $c-mediumblue;
+}
+
+/*------------------------------------------------------------------------*/
+/* Tooltips
+/*------------------------------------------------------------------------*/
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+
+    .tooltiptext {
+        visibility: hidden;
+        color: black;
+        text-align: center;
+        border-radius: 12px;
+        border: 3px solid green;
+        background-color: $c-white;
+        position: absolute;
+        z-index: 1;
+        bottom: calc(100% + 6px);
+        left: 50%;
+
+        &.wide {
+            width: 200px;
+            margin-left: -100px;
+        }
+
+        &.narrow {
+            width: 130px;
+            margin-left: -65px;
+        }
+
+        // Tooltip bottom arrow
+        &::after {
+            content: ' ';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -15px;
+            border-width: 15px;
+            border-style: solid;
+            border-color: green transparent transparent transparent;
+        }
+    }
+
+    &:hover .tooltiptext {
+        visibility: visible;
+    }
+}
+
+/*------------------------------------------------------------------------*/
+/* Initiative Table (in tooltip)
+/*------------------------------------------------------------------------*/
+
+.init-table-header {
+    width: 100%;
+    background-color: green;
+    color: $c-white;
+    text-align: center;
+}
+
+.init-table {
+    display: table;
+    font-family: $font-primary;
+    font-size: 14px;
+    background-color: white;
+    border: none;
+    width: 93%;
+    margin: 8px;
+
+    .label {
+        text-align: left;
+    }
+
+    .value {
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .total {
+        border-top: 1px black solid;
+        font-weight: bold;
+    }
+}
+
+.tooltip .tooltiptext.wide .init-table .label {
+    width: 80%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .label {
+    width: 75%;
+}
+
+.tooltip .tooltiptext.wide .init-table .value {
+    width: 20%;
+}
+
+.tooltip .tooltiptext.narrow .init-table .value {
+    width: 25%;
+}
+
+/* Factor Cost tooltip cursor */
+.factor-cost-tooltip {
+    cursor: pointer;
+    white-space: pre-line;
 }

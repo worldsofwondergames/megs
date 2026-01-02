@@ -1,2 +1,10 @@
+// Define custom font face for DecoturaICG
+@font-face {
+    font-family: DecoturaICG;
+    src: url('../fonts/Decotura ICG Regular.ttf');
+}
+
+// Font variables
 $font-primary: 'Roboto', sans-serif;
 $font-secondary: 'Roboto', sans-serif;
+$font-decorative: 'DecoturaICG', sans-serif;

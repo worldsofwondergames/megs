@@ -1495,6 +1495,11 @@ details summary.no-arrow {
 /*------------------------------------------------------------------------*/
 /* Chat Messages
 /*------------------------------------------------------------------------*/
+li.chat-message.megs {
+  background: #fff !important;
+  font-family: "Roboto", sans-serif !important;
+  letter-spacing: normal !important;
+}
 li.chat-message.megs .message-content {
   background: #fff !important;
 }

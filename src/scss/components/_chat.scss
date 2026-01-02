@@ -3,6 +3,10 @@
 /*------------------------------------------------------------------------*/
 
 li.chat-message.megs {
+    background: $c-white !important;
+    font-family: $font-primary !important;
+    letter-spacing: normal !important;
+
     .message-content {
         background: $c-white !important;
     }

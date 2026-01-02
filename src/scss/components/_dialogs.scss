@@ -2,6 +2,50 @@
 /* Dialog Styles
 /*------------------------------------------------------------------------*/
 
+// Dialog window styling
+.megs.dialog {
+    .window-header {
+        background-color: $c-darkblue;
+        color: $c-white;
+        font-family: $font-decorative;
+        font-size: 20px;
+        border-bottom: 2px solid $c-darkblue;
+    }
+
+    .window-content {
+        background-color: $c-white;
+        font-family: $font-primary;
+    }
+
+    .dialog-buttons {
+        background-color: $c-lightblue;
+        border-top: 1px solid $c-grey;
+        padding: 10px;
+
+        button {
+            background-color: $c-darkblue;
+            color: $c-white;
+            border: 2px solid $c-darkblue;
+            padding: 8px 16px;
+            font-family: $font-primary;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: $c-mediumblue;
+                border-color: $c-mediumblue;
+            }
+
+            &:active {
+                background-color: darken($c-darkblue, 10%);
+            }
+        }
+    }
+}
+
 // Roll dialog container
 .megs-dialog {
     font-family: $font-primary;

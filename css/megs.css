@@ -1471,7 +1471,7 @@ details summary.no-arrow {
 }
 .megs-dialog .form-group label {
   font-size: 16px;
-  font-weight: bold;
+  font-weight: normal;
   color: #1f5079;
   margin-bottom: 5px;
   display: block;

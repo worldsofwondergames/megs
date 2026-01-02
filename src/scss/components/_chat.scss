@@ -70,11 +70,14 @@ li.chat-message.megs {
         }
     }
 
-    .megs-chat-title {
-        padding: 5px 0 2px 2px;
-        background-color: $c-darkblue;
-        color: $c-white;
-        text-align: center;
+    .message-header {
+        background-color: $c-darkblue !important;
+        color: $c-white !important;
+        padding: 5px !important;
+    }
+
+    .message-sender {
+        color: $c-white !important;
     }
 
     .megs-chat-roll {

@@ -677,6 +677,7 @@ details summary.no-arrow {
   text-shadow: none;
 }
 .megs .quantity .input-box {
+  flex: 1;
   text-align: center;
   border: none;
   padding: 8px 10px;
@@ -746,6 +747,7 @@ details summary.no-arrow {
   text-shadow: none;
 }
 .megs .megs-dialog .quantity .input-box {
+  flex: 1;
   text-align: center;
   border: none;
   padding: 8px 10px;

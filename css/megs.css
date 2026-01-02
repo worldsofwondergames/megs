@@ -1068,10 +1068,14 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.skills .items-list .skill-row {
   background-color: #e8f4f8;
   min-height: 31px;
+  display: flex;
+  align-items: center;
 }
 .megs.sheet.actor .tab.skills .items-list .subskill-row {
   min-height: 27px;
   background-color: #fff;
+  display: flex;
+  align-items: center;
 }
 .megs.sheet.actor .tab.skills .items-list .item-toggle {
   flex: 0 0 15px;

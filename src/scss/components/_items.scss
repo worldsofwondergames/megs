@@ -231,11 +231,15 @@ li.chat-message {
     .skill-row {
         background-color: #e8f4f8;
         min-height: 31px;
+        display: flex;
+        align-items: center;
     }
 
     .subskill-row {
         min-height: 27px;
         background-color: $c-white;
+        display: flex;
+        align-items: center;
     }
 
     .item-toggle {

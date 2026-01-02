@@ -138,35 +138,26 @@
         <div class="tab subskills" data-group="primary" data-tab="subskills">
             <ol class='items-list'>
                 <li class='item flexrow items-header grid-8col'>
-                    <div class='item-name grid-span-5'>{{localize 'MEGS.Name'}}</div>
+                    <div class='item-name grid-span-6'>{{localize 'MEGS.Name'}}</div>
                     <div class='item-trained grid-span-1'>{{localize 'MEGS.Trained'}}</div>
-                    <div class='item-controls grid-span-1'>
-                        {{#if flags.megs.edit-mode}}
-                            <a class='item-control item-create' title='{{localize "DOCUMENT.Create" type=' Subskill'}}' data-type='subskill'>
-                                <i class='fas fa-plus'></i>
-                                {{localize 'DOCUMENT.New' type=""}}
-                            </a>
-                        {{else}}
-                            &nbsp;
-                        {{/if}}
-                    </div>
+                    <div class='item-controls grid-span-1'></div>
                 </li>
 
                 {{#each subskills as |subskill|}}
-                    <li class='item flexrow item-row' data-item-id='{{subskill._id}}'>
-                        <div class='item-name'>
+                    <li class='item flexrow item-row grid-8col' data-item-id='{{subskill._id}}'>
+                        <div class='item-name grid-span-6'>
                             <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=subskill.name}}'>
                                 {{subskill.name}}
                             </a>
                         </div>
-                        <div class='item-trained'>
+                        <div class='item-trained grid-span-1'>
                             {{#if flags.megs.edit-mode}}
-                                <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if (compare ../system.aps "===" 0)}}disabled{{/if}} />
+                                <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" {{#if (compare ../system.aps "===" 0)}}disabled title="{{localize 'MEGS.SubskillDisabledTooltip'}}"{{/if}} />
                             {{else}}
                                 <input type="checkbox" name="items.{{subskill._id}}.system.isTrained" {{checked subskill.system.isTrained}} data-dtype="Boolean" data-skill-aps="{{../system.aps}}" disabled />
                             {{/if}}
                         </div>
-                        <div class='item-controls'>
+                        <div class='item-controls grid-span-1'>
                             {{#if subskill.isRollable}}
                                 <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{subskill.name}}
               {{#if isUnskilled}}Unskilled{{/if}}

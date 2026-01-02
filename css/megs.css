@@ -354,6 +354,9 @@ details summary.no-arrow {
   /* Actor Sheet Skills Tab Accordion Styles
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
+  /* Item Sheet Subskills Tab
+  /*------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------*/
   /* Character Creator / Character Builder Styles
   /*------------------------------------------------------------------------*/
   /* Attribute Cost Display */
@@ -1068,6 +1071,11 @@ details summary.no-arrow {
 }
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
   color: #000;
+}
+.megs.sheet.item .tab.subskills .items-list .item-trained {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .megs .effects .item .effect-source,
 .megs .effects .item .effect-duration,

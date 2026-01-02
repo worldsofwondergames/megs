@@ -278,3 +278,15 @@ li.chat-message {
         }
     }
 }
+
+/*------------------------------------------------------------------------*/
+/* Item Sheet Subskills Tab
+/*------------------------------------------------------------------------*/
+
+&.sheet.item .tab.subskills .items-list {
+    .item-trained {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

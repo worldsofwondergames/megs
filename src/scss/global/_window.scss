@@ -1,12 +1,146 @@
-.window-app {
-    font-family: $font-primary;
+/* Global styles */
+.bold {
+    font-weight: bold;
+}
+
+.capitalize {
+    text-transform: uppercase;
+}
+
+/*------------------------------------------------------------------------*/
+/* MEGS Window Styles
+/*------------------------------------------------------------------------*/
+
+.megs {
+    font-family: $font-decorative;
+    background-image: none;
+    letter-spacing: 0.05em;
+
+    .window-header {
+        background-color: $c-darkblue;
+        font-size: 20px;
+    }
+
+    &.window-app .window-content {
+        background-color: $c-white;
+        background-image: none;
+    }
+
+    input[type='text'] {
+        background-color: $c-lightblue;
+        border: 1px solid $c-darkblue;
+    }
+
+    label {
+        color: $c-darkblue;
+    }
+
+    select {
+        font-size: 22px;
+        color: $c-darkblue;
+    }
+
+    .message-panel {
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-size: 14px;
+        color: $c-darkblue;
+        padding: 10px 5px 0 5px;
+    }
+
+    .editor-edit {
+        display: inline-block;
+    }
+
+    .editor-content {
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-size: 14px;
+        color: $c-darkblue;
+        padding: 10px 5px 0 5px;
+    }
+
+    div.biography {
+        label.biography-label {
+            font-size: 22px;
+        }
+
+        div.editor {
+            padding-top: 2px;
+            padding-bottom: 5px;
+        }
+
+        div.editor-content {
+            border: 1px solid $c-darkblue;
+            background-color: $c-lightblue;
+        }
+    }
+
+    .description-text {
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        font-size: 14px;
+        color: $c-darkblue;
+        padding: 10px 5px 0 5px;
+    }
+
+    .tabs .item {
+        color: $c-darkblue;
+
+        &.active {
+            text-shadow: 0 0 10px #2c8dda;
+        }
+    }
+
+    input[type='checkbox'] {
+        + label {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 13px;
+        }
+
+        vertical-align: middle;
+    }
+}
+
+body.game .app h4.window-title {
+    font-family: $font-decorative;
 }
 
 .rollable {
     &:hover,
     &:focus {
-        color: #000;
-        text-shadow: 0 0 10px red;
+        color: $c-darkblue;
         cursor: pointer;
+        text-shadow:
+            0 0 3px $c-red,
+            0 0 5px $c-red,
+            0 0 7px $c-red;
     }
+}
+
+/* Utility classes */
+.padding-bottom-10px {
+    padding-bottom: 10px;
+}
+
+.indentLeft {
+    padding-left: 15px;
+    padding-top: 5px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: 16px;
+}
+
+.svg-icon {
+    height: 20px;
+    width: 20px;
+    border: none;
+}
+
+/* Details/summary elements */
+details summary.no-arrow {
+    display: block;
+    cursor: pointer;
+}
+
+.system-megs details summary.roll-dialog-summary {
+    margin: 9px 0 3px 0;
+    padding: 3px 0 3px 0;
+    background: $c-grey;
 }

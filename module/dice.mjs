@@ -545,6 +545,9 @@ export class MegsTableRolls {
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
                     yes: () => true,
                     no: () => false,
+                    options: {
+                        classes: ['megs', 'dialog']
+                    }
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs

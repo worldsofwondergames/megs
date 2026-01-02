@@ -396,6 +396,10 @@ select.resource-select {
         border: 0;
         text-align: center;
 
+        .input-box {
+            font-size: 22px;
+        }
+
         button {
             background-color: $c-white;
             color: $c-darkblue;

@@ -348,9 +348,6 @@ details summary.no-arrow {
   /*------------------------------------------------------------------------*/
   /* Directory item icons */
   /*------------------------------------------------------------------------*/
-  /* Chat Messages
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
   /* Actor Sheet Skills Tab Accordion Styles
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
@@ -388,6 +385,9 @@ details summary.no-arrow {
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
   /* Character Creator - Wealth Tab
+  /*------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------*/
+  /* Chat Messages
   /*------------------------------------------------------------------------*/
 }
 .megs .item-form {
@@ -969,67 +969,6 @@ details summary.no-arrow {
 .megs li.directory-item img[src*="assets/images/icons"] {
   filter: invert(100%);
 }
-.megs li.chat-message .message-content {
-  background: #fff;
-}
-.megs li.chat-message .chat-value {
-  border: 1px solid #1f5079;
-}
-.megs li.chat-message .chat-value label {
-  width: 100%;
-  color: #fff;
-  background-color: #1f5079;
-  display: block;
-  text-align: center;
-  padding: 3px;
-}
-.megs li.chat-message .chat-value div {
-  color: #1f5079;
-  padding: 3px;
-}
-.megs li.chat-message .chat-result {
-  border: 1px solid #1f5079;
-  padding: 3px;
-}
-.megs li.chat-message .chat-result.inverse {
-  background-color: #ddebf6;
-}
-.megs li.chat-message .chat-result.success {
-  background-color: green;
-  color: #fff;
-  transition: 0.2s background linear;
-}
-.megs li.chat-message .chat-result.success:hover {
-  background-color: lightgreen;
-}
-.megs li.chat-message .chat-result.failure {
-  background-color: #d63a28;
-  color: #fff;
-  transition: 0.2s background linear;
-}
-.megs li.chat-message .chat-result.failure:hover {
-  background-color: rgb(252, 87, 69);
-}
-.megs li.chat-message .chat-result .d10 {
-  display: inline-block;
-  background-image: url(/icons/svg/d10-grey.svg);
-  min-width: 24px;
-  line-height: 24px;
-  margin-right: 1px;
-  background-repeat: no-repeat;
-  background-size: 24px 24px;
-  font-weight: bold;
-  text-align: center;
-}
-.megs li.chat-message .megs-chat-title {
-  padding: 5px 0 2px 2px;
-  background-color: #1f5079;
-  color: #fff;
-  text-align: center;
-}
-.megs li.chat-message .megs-chat-roll {
-  margin: 0 3px 0 3px;
-}
 .megs.sheet.actor .tab.skills .items-list .skill-row {
   background-color: #e8f4f8;
   min-height: 31px;
@@ -1417,6 +1356,67 @@ details summary.no-arrow {
   width: auto;
   margin: 0;
   cursor: pointer;
+}
+.megs li.chat-message .message-content {
+  background: #fff;
+}
+.megs li.chat-message .chat-value {
+  border: 1px solid #1f5079;
+}
+.megs li.chat-message .chat-value label {
+  width: 100%;
+  color: #fff;
+  background-color: #1f5079;
+  display: block;
+  text-align: center;
+  padding: 3px;
+}
+.megs li.chat-message .chat-value div {
+  color: #1f5079;
+  padding: 3px;
+}
+.megs li.chat-message .chat-result {
+  border: 1px solid #1f5079;
+  padding: 3px;
+}
+.megs li.chat-message .chat-result.inverse {
+  background-color: #ddebf6;
+}
+.megs li.chat-message .chat-result.success {
+  background-color: green;
+  color: #fff;
+  transition: 0.2s background linear;
+}
+.megs li.chat-message .chat-result.success:hover {
+  background-color: lightgreen;
+}
+.megs li.chat-message .chat-result.failure {
+  background-color: #d63a28;
+  color: #fff;
+  transition: 0.2s background linear;
+}
+.megs li.chat-message .chat-result.failure:hover {
+  background-color: rgb(252, 87, 69);
+}
+.megs li.chat-message .chat-result .d10 {
+  display: inline-block;
+  background-image: url(/icons/svg/d10-grey.svg);
+  min-width: 24px;
+  line-height: 24px;
+  margin-right: 1px;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.megs li.chat-message .megs-chat-title {
+  padding: 5px 0 2px 2px;
+  background-color: #1f5079;
+  color: #fff;
+  text-align: center;
+}
+.megs li.chat-message .megs-chat-roll {
+  margin: 0 3px 0 3px;
 }
 
 /* Dialog styles (not nested under .megs) */

@@ -19,8 +19,8 @@
     @import 'components/items';
     @import 'components/effects';
     @import 'components/character-creator';
-    @import 'components/chat';
 }
 
-/* Dialog styles (not nested under .megs) */
+/* Dialog and chat styles (not nested under .megs) */
 @import 'components/dialogs';
+@import 'components/chat';

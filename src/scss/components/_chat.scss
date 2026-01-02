@@ -11,6 +11,10 @@ li.chat-message {
         background: $c-white !important;
     }
 
+    &.ic .message-content {
+        padding-top: 5px;
+    }
+
     .chat-value {
         border: 1px solid $c-darkblue;
 

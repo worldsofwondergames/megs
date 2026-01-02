@@ -1503,6 +1503,9 @@ li.chat-message {
 li.chat-message .message-content {
   background: #fff !important;
 }
+li.chat-message.ic .message-content {
+  padding-top: 5px;
+}
 li.chat-message .chat-value {
   border: 1px solid #1f5079;
 }

@@ -1300,6 +1300,12 @@ details summary.no-arrow {
 .megs .character-creator .tab.skills .items-list .item-name {
   flex: 2.5;
 }
+.megs .character-creator .tab.skills .items-list .item-linked {
+  flex: 0 0 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .megs .character-creator .tab.skills .items-list .item-base-cost,
 .megs .character-creator .tab.skills .items-list .item-factor-cost,
 .megs .character-creator .tab.skills .items-list .item-total-cost {

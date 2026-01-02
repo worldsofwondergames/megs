@@ -1357,13 +1357,13 @@ details summary.no-arrow {
   margin: 0;
   cursor: pointer;
 }
-.megs li.chat-message .message-content {
+.megs li.chat-message.megs .message-content {
   background: #fff;
 }
-.megs li.chat-message .chat-value {
+.megs li.chat-message.megs .chat-value {
   border: 1px solid #1f5079;
 }
-.megs li.chat-message .chat-value label {
+.megs li.chat-message.megs .chat-value label {
   width: 100%;
   color: #fff;
   background-color: #1f5079;
@@ -1371,34 +1371,34 @@ details summary.no-arrow {
   text-align: center;
   padding: 3px;
 }
-.megs li.chat-message .chat-value div {
+.megs li.chat-message.megs .chat-value div {
   color: #1f5079;
   padding: 3px;
 }
-.megs li.chat-message .chat-result {
+.megs li.chat-message.megs .chat-result {
   border: 1px solid #1f5079;
   padding: 3px;
 }
-.megs li.chat-message .chat-result.inverse {
+.megs li.chat-message.megs .chat-result.inverse {
   background-color: #ddebf6;
 }
-.megs li.chat-message .chat-result.success {
+.megs li.chat-message.megs .chat-result.success {
   background-color: green;
   color: #fff;
   transition: 0.2s background linear;
 }
-.megs li.chat-message .chat-result.success:hover {
+.megs li.chat-message.megs .chat-result.success:hover {
   background-color: lightgreen;
 }
-.megs li.chat-message .chat-result.failure {
+.megs li.chat-message.megs .chat-result.failure {
   background-color: #d63a28;
   color: #fff;
   transition: 0.2s background linear;
 }
-.megs li.chat-message .chat-result.failure:hover {
+.megs li.chat-message.megs .chat-result.failure:hover {
   background-color: rgb(252, 87, 69);
 }
-.megs li.chat-message .chat-result .d10 {
+.megs li.chat-message.megs .chat-result .d10 {
   display: inline-block;
   background-image: url(/icons/svg/d10-grey.svg);
   min-width: 24px;
@@ -1409,13 +1409,13 @@ details summary.no-arrow {
   font-weight: bold;
   text-align: center;
 }
-.megs li.chat-message .megs-chat-title {
+.megs li.chat-message.megs .megs-chat-title {
   padding: 5px 0 2px 2px;
   background-color: #1f5079;
   color: #fff;
   text-align: center;
 }
-.megs li.chat-message .megs-chat-roll {
+.megs li.chat-message.megs .megs-chat-roll {
   margin: 0 3px 0 3px;
 }
 

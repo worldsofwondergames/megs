@@ -580,9 +580,11 @@ export class MegsTableRolls {
 
         console.log('Calling show result from point: ' + callingPoint);
 
-        // Modify speaker to use the label (which already includes character name)
+        // Use label as alias only (label already includes character name)
         const speaker = this.speaker ? foundry.utils.deepClone(this.speaker) : null;
         if (speaker && this.label) {
+            // Clear actor reference and use only the alias to prevent duplication
+            delete speaker.actor;
             speaker.alias = this.label;
         }
 

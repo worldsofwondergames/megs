@@ -96,6 +96,13 @@ li.chat-message {
         }
     }
 
+    .megs-chat-title {
+        padding: 5px 0 2px 2px;
+        background-color: $c-darkblue;
+        color: $c-white;
+        text-align: center;
+    }
+
     .megs-chat-roll {
         margin: 0 3px 0 3px;
     }

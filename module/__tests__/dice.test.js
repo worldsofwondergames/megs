@@ -552,6 +552,147 @@ test('_getRangeIndex returns the correct index values', () => {
     expect(dice._getRangeIndex(60)).toBe(18);
 });
 
+// Test suite for extrapolation beyond 60
+describe('Table extrapolation for values beyond 60', () => {
+    const values = new RollValues('Test', 0, 0, 0, 0, 0, '1d10 + 1d10');
+    const dice = new MegsTableRolls(values);
+
+    describe('_getRangeIndex extrapolation', () => {
+        test('Values beyond 60 should return the last valid index (18)', () => {
+            expect(dice._getRangeIndex(61)).toBe(18);
+            expect(dice._getRangeIndex(65)).toBe(18);
+            expect(dice._getRangeIndex(70)).toBe(18);
+            expect(dice._getRangeIndex(77)).toBe(18);
+            expect(dice._getRangeIndex(100)).toBe(18);
+        });
+
+        test('Values at boundaries should still map correctly', () => {
+            expect(dice._getRangeIndex(56)).toBe(18); // Start of last range
+            expect(dice._getRangeIndex(60)).toBe(18); // End of last range
+            expect(dice._getRangeIndex(55)).toBe(17); // Just before last range
+        });
+    });
+
+    describe('_getActionTableDifficulty extrapolation', () => {
+        test('OV beyond 60 should add extrapolation (user scenario: AV=8, OV=77)', () => {
+            // AV=8 (index 4), OV=77 (index 18 + extrapolation)
+            // Base difficulty from actionTable[4][18] = 65
+            // OV=77 is in range 76-80, which is +20 (4 ranges beyond 60)
+            // Expected: 65 + 20 = 85
+            const difficulty = dice._getActionTableDifficulty(8, 77, 0);
+            expect(difficulty).toBe(85);
+        });
+
+        test('OV in range 61-65 should add +5', () => {
+            // AV=8 (index 4), OV=61 (index 18 + 5)
+            // Base from actionTable[4][18] = 65
+            // Expected: 65 + 5 = 70
+            expect(dice._getActionTableDifficulty(8, 61, 0)).toBe(70);
+            expect(dice._getActionTableDifficulty(8, 65, 0)).toBe(70);
+        });
+
+        test('OV in range 66-70 should add +10', () => {
+            // Expected: 65 + 10 = 75
+            expect(dice._getActionTableDifficulty(8, 66, 0)).toBe(75);
+            expect(dice._getActionTableDifficulty(8, 70, 0)).toBe(75);
+        });
+
+        test('OV in range 71-75 should add +15', () => {
+            // Expected: 65 + 15 = 80
+            expect(dice._getActionTableDifficulty(8, 71, 0)).toBe(80);
+            expect(dice._getActionTableDifficulty(8, 75, 0)).toBe(80);
+        });
+
+        test('AV beyond 60 should add extrapolation', () => {
+            // AV=65 (index 18 + 5), OV=8 (index 4)
+            // Base from actionTable[18][4] = 3
+            // AV=65 is in range 61-65, which is +5
+            // Expected: 3 + 5 = 8
+            expect(dice._getActionTableDifficulty(65, 8, 0)).toBe(8);
+        });
+
+        test('Both AV and OV beyond 60 should add both extrapolations', () => {
+            // AV=70 (index 18 + 10), OV=75 (index 18 + 15)
+            // Base from actionTable[18][18] = 11
+            // AV extrapolation: +10, OV extrapolation: +15
+            // Expected: 11 + 10 + 15 = 36
+            expect(dice._getActionTableDifficulty(70, 75, 0)).toBe(36);
+        });
+
+        test('Column shifts should still work with extrapolated OV', () => {
+            // AV=8, OV=77, ovColumnShifts=-2
+            // OV index would be 18 - (-2) = 20, clamped to 18
+            // Base from actionTable[4][18] = 65
+            // OV extrapolation: +20
+            // Expected: 65 + 20 = 85
+            expect(dice._getActionTableDifficulty(8, 77, -2)).toBe(85);
+        });
+
+        test('Values at 60 should not add extrapolation', () => {
+            // AV=8 (index 4), OV=60 (index 18, no extrapolation)
+            // Base from actionTable[4][18] = 65
+            // Expected: 65 (no extrapolation)
+            expect(dice._getActionTableDifficulty(8, 60, 0)).toBe(65);
+        });
+    });
+
+    describe('_getResultTableValue extrapolation', () => {
+        test('EV beyond 60 should add extrapolation', () => {
+            // EV=65 (index 18 + 5), shiftedRvIndex=10
+            // Base from resultTable[18][10] = 12
+            // EV=65 is in range 61-65, which is +5
+            // Expected: 12 + 5 = 17
+            const resultAPs = dice._getResultTableValue(65, 18, 10);
+            expect(resultAPs).toBe(17);
+        });
+
+        test('EV in range 61-65 should add +5', () => {
+            // resultTable[18][5] = 35
+            expect(dice._getResultTableValue(61, 18, 5)).toBe(40);
+            expect(dice._getResultTableValue(65, 18, 5)).toBe(40);
+        });
+
+        test('EV in range 66-70 should add +10', () => {
+            // resultTable[18][5] = 35
+            expect(dice._getResultTableValue(66, 18, 5)).toBe(45);
+            expect(dice._getResultTableValue(70, 18, 5)).toBe(45);
+        });
+
+        test('EV in range 71-75 should add +15', () => {
+            // resultTable[18][5] = 35
+            expect(dice._getResultTableValue(71, 18, 5)).toBe(50);
+            expect(dice._getResultTableValue(75, 18, 5)).toBe(50);
+        });
+
+        test('EV in range 76-80 should add +20', () => {
+            // resultTable[18][5] = 35
+            expect(dice._getResultTableValue(77, 18, 5)).toBe(55);
+            expect(dice._getResultTableValue(80, 18, 5)).toBe(55);
+        });
+
+        test('EV at 60 should not add extrapolation', () => {
+            // resultTable[18][5] = 35
+            // Expected: 35 (no extrapolation)
+            expect(dice._getResultTableValue(60, 18, 5)).toBe(35);
+        });
+
+        test('High EV values should extrapolate correctly', () => {
+            // EV=100 (ranges beyond: floor((100-61)/5)+1 = floor(39/5)+1 = 7+1 = 8)
+            // Extrapolation: 8 * 5 = 40
+            // resultTable[18][10] = 12
+            // Expected: 12 + 40 = 52
+            expect(dice._getResultTableValue(100, 18, 10)).toBe(52);
+        });
+
+        test('shiftedRvIndex clamping should work correctly', () => {
+            // shiftedRvIndex beyond table should be clamped
+            // resultTable[18] has 20 columns (0-19)
+            // resultTable[18][19] = 0
+            expect(dice._getResultTableValue(65, 18, 25)).toBe(5); // 0 + 5
+        });
+    });
+});
+
 // Comprehensive test suite for _getColumnShifts
 describe('_getColumnShifts comprehensive tests', () => {
     const values = new RollValues('Test', 0, 0, 0, 0, 0, '1d10 + 1d10');

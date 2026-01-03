@@ -10,122 +10,6 @@
 }
 
 /* Global styles */
-/* Global styles */
-.bold {
-  font-weight: bold;
-}
-
-.capitalize {
-  text-transform: uppercase;
-}
-
-/*------------------------------------------------------------------------*/
-/* MEGS Window Styles
-/*------------------------------------------------------------------------*/
-.megs {
-  font-family: "DecoturaICG", sans-serif;
-  background-image: none;
-  letter-spacing: 0.05em;
-}
-.megs .window-header {
-  background-color: #1f5079;
-  font-size: 20px;
-}
-.megs.window-app .window-content {
-  background-color: #fff;
-  background-image: none;
-}
-.megs input[type=text] {
-  background-color: #ddebf6;
-  border: 1px solid #1f5079;
-}
-.megs label {
-  color: #1f5079;
-}
-.megs select {
-  font-size: 22px;
-  color: #1f5079;
-}
-.megs .message-panel {
-  font-family: "Roboto", sans-serif;
-  font-size: 14px;
-  color: #1f5079;
-  padding: 10px 5px 0 5px;
-}
-.megs .editor-edit {
-  display: inline-block;
-}
-.megs .editor-content {
-  font-family: "Roboto", sans-serif;
-  font-size: 14px;
-  color: #1f5079;
-  padding: 10px 5px 0 5px;
-}
-.megs div.biography label.biography-label {
-  font-size: 22px;
-}
-.megs div.biography div.editor {
-  padding-top: 2px;
-  padding-bottom: 5px;
-}
-.megs div.biography div.editor-content {
-  border: 1px solid #1f5079;
-  background-color: #ddebf6;
-}
-.megs .description-text {
-  font-family: "Roboto", sans-serif;
-  font-size: 14px;
-  color: #1f5079;
-  padding: 10px 5px 0 5px;
-}
-.megs .tabs .item {
-  color: #1f5079;
-}
-.megs .tabs .item.active {
-  text-shadow: 0 0 10px #2c8dda;
-}
-.megs input[type=checkbox] {
-  vertical-align: middle;
-}
-.megs input[type=checkbox] + label {
-  font-family: "Roboto", sans-serif;
-  font-size: 13px;
-}
-
-body.game .app h4.window-title {
-  font-family: "DecoturaICG", sans-serif;
-}
-
-.rollable:hover, .rollable:focus {
-  color: #1f5079;
-  cursor: pointer;
-  text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
-}
-
-/* Utility classes */
-.padding-bottom-10px {
-  padding-bottom: 10px;
-}
-
-.indentLeft {
-  padding-left: 15px;
-  padding-top: 5px;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-}
-
-.svg-icon {
-  height: 20px;
-  width: 20px;
-  border: none;
-}
-
-/* Details/summary elements */
-details summary.no-arrow {
-  display: block;
-  cursor: pointer;
-}
-
 .grid,
 .grid-2col {
   display: grid;
@@ -319,6 +203,123 @@ details summary.no-arrow {
   text-align: center;
 }
 
+/* Window styles */
+/* Global styles */
+.bold {
+  font-weight: bold;
+}
+
+.capitalize {
+  text-transform: uppercase;
+}
+
+/*------------------------------------------------------------------------*/
+/* MEGS Window Styles
+/*------------------------------------------------------------------------*/
+.megs {
+  font-family: "DecoturaICG", sans-serif;
+  background-image: none;
+  letter-spacing: 0.05em;
+}
+.megs .window-header {
+  background-color: #1f5079;
+  font-size: 20px;
+}
+.megs.window-app .window-content {
+  background-color: #fff;
+  background-image: none;
+}
+.megs input[type=text] {
+  background-color: #ddebf6;
+  border: 1px solid #1f5079;
+}
+.megs label {
+  color: #1f5079;
+}
+.megs select {
+  font-size: 22px;
+  color: #1f5079;
+}
+.megs .message-panel {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #1f5079;
+  padding: 10px 5px 0 5px;
+}
+.megs .editor-edit {
+  display: inline-block;
+}
+.megs .editor-content {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #1f5079;
+  padding: 10px 5px 0 5px;
+}
+.megs div.biography label.biography-label {
+  font-size: 22px;
+}
+.megs div.biography div.editor {
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
+.megs div.biography div.editor-content {
+  border: 1px solid #1f5079;
+  background-color: #ddebf6;
+}
+.megs .description-text {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #1f5079;
+  padding: 10px 5px 0 5px;
+}
+.megs .tabs .item {
+  color: #1f5079;
+}
+.megs .tabs .item.active {
+  text-shadow: 0 0 10px #2c8dda;
+}
+.megs input[type=checkbox] {
+  vertical-align: middle;
+}
+.megs input[type=checkbox] + label {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+}
+
+body.game .app h4.window-title {
+  font-family: "DecoturaICG", sans-serif;
+}
+
+.rollable:hover, .rollable:focus {
+  color: #1f5079;
+  cursor: pointer;
+  text-shadow: 0 0 3px #d63a28, 0 0 5px #d63a28, 0 0 7px #d63a28;
+}
+
+/* Utility classes */
+.padding-bottom-10px {
+  padding-bottom: 10px;
+}
+
+.indentLeft {
+  padding-left: 15px;
+  padding-top: 5px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.svg-icon {
+  height: 20px;
+  width: 20px;
+  border: none;
+}
+
+/* Details/summary elements */
+details summary.no-arrow {
+  display: block;
+  cursor: pointer;
+}
+
 /* Styles limited to megs sheets */
 .megs {
   /*------------------------------------------------------------------------*/
@@ -347,9 +348,6 @@ details summary.no-arrow {
   /* Items, Gadgets, Lists
   /*------------------------------------------------------------------------*/
   /* Directory item icons */
-  /*------------------------------------------------------------------------*/
-  /* Chat Messages
-  /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
   /* Actor Sheet Skills Tab Accordion Styles
   /*------------------------------------------------------------------------*/
@@ -541,7 +539,7 @@ details summary.no-arrow {
   padding: 0 8px;
 }
 .megs .resources .resource-label {
-  font-weight: bold;
+  font-weight: 500;
   font-size: 24px;
   letter-spacing: 0.1em;
   display: block;
@@ -851,7 +849,7 @@ details summary.no-arrow {
   white-space: pre-line;
 }
 .megs .resource-label {
-  font-weight: bold;
+  font-weight: 500;
 }
 .megs .items-header {
   margin: 2px 0;
@@ -968,67 +966,6 @@ details summary.no-arrow {
 }
 .megs li.directory-item img[src*="assets/images/icons"] {
   filter: invert(100%);
-}
-.megs li.chat-message .message-content {
-  background: #fff;
-}
-.megs li.chat-message .chat-value {
-  border: 1px solid #1f5079;
-}
-.megs li.chat-message .chat-value label {
-  width: 100%;
-  color: #fff;
-  background-color: #1f5079;
-  display: block;
-  text-align: center;
-  padding: 3px;
-}
-.megs li.chat-message .chat-value div {
-  color: #1f5079;
-  padding: 3px;
-}
-.megs li.chat-message .chat-result {
-  border: 1px solid #1f5079;
-  padding: 3px;
-}
-.megs li.chat-message .chat-result.inverse {
-  background-color: #ddebf6;
-}
-.megs li.chat-message .chat-result.success {
-  background-color: green;
-  color: #fff;
-  transition: 0.2s background linear;
-}
-.megs li.chat-message .chat-result.success:hover {
-  background-color: lightgreen;
-}
-.megs li.chat-message .chat-result.failure {
-  background-color: #d63a28;
-  color: #fff;
-  transition: 0.2s background linear;
-}
-.megs li.chat-message .chat-result.failure:hover {
-  background-color: rgb(252, 87, 69);
-}
-.megs li.chat-message .chat-result .d10 {
-  display: inline-block;
-  background-image: url(/icons/svg/d10-grey.svg);
-  min-width: 24px;
-  line-height: 24px;
-  margin-right: 1px;
-  background-repeat: no-repeat;
-  background-size: 24px 24px;
-  font-weight: bold;
-  text-align: center;
-}
-.megs li.chat-message .megs-chat-title {
-  padding: 5px 0 2px 2px;
-  background-color: #1f5079;
-  color: #fff;
-  text-align: center;
-}
-.megs li.chat-message .megs-chat-roll {
-  margin: 0 3px 0 3px;
 }
 .megs.sheet.actor .tab.skills .items-list .skill-row {
   background-color: #e8f4f8;
@@ -1419,7 +1356,7 @@ details summary.no-arrow {
   cursor: pointer;
 }
 
-/* Dialog styles (not nested under .megs) */
+/* Dialog and chat styles (not nested under .megs) */
 /*------------------------------------------------------------------------*/
 /* Dialog Styles
 /*------------------------------------------------------------------------*/
@@ -1554,4 +1491,94 @@ details summary.no-arrow {
 .megs-dialog .quantity .input-box::-webkit-inner-spin-button, .megs-dialog .quantity .input-box::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/*------------------------------------------------------------------------*/
+/* Chat Messages
+/*------------------------------------------------------------------------*/
+li.chat-message {
+  background: #fff !important;
+  font-family: "Roboto", sans-serif !important;
+  letter-spacing: normal !important;
+}
+li.chat-message .message-content {
+  background: #fff !important;
+}
+li.chat-message.ic .message-content {
+  padding-top: 5px;
+}
+li.chat-message .chat-value {
+  border: 1px solid #1f5079;
+}
+li.chat-message .chat-value label {
+  width: 100%;
+  color: #fff;
+  background-color: #1f5079;
+  display: block;
+  text-align: center;
+  padding: 3px;
+}
+li.chat-message .chat-value div {
+  color: #1f5079;
+  padding: 3px;
+}
+li.chat-message .chat-result {
+  border: 1px solid #1f5079;
+  padding: 3px;
+}
+li.chat-message .chat-result.inverse {
+  background-color: #ddebf6 !important;
+}
+li.chat-message .chat-result.success {
+  background-color: green !important;
+  color: #fff;
+  transition: 0.2s background linear;
+}
+li.chat-message .chat-result.success:hover {
+  background-color: lightgreen;
+}
+li.chat-message .chat-result.failure {
+  background-color: #d63a28 !important;
+  color: #fff;
+  transition: 0.2s background linear;
+}
+li.chat-message .chat-result.failure:hover {
+  background-color: rgb(252, 87, 69);
+}
+li.chat-message .chat-result .d10 {
+  display: inline-block;
+  background-image: url(/icons/svg/d10-grey.svg);
+  min-width: 24px;
+  line-height: 24px;
+  margin-right: 1px;
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  font-weight: bold;
+  text-align: center;
+}
+li.chat-message .message-header {
+  background-color: #1f5079 !important;
+  color: #fff !important;
+  padding: 5px !important;
+}
+li.chat-message .message-header .message-sender {
+  color: #fff !important;
+}
+li.chat-message .message-header .message-metadata {
+  color: #fff !important;
+}
+li.chat-message .message-header .message-metadata .message-timestamp {
+  color: #fff !important;
+}
+li.chat-message .message-header .message-metadata .message-delete {
+  color: #fff !important;
+}
+li.chat-message .megs-chat-title {
+  padding: 5px 0 2px 2px;
+  background-color: #1f5079;
+  color: #fff;
+  text-align: center;
+}
+li.chat-message .megs-chat-roll {
+  margin: 0 3px 0 3px;
 }

@@ -236,12 +236,14 @@ export class MEGSActorSheet extends ActorSheet {
 
     _prepareInitiative(context) {
         // TODO If two Characters' Initiative totals are tied, a hero always takes precedence over a villain or minor Character.
-        const initiativeBonus = this._calculateInitiativeBonus(context);
+        const { bonus, text } = this._calculateInitiativeBonusWithText(context);
 
         // set value on actor sheet object
         // TODO do we need both of these now?
-        context.system.initiativeBonus.value = initiativeBonus; // works for sheet display
-        context.actor.system.initiativeBonus.value = initiativeBonus; // already changes
+        context.system.initiativeBonus.value = bonus; // works for sheet display
+        context.system.initiativeBonus.text = text; // tooltip text
+        context.actor.system.initiativeBonus.value = bonus; // already changes
+        context.actor.system.initiativeBonus.text = text;
     }
 
     /**
@@ -287,6 +289,46 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         return initiativeBonus;
+    }
+
+    /**
+     * Calculate initiative bonus and generate explanatory text
+     * @param {*} context
+     * @returns {{bonus: number, text: string}}
+     * @private
+     */
+    _calculateInitiativeBonusWithText(context) {
+        const parts = [];
+
+        // Base attributes
+        const dex = context.document.system.attributes.dex.value;
+        const int = context.document.system.attributes.int.value;
+        const infl = context.document.system.attributes.infl.value;
+        parts.push(`DEX ${dex} + INT ${int} + INFL ${infl}`);
+        let initiativeBonus = dex + int + infl;
+
+        // Superspeed adds APs of their power
+        if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {
+            const aps = this._getAbilityAPs(context.powers, MEGS.powers.SUPERSPEED);
+            parts.push(`Superspeed +${aps}`);
+            initiativeBonus = initiativeBonus + aps;
+        }
+
+        // Martial Artist gives +2
+        const martialArtist = this._getAbilityFromArray(context.skills, MEGS.skills.MARTIAL_ARTIST);
+        if (martialArtist && martialArtist.system.aps > 0) {
+            parts.push('Martial Artist +2');
+            initiativeBonus = initiativeBonus + 2;
+        }
+
+        // Lightning Reflexes gives +2
+        if (this._hasAbility(context.advantages, MEGS.advantages.LIGHTNING_REFLEXES)) {
+            parts.push('Lightning Reflexes +2');
+            initiativeBonus = initiativeBonus + 2;
+        }
+
+        const text = parts.join('<br>');
+        return { bonus: initiativeBonus, text };
     }
 
     /**

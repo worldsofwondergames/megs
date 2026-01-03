@@ -1627,15 +1627,22 @@ li.chat-message .tooltip:hover .tooltiptext {
 li.chat-message .tooltip .tooltiptext .init-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 li.chat-message .tooltip .tooltiptext .init-table td {
   padding: 2px 4px;
 }
 li.chat-message .tooltip .tooltiptext .init-table .label {
+  width: 75%;
   text-align: left;
   padding-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 li.chat-message .tooltip .tooltiptext .init-table .value {
+  width: 25%;
   text-align: right;
   font-weight: bold;
+  white-space: nowrap;
 }

@@ -158,19 +158,26 @@ li.chat-message {
     .tooltip .tooltiptext .init-table {
         width: 100%;
         border-collapse: collapse;
+        table-layout: fixed;
 
         td {
             padding: 2px 4px;
         }
 
         .label {
+            width: 75%;
             text-align: left;
             padding-right: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .value {
+            width: 25%;
             text-align: right;
             font-weight: bold;
+            white-space: nowrap;
         }
     }
 }

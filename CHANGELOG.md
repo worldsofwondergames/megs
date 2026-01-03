@@ -121,7 +121,6 @@
 - Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
 - Improved chat message styling with customized roll result headers
-- Enhanced roll dialog with "Roll" button label and d10 die icon
 
 ### Bug Fixes
 

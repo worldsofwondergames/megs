@@ -1573,12 +1573,6 @@ li.chat-message .message-header .message-metadata .message-timestamp {
 li.chat-message .message-header .message-metadata .message-delete {
   color: #fff !important;
 }
-li.chat-message .megs-chat-title {
-  padding: 5px 0 2px 2px;
-  background-color: #1f5079;
-  color: #fff;
-  text-align: center;
-}
 li.chat-message .megs-chat-roll {
   margin: 0 3px 0 3px;
 }

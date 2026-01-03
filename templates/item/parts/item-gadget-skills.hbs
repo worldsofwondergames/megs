@@ -21,13 +21,9 @@
                         <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
                     </a>
                 </div>
-                {{#if item.isVirtual}}
-                    <span>{{getSkillDisplayName item}}</span>
-                {{else}}
-                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
-                        {{getSkillDisplayName item}}
-                    </a>
-                {{/if}}
+                <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
+                    {{getSkillDisplayName item}}
+                </a>
             </div>
             <div class='item-aps'>
                 {{#if ../flags.megs.edit-mode}}
@@ -59,9 +55,11 @@
                         <i class='fas fa-edit'></i>
                     </a>
                 {{/unless}}
-                <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=item.name}}'>
-                    <i class='fas fa-trash'></i>
-                </a>
+                {{#if ../allowSkillDeletion}}
+                    <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=item.name}}'>
+                        <i class='fas fa-trash'></i>
+                    </a>
+                {{/if}}
             </div>
         </li>
     {{/each}}

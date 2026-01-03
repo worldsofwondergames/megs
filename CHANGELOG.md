@@ -52,6 +52,7 @@
 
 - Added a tooltip explanation on hover for the Initiative, AV/OV (if HP spent), and column shifts
 - Standalone gadgets (unowned) can now store skill APs that transfer when added to actors
+- Gadgets dragged to the Items sidebar now retain their powers and skills, which are recreated when dragged to another character
 - Gadgets can now have skills with optional Skills tab (toggle in Settings)
 - Gadgets can now have powers with optional Powers tab (drag-and-drop only, toggle in Settings)
 - Gadgets can now have traits with optional Traits tab (toggle in Settings)
@@ -77,3 +78,70 @@
 - Corrected threshold logic to properly implement MEGS rule: roll must be "on or beyond" the column shift threshold (11)
 - Added test coverage for edge case where roll is exactly on threshold
 - Fixed Dice So Nice integration to display the same dice values shown in chat messages (issue #169)
+
+## 1.0.0 (February 1, 2026)
+
+### Enhancements
+
+- Skills can now have modifiers (bonuses and limitations) just like powers
+- Modifiers can be added to standalone powers and skills (not owned by actors)
+- Standalone powers and skills preserve their modifiers when dragged to/from actors
+- Hide R# display in gadget summaries when reliability is 0
+- Implemented AP Purchase Chart for accurate MEGS character creation costs (issue #27)
+- Powers and skills linked to attributes now receive -2 Factor Cost reduction (minimum FC 1)
+- Hero Point budget tracking calculates total HP spent on attributes and items
+- Character creator sheet with comprehensive point-buy character creation
+    - Attributes tab with increment/decrement controls and individual AP cost display
+    - Powers tab with drag-and-drop support for Bonuses/Limitations, linking, and cost calculations
+    - Skills tab with accordion display for subskills, linking support, and cost tracking
+        - Link checkbox to link skills to attributes (reduces Factor Cost by 2)
+        - Linked skills display asterisk and show validation warnings if APs don't match linked attribute
+    - Traits tab with two-column layout for Advantages and Drawbacks
+    - Gadgets tab with drag-and-drop support and automatic cost calculation
+        - Display gadget name with attribute/power/skill summary
+        - Automatic cost calculation following MEGS rules including Reliability Number modifiers
+        - Cost breakdown tooltip showing attributes, AV/EV/Range, child items, and Gadget Bonus
+        - Child items (powers, skills, advantages) only displayed under parent gadget
+    - Wealth tab with inflation-adjusted purchasing power
+        - Wealth selection from 0-21 APs with corresponding Hero Point costs (Factor Cost 2)
+        - Inflation adjustment feature with year selection (1940-2025)
+        - Dollar value display adjusted for selected year using CPI-based multipliers
+        - Wealth cost integrated into Hero Point budget tracking
+- Gadget cost calculation implements complete MEGS rules
+    - Reliability Number modifies Factor Cost for all abilities
+    - AV/EV/Range have Base Cost 5 and Factor Cost 1 (modified by R#)
+    - Attributes have Base Cost 0, Factor Cost from template (modified by R#)
+    - Italicized attributes add +2 to Factor Cost
+    - Hardened Defenses add +2 to BODY Factor Cost
+    - Child items (powers, skills, advantages, drawbacks) included in total
+    - Gadget Bonus correctly applied: ÷4 if can be Taken Away, ÷2 if cannot
+- Added confirmation dialog when deleting items, powers, skills, traits, and effects
+- Added double-click to activate TinyMCE editors for biography and item descriptions
+- Added enriched text support for biography and description fields using Foundry's TextEditor.enrichHTML
+- Added system setting to control whether skills and subskills can be deleted from actor and gadget sheets
+- Added comma formatting to HP Spent and HP Remaining values on character creator sheet
+- Improved chat message styling with customized roll result headers
+
+### Bug Fixes
+
+- Prevented NaN errors in cost calculations by adding null-safe attribute access
+- Added pre-validation to ensure only valid Factor Cost values are used in AP Purchase Chart lookups
+- Fixed Hardened Defenses boolean comparison to handle string "false" correctly
+- Fixed gadget range cost to support both systemData.range and systemData.weapon.range fields
+- Ensured current condition tracks (currentBody, currentMind, currentSpirit) are initialized in prepareBaseData()
+- Fixed empty gadget descriptions no longer display empty parentheses in character creator
+- Fixed initiative bonus tooltip showing calculation breakdown (DEX + INT + INFL + modifiers)
+
+### Technical Debt
+
+- Automatic cleanup of child items when parent gadget or skill is deleted
+- Migrated all CSS styles to SCSS source files to prevent build process from overwriting manual edits
+
+### Development Aids
+
+- Added system setting to enable/disable debug logging (replaces hardcoded flag)
+
+### Testing
+
+- Added test coverage for character budget calculations, reliability number conversion, and base cost only powers
+- Test coverage for gadget cost calculations including rulebook example (Machinegun)

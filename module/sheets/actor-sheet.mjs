@@ -21,7 +21,7 @@ export class MEGSActorSheet extends ActorSheet {
     static get defaultOptions() {
         let newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
-        newOptions.width = 600;
+        newOptions.width = 667;
         newOptions.height = 600;
         newOptions.dragDrop = [{ dragSelector: '.item-list .item', dropSelector: null }];
         newOptions.tabs = [
@@ -42,12 +42,12 @@ export class MEGSActorSheet extends ActorSheet {
     /* -------------------------------------------- */
 
     /** @override */
-    getData() {
+    async getData() {
         // Retrieve the data structure from the base sheet. You can inspect or log
         // the context variable to see the structure, but some key properties for
         // sheets are the actor object, the data object, whether or not it's
         // editable, the items array, and the effects array.
-        const context = super.getData();
+        const context = await super.getData();
 
         // Use a safe clone of the actor data for further operations.
         const actorData = context.data;
@@ -56,22 +56,10 @@ export class MEGSActorSheet extends ActorSheet {
         context.system = actorData.system;
         context.flags = actorData.flags;
 
-        // Prepare actor data and items.
-        if (actorData.type === MEGS.characterTypes.hero) {
-            this._prepareItems(context);
-            this._prepareCharacterData(context);
-            this._prepareInitiative(context);
-        }
-
-        // Prepare Villain data and items.
-        if (actorData.type === MEGS.characterTypes.villain) {
-            this._prepareItems(context);
-            this._prepareCharacterData(context);
-            this._prepareInitiative(context);
-        }
-
-        // Prepare NPC data and items.
-        if (actorData.type === MEGS.characterTypes.npc) {
+        // Prepare character data and items for hero, villain, and npc types.
+        if (actorData.type === MEGS.characterTypes.hero ||
+            actorData.type === MEGS.characterTypes.villain ||
+            actorData.type === MEGS.characterTypes.npc) {
             this._prepareItems(context);
             this._prepareCharacterData(context);
             this._prepareInitiative(context);
@@ -96,51 +84,21 @@ export class MEGSActorSheet extends ActorSheet {
             });
             context.characters = this._sortArray(context.characters);
 
-            context.locations = [];
-            if (context.system.ownerId) {
-                const owner = game.actors.get(context.system.ownerId);
-                if (owner) {
-                    // get list of vehicle items from owner actor to link
-                    if (owner.items) {
-                        context.system.linkedItem = undefined;
+            this._populateLinkedGadgets(context, 'locations');
+            this._populateLinkedGadgets(context, 'vehicles');
 
-                        owner.items.forEach((element) => {
-                            if (element.type === MEGS.itemTypes.gadget) {
-                                // store linked vehicle item
-                                if (element._id === context.system.linkedItemId) {
-                                    context.system.linkedItem = element;
-                                }
-
-                                // add to list for header
-                                context.locations[element.name] = element._id;
-                            }
-                        });
-                        context.locations = this._sortArray(context.locations);
+            // Enrich linked gadget description for display
+            if (context.system.linkedItem?.system?.description) {
+                context.enrichedLinkedDescription = await foundry.applications.ux.TextEditor.enrichHTML(
+                    context.system.linkedItem.system.description,
+                    {
+                        async: true,
+                        secrets: this.document.isOwner,
+                        relativeTo: this.actor
                     }
-                }
-            }
-
-            context.vehicles = [];
-            if (context.system.ownerId) {
-                const owner = game.actors.get(context.system.ownerId);
-                if (owner) {
-                    if (owner.items) {
-                        context.system.linkedItem = undefined;
-
-                        owner.items.forEach((element) => {
-                            if (element.type === MEGS.itemTypes.gadget) {
-                                // store linked vehicle item
-                                if (element._id === context.system.linkedItemId) {
-                                    context.system.linkedItem = element;
-                                }
-
-                                // add to list for header
-                                context.vehicles[element.name] = element._id;
-                            }
-                        });
-                        context.vehicles = this._sortArray(context.vehicles);
-                    }
-                }
+                );
+            } else {
+                context.enrichedLinkedDescription = '';
             }
         }
 
@@ -162,7 +120,7 @@ export class MEGSActorSheet extends ActorSheet {
                 context.filteredSkills = context.skills;
             } else {
                 context.skills.forEach((skill) => {
-                    if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                    if (skill.system.aps > 0) {
                         context.filteredSkills.push(skill);
                     }
                 });
@@ -170,6 +128,18 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
+        context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
+
+        // Enrich biography text for proper display of links and other enriched content
+        if (context.system.biography) {
+            context.enrichedBiography = await foundry.applications.ux.TextEditor.enrichHTML(context.system.biography, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.actor
+            });
+        } else {
+            context.enrichedBiography = '';
+        }
 
         return context;
     }
@@ -201,18 +171,32 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /**
-     *
-     * @param {*} skill
-     * @returns
+     * Populate linked gadgets list for vehicles and locations
+     * @param {Object} context The context object
+     * @param {string} propertyName The property name to populate ('locations' or 'vehicles')
+     * @private
      */
-    _doSubskillsHaveAPs(skill) {
-        let doSubskillsHaveAPs = false;
-        skill.subskills.forEach((subskill) => {
-            if (subskill.system.aps > 0) {
-                doSubskillsHaveAPs = true;
+    _populateLinkedGadgets(context, propertyName) {
+        context[propertyName] = [];
+        if (context.system.ownerId) {
+            const owner = game.actors.get(context.system.ownerId);
+            if (owner && owner.items) {
+                context.system.linkedItem = undefined;
+
+                owner.items.forEach((element) => {
+                    if (element.type === MEGS.itemTypes.gadget) {
+                        // store linked vehicle item
+                        if (element._id === context.system.linkedItemId) {
+                            context.system.linkedItem = element;
+                        }
+
+                        // add to list for header
+                        context[propertyName][element.name] = element._id;
+                    }
+                });
+                context[propertyName] = this._sortArray(context[propertyName]);
             }
-        });
-        return doSubskillsHaveAPs;
+        }
     }
 
     /**
@@ -252,12 +236,14 @@ export class MEGSActorSheet extends ActorSheet {
 
     _prepareInitiative(context) {
         // TODO If two Characters' Initiative totals are tied, a hero always takes precedence over a villain or minor Character.
-        const initiativeBonus = this._calculateInitiativeBonus(context);
+        const { bonus, text } = this._calculateInitiativeBonusWithText(context);
 
         // set value on actor sheet object
         // TODO do we need both of these now?
-        context.system.initiativeBonus.value = initiativeBonus; // works for sheet display
-        context.actor.system.initiativeBonus.value = initiativeBonus; // already changes
+        context.system.initiativeBonus.value = bonus; // works for sheet display
+        context.system.initiativeBonus.text = text; // tooltip text
+        context.actor.system.initiativeBonus.value = bonus; // already changes
+        context.actor.system.initiativeBonus.text = text;
     }
 
     /**
@@ -303,6 +289,46 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         return initiativeBonus;
+    }
+
+    /**
+     * Calculate initiative bonus and generate explanatory text
+     * @param {*} context
+     * @returns {{bonus: number, text: string}}
+     * @private
+     */
+    _calculateInitiativeBonusWithText(context) {
+        const parts = [];
+
+        // Base attributes
+        const dex = context.document.system.attributes.dex.value;
+        const int = context.document.system.attributes.int.value;
+        const infl = context.document.system.attributes.infl.value;
+        parts.push(`DEX ${dex} + INT ${int} + INFL ${infl}`);
+        let initiativeBonus = dex + int + infl;
+
+        // Superspeed adds APs of their power
+        if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {
+            const aps = this._getAbilityAPs(context.powers, MEGS.powers.SUPERSPEED);
+            parts.push(`Superspeed +${aps}`);
+            initiativeBonus = initiativeBonus + aps;
+        }
+
+        // Martial Artist gives +2
+        const martialArtist = this._getAbilityFromArray(context.skills, MEGS.skills.MARTIAL_ARTIST);
+        if (martialArtist && martialArtist.system.aps > 0) {
+            parts.push('Martial Artist +2');
+            initiativeBonus = initiativeBonus + 2;
+        }
+
+        // Lightning Reflexes gives +2
+        if (this._hasAbility(context.advantages, MEGS.advantages.LIGHTNING_REFLEXES)) {
+            parts.push('Lightning Reflexes +2');
+            initiativeBonus = initiativeBonus + 2;
+        }
+
+        const text = parts.join('<br>');
+        return { bonus: initiativeBonus, text };
     }
 
     /**
@@ -483,7 +509,20 @@ export class MEGSActorSheet extends ActorSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Restore accordion state after render
+        this._restoreAccordionState(html);
+
         html.on('click', '.lockPageIcon', (ev) => this._toggleEditMode(ev));
+
+        // Double-click TinyMCE editor content to activate editing
+        html.on('dblclick', '.editor-content', (ev) => {
+            // Find the associated edit button and click it
+            const editorContainer = $(ev.currentTarget).closest('.editor');
+            const editButton = editorContainer.find('.editor-edit');
+            if (editButton.length > 0 && !editButton.hasClass('active')) {
+                editButton.click();
+            }
+        });
 
         // Render the item sheet for viewing/editing prior to the editable check.
         html.on('click', '.item-edit', (ev) => {
@@ -500,36 +539,25 @@ export class MEGSActorSheet extends ActorSheet {
         // Add Inventory Item
         html.on('click', '.item-create', this._onItemCreate.bind(this));
 
-        // Delete Inventory Item
-        html.on('click', '.item-delete', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-            item.delete();
-            li.slideUp(200, () => this.render(false));
-        });
+        // Delete Inventory Item with cascade delete for modifiers
+        html.on('click', '.item-delete', (ev) => this._handleItemDelete(ev));
 
         // Skill APs increment/decrement
-        html.on('click', '.ap-plus', async (ev) => {
-            ev.preventDefault();
+        html.on('click', '.ap-plus', (ev) => this._handleApChange(ev, html, 1));
+        html.on('click', '.ap-minus', (ev) => this._handleApChange(ev, html, -1));
+
+        // Skill accordion toggle
+        html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => this._handleSkillAccordionToggle(ev, html));
+
+        // Subskill isTrained checkbox
+        html.on('change', '.subskill-checkbox', async (ev) => {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
-            if (item && (item.type === 'skill' || item.type === 'power')) {
-                const newValue = (item.system.aps || 0) + 1;
-                await item.update({ 'system.aps': newValue });
-                this.render(false);
-            }
-        });
-        html.on('click', '.ap-minus', async (ev) => {
-            ev.preventDefault();
-            const itemId = $(ev.currentTarget).data('itemId');
-            const item = this.actor.items.get(itemId);
-            if (
-                item &&
-                (item.type === 'skill' || item.type === 'power') &&
-                (item.system.aps || 0) > 0
-            ) {
-                const newValue = (item.system.aps || 0) - 1;
-                await item.update({ 'system.aps': newValue });
+            if (item && item.type === 'subskill') {
+                // Save accordion state before render
+                this._saveAccordionState(html);
+
+                await item.update({ 'system.isTrained': ev.currentTarget.checked });
                 this.render(false);
             }
         });
@@ -584,6 +612,136 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /**
+     * Handle AP increment/decrement for skills and powers
+     * @param {Event} event The click event
+     * @param {jQuery} html The HTML element
+     * @param {number} delta The change amount (+1 or -1)
+     * @private
+     */
+    async _handleApChange(event, html, delta) {
+        event.preventDefault();
+        const itemId = $(event.currentTarget).data('itemId');
+        const item = this.actor.items.get(itemId);
+
+        if (!item || (item.type !== 'skill' && item.type !== 'power')) {
+            return;
+        }
+
+        const currentAps = item.system.aps || 0;
+        const newValue = currentAps + delta;
+
+        // Don't allow negative values
+        if (newValue < 0) {
+            return;
+        }
+
+        // Save accordion state before render
+        this._saveAccordionState(html);
+
+        await item.update({ 'system.aps': newValue });
+        this.render(false);
+    }
+
+    /**
+     * Get action and effect values from gadget attributes
+     * @param {Object} gadget The gadget item
+     * @param {number} currentActionValue Current action value
+     * @returns {Object} Object with effectValue and actionValue
+     * @private
+     */
+    _getGadgetValues(gadget, currentActionValue) {
+        const attributePairs = [
+            { effect: 'str', action: 'dex', actorFallback: 'dex' },
+            { effect: 'will', action: 'int', actorFallback: 'int' },
+            { effect: 'aura', action: 'infl', actorFallback: 'infl' }
+        ];
+
+        for (const pair of attributePairs) {
+            if (gadget.system.attributes[pair.effect] > 0) {
+                const effectValue = gadget.system.attributes[pair.effect];
+                let actionValue = currentActionValue;
+
+                if (actionValue === 0) {
+                    if (gadget.system.attributes[pair.action] > 0) {
+                        actionValue = gadget.system.attributes[pair.action];
+                    } else {
+                        actionValue = this.object.system.attributes[pair.actorFallback];
+                    }
+                }
+
+                return { effectValue, actionValue };
+            }
+        }
+
+        return { effectValue: 0, actionValue: currentActionValue };
+    }
+
+    /**
+     * Handle item deletion with cascade delete for modifiers
+     * @param {Event} event The click event
+     * @private
+     */
+    async _handleItemDelete(event) {
+        const li = $(event.currentTarget).parents('.item');
+        const item = this.actor.items.get(li.data('itemId'));
+
+        if (!item) return;
+
+        const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+        const confirmed = await Dialog.confirm({
+            title: `Delete ${type}: ${item.name}`,
+            content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+            defaultYes: false,
+            options: {
+                classes: ['megs', 'dialog']
+            }
+        });
+
+        if (!confirmed) return;
+
+        // If deleting a power or skill, also delete all associated bonuses/limitations
+        if (item.type === 'power' || item.type === 'skill') {
+            const modifiers = this.actor.items.filter(i =>
+                (i.type === 'bonus' || i.type === 'limitation') &&
+                i.system.parent === item._id
+            );
+            const modifierIds = modifiers.map(m => m._id);
+            if (modifierIds.length > 0) {
+                await this.actor.deleteEmbeddedDocuments('Item', modifierIds);
+            }
+        }
+
+        await item.delete();
+        li.slideUp(200, () => this.render(false));
+    }
+
+    /**
+     * Handle skill accordion toggle
+     * @param {Event} event The click event
+     * @param {jQuery} html The HTML element
+     * @private
+     */
+    _handleSkillAccordionToggle(event, html) {
+        event.preventDefault();
+        const skillRow = $(event.currentTarget).closest('.skill-row');
+        const skillId = skillRow.data('itemId');
+        const isExpanded = skillRow.data('expanded');
+        const icon = $(event.currentTarget);
+
+        if (isExpanded) {
+            // Collapse - hide subskills
+            html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideUp(200);
+            icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+            skillRow.data('expanded', false);
+        } else {
+            // Expand - show subskills
+            html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
+            icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+            skillRow.data('expanded', true);
+        }
+    }
+
+    /**
      * Handle clickable rolls.
      * @param {Event} event   The originating click event
      * @private
@@ -633,42 +791,12 @@ export class MEGSActorSheet extends ActorSheet {
                 const gadget = this._getOwnedItemById(dataset.gadgetid);
 
                 if (gadget) {
-                    if (gadget.system.attributes.str > 0) {
-                        effectValue = gadget.system.attributes.str;
-
-                        if (actionValue === 0) {
-                            if (gadget.system.attributes.dex > 0) {
-                                actionValue = gadget.system.attributes.dex;
-                            } else {
-                                actionValue = this.object.system.attributes.dex;
-                            }
-                        }
-                    } else if (gadget.system.attributes.will > 0) {
-                        effectValue = gadget.system.attributes.will;
-
-                        if (actionValue === 0) {
-                            if (gadget.system.attributes.int > 0) {
-                                actionValue = gadget.system.attributes.int;
-                            } else {
-                                actionValue = this.object.system.attributes.int;
-                            }
-                        }
-                    } else if (gadget.system.attributes.aura > 0) {
-                        effectValue = gadget.system.attributes.aura;
-
-                        if (actionValue === 0) {
-                            if (gadget.system.attributes.infl > 0) {
-                                actionValue = gadget.system.attributes.infl;
-                            } else {
-                                actionValue = this.object.system.attributes.infl;
-                            }
-                        }
-                    }
+                    const values = this._getGadgetValues(gadget, actionValue);
+                    effectValue = values.effectValue;
+                    actionValue = values.actionValue;
                 } else {
                     console.error('No gadget with ID ' + dataset.gadgetid + ' found');
                 }
-            } else {
-                // TODO
             }
         }
 
@@ -746,8 +874,50 @@ export class MEGSActorSheet extends ActorSheet {
         }
     }
 
-    _toggleEditMode(_e) {
+    _toggleEditMode(event) {
+        // Save accordion state before toggling edit mode
+        if (this.element && this.element.length > 0) {
+            this._saveAccordionState(this.element);
+        }
+
         const currentValue = this.actor.getFlag('megs', 'edit-mode');
         this.actor.setFlag('megs', 'edit-mode', !currentValue);
+        this.render(false);
+    }
+
+    /**
+     * Save the current accordion state (which skills are expanded)
+     * @param {jQuery} html
+     * @private
+     */
+    _saveAccordionState(html) {
+        const state = {};
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const isExpanded = $(row).data('expanded');
+            state[skillId] = isExpanded;
+        });
+        this._accordionState = state;
+    }
+
+    /**
+     * Restore the accordion state after re-render
+     * @param {jQuery} html
+     * @private
+     */
+    _restoreAccordionState(html) {
+        if (!this._accordionState) return;
+
+        html.find('.tab.skills .skill-row').each((i, row) => {
+            const skillId = $(row).data('itemId');
+            const wasExpanded = this._accordionState[skillId];
+
+            if (wasExpanded) {
+                // Restore expanded state
+                $(row).data('expanded', true);
+                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
+            }
+        });
     }
 }

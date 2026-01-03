@@ -8,9 +8,11 @@
 @import 'utils/variables';
 
 /* Global styles */
-@import 'global/window';
 @import 'global/grid';
 @import 'global/flex';
+
+/* Window styles */
+@import 'global/window';
 
 /* Styles limited to megs sheets */
 .megs {
@@ -18,4 +20,9 @@
     @import 'components/resource';
     @import 'components/items';
     @import 'components/effects';
+    @import 'components/character-creator';
 }
+
+/* Dialog and chat styles (not nested under .megs) */
+@import 'components/dialogs';
+@import 'components/chat';

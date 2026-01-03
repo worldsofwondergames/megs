@@ -3,7 +3,7 @@
  * @param {MouseEvent} event      The left-click event on the effect control
  * @param {Actor|Item} owner      The owning document which manages this effect
  */
-export function onManageActiveEffect(event, owner) {
+export async function onManageActiveEffect(event, owner) {
     event.preventDefault();
     const a = event.currentTarget;
     const li = a.closest('li');
@@ -24,7 +24,18 @@ export function onManageActiveEffect(event, owner) {
         case 'edit':
             return effect.sheet.render(true);
         case 'delete':
-            return effect.delete();
+            const confirmed = await Dialog.confirm({
+                title: `Delete Active Effect: ${effect.name}`,
+                content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+                defaultYes: false,
+                options: {
+                    classes: ['megs', 'dialog']
+                }
+            });
+            if (confirmed) {
+                return effect.delete();
+            }
+            break;
         case 'toggle':
             return effect.update({ disabled: !effect.disabled });
     }

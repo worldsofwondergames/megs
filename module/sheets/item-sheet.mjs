@@ -23,7 +23,7 @@ export class MEGSItemSheet extends ItemSheet {
     static get defaultOptions() {
         let newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'item'];
-        newOptions.width = 585;
+        newOptions.width = 667;
         newOptions.height = 480;
         newOptions.dragDrop = [
             { dragSelector: '.item-list .item', dropSelector: null },
@@ -48,9 +48,9 @@ export class MEGSItemSheet extends ItemSheet {
     /* -------------------------------------------- */
 
     /** @override */
-    getData() {
+    async getData() {
         // Retrieve base data structure.
-        const context = super.getData();
+        const context = await super.getData();
 
         // Use a safe clone of the item data for further operations.
         const itemData = context.data;
@@ -92,34 +92,38 @@ export class MEGSItemSheet extends ItemSheet {
             }
 
             this._prepareSubskills(context);
+            this._prepareModifiers(context);
         }
 
         if (itemData.type === MEGS.itemTypes.subskill) {
             context.skillHasRanks = false;
+            context.parentSkillAPs = 0;
 
-            // if has APs, those are effective
-            if (this.object.system.aps > 0) {
-                context.effectiveAPs = this.object.system.aps;
-                context.isUnskilled = false;
-            } else {
-                // check parent for APs
-                const actor = game.actors.get(context.document.system.actorId);
-                if (actor) {
-                    var skill = actor.items.filter((obj) => {
-                        return obj._id === context.document.system.parent;
-                    })[0];
+            // Always display parent skill's APs
+            const actor = game.actors.get(context.document.system.actorId);
+            if (actor) {
+                var skill = actor.items.filter((obj) => {
+                    return obj._id === context.document.system.parent;
+                })[0];
+                if (skill) {
+                    // Always use parent skill APs for display
+                    context.parentSkillAPs = skill.system.aps || 0;
+
+                    // effectiveAPs is used for rolling
                     if (skill.system.aps > 0) {
                         context.effectiveAPs = skill.system.aps;
                         context.isUnskilled = false;
                         context.skillHasRanks = true;
                     } else {
-                        // if no APs for parent, fall back to linked skill
+                        // if no APs for parent, fall back to linked attribute for rolling
                         context.effectiveAPs = actor.system.attributes[skill.system.link].value;
                         context.isUnskilled = true;
                     }
                 } else {
                     context.effectiveAPs = 0;
                 }
+            } else {
+                context.effectiveAPs = 0;
             }
 
             context.minAPs = 0;
@@ -161,6 +165,18 @@ export class MEGSItemSheet extends ItemSheet {
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
+        context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
+
+        // Enrich description text for proper display of links and other enriched content
+        if (context.system.description) {
+            context.enrichedDescription = await foundry.applications.ux.TextEditor.enrichHTML(context.system.description, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.item
+            });
+        } else {
+            context.enrichedDescription = '';
+        }
 
         return context;
     }
@@ -194,8 +210,7 @@ export class MEGSItemSheet extends ItemSheet {
             const isDice = skill.system.type === MEGS.powerTypes.dice.toLowerCase();
             const isBoth = skill.system.type === MEGS.powerTypes.both.toLowerCase();
             const isRollable =
-                itemData.system.aps > 0 || // if subskill has APs
-                skill.system.aps > 0 || // or skill has APs
+                (itemData.system.isTrained && skill.system.aps > 0) || // if subskill is trained and parent skill has APs
                 itemData.system.useUnskilled === 'true'; // or subskill can be rolled unskilled
 
             return (isDice || isBoth) && isRollable;
@@ -210,6 +225,40 @@ export class MEGSItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Double-click TinyMCE editor content to activate editing
+        html.on('dblclick', '.editor-content', (ev) => {
+            // Find the associated edit button and click it
+            const editorContainer = $(ev.currentTarget).closest('.editor');
+            const editButton = editorContainer.find('.editor-edit');
+            if (editButton.length > 0 && !editButton.hasClass('active')) {
+                editButton.click();
+            }
+        });
+
+        // Initialize subskill checkbox states based on skill APs
+        if (this.object.type === 'skill') {
+            const skillAps = this.object.system.aps || 0;
+            // Check the custom edit-mode flag (not Foundry's isEditable)
+            const isEditMode = this.object.getFlag('megs', 'edit-mode') === true;
+            const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
+
+            checkboxes.each(function() {
+                const checkbox = $(this);
+
+                if (skillAps === 0) {
+                    // When skill has 0 APs: disable and force checked
+                    checkbox.prop('disabled', true);
+                    checkbox.prop('checked', true);
+                } else if (isEditMode) {
+                    // When skill has 1+ APs and edit mode is on: enable
+                    checkbox.prop('disabled', false);
+                } else {
+                    // When skill has 1+ APs but edit mode is off: disable
+                    checkbox.prop('disabled', true);
+                }
+            });
+        }
+
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
 
@@ -220,6 +269,24 @@ export class MEGSItemSheet extends ItemSheet {
             const value = checkbox.checked ? 'true' : 'false';
             await this.object.update({ 'system.settings.hideZeroAPSkills': value });
             this.render(false);
+        });
+
+        // Handle subskill trained checkbox changes
+        html.on('change', '.subskills input[type="checkbox"][name^="items."]', async (ev) => {
+            ev.preventDefault();
+            const checkbox = ev.currentTarget;
+            const name = checkbox.name;
+            // Extract subskill ID from name like "items.{id}.system.isTrained"
+            const match = name.match(/^items\.(.+?)\.system\.isTrained$/);
+            if (match && this.object.parent) {
+                const subskillId = match[1];
+                const subskill = this.object.parent.items.get(subskillId);
+                if (subskill) {
+                    await subskill.update({ 'system.isTrained': checkbox.checked });
+                    // Re-render to update effective Factor Cost display
+                    this.render(false);
+                }
+            }
         });
 
         // Skill APs increment/decrement
@@ -233,12 +300,12 @@ export class MEGSItemSheet extends ItemSheet {
             if (isVirtual) {
                 // Check if this is a virtual power
                 if (itemId.startsWith('virtual-power-')) {
-                    const powerKey = itemId.replace('virtual-power-', '');
-                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+                    const powerName = itemId.replace('virtual-power-', '');
+                    const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
 
-                    if (powerData.hasOwnProperty(powerKey)) {
-                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) + 1;
-                        await this.object.update({ 'system.powerData': powerData });
+                    if (powerAPs.hasOwnProperty(powerName)) {
+                        powerAPs[powerName] = (powerAPs[powerName] || 0) + 1;
+                        await this.object.update({ 'system.powerAPs': powerAPs });
                         this.render(false);
                     }
                 } else {
@@ -276,12 +343,12 @@ export class MEGSItemSheet extends ItemSheet {
             if (isVirtual) {
                 // Check if this is a virtual power
                 if (itemId.startsWith('virtual-power-')) {
-                    const powerKey = itemId.replace('virtual-power-', '');
-                    const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+                    const powerName = itemId.replace('virtual-power-', '');
+                    const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
 
-                    if (powerData.hasOwnProperty(powerKey) && (powerData[powerKey].system.aps || 0) > 0) {
-                        powerData[powerKey].system.aps = (powerData[powerKey].system.aps || 0) - 1;
-                        await this.object.update({ 'system.powerData': powerData });
+                    if (powerAPs.hasOwnProperty(powerName) && (powerAPs[powerName] || 0) > 0) {
+                        powerAPs[powerName] = (powerAPs[powerName] || 0) - 1;
+                        await this.object.update({ 'system.powerAPs': powerAPs });
                         this.render(false);
                     }
                 } else {
@@ -341,12 +408,67 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (!itemId) return;
 
-            // Check if this is a standalone gadget with virtual items
+            // Determine the item name for the confirmation dialog
+            let itemName = 'Item';
+            let itemType = 'Item';
+
+            // Check if this is a standalone item with virtual items
             const isStandaloneGadget = !this.object.parent && this.object.type === MEGS.itemTypes.gadget;
+            const isStandalonePowerOrSkill = !this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill);
             const isVirtualTrait = itemId.startsWith && itemId.startsWith('virtual-trait-');
             const isVirtualPower = itemId.startsWith && itemId.startsWith('virtual-power-');
+            const isVirtualBonus = itemId.startsWith && itemId.startsWith('virtual-bonus-');
+            const isVirtualLimitation = itemId.startsWith && itemId.startsWith('virtual-limitation-');
 
-            if (isStandaloneGadget && isVirtualTrait) {
+            // Get the item name for the dialog
+            if (isVirtualTrait) {
+                const key = itemId.replace('virtual-trait-', '');
+                itemName = key;
+                itemType = game.i18n.localize('MEGS.Trait');
+            } else if (isVirtualPower) {
+                const powerName = itemId.replace('virtual-power-', '');
+                itemName = powerName;
+                itemType = game.i18n.localize('MEGS.Power');
+            } else if (isVirtualBonus) {
+                itemType = game.i18n.localize('MEGS.Bonus');
+                itemName = itemType;
+            } else if (isVirtualLimitation) {
+                itemType = game.i18n.localize('MEGS.Limitation');
+                itemName = itemType;
+            } else if (this.object.parent) {
+                const item = this.object.parent.items.get(itemId);
+                if (item) {
+                    itemName = item.name;
+                    itemType = item.type;
+                }
+            }
+
+            const typeDisplay = typeof itemType === 'string' ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : 'Item';
+            const confirmed = await Dialog.confirm({
+                title: `Delete ${typeDisplay}: ${itemName}`,
+                content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+                defaultYes: false,
+                options: {
+                    classes: ['megs', 'dialog']
+                }
+            });
+
+            if (!confirmed) return;
+
+            if (isStandalonePowerOrSkill && (isVirtualBonus || isVirtualLimitation)) {
+                // Standalone power/skill - delete virtual modifier from flattened array
+                const index = parseInt(itemId.split('-')[2]);
+                const arrayKey = isVirtualBonus ? 'bonuses' : 'limitations';
+                const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+                // Remove the modifier at the index
+                modifiers.splice(index, 1);
+
+                await this.object.update({
+                    [`system.${arrayKey}`]: modifiers
+                });
+                this.render(false);
+            } else if (isStandaloneGadget && isVirtualTrait) {
                 // Standalone gadget - delete virtual trait from traitData
                 const key = itemId.replace('virtual-trait-', '');
                 const traitData = this.object.system.traitData || {};
@@ -355,19 +477,22 @@ export class MEGSItemSheet extends ItemSheet {
                     // Use Foundry's key deletion syntax
                     const updateKey = `system.traitData.-=${key}`;
                     await this.object.update({ [updateKey]: null });
-                    this.render(true);
+                    this.render(false);
                 }
             } else if (isStandaloneGadget && isVirtualPower) {
-                // Standalone gadget - delete virtual power from powerData
-                const key = itemId.replace('virtual-power-', '');
-                const powerData = this.object.system.powerData || {};
+                // Standalone gadget - delete virtual power from all flattened fields
+                const powerName = itemId.replace('virtual-power-', '');
 
-                if (powerData[key]) {
-                    // Use Foundry's key deletion syntax
-                    const updateKey = `system.powerData.-=${key}`;
-                    await this.object.update({ [updateKey]: null });
-                    this.render(true);
-                }
+                // Delete from all power-related fields
+                await this.object.update({
+                    [`system.powerAPs.-=${powerName}`]: null,
+                    [`system.powerBaseCosts.-=${powerName}`]: null,
+                    [`system.powerFactorCosts.-=${powerName}`]: null,
+                    [`system.powerRanges.-=${powerName}`]: null,
+                    [`system.powerIsLinked.-=${powerName}`]: null,
+                    [`system.powerLinks.-=${powerName}`]: null
+                });
+                this.render(false);
             } else if (this.object.parent) {
                 // Gadget owned by actor - delete real item
                 const item = this.object.parent.items.get(itemId);
@@ -553,37 +678,79 @@ export class MEGSItemSheet extends ItemSheet {
      * @param {*} context
      */
     _prepareModifiers(context) {
-        // only powers can have modifiers
-        if (this.object.type !== MEGS.itemTypes.power) return;
+        // only powers and skills can have modifiers
+        if (this.object.type !== MEGS.itemTypes.power && this.object.type !== MEGS.itemTypes.skill) return;
 
         // Initialize containers.
         const bonuses = [];
         const limitations = [];
+        let totalBonusMod = 0;
+        let totalLimitationMod = 0;
 
+        // For items on actors/gadgets, read from embedded items collection
         if (this.object.parent && this.object.parent.items) {
             // Iterate through items, allocating to containers
             for (let i of this.object.parent.items) {
-                // if modifier belongs to this power
+                // if modifier belongs to this power/skill
                 if (i.system.parent === this.item._id) {
                     i.img = i.img || Item.DEFAULT_ICON;
                     if (i.type === MEGS.itemTypes.bonus) {
                         bonuses.push(i);
-                        // Link parent power's item sheet to sub-item object so it updates on any changes
+                        totalBonusMod += i.system.factorCostMod || 0;
+                        // Link parent power/skill item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                     if (i.type === MEGS.itemTypes.limitation) {
                         limitations.push(i);
-
-                        // Link parent power's item sheet to sub-item object so it updates on any changes
+                        totalLimitationMod += i.system.factorCostMod || 0;
+                        // Link parent power/skill item sheet to sub-item object so it updates on any changes
                         i.apps[this.appId] = this;
                     }
                 }
             }
+        } else {
+            // For standalone items, read from flattened arrays
+            const bonusArray = context.system.bonuses || [];
+            const limitationArray = context.system.limitations || [];
 
-            // Assign and return
-            context.bonuses = bonuses;
-            context.limitations = limitations;
+            bonusArray.forEach((bonus, index) => {
+                bonuses.push({
+                    _id: `virtual-bonus-${index}`,
+                    name: bonus.name,
+                    img: bonus.img || Item.DEFAULT_ICON,
+                    system: {
+                        factorCostMod: bonus.factorCostMod || 0,
+                        text: bonus.text || ''
+                    }
+                });
+                totalBonusMod += bonus.factorCostMod || 0;
+            });
+
+            limitationArray.forEach((limitation, index) => {
+                limitations.push({
+                    _id: `virtual-limitation-${index}`,
+                    name: limitation.name,
+                    img: limitation.img || Item.DEFAULT_ICON,
+                    system: {
+                        factorCostMod: limitation.factorCostMod || 0,
+                        text: limitation.text || ''
+                    }
+                });
+                totalLimitationMod += limitation.factorCostMod || 0;
+            });
         }
+
+        // Assign and return
+        context.bonuses = bonuses;
+        context.limitations = limitations;
+
+        // Calculate effective Factor Cost
+        const baseFactor = context.system.factorCost || 0;
+        context.system.effectiveFactorCost = baseFactor + totalBonusMod + totalLimitationMod;
+
+        // Store modifier totals for tooltip
+        context.system.bonusMod = totalBonusMod;
+        context.system.limitationMod = totalLimitationMod;
     }
 
     /**
@@ -598,17 +765,14 @@ export class MEGSItemSheet extends ItemSheet {
                 for (let i of this.object.parent.items) {
                     if (i.type === MEGS.itemTypes.subskill) {
                         if (i.system.parent === context.item._id) {
-                            // TODO parent ID
-                            // if subskill has APs
-                            // or skill has APs
-                            // or subskill can be rolled unskilled
+                            // Subskills inherit APs from parent skill
+                            // Determine rollability: skill has APs and subskill is trained, OR subskill can be used unskilled
                             if (
-                                i.system.aps > 0 ||
-                                context.item.system.aps > 0 ||
+                                (i.system.isTrained && context.item.system.aps > 0) ||
                                 i.system.useUnskilled === 'true'
                             ) {
                                 i.isRollable = true;
-                                if (i.system.aps === 0 && context.item.system.aps === 0) {
+                                if (context.item.system.aps === 0) {
                                     // unskilled
                                     i.isUnskilled = true;
                                     const actor = context.document.parent;
@@ -616,16 +780,14 @@ export class MEGSItemSheet extends ItemSheet {
                                         actor.system.attributes[context.item.system.link].value;
                                 } else {
                                     i.isUnskilled = false;
-                                    i.effectiveAPs = Math.max(
-                                        i.system.aps,
-                                        context.item.system.aps
-                                    );
+                                    i.effectiveAPs = context.item.system.aps;
                                 }
                             } else {
                                 i.isUnskilled = false;
                                 i.isRollable = false;
                                 i.effectiveAPs = 0;
                             }
+                            // Always add all subskills to the list
                             subskills.push(i);
                         }
                     }
@@ -644,6 +806,18 @@ export class MEGSItemSheet extends ItemSheet {
             });
 
             context.subskills = subskills;
+
+            // Calculate effective Factor Cost based on trained subskills
+            // Formula: Base Factor Cost - (Number of Untrained Subskills)
+            if (subskills.length > 0) {
+                const trainedCount = subskills.filter(s => s.system.isTrained).length;
+                const untrainedCount = subskills.length - trainedCount;
+                const baseFactor = context.item.system.factorCost || 0;
+                context.system.effectiveFactorCost = baseFactor - untrainedCount;
+            } else {
+                // No subskills, use base factor cost
+                context.system.effectiveFactorCost = context.item.system.factorCost || 0;
+            }
         }
     }
 
@@ -737,16 +911,29 @@ export class MEGSItemSheet extends ItemSheet {
      */
     _createVirtualPowersFromData(context) {
         const virtualItems = [];
-        const powerData = context.system.powerData || {};
+        // Read from flattened fields
+        const powerAPs = context.system.powerAPs || {};
+        const powerBaseCosts = context.system.powerBaseCosts || {};
+        const powerFactorCosts = context.system.powerFactorCosts || {};
+        const powerRanges = context.system.powerRanges || {};
+        const powerIsLinked = context.system.powerIsLinked || {};
+        const powerLinks = context.system.powerLinks || {};
 
-        // Create virtual power items
-        for (let [key, power] of Object.entries(powerData)) {
+        // Create virtual power items from flattened data
+        for (let powerName of Object.keys(powerAPs)) {
             const virtualPower = {
-                _id: `virtual-power-${key}`,
-                name: power.name,
+                _id: `virtual-power-${powerName}`,
+                name: powerName,
                 type: MEGS.itemTypes.power,
-                img: power.img || Item.DEFAULT_ICON,
-                system: power.system,
+                img: 'systems/megs/assets/images/icons/power.png',
+                system: {
+                    aps: powerAPs[powerName] || 0,
+                    baseCost: powerBaseCosts[powerName] || 0,
+                    factorCost: powerFactorCosts[powerName] || 0,
+                    range: powerRanges[powerName] || '',
+                    isLinked: powerIsLinked[powerName] || false,
+                    link: powerLinks[powerName] || ''
+                },
                 isVirtual: true
             };
             virtualItems.push(virtualPower);
@@ -788,7 +975,7 @@ export class MEGSItemSheet extends ItemSheet {
             if (context.system.skillData) {
                 items = items.concat(this._createVirtualSkillsFromData(context));
             }
-            if (context.system.powerData) {
+            if (context.system.powerAPs) {
                 items = items.concat(this._createVirtualPowersFromData(context));
             }
             if (context.system.traitData) {
@@ -863,7 +1050,7 @@ export class MEGSItemSheet extends ItemSheet {
             context.filteredSkills = skills;
         } else {
             skills.forEach((skill) => {
-                if (skill.system.aps > 0 || this._doSubskillsHaveAPs(skill)) {
+                if (skill.system.aps > 0) {
                     context.filteredSkills.push(skill);
                 }
             });
@@ -876,23 +1063,6 @@ export class MEGSItemSheet extends ItemSheet {
         context.drawbacks = drawbacks;
         context.subskills = subskills;
         context.gadgets = gadgets;
-    }
-
-    /**
-     * Check if any subskills have APs > 0
-     * @param {*} skill
-     * @returns {boolean}
-     */
-    _doSubskillsHaveAPs(skill) {
-        let doSubskillsHaveAPs = false;
-        if (skill.subskills && skill.subskills.length > 0) {
-            skill.subskills.forEach((subskill) => {
-                if (subskill.system.aps > 0) {
-                    doSubskillsHaveAPs = true;
-                }
-            });
-        }
-        return doSubskillsHaveAPs;
     }
 
     /**
@@ -934,7 +1104,7 @@ export class MEGSItemSheet extends ItemSheet {
             subItem = await MEGSItem.create(itemData, {});
         }
         subItem.apps[this.appId] = this;
-        this.render(true);
+        this.render(false);
         return subItem;
     }
 
@@ -1009,7 +1179,7 @@ export class MEGSItemSheet extends ItemSheet {
         const data = TextEditor.getDragEventData(event);
         const actor = this.object.parent;
         const allowed = Hooks.call('dropActorSheetData', actor, this, data);
-        const isDroppable = this.object.type === MEGS.itemTypes.power;
+        const isDroppable = this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill;
         const item = await Item.implementation.fromDropData(data);
         const isSubItem =
             item.type === MEGS.itemTypes.bonus ||
@@ -1089,6 +1259,18 @@ export class MEGSItemSheet extends ItemSheet {
             return false;
         }
 
+        // Handle standalone powers and skills accepting modifiers and subskills
+        if (!this.object.parent && (this.object.type === MEGS.itemTypes.power || this.object.type === MEGS.itemTypes.skill)) {
+            const isModifier = itemData.type === MEGS.itemTypes.bonus || itemData.type === MEGS.itemTypes.limitation;
+            const isSubskill = itemData.type === MEGS.itemTypes.subskill && this.object.type === MEGS.itemTypes.skill;
+
+            if (isModifier || isSubskill) {
+                return this._onDropModifierToStandaloneItem(itemData);
+            }
+            // For other item types, prevent the drop
+            return false;
+        }
+
         if (!this.object.parent || !this.object.parent.isOwner) return false;
 
         // Handle item sorting within the same Actor
@@ -1129,18 +1311,68 @@ export class MEGSItemSheet extends ItemSheet {
      * @private
      */
     async _onDropPowerToStandaloneGadget(itemData) {
-        const powerData = foundry.utils.duplicate(this.object.system.powerData || {});
+        // Duplicate all flattened power fields
+        const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
+        const powerBaseCosts = foundry.utils.duplicate(this.object.system.powerBaseCosts || {});
+        const powerFactorCosts = foundry.utils.duplicate(this.object.system.powerFactorCosts || {});
+        const powerRanges = foundry.utils.duplicate(this.object.system.powerRanges || {});
+        const powerIsLinked = foundry.utils.duplicate(this.object.system.powerIsLinked || {});
+        const powerLinks = foundry.utils.duplicate(this.object.system.powerLinks || {});
 
-        // Store the complete item data using a unique key (name + type + timestamp)
-        const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
-        powerData[key] = {
+        // Use power name as key
+        const powerName = itemData.name;
+        powerAPs[powerName] = itemData.system.aps || 0;
+        powerBaseCosts[powerName] = itemData.system.baseCost || 0;
+        powerFactorCosts[powerName] = itemData.system.factorCost || 0;
+        powerRanges[powerName] = itemData.system.range || '';
+        powerIsLinked[powerName] = itemData.system.isLinked || false;
+        powerLinks[powerName] = itemData.system.link || '';
+
+        await this.object.update({
+            'system.powerAPs': powerAPs,
+            'system.powerBaseCosts': powerBaseCosts,
+            'system.powerFactorCosts': powerFactorCosts,
+            'system.powerRanges': powerRanges,
+            'system.powerIsLinked': powerIsLinked,
+            'system.powerLinks': powerLinks
+        });
+        this.render(false);
+    }
+
+    /**
+     * Handle dropping a modifier (bonus/limitation) or subskill onto a standalone power/skill
+     * @param {object} itemData The modifier or subskill item data
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onDropModifierToStandaloneItem(itemData) {
+        // For subskills on standalone skills, we can't use embedded items
+        // Just show a message that skill must be on an actor
+        if (itemData.type === MEGS.itemTypes.subskill) {
+            ui.notifications.warn('Subskills can only be added to skills on characters.');
+            return;
+        }
+
+        // For bonuses and limitations, store in the flattened arrays
+        const isBonus = itemData.type === MEGS.itemTypes.bonus;
+        const arrayKey = isBonus ? 'bonuses' : 'limitations';
+
+        // Get existing array
+        const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+
+        // Add new modifier data
+        modifiers.push({
             name: itemData.name,
-            type: itemData.type,
             img: itemData.img,
-            system: itemData.system
-        };
+            factorCostMod: itemData.system.factorCostMod || 0,
+            text: itemData.system.text || ''
+        });
 
-        await this.object.update({ 'system.powerData': powerData });
+        // Update the item
+        await this.object.update({
+            [`system.${arrayKey}`]: modifiers
+        });
+
         this.render(false);
     }
 
@@ -1158,7 +1390,7 @@ export class MEGSItemSheet extends ItemSheet {
         itemData.system.parent = this.object._id; // link subitem to item
         itemData = itemData instanceof Array ? itemData : [itemData];
         const item = await this.object.parent.createEmbeddedDocuments('Item', itemData);
-        this.render(true);
+        this.render(false);
         return item;
     }
 

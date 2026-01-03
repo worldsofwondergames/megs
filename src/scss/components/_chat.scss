@@ -1,0 +1,102 @@
+/*------------------------------------------------------------------------*/
+/* Chat Messages
+/*------------------------------------------------------------------------*/
+
+li.chat-message {
+    background: $c-white !important;
+    font-family: $font-primary !important;
+    letter-spacing: normal !important;
+
+    .message-content {
+        background: $c-white !important;
+    }
+
+    &.ic .message-content {
+        padding-top: 5px;
+    }
+
+    .chat-value {
+        border: 1px solid $c-darkblue;
+
+        label {
+            width: 100%;
+            color: $c-white;
+            background-color: $c-darkblue;
+            display: block;
+            text-align: center;
+            padding: 3px;
+        }
+
+        div {
+            color: $c-darkblue;
+            padding: 3px;
+        }
+    }
+
+    .chat-result {
+        border: 1px solid $c-darkblue;
+        padding: 3px;
+
+        &.inverse {
+            background-color: $c-lightblue !important;
+        }
+
+        &.success {
+            background-color: green !important;
+            color: $c-white;
+            transition: 0.2s background linear;
+
+            &:hover {
+                background-color: lightgreen;
+            }
+        }
+
+        &.failure {
+            background-color: $c-red !important;
+            color: $c-white;
+            transition: 0.2s background linear;
+
+            &:hover {
+                background-color: rgb(252, 87, 69);
+            }
+        }
+
+        .d10 {
+            display: inline-block;
+            background-image: url(/icons/svg/d10-grey.svg);
+            min-width: 24px;
+            line-height: 24px;
+            margin-right: 1px;
+            background-repeat: no-repeat;
+            background-size: 24px 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+
+    .message-header {
+        background-color: $c-darkblue !important;
+        color: $c-white !important;
+        padding: 5px !important;
+
+        .message-sender {
+            color: $c-white !important;
+        }
+
+        .message-metadata {
+            color: $c-white !important;
+
+            .message-timestamp {
+                color: $c-white !important;
+            }
+
+            .message-delete {
+                color: $c-white !important;
+            }
+        }
+    }
+
+    .megs-chat-roll {
+        margin: 0 3px 0 3px;
+    }
+}

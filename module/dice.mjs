@@ -143,6 +143,8 @@ export class MegsTableRolls {
                     },
                 },
                 default: 'button1',
+            }, {
+                classes: ['megs', 'dialog']
             }).render(true);
         } else if (game.user.targets.size > 1) {
             ui.notifications.warn(localize('MEGS.ErrorMessages.OnlyOneTarget'));
@@ -208,6 +210,8 @@ export class MegsTableRolls {
                 },
             },
             default: 'button1',
+        }, {
+            classes: ['megs', 'dialog']
         }).render(true);
     }
 
@@ -541,6 +545,9 @@ export class MegsTableRolls {
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
                     yes: () => true,
                     no: () => false,
+                    options: {
+                        classes: ['megs', 'dialog']
+                    }
                 });
                 if (confirmed) {
                     // Create and evaluate a new roll for subsequent pairs
@@ -571,13 +578,16 @@ export class MegsTableRolls {
     async _showRollResultInChat(data, roll, callingPoint) {
         const rollChatTemplate = 'systems/megs/templates/chat/rollResult.hbs';
 
-        // what's being rolled (used for display)
-        data.title = this.label ? `${this.label}` : '';
-
         console.log('Calling show result from point: ' + callingPoint);
 
+        // Modify speaker to use the label (which already includes character name)
+        const speaker = this.speaker ? foundry.utils.deepClone(this.speaker) : null;
+        if (speaker && this.label) {
+            speaker.alias = this.label;
+        }
+
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-        await roll.toMessage(dialogHtml, { speaker: this.speaker });
+        await roll.toMessage(dialogHtml, { speaker });
     }
 
     /**

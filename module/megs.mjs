@@ -86,6 +86,24 @@ Hooks.once('init', function () {
             console.error(`Error loading skills data: ${error.message}`);
         });
 
+    _loadData('systems/megs/assets/data/apCostChart.json')
+        .then((response) => {
+            console.log(`Received response for AP cost chart data: ${response.status}`);
+            CONFIG.apCostChart = response;
+        })
+        .catch((error) => {
+            console.error(`Error loading AP cost chart data: ${error.message}`);
+        });
+
+    _loadData('systems/megs/assets/data/wealth.json')
+        .then((response) => {
+            console.log(`Received response for wealth data: ${response.status}`);
+            CONFIG.wealth = response;
+        })
+        .catch((error) => {
+            console.error(`Error loading wealth data: ${error.message}`);
+        });
+
     // Active Effects are never copied to the Actor,
     // but will still apply to the Actor from within the Item
     // if the transfer property on the Active Effect is true.
@@ -126,8 +144,39 @@ Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase();
 });
 
+Handlebars.registerHelper('getAttributeCost', function (aps, factorCost) {
+    // Validate inputs before calling getAPCost
+    if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
+        return 0;
+    }
+
+    // Ensure aps and factorCost are valid numbers (not undefined/null)
+    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
+    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
+
+    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+});
+
+Handlebars.registerHelper('getAPCost', function (aps, factorCost) {
+    // Validate inputs before calling getAPCost
+    if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
+        return 0;
+    }
+
+    // Ensure aps and factorCost are valid numbers (not undefined/null)
+    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
+    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
+
+    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+});
+
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
     return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
+});
+
+Handlebars.registerHelper('isTrue', function (value) {
+    // Convert string 'true'/'false' or boolean to boolean for checkbox checked attribute
+    return value === 'true' || value === true;
 });
 
 Handlebars.registerHelper('sum', function () {
@@ -217,22 +266,8 @@ Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
 
 Handlebars.registerHelper('getSkillDisplayName', function (skill) {
     let displayName = skill.name;
-    if (skill.system.aps === 0 && skill.subskills && skill.subskills.length > 0) {
-        let subskillText = ' (';
-        skill.subskills.forEach((subskill) => {
-            if (subskill.system.aps > 0) {
-                if (subskillText !== ' (') {
-                    subskillText += ' ,';
-                }
-                // No need to show " Weapons" after every weapon type
-                subskillText += subskill.name.replace(' Weapons', '') + ' ' + subskill.system.aps;
-            }
-        });
-        subskillText += ')';
-        if (subskillText !== ' ()') {
-            displayName += subskillText;
-        }
-    }
+
+    // Add asterisk for linked skills
     if (skill.system.isLinked === 'true') {
         displayName += '*';
     }
@@ -252,6 +287,467 @@ Handlebars.registerHelper('getPowerDisplayName', function (power) {
         displayName += '*';
     }
     return displayName;
+});
+
+Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
+    // Check if power is linked
+    if (!power.system.isLinked || power.system.isLinked === false || power.system.isLinked === 'false') {
+        return false;
+    }
+
+    // Check if link is valid
+    const link = power.system.link;
+    if (!link || link === 'none' || link === 'special' || link === '') {
+        return false;
+    }
+
+    // Get the linked attribute value from the actor
+    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
+        return false;
+    }
+
+    const attributeValue = actor.system.attributes[link].value || 0;
+    const powerAPs = power.system.aps || 0;
+
+    // Return true if there's a mismatch
+    return attributeValue !== powerAPs;
+});
+
+Handlebars.registerHelper('isLinkedSkillMismatch', function (skill, actor) {
+    // Check if skill is linked
+    if (!skill.system.isLinked || skill.system.isLinked === false || skill.system.isLinked === 'false') {
+        return false;
+    }
+
+    // Check if link is valid
+    const link = skill.system.link;
+    if (!link || link === 'none' || link === 'special' || link === '') {
+        return false;
+    }
+
+    // Get the linked attribute value from the actor
+    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
+        return false;
+    }
+
+    const attributeValue = actor.system.attributes[link].value || 0;
+    const skillAPs = skill.system.aps || 0;
+
+    // Return true if there's a mismatch
+    return attributeValue !== skillAPs;
+});
+
+Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
+    // Filter items to find bonuses and limitations that belong to this power
+    if (!items) return [];
+
+    const modifiers = [];
+    items.forEach(item => {
+        if ((item.type === 'bonus' || item.type === 'limitation') && item.system.parent === powerId) {
+            modifiers.push(item);
+        }
+    });
+
+    return modifiers;
+});
+
+Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
+    // Filter items to find subskills that belong to this skill
+    if (!items) return [];
+
+    const subskills = [];
+    items.forEach(item => {
+        if (item.type === 'subskill' && item.system.parent === skillId) {
+            subskills.push(item);
+        }
+    });
+
+    return subskills;
+});
+
+Handlebars.registerHelper('skillHasSubskillsWithAPs', function (skillId, items) {
+    // Check if this skill has any subskills with APs > 0
+    if (!items) return false;
+
+    return items.some(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skillId &&
+        (item.system.aps || 0) > 0
+    );
+});
+
+Handlebars.registerHelper('skillIsIndependentSubskillMode', function (skill, items) {
+    // Check if skill is in independent subskill mode:
+    // - Skill has 0 APs
+    // - At least one subskill has APs > 0
+    if (!items || (skill.system.aps || 0) > 0) return false;
+
+    return items.some(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        (item.system.aps || 0) > 0
+    );
+});
+
+Handlebars.registerHelper('getIndependentSubskillReducedFC', function (skill, items) {
+    // Calculate reduced FC when purchasing independent subskills
+    // FC = Normal FC - (number of subskills with 0 APs)
+    if (!items) return 0;
+
+    // Count subskills with 0 APs
+    const subskillsWithZeroAPs = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        (item.system.aps || 0) === 0
+    ).length;
+
+    const normalFC = skill.system.factorCost || 0;
+    return Math.max(1, normalFC - subskillsWithZeroAPs);
+});
+
+Handlebars.registerHelper('getIndependentSubskillTotalCost', function (skill, items) {
+    // Calculate total cost when purchasing independent subskills
+    // This is the sum of all subskill costs
+    if (!items) return 0;
+
+    const subskills = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id
+    );
+
+    let totalCost = 0;
+    subskills.forEach(subskill => {
+        totalCost += subskill.system.totalCost || 0;
+    });
+
+    return totalCost;
+});
+
+Handlebars.registerHelper('subskillParentHasAPs', function (subskill, items) {
+    // Check if this subskill's parent skill has APs > 0
+    if (!items || !subskill.system.parent) return false;
+
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    return parentSkill && (parentSkill.system.aps || 0) > 0;
+});
+
+Handlebars.registerHelper('subskillParentIsIndependentMode', function (subskill, items) {
+    // Check if this subskill's parent is in independent subskill mode
+    if (!items || !subskill.system.parent) return false;
+
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    if (!parentSkill || (parentSkill.system.aps || 0) > 0) return false;
+
+    // Check if any subskill of parent has APs > 0
+    return items.some(item =>
+        item.type === 'subskill' &&
+        item.system.parent === parentSkill._id &&
+        (item.system.aps || 0) > 0
+    );
+});
+
+Handlebars.registerHelper('getSubskillBaseCost', function (subskill, items) {
+    // Subskills inherit base cost from parent skill
+    if (!items || !subskill.system.parent) return 0;
+
+    // Find parent skill
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    return parentSkill ? (parentSkill.system.baseCost || 0) : 0;
+});
+
+Handlebars.registerHelper('getSubskillReducedFC', function (subskill, items) {
+    // Calculate reduced Factor Cost for independently purchased subskill
+    // FC = Skill's base FC - (number of unused subskills)
+    if (!items || !subskill.system.parent) return 0;
+
+    // Find parent skill
+    const parentSkill = items.find(item =>
+        item.type === 'skill' &&
+        item._id === subskill.system.parent
+    );
+
+    if (!parentSkill) return 0;
+
+    // Count how many subskills have 0 APs (unused)
+    const unusedSubskills = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === parentSkill._id &&
+        (item.system.aps || 0) === 0
+    ).length;
+
+    // Reduced FC = Parent Skill FC - unused subskills
+    const baseFc = parentSkill.system.factorCost || 0;
+    const reducedFc = Math.max(1, baseFc - unusedSubskills);
+
+    return reducedFc;
+});
+
+/* -------------------------------------------- */
+// New simplified subskill system helpers
+/* -------------------------------------------- */
+Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items) {
+    // Calculate effective Factor Cost for a skill
+    // FC = Base FC - (number of unchecked subskills) - (linking bonus)
+    // Minimum FC is always 1
+    let baseFc = skill.system.factorCost || 0;
+    let effectiveFc = baseFc;
+
+    // Apply linking reduction (-2, minimum 1)
+    if (skill.system.isLinked === 'true' || skill.system.isLinked === true) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    if (!items) return effectiveFc;
+
+    // Count unchecked subskills (isTrained = false or undefined)
+    const uncheckedCount = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        !item.system.isTrained
+    ).length;
+
+    return Math.max(1, effectiveFc - uncheckedCount);
+});
+
+Handlebars.registerHelper('getSkillTotalCost', function (skill, items) {
+    // Calculate total cost for a skill using effective Factor Cost
+    const baseCost = skill.system.baseCost || 0;
+    const aps = skill.system.aps || 0;
+
+    // Get effective FC (with linking and subskill reductions)
+    const effectiveFc = Handlebars.helpers.getSkillEffectiveFactorCost(skill, items);
+
+    // Calculate total cost
+    if (aps === 0) {
+        return 0;
+    } else if (effectiveFc > 0) {
+        // Use AP Purchase Chart
+        const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+            ? MEGS.getAPCost(aps, effectiveFc)
+            : (effectiveFc * aps); // Fallback
+        return baseCost + apCost;
+    } else {
+        return baseCost;
+    }
+});
+
+Handlebars.registerHelper('getTotalSkillsCost', function (skills, items) {
+    // Calculate total cost for all skills (excluding gadget skills)
+    if (!skills || !Array.isArray(skills)) return 0;
+
+    return skills.reduce((total, skill) => {
+        if (skill.system.parent) return total; // Skip gadget skills
+        const cost = Handlebars.helpers.getSkillTotalCost(skill, items);
+        return total + cost;
+    }, 0);
+});
+
+Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
+    // Generate tooltip text explaining the Factor Cost calculation for skills
+    const baseFc = skill.system.factorCost || 0;
+    let tooltip = `Base FC: ${baseFc}`;
+    let effectiveFc = baseFc;
+
+    // Check if linked
+    const isLinked = skill.system.isLinked === 'true' || skill.system.isLinked === true;
+    if (isLinked) {
+        tooltip += '\nLinked: -2';
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    if (!items) {
+        tooltip += `\nEffective FC: ${effectiveFc}`;
+        return tooltip;
+    }
+
+    // Count unchecked subskills
+    const uncheckedCount = items.filter(item =>
+        item.type === 'subskill' &&
+        item.system.parent === skill._id &&
+        !item.system.isTrained
+    ).length;
+
+    if (uncheckedCount > 0) {
+        tooltip += `\nUnchecked subskills: -${uncheckedCount}`;
+        effectiveFc = Math.max(1, effectiveFc - uncheckedCount);
+    }
+
+    tooltip += `\nEffective FC: ${effectiveFc}`;
+
+    return tooltip;
+});
+
+Handlebars.registerHelper('formatSigned', function (number) {
+    // Format a number with a sign (+ or -)
+    const num = Number(number) || 0;
+    if (num > 0) {
+        return '+' + num;
+    } else if (num < 0) {
+        return String(num); // negative sign already included
+    } else {
+        return '+0';
+    }
+});
+
+Handlebars.registerHelper('subtract', function (a, b) {
+    // Subtract two numbers
+    return (Number(a) || 0) - (Number(b) || 0);
+});
+
+Handlebars.registerHelper('negate', function (number) {
+    // Negate a number (make it negative)
+    return -(Number(number) || 0);
+});
+
+Handlebars.registerHelper('formatNumber', function (number) {
+    // Format a number with comma separators
+    const num = Number(number) || 0;
+    return num.toLocaleString('en-US');
+});
+
+Handlebars.registerHelper('default', function (value, defaultValue) {
+    // Return value if it exists, otherwise return defaultValue
+    return (value !== undefined && value !== null) ? value : defaultValue;
+});
+
+Handlebars.registerHelper('debugLog', function (label, value) {
+    // Debug helper to log values in templates
+    console.log('Template debug -', label + ':', value, 'type:', typeof value);
+    return value;
+});
+
+Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
+    // Generate tooltip text explaining the HP Spent calculation
+    if (!budget) return '';
+
+    const attrs = budget.attributesCost || 0;
+    const wealth = budget.wealthCost || 0;
+    const powers = budget.powersCost || 0;
+    const skills = budget.skillsCost || 0;
+    const advantages = budget.advantagesCost || 0;
+    const drawbacks = budget.drawbacks || 0;
+    const gadgets = budget.gadgetsCost || 0;
+    const total = budget.totalSpent || 0;
+
+    let tooltip = 'HP Spent Breakdown:\n';
+    tooltip += `Attributes: ${attrs} HP\n`;
+    tooltip += `Wealth: ${wealth} HP\n`;
+    tooltip += `Powers: ${powers} HP\n`;
+    tooltip += `Skills: ${skills} HP\n`;
+    tooltip += `Advantages: ${advantages} HP\n`;
+    tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    tooltip += `Gadgets: ${gadgets} HP\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Total: ${total} HP`;
+
+    return tooltip;
+});
+
+Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
+    // Calculate the effective Factor Cost including linking and modifiers
+    let baseFc = power.system.factorCost || 0;
+    let effectiveFc = baseFc;
+
+    // Apply linking reduction (-2, minimum 1)
+    if (power.system.isLinked === 'true' || power.system.isLinked === true) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    // Add modifiers from bonuses/limitations
+    if (items) {
+        items.forEach(item => {
+            if ((item.type === 'bonus' || item.type === 'limitation') &&
+                item.system.parent === power._id &&
+                item.system.factorCostMod) {
+                effectiveFc += item.system.factorCostMod;
+            }
+        });
+    }
+
+    return Math.max(1, effectiveFc); // Minimum FC is always 1
+});
+
+Handlebars.registerHelper('getFactorCostTooltip', function (power, items) {
+    // Generate tooltip text explaining the Factor Cost calculation
+    const baseFc = power.system.factorCost || 0;
+    let tooltip = `Base FC: ${baseFc}`;
+    let effectiveFc = baseFc;
+
+    // Check if linked
+    const isLinked = power.system.isLinked === 'true' || power.system.isLinked === true;
+    if (isLinked) {
+        tooltip += '\nLinked: -2';
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    // Check for modifiers
+    if (items) {
+        items.forEach(item => {
+            if ((item.type === 'bonus' || item.type === 'limitation') &&
+                item.system.parent === power._id &&
+                item.system.factorCostMod) {
+                const mod = item.system.factorCostMod;
+                const sign = mod > 0 ? '+' : '';
+                tooltip += `\n${item.name}: ${sign}${mod}`;
+                effectiveFc += mod;
+            }
+        });
+    }
+
+    effectiveFc = Math.max(1, effectiveFc);
+    tooltip += `\nTotal: ${effectiveFc}`;
+
+    return tooltip;
+});
+
+Handlebars.registerHelper('getTotalCostTooltip', function (power, items) {
+    // Generate tooltip text explaining the Total Cost calculation
+    const baseCost = power.system.baseCost || 0;
+    const aps = power.system.aps || 0;
+
+    if (aps === 0) {
+        return 'Not purchased (0 APs)';
+    }
+
+    // Calculate effective FC
+    let effectiveFc = power.system.factorCost || 0;
+    const isLinked = power.system.isLinked === 'true' || power.system.isLinked === true;
+    if (isLinked) {
+        effectiveFc = Math.max(1, effectiveFc - 2);
+    }
+
+    // Add modifiers
+    if (items) {
+        items.forEach(item => {
+            if ((item.type === 'bonus' || item.type === 'limitation') &&
+                item.system.parent === power._id &&
+                item.system.factorCostMod) {
+                effectiveFc += item.system.factorCostMod;
+            }
+        });
+    }
+    effectiveFc = Math.max(1, effectiveFc);
+
+    // Get AP cost from chart
+    const apCost = MEGS.getAPCost ? MEGS.getAPCost(aps, effectiveFc) : (effectiveFc * aps);
+
+    let tooltip = `Base Cost: ${baseCost}`;
+    tooltip += `\nAP Cost (${aps} APs @ FC ${effectiveFc}): ${apCost}`;
+    tooltip += `\nTotal: ${baseCost + apCost}`;
+
+    return tooltip;
 });
 
 /* -------------------------------------------- */
@@ -357,15 +853,185 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         description += 'Ammo ' + gadget.system.weapon.ammo;
     }
 
-    // reliability
-    if (gadget.system.reliability > 0) {
-        if (description) {
-            description += ', ';
+    // reliability (don't display if R# is 0)
+    if (gadget.system.reliability != null && gadget.system.reliability !== '') {
+        const rNumber = CONFIG.reliabilityScores[gadget.system.reliability];
+        if (rNumber > 0) {
+            if (description) {
+                description += ', ';
+            }
+            description += 'R#' + rNumber;
         }
-        description += 'R # ' + CONFIG.reliabilityScores[gadget.system.reliability];
     }
 
-    return description;
+    // Return empty string if description is empty or just whitespace
+    return description.trim();
+});
+
+Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
+    if (!gadget || !gadget.system) return '';
+
+    const systemData = gadget.system;
+    let tooltip = '';
+    let totalBeforeBonus = 0;
+
+    // Helper function to get reliability modifier
+    const getReliabilityMod = (reliability) => {
+        const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
+        return table[reliability] ?? 0;
+    };
+
+    // reliability is stored as an index into CONFIG.reliabilityScores array
+    const reliabilityIndex = systemData.reliability ?? 3; // Default to index 3 (R# 5)
+    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+    const reliabilityMod = getReliabilityMod(reliability);
+
+    // Debug: Show what reliability value we're reading
+    console.log(`[${gadget.name}] Reliability Index: ${systemData.reliability}, R#: ${reliability}, Mod: ${reliabilityMod}`);
+
+    // Calculate attribute costs
+    let attributesCost = 0;
+    if (systemData.attributes) {
+        for (const [key, attr] of Object.entries(systemData.attributes)) {
+            if (attr.value > 0) {
+                let fc = attr.factorCost + reliabilityMod;
+                console.log(`  ${key.toUpperCase()}: base FC=${attr.factorCost}, +reliabilityMod(${reliabilityMod})`);
+                if (attr.alwaysSubstitute) {
+                    fc += 2;
+                    console.log(`    +2 for alwaysSubstitute`);
+                }
+                if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
+                    fc += 2;
+                    console.log(`    +2 for Hardened Defenses`);
+                }
+                fc = Math.max(1, fc);
+                const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
+                console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
+                attributesCost += attrCost;
+            }
+        }
+    }
+    if (attributesCost > 0) {
+        console.log(`  Total Attributes: ${attributesCost} HP`);
+        tooltip += 'Attributes: ' + attributesCost + '\n';
+        totalBeforeBonus += attributesCost;
+    }
+
+    // Calculate AV cost
+    if (systemData.actionValue > 0) {
+        const fc = Math.max(1, 1 + reliabilityMod);
+        const chartCost = MEGS.getAPCost(systemData.actionValue, fc) || 0;
+        const avCost = 5 + chartCost;
+        console.log(`  AV: 5 (base) + ${systemData.actionValue} APs @ FC ${fc} = ${chartCost} HP → Total: ${avCost} HP`);
+        tooltip += `AV: ${avCost}\n`;
+        totalBeforeBonus += avCost;
+    }
+
+    // Calculate EV cost
+    if (systemData.effectValue > 0) {
+        const fc = Math.max(1, 1 + reliabilityMod);
+        const evCost = 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
+        tooltip += 'EV: ' + evCost + '\n';
+        totalBeforeBonus += evCost;
+    }
+
+    // Calculate Range cost (check both systemData.range and systemData.weapon.range)
+    const rangeValue = systemData.range || systemData.weapon?.range || 0;
+    if (rangeValue > 0) {
+        const fc = Math.max(1, 1 + reliabilityMod);
+        const rangeCost = 5 + (MEGS.getAPCost(rangeValue, fc) || 0);
+        tooltip += 'Range: ' + rangeCost + '\n';
+        totalBeforeBonus += rangeCost;
+    }
+
+    // Add child item costs
+    const owner = game.actors.get(gadget.ownerId);
+    if (owner && owner.items) {
+        let powersCost = 0;
+        let skillsCost = 0;
+        let advantagesCost = 0;
+        let drawbacksCost = 0;
+
+        owner.items.forEach(item => {
+            if (item.system.parent === gadget._id && item.system.totalCost) {
+                if (item.type === MEGS.itemTypes.power) {
+                    powersCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.skill) {
+                    skillsCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.advantage) {
+                    advantagesCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.drawback) {
+                    drawbacksCost += item.system.totalCost;
+                }
+            }
+        });
+
+        if (powersCost > 0) {
+            tooltip += 'Powers: ' + powersCost + '\n';
+            totalBeforeBonus += powersCost;
+        }
+        if (skillsCost > 0) {
+            tooltip += 'Skills: ' + skillsCost + '\n';
+            totalBeforeBonus += skillsCost;
+        }
+        if (advantagesCost > 0) {
+            tooltip += 'Advantages: ' + advantagesCost + '\n';
+            totalBeforeBonus += advantagesCost;
+        }
+        if (drawbacksCost > 0) {
+            tooltip += 'Drawbacks: -' + drawbacksCost + '\n';
+            totalBeforeBonus -= drawbacksCost;
+        }
+    }
+
+    // Add total before bonus
+    tooltip += '---\n';
+    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\n';
+
+    // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
+    const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
+    console.log(`  Total before bonus: ${totalBeforeBonus} HP`);
+    console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
+    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\n';
+
+    // Add final cost
+    const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
+    console.log(`  Final Cost: ${totalBeforeBonus} ÷ ${gadgetBonus} = ${finalCost} HP`);
+    tooltip += 'Final Cost: ' + finalCost;
+
+    return tooltip;
+});
+
+Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {
+    if (!power || !power.system) return '';
+
+    const systemData = power.system;
+    let tooltip = '';
+
+    // Base Factor Cost
+    const baseFactor = systemData.factorCost || 0;
+    tooltip += 'Base Factor Cost: ' + baseFactor + '\n';
+
+    // Bonuses
+    const bonusMod = systemData.bonusMod || 0;
+    if (bonusMod !== 0) {
+        tooltip += 'Bonuses: ' + (bonusMod > 0 ? '+' : '') + bonusMod + '\n';
+    }
+
+    // Limitations
+    const limitationMod = systemData.limitationMod || 0;
+    if (limitationMod !== 0) {
+        tooltip += 'Limitations: ' + (limitationMod > 0 ? '+' : '') + limitationMod + '\n';
+    }
+
+    // Show calculation if there are modifiers
+    if (bonusMod !== 0 || limitationMod !== 0) {
+        tooltip += '---\n';
+        const effectiveFactor = systemData.effectiveFactorCost || baseFactor;
+        tooltip += 'Effective Factor Cost: ' + effectiveFactor;
+    }
+
+    return tooltip;
 });
 
 Handlebars.registerHelper('shouldShowRow', function (index, hasAttributes, options) {
@@ -465,6 +1131,33 @@ Hooks.once('ready', function () {
         }
     });
     Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
+
+    // Hook to preserve gadget power/skill data when dragging from sidebar to actor
+    Hooks.on('preCreateItem', (item, data, options, userId) => {
+        if (item.type === 'gadget' && item.parent && data.flags?.megs?._transferData) {
+            const transferData = data.flags.megs._transferData;
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.log('[MEGS] preCreateItem hook: Found gadget with transfer data');
+                console.log('[MEGS] powerAPs:', transferData.powerAPs);
+            }
+
+            // Store in global cache using a combination of parent ID and item name
+            if (!globalThis.MEGS_TRANSFER_CACHE) globalThis.MEGS_TRANSFER_CACHE = {};
+            const cacheKey = `${item.parent.id}_${item.name}_${Date.now()}`;
+            globalThis.MEGS_TRANSFER_CACHE[cacheKey] = {
+                transferData,
+                itemName: item.name,
+                parentId: item.parent.id
+            };
+
+            // Store the cache key in options so _onCreate can find it
+            options.megsCacheKey = cacheKey;
+
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.log('[MEGS] Stored in cache with key:', cacheKey);
+            }
+        }
+    });
 });
 
 /**
@@ -574,5 +1267,29 @@ function registerSystemSettings() {
         hint: 'SETTINGS.showActiveEffects.label',
         type: Boolean,
         default: false,
+    });
+    game.settings.register('megs', 'debugLogging', {
+        config: true,
+        scope: 'client',
+        name: 'SETTINGS.debugLogging.name',
+        hint: 'SETTINGS.debugLogging.label',
+        type: Boolean,
+        default: false,
+    });
+    game.settings.register('megs', 'allowSkillDeletion', {
+        config: true,
+        scope: 'world',
+        name: 'SETTINGS.allowSkillDeletion.name',
+        hint: 'SETTINGS.allowSkillDeletion.label',
+        type: Boolean,
+        default: true,
+        onChange: () => {
+            // Re-render all open actor and item sheets when setting changes
+            Object.values(ui.windows).forEach(app => {
+                if (app instanceof ActorSheet || app instanceof ItemSheet) {
+                    app.render(false);
+                }
+            });
+        }
     });
 }

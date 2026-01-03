@@ -5,6 +5,8 @@
             "identity": {
                 "biography": "",
                 "wealth": 0,
+                "wealthYear": 1990,
+                "wealthAdjustForInflation": false,
                 "motivation": "",
                 "occupation": "",
                 "background": "",
@@ -29,6 +31,9 @@
                 },
                 "heroPoints": {
                     "value": 0
+                },
+                "creationBudget": {
+                    "base": 450
                 },
                 "settings": {
                     "hideZeroAPSkills": true
@@ -336,11 +341,12 @@
             "useUnskilled": true
         },
         "subskill": {
-            "templates": ["baseItem", "purchasable", "scalable", "hasParent"],
+            "templates": ["baseItem", "hasParent"],
             "type": "subskill",
             "linkedSkill": "",
             "useUnskilled": true,
-            "actorId": ""
+            "actorId": "",
+            "isTrained": true
         },
         "advantage": {
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
@@ -394,7 +400,12 @@
             },
             "skillData": {},
             "subskillData": {},
-            "powerData": {},
+            "powerAPs": {},
+            "powerBaseCosts": {},
+            "powerFactorCosts": {},
+            "powerRanges": {},
+            "powerIsLinked": {},
+            "powerLinks": {},
             "traitData": {},
             "weapon": {
                 "isWeapon": false,

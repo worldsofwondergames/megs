@@ -46,6 +46,7 @@ export class MEGSActor extends Actor {
                             type: j.type,
                             linkedSkill: i.name,
                             useUnskilled: j.useUnskilled,
+                            isTrained: true,
                         },
                     };
                     subskills.push(subskillObj);
@@ -87,6 +88,47 @@ export class MEGSActor extends Actor {
     prepareBaseData() {
         // Data modifications in this step occur before processing embedded
         // documents or derived data.
+
+        // Ensure attributes exist and have valid values (for actors created before template updates)
+        if (!this.system.attributes) {
+            this.system.attributes = {};
+        }
+
+        const defaultAttributes = {
+            dex: { value: 0, factorCost: 7, label: 'Dexterity', type: 'physical', rolls: ['action', 'opposing'] },
+            str: { value: 0, factorCost: 6, label: 'Strength', type: 'physical', rolls: ['effect'] },
+            body: { value: 0, factorCost: 6, label: 'Body', type: 'physical', rolls: ['resistance'] },
+            int: { value: 0, factorCost: 7, label: 'Intelligence', type: 'mental', rolls: ['action', 'opposing'] },
+            will: { value: 0, factorCost: 6, label: 'Will', type: 'mental', rolls: ['effect'] },
+            mind: { value: 0, factorCost: 6, label: 'Mind', type: 'mental', rolls: ['resistance'] },
+            infl: { value: 0, factorCost: 7, label: 'Influence', type: 'mystical', rolls: ['action', 'opposing'] },
+            aura: { value: 0, factorCost: 6, label: 'Aura', type: 'mystical', rolls: ['effect'] },
+            spirit: { value: 0, factorCost: 6, label: 'Spirit', type: 'mystical', rolls: ['resistance'] }
+        };
+
+        for (const [key, defaultAttr] of Object.entries(defaultAttributes)) {
+            if (!this.system.attributes[key]) {
+                this.system.attributes[key] = { ...defaultAttr };
+            } else if (this.system.attributes[key].value === undefined || this.system.attributes[key].value === null) {
+                this.system.attributes[key].value = 0;
+            }
+        }
+
+        // Ensure current condition tracks exist
+        if (!this.system.currentBody) {
+            this.system.currentBody = { value: 0, min: 0, max: 60 };
+        }
+        if (!this.system.currentMind) {
+            this.system.currentMind = { value: 0, min: 0, max: 60 };
+        }
+        if (!this.system.currentSpirit) {
+            this.system.currentSpirit = { value: 0, min: 0, max: 60 };
+        }
+
+        // Ensure creation budget exists
+        if (!this.system.creationBudget) {
+            this.system.creationBudget = { base: 450 };
+        }
     }
     /**
      * @override
@@ -103,6 +145,12 @@ export class MEGSActor extends Actor {
         this.system.currentMind.max = this.system.attributes.mind.value;
         this.system.currentSpirit.max = this.system.attributes.spirit.value;
 
+        // Recalculate costs for powers/skills with modifiers
+        this._recalculateItemCosts();
+
+        // Calculate Hero Point budget and spending
+        this._calculateHeroPointBudget();
+
         if (this.type === MEGS.characterTypes.hero || this.type === MEGS.characterTypes.villain) {
             const merge = (a, b, predicate = (a, b) => a === b) => {
                 const c = [...a]; // copy to avoid side effects
@@ -117,6 +165,190 @@ export class MEGSActor extends Actor {
                 CONFIG.motivations.antihero
             );
         }
+    }
+
+    /**
+     * Recalculate item costs for powers and skills, accounting for modifiers
+     * This must run before _calculateHeroPointBudget() to ensure accurate costs
+     */
+    _recalculateItemCosts() {
+        if (!this.items) return;
+
+        // Get all powers and skills (subskills no longer have costs)
+        const itemsWithCosts = this.items.filter(item =>
+            (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+            item.system.hasOwnProperty('baseCost') &&
+            item.system.hasOwnProperty('factorCost') &&
+            item.system.hasOwnProperty('aps')
+        );
+
+        itemsWithCosts.forEach(item => {
+            const systemData = item.system;
+
+            // Calculate effective Factor Cost
+            let effectiveFC = systemData.factorCost || 0;
+
+            // Special handling for skills: reduce FC based on unchecked subskills
+            if (item.type === MEGS.itemTypes.skill) {
+                // Count unchecked subskills (isTrained = false or undefined)
+                const uncheckedCount = this.items.filter(i =>
+                    i.type === MEGS.itemTypes.subskill &&
+                    i.system.parent === item._id &&
+                    !i.system.isTrained
+                ).length;
+
+                // Reduced FC = Base FC - unchecked subskills
+                effectiveFC = Math.max(1, effectiveFC - uncheckedCount);
+            }
+
+            // Apply linking reduction (-2, minimum 1) for powers and skills
+            if ((item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
+                (systemData.isLinked === 'true' || systemData.isLinked === true)) {
+                effectiveFC = Math.max(1, effectiveFC - 2);
+            }
+
+            // Add modifiers from bonuses/limitations (powers only)
+            if (item.type === MEGS.itemTypes.power) {
+                this.items.forEach(modifier => {
+                    if ((modifier.type === MEGS.itemTypes.bonus || modifier.type === MEGS.itemTypes.limitation) &&
+                        modifier.system.parent === item._id &&
+                        modifier.system.factorCostMod) {
+                        effectiveFC += modifier.system.factorCostMod;
+                    }
+                });
+            }
+
+            // Ensure minimum FC of 1
+            effectiveFC = Math.max(1, effectiveFC);
+
+            // Calculate total cost
+            if ((systemData.aps || 0) === 0) {
+                systemData.totalCost = 0;
+            } else {
+                const apCost = (MEGS.getAPCost && typeof MEGS.getAPCost === 'function')
+                    ? MEGS.getAPCost(systemData.aps || 0, effectiveFC)
+                    : (effectiveFC * (systemData.aps || 0)); // Fallback
+                systemData.totalCost = systemData.baseCost + apCost;
+            }
+        });
+    }
+
+    /**
+     * Calculate Hero Point budget tracking for character creation
+     */
+    _calculateHeroPointBudget() {
+        // Base budget from character creation (defaults to 450 HP for standard characters)
+        const baseBudget = this.system.creationBudget?.base ?? 450;
+
+        // Calculate HP spent on attributes
+        let attributesCost = 0;
+        const attributes = this.system.attributes;
+
+        if (attributes) {
+            // Physical attributes
+            attributesCost += MEGS.getAPCost(attributes.dex?.value ?? 0, 7) || 0;  // DEX is FC 7
+            attributesCost += MEGS.getAPCost(attributes.str?.value ?? 0, 6) || 0;  // STR is FC 6
+            attributesCost += MEGS.getAPCost(attributes.body?.value ?? 0, 6) || 0; // BODY is FC 6
+
+            // Mental attributes
+            attributesCost += MEGS.getAPCost(attributes.int?.value ?? 0, 7) || 0;  // INT is FC 7
+            attributesCost += MEGS.getAPCost(attributes.will?.value ?? 0, 6) || 0; // WILL is FC 6
+            attributesCost += MEGS.getAPCost(attributes.mind?.value ?? 0, 6) || 0; // MIND is FC 6
+
+            // Mystical attributes
+            attributesCost += MEGS.getAPCost(attributes.infl?.value ?? 0, 7) || 0;  // INFL is FC 7
+            attributesCost += MEGS.getAPCost(attributes.aura?.value ?? 0, 6) || 0;  // AURA is FC 6
+            attributesCost += MEGS.getAPCost(attributes.spirit?.value ?? 0, 6) || 0; // SPIRIT is FC 6
+        }
+
+        // Calculate HP spent on wealth (FC 2)
+        const wealthCost = MEGS.getAPCost(this.system.wealth ?? 0, 2) || 0;
+
+        // Calculate HP spent on items (powers, skills, advantages, gadgets, drawbacks)
+        let itemsCost = 0;
+        let powersCost = 0;
+        let skillsCost = 0;
+        let advantagesCost = 0;
+        let gadgetsCost = 0;
+        let drawbacksCost = 0;
+
+        if (this.items) {
+            this.items.forEach(item => {
+                // Only count top-level items (child items are counted in their parent's cost)
+                if (item.system.totalCost !== undefined && item.type !== MEGS.itemTypes.subskill && !item.system.parent) {
+                    let cost = item.system.totalCost;
+
+                    // Ensure drawbacks are always negative (they reduce HP spent)
+                    if (item.type === MEGS.itemTypes.drawback) {
+                        if (cost === 0) {
+                            if (game.settings.get('megs', 'debugLogging')) {
+                                console.error(`Drawback "${item.name}" has zero cost - this is likely a configuration error`);
+                            }
+                        } else if (cost > 0) {
+                            // Positive cost, make it negative
+                            cost = -cost;
+                        }
+                        // If already negative, leave it as-is
+                    }
+
+                    // Track item types separately for character creator display
+                    if (item.type === MEGS.itemTypes.power) {
+                        powersCost += cost;
+                    } else if (item.type === MEGS.itemTypes.skill) {
+                        skillsCost += cost;
+                    } else if (item.type === MEGS.itemTypes.advantage) {
+                        advantagesCost += cost;
+                    } else if (item.type === MEGS.itemTypes.gadget) {
+                        gadgetsCost += cost;
+                    } else if (item.type === MEGS.itemTypes.drawback) {
+                        drawbacksCost += cost; // Negative value
+                    }
+
+                    // Add to total items cost (drawbacks will reduce it since they're negative)
+                    itemsCost += cost;
+                }
+            });
+        }
+
+        // Calculate totals - drawbacks are already negative, so simple addition works
+        const totalBudget = baseBudget;
+        const totalSpent = attributesCost + wealthCost + itemsCost;
+        const remaining = totalBudget - totalSpent;
+
+        // Debug logging for HP budget calculation
+        if (game.settings.get('megs', 'debugLogging')) {
+            console.log(`HP Budget Debug for ${this.name}:`, {
+                baseBudget,
+                attributesCost,
+                wealthCost,
+                itemsCost,
+                drawbacksCost,
+                totalSpent,
+                totalBudget,
+                remaining,
+                'Math check': `${totalBudget} - ${totalSpent} = ${totalBudget - totalSpent}`
+            });
+        }
+
+        // Calculate net traits cost (advantages + drawbacks, where drawbacks are negative)
+        const traitsCost = advantagesCost + drawbacksCost;
+
+        // Store in actor system data for display
+        this.system.heroPointBudget = {
+            base: baseBudget,
+            drawbacks: drawbacksCost, // Negative value shows it reduces cost
+            total: totalBudget,
+            attributesCost: attributesCost,
+            wealthCost: wealthCost,
+            powersCost: powersCost,
+            skillsCost: skillsCost,
+            advantagesCost: advantagesCost,
+            traitsCost: traitsCost,
+            gadgetsCost: gadgetsCost,
+            itemsCost: itemsCost,
+            totalSpent: totalSpent,
+            remaining: remaining
+        };
     }
 
     /**

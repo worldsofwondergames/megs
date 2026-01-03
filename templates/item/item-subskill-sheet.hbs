@@ -29,9 +29,30 @@
             {{/if}}
         </div>
 
-        {{#unless skillHasRanks}}
-            {{> "systems/megs/templates/item/parts/item-skill-calculator-header.hbs"}}
-        {{/unless}}
+        {{!-- Subskills show APs (read-only from parent) and Trained status instead of cost calculator --}}
+        <div class="resources grid grid-2col">
+            <div class="resource flex-group-center">
+                <label for="system.aps" class="resource-label">{{localize 'MEGS.APs'}}</label>
+                <div class="resource-content flexrow flex-center flex-between">
+                    {{#if system.isTrained}}
+                        <span>{{parentSkillAPs}}</span>
+                    {{else}}
+                        <span>&mdash;</span>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="resource flex-group-center">
+                <label for="system.isTrained" class="resource-label">{{localize 'MEGS.Trained'}}</label>
+                <div class="resource-content flexrow flex-center" style="justify-content: center;">
+                    {{#if flags.megs.edit-mode}}
+                        <input type="checkbox" name="system.isTrained" {{checked system.isTrained}} data-dtype="Boolean" {{#if (compare parentSkillAPs "===" 0)}}disabled{{/if}}/>
+                    {{else}}
+                        <input type="checkbox" name="system.isTrained" {{checked system.isTrained}} data-dtype="Boolean" disabled/>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
 
         </div>
     </header>
@@ -107,7 +128,7 @@
             {{#if flags.megs.edit-mode}}
                 {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
             {{else}}
-                <div class="description-text">{{{system.description}}}</div>
+                <div class="description-text">{{{enrichedDescription}}}</div>
             {{/if}}
         </div>
     </section>

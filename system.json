@@ -16,11 +16,11 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/main/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
-    "version": "0.7.0",
+    "version": "1.0.0",
     "compatibility": {
         "minimum": 11,
         "verified": "13.346"
@@ -42,8 +42,8 @@
     "packs": [],
     "packFolders": [],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/main/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/main/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/MEGS-1.0.0-Release/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-1.0.0-Release/",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

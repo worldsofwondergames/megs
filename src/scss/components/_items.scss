@@ -1,28 +1,29 @@
-// Section Header
+/*------------------------------------------------------------------------*/
+/* Items, Gadgets, Lists
+/*------------------------------------------------------------------------*/
+
 .items-header {
-    height: 28px;
     margin: 2px 0;
     padding: 0;
     align-items: center;
     background: rgba(0, 0, 0, 0.05);
     border: $border-groove;
-    font-weight: bold;
+
     > * {
-        font-size: 14px;
+        font-size: 20px;
         text-align: center;
     }
+
     .item-name {
-        font-weight: bold;
         padding-left: 5px;
         text-align: left;
         display: flex;
-        // font-size: 16px;
+    }
+
+    .item-description {
+        text-align: left;
     }
 }
-
-// -----------------------------------------
-// Items Lists
-// -----------------------------------------
 
 .items-list {
     list-style: none;
@@ -30,94 +31,182 @@
     padding: 0;
     overflow-y: auto;
     scrollbar-width: thin;
-    color: $c-tan;
 
-    // Child lists
+    .item-row {
+        font-family: $font-primary;
+        color: $c-darkblue;
+    }
+
+    > li.item-row:nth-of-type(odd) {
+        background: $c-lightblue;
+    }
+
     .item-list {
         list-style: none;
         margin: 0;
         padding: 0;
     }
 
-    // Item Name
     .item-name {
-        flex: 2;
+        flex: 1;
         margin: 0;
         overflow: hidden;
-        font-size: 13px;
+        font-size: 14px;
         text-align: left;
         align-items: center;
         display: flex;
-        h3,
-        h4 {
-            margin: 0;
-            white-space: nowrap;
-            overflow-x: hidden;
-        }
     }
 
-    // Control Buttons
+    .item-row .item-description {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .item-total-cost {
+        text-align: center;
+    }
+
+    .item-aps {
+        display: flex;
+        justify-content: center;
+        flex: 0 0 100px;
+    }
+
     .item-controls {
         display: flex;
         flex: 0 0 100px;
         justify-content: flex-end;
+        align-items: center;
+
         a {
-            font-size: 12px;
+            font-size: 20px;
             text-align: center;
             margin: 0 6px;
         }
     }
 
-    // Individual Item
     .item {
         align-items: center;
-        padding: 0 2px; // to align with the header border
+        padding: 0 2px;
         border-bottom: 1px solid $c-faint;
+        margin-bottom: 2px;
+
         &:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
+
         .item-name {
-            color: $c-dark;
+            padding-left: 8px;
+
             .item-image {
-                flex: 0 0 30px;
-                height: 30px;
+                flex: 0 0 24px;
+                height: 24px;
                 background-size: 30px;
+                background-color: $c-lightblue;
                 border: none;
-                margin-right: 5px;
+                margin: 3px 5px 4px 0;
             }
         }
     }
 
-    .item-prop {
-        text-align: center;
-        border-left: 1px solid #c9c7b8;
-        border-right: 1px solid #c9c7b8;
-        font-size: 12px;
-    }
-
-    // Section Header
     .items-header {
-        height: 28px;
         margin: 2px 0;
         padding: 0;
         align-items: center;
-        background: rgba(0, 0, 0, 0.05);
+        background: $c-darkblue;
         border: $border-groove;
-        font-weight: bold;
+        color: $c-white;
+
         > * {
-            font-size: 12px;
+            font-size: 20px;
             text-align: center;
         }
+
         .item-name {
+            flex: 1;
             padding-left: 5px;
             text-align: left;
-            // font-size: 16px;
+        }
+    }
+
+    // Cost columns
+    .item-base-cost,
+    .item-factor-cost {
+        text-align: center;
+    }
+}
+
+/* Directory item icons */
+li.directory-item img[src*='assets/images/icons'] {
+    filter: invert(100%);
+}
+
+/*------------------------------------------------------------------------*/
+/* Actor Sheet Skills Tab Accordion Styles
+/*------------------------------------------------------------------------*/
+
+&.sheet.actor .tab.skills .items-list {
+    .skill-row {
+        background-color: #e8f4f8;
+        min-height: 31px;
+        display: flex;
+        align-items: center;
+    }
+
+    .subskill-row {
+        min-height: 27px;
+        background-color: $c-white;
+        display: flex;
+        align-items: center;
+    }
+
+    .item-toggle {
+        flex: 0 0 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .item-name {
+        flex: 3;
+    }
+
+    .item-aps {
+        flex: 0 0 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .item-controls {
+        flex: 0 0 100px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .toggle-icon {
+        color: #666;
+        font-size: 0.85em;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            color: $c-black;
         }
     }
 }
 
-// Example style for MEGS (can be removed if not needed).
-.item-formula {
-    flex: 0 0 200px;
-    padding: 0 8px;
+/*------------------------------------------------------------------------*/
+/* Item Sheet Subskills Tab
+/*------------------------------------------------------------------------*/
+
+&.sheet.item .tab.subskills .items-list {
+    .item-trained {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

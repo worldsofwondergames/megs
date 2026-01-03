@@ -122,6 +122,9 @@
 - Added comma formatting to HP Spent and HP Remaining values on character creator sheet
 - Improved chat message styling with customized roll result headers
 - Enhanced roll dialog with "Roll" button label and d10 die icon
+- Added column shift tooltip displaying calculation breakdown (roll result, combat maneuver, unskilled penalty, manual shifts)
+- Implemented table extrapolation for attribute values beyond 60 (Action and Result tables)
+- Changed "Result Table Shifts" label to "Manual Result Shifts" for clarity
 
 ### Bug Fixes
 
@@ -146,3 +149,4 @@
 
 - Added test coverage for character budget calculations, reliability number conversion, and base cost only powers
 - Test coverage for gadget cost calculations including rulebook example (Machinegun)
+- Comprehensive test coverage for table extrapolation beyond 60 (Action and Result tables)

@@ -398,6 +398,56 @@ export class MegsTableRolls {
         );
         const columnShifts = rollColumnShifts + rvColumnShifts;
         resultData.columnShifts = columnShifts;
+
+        // Build explanation text for column shifts
+        let shiftExplanation = '';
+        if (rollColumnShifts !== 0 || rvColumnShifts !== 0 || combatManeuverKey || isUnskilled || resultColumnShifts) {
+            shiftExplanation += '<table class="init-table">';
+
+            // Show base column shifts from roll
+            if (rollColumnShifts !== 0) {
+                shiftExplanation +=
+                    '    <tr>' +
+                    '        <td class="label">' + game.i18n.localize('MEGS.RollResult') + '</td>' +
+                    '        <td class="value">' + (rollColumnShifts >= 0 ? '+' : '') + rollColumnShifts + '</td>' +
+                    '    </tr>';
+            }
+
+            // Show combat maneuver contribution
+            if (combatManeuverKey) {
+                const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
+                const maneuverShifts = parseInt(combatManeuver.rvShifts);
+                if (maneuverShifts !== 0) {
+                    shiftExplanation +=
+                        '    <tr>' +
+                        '        <td class="label">' + combatManeuver.label + '</td>' +
+                        '        <td class="value">' + (maneuverShifts >= 0 ? '+' : '') + maneuverShifts + '</td>' +
+                        '    </tr>';
+                }
+            }
+
+            // Show unskilled penalty
+            if (isUnskilled) {
+                shiftExplanation +=
+                    '    <tr>' +
+                    '        <td class="label">' + game.i18n.localize('MEGS.Unskilled') + '</td>' +
+                    '        <td class="value">-2</td>' +
+                    '    </tr>';
+            }
+
+            // Show result table shifts
+            if (resultColumnShifts && resultColumnShifts !== 0) {
+                shiftExplanation +=
+                    '    <tr>' +
+                    '        <td class="label">' + game.i18n.localize('MEGS.ResultTableShifts') + '</td>' +
+                    '        <td class="value">' + (resultColumnShifts >= 0 ? '+' : '') + resultColumnShifts + '</td>' +
+                    '    </tr>';
+            }
+
+            shiftExplanation += '</table>';
+        }
+        resultData.columnShiftText = shiftExplanation;
+
         // TODO handle totals greater than 60 on table
 
         /**********************************

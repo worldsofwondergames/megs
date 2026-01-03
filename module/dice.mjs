@@ -451,8 +451,6 @@ export class MegsTableRolls {
         }
         resultData.columnShiftText = shiftExplanation;
 
-        // TODO handle totals greater than 60 on table
-
         /**********************************
          * RESULT TABLE
          **********************************/
@@ -500,8 +498,8 @@ export class MegsTableRolls {
             return resultAPs;
         }
 
-        // consult result chart
-        const resultAPs = resultTable[evIndex][shiftedRvIndex];
+        // consult result chart with extrapolation for values beyond table
+        const resultAPs = this._getResultTableValue(evAdjusted, evIndex, shiftedRvIndex);
 
         // If the result is an 'N' then there is No Effect
         if (resultAPs === 0) {
@@ -713,6 +711,61 @@ export class MegsTableRolls {
     }
 
     /**
+     * Get result table value with extrapolation for values beyond table
+     * For every 5 APs of Effect Value over 60, increase the RAPs by 5
+     * @param {*} evAdjusted
+     * @param {*} evIndex
+     * @param {*} shiftedRvIndex
+     * @returns
+     */
+    _getResultTableValue(evAdjusted, evIndex, shiftedRvIndex) {
+        const resultTable = CONFIG.tables.resultTable;
+
+        // Calculate extrapolation for EV beyond 60
+        // For every 5 APs of Effect Value over 60, increase the RAPs by 5
+        let evExtrapolation = 0;
+        if (evAdjusted > 60) {
+            const rangesBeyond = Math.floor((evAdjusted - 61) / 5) + 1;
+            evExtrapolation = rangesBeyond * 5;
+        }
+
+        // Clamp indices to valid table bounds
+        const clampedEvIndex = Math.max(0, Math.min(evIndex, resultTable.length - 1));
+        const clampedRvIndex = Math.max(0, Math.min(shiftedRvIndex, resultTable[0].length - 1));
+
+        // Get base RAPs from table
+        let resultAPs = resultTable[clampedEvIndex][clampedRvIndex];
+
+        // Add extrapolation for EV beyond 60
+        resultAPs += evExtrapolation;
+
+        if (game.settings.get('megs', 'debugLogging')) {
+            if (evExtrapolation > 0 || clampedRvIndex !== shiftedRvIndex) {
+                console.log(
+                    'Result Table lookup: EV=' +
+                        evAdjusted +
+                        ' evIndex=' +
+                        evIndex +
+                        ' shiftedRvIndex=' +
+                        shiftedRvIndex +
+                        ' clampedEvIndex=' +
+                        clampedEvIndex +
+                        ' clampedRvIndex=' +
+                        clampedRvIndex +
+                        ' baseRAPs=' +
+                        (resultAPs - evExtrapolation) +
+                        ' evExtrapolation=+' +
+                        evExtrapolation +
+                        ' finalRAPs=' +
+                        resultAPs
+                );
+            }
+        }
+
+        return resultAPs;
+    }
+
+    /**
      *
      * @param {*} avAdjusted
      * @param {*} ovAdjusted
@@ -726,53 +779,64 @@ export class MegsTableRolls {
         // get range index for OV
         const ovIndex = this._getRangeIndex(ovAdjusted) - ovColumnShifts;
 
-        // consult action chart for difficulty
-        const actionTable = CONFIG.tables.actionTable;
-        const difficulty = actionTable[avIndex][ovIndex];
+        // Calculate extrapolation for values beyond 60
+        // For each range beyond 60 (61-65, 66-70, etc.), add 5 to difficulty
+        let avExtrapolation = 0;
+        if (avAdjusted > 60) {
+            const rangesBeyond = Math.floor((avAdjusted - 61) / 5) + 1;
+            avExtrapolation = rangesBeyond * 5;
+        }
 
-        if (avIndex < 0) {
-            console.error(
-                'ERROR: Index beyond table boundaries (AV = ' +
-                    avAdjusted +
-                    ' | avIndex = ' +
-                    avIndex +
-                    ')'
-            );
-        } else if (ovIndex < 0) {
-            console.error(
-                'ERROR: Index beyond table boundaries (OV = ' +
-                    ovAdjusted +
-                    ' | ovIndex = ' +
-                    ovIndex +
-                    ' | ovColumnShifts = ' +
-                    ovColumnShifts +
-                    ')'
-            );
-        } else if (avIndex >= actionTable.length) {
-            console.error(
-                'ERROR: Index beyond table boundaries (avIndex = ' +
-                    avIndex +
-                    ' | actionTable.length = ' +
-                    actionTable.length +
-                    ')'
-            );
-        } else if (ovIndex >= actionTable[avIndex].length) {
-            console.error(
-                'ERROR: Index beyond table boundaries (avIndex = ' +
-                    avIndex +
-                    ' | ovIndex = ' +
-                    ovIndex +
-                    ' | actionTable[avIndex].length = ' +
-                    actionTable[avIndex].length +
-                    ')'
-            );
+        let ovExtrapolation = 0;
+        if (ovAdjusted > 60) {
+            const rangesBeyond = Math.floor((ovAdjusted - 61) / 5) + 1;
+            ovExtrapolation = rangesBeyond * 5;
+        }
+
+        // Clamp indices to valid table bounds
+        const actionTable = CONFIG.tables.actionTable;
+        const clampedAvIndex = Math.max(0, Math.min(avIndex, actionTable.length - 1));
+        const clampedOvIndex = Math.max(0, Math.min(ovIndex, actionTable[0].length - 1));
+
+        // Get base difficulty from table
+        let difficulty = actionTable[clampedAvIndex][clampedOvIndex];
+
+        // Add extrapolations for values beyond table
+        difficulty += avExtrapolation + ovExtrapolation;
+
+        if (avIndex < 0 || clampedAvIndex !== avIndex) {
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.log(
+                    'Index clamped for AV = ' +
+                        avAdjusted +
+                        ' | avIndex = ' +
+                        avIndex +
+                        ' | clamped to ' +
+                        clampedAvIndex
+                );
+            }
+        }
+        if (ovIndex < 0 || clampedOvIndex !== ovIndex) {
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.log(
+                    'Index clamped for OV = ' +
+                        ovAdjusted +
+                        ' | ovIndex = ' +
+                        ovIndex +
+                        ' | ovColumnShifts = ' +
+                        ovColumnShifts +
+                        ' | clamped to ' +
+                        clampedOvIndex
+                );
+            }
         }
 
         return difficulty;
     }
 
     /**
-     * Given a value from 1-60, find the index for the range it falls within by the key on table
+     * Given a value, find the index for the range it falls within by the key on table
+     * Values beyond 60 return the last index (18)
      * @private
      * @param {*} value
      * @returns
@@ -780,17 +844,17 @@ export class MegsTableRolls {
     _getRangeIndex(value) {
         const ranges = CONFIG.tables.ranges;
 
-        let index = 0;
         for (let i = 0; i < ranges.length; i++) {
             const range = ranges[i];
             const min = range[0];
             const max = range[1];
             if (value >= min && value <= max) {
-                index = i;
-                break;
+                return i;
             }
         }
-        return index;
+
+        // Value is beyond the table (>60), return the last valid index
+        return ranges.length - 1;
     }
 
     /**

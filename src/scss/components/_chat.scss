@@ -106,4 +106,60 @@ li.chat-message {
     .megs-chat-roll {
         margin: 0 3px 0 3px;
     }
+
+    /* Tooltip styles for chat messages */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+
+        .tooltiptext {
+            visibility: hidden;
+            background-color: $c-darkblue;
+            color: $c-white;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+
+            &.narrow {
+                width: 150px;
+            }
+
+            &.wide {
+                width: 300px;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: $c-darkblue transparent transparent transparent;
+            }
+        }
+
+        &:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    /* Initiative/Column Shift Table in tooltip */
+    .tooltip .tooltiptext.narrow .init-table .label {
+        text-align: left;
+    }
+
+    .tooltip .tooltiptext.narrow .init-table .value {
+        text-align: right;
+    }
 }

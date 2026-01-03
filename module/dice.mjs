@@ -400,8 +400,9 @@ export class MegsTableRolls {
         resultData.columnShifts = columnShifts;
 
         // Build explanation text for column shifts
+        // Only show tooltip if there are modifiers beyond just the base roll result
         let shiftExplanation = '';
-        if (rollColumnShifts !== 0 || rvColumnShifts !== 0 || combatManeuverKey || isUnskilled || resultColumnShifts) {
+        if (rvColumnShifts !== 0 || combatManeuverKey || isUnskilled || resultColumnShifts) {
             shiftExplanation += '<table class="init-table">';
 
             // Show base column shifts from roll

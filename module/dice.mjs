@@ -420,7 +420,7 @@ export class MegsTableRolls {
                 if (maneuverShifts !== 0) {
                     shiftExplanation +=
                         '    <tr>' +
-                        '        <td class="label">' + combatManeuver.label + '</td>' +
+                        '        <td class="label">' + combatManeuverKey + '</td>' +
                         '        <td class="value">' + (maneuverShifts >= 0 ? '+' : '') + maneuverShifts + '</td>' +
                         '    </tr>';
                 }

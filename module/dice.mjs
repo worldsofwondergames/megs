@@ -278,7 +278,8 @@ export class MegsTableRolls {
         const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
 
         let avInfo = '';
-        if (hpSpentAV > 0 || combatManeuverKey) {
+        // Only show tooltip if there's additional information beyond base value
+        if (hpSpentAV > 0) {
             avInfo +=
                 '<table class="init-table">' +
                 '    <tr>' +
@@ -290,23 +291,15 @@ export class MegsTableRolls {
                 this.actionValue +
                 '</td>' +
                 '    </tr>';
-            if (hpSpentAV > 0) {
-                avInfo +=
-                    '    <tr>' +
-                    '        <td class="label">HP ' +
-                    game.i18n.localize('MEGS.Spent') +
-                    '</td>' +
-                    '        <td class="value">+' +
-                    hpSpentAV +
-                    '</td>' +
-                    '    </tr>';
-            }
-            // if (combatManeuverKey) {
-            //     avInfo += '    <tr>' +
-            //         '        <td class="label">' + combatManeuverKey + '</td>' +
-            //         '        <td class="value">+' +  ovColumnShifts + ' shifts</td>' +
-            //         '    </tr>';
-            // }
+            avInfo +=
+                '    <tr>' +
+                '        <td class="label">HP ' +
+                game.i18n.localize('MEGS.Spent') +
+                '</td>' +
+                '        <td class="value">+' +
+                hpSpentAV +
+                '</td>' +
+                '    </tr>';
             avInfo += '</table>';
         }
 

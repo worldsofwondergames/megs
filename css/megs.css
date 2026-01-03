@@ -1500,6 +1500,8 @@ li.chat-message {
   background: #fff !important;
   font-family: "Roboto", sans-serif !important;
   letter-spacing: normal !important;
+  /* Tooltip styles for chat messages */
+  /* Initiative/Column Shift Table in tooltip */
 }
 li.chat-message .message-content {
   background: #fff !important;
@@ -1581,4 +1583,66 @@ li.chat-message .megs-chat-title {
 }
 li.chat-message .megs-chat-roll {
   margin: 0 3px 0 3px;
+}
+li.chat-message .tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+li.chat-message .tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: #1f5079;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -130px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+li.chat-message .tooltip .tooltiptext.narrow {
+  width: 260px;
+}
+li.chat-message .tooltip .tooltiptext.wide {
+  width: 300px;
+}
+li.chat-message .tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #1f5079 transparent transparent transparent;
+}
+li.chat-message .tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+li.chat-message .tooltip .tooltiptext .init-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+li.chat-message .tooltip .tooltiptext .init-table td {
+  padding: 2px 4px;
+}
+li.chat-message .tooltip .tooltiptext .init-table .label {
+  width: 75%;
+  text-align: left;
+  padding-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+li.chat-message .tooltip .tooltiptext .init-table .value {
+  width: 25%;
+  text-align: right;
+  font-weight: bold;
+  white-space: nowrap;
 }

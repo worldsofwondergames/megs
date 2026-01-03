@@ -118,7 +118,7 @@ export class MegsTableRolls {
                         callback: () => {},
                     },
                     button1: {
-                        label: '<i class="fas fa-dice-d10"></i> Roll',
+                        label: `<i class="fas fa-dice-d10"></i> ${game.i18n.localize('MEGS.Roll')}`,
                         callback: (html) => {
                             const response = this._processOpposingValuesEntry(
                                 html[0].querySelector('form')

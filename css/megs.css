@@ -1624,9 +1624,18 @@ li.chat-message .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
 }
-li.chat-message .tooltip .tooltiptext.narrow .init-table .label {
-  text-align: left;
+li.chat-message .tooltip .tooltiptext .init-table {
+  width: 100%;
+  border-collapse: collapse;
 }
-li.chat-message .tooltip .tooltiptext.narrow .init-table .value {
+li.chat-message .tooltip .tooltiptext .init-table td {
+  padding: 2px 4px;
+}
+li.chat-message .tooltip .tooltiptext .init-table .label {
+  text-align: left;
+  padding-right: 8px;
+}
+li.chat-message .tooltip .tooltiptext .init-table .value {
   text-align: right;
+  font-weight: bold;
 }

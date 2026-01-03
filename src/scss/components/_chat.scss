@@ -155,11 +155,22 @@ li.chat-message {
     }
 
     /* Initiative/Column Shift Table in tooltip */
-    .tooltip .tooltiptext.narrow .init-table .label {
-        text-align: left;
-    }
+    .tooltip .tooltiptext .init-table {
+        width: 100%;
+        border-collapse: collapse;
 
-    .tooltip .tooltiptext.narrow .init-table .value {
-        text-align: right;
+        td {
+            padding: 2px 4px;
+        }
+
+        .label {
+            text-align: left;
+            padding-right: 8px;
+        }
+
+        .value {
+            text-align: right;
+            font-weight: bold;
+        }
     }
 }

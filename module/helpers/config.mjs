@@ -111,3 +111,54 @@ MEGS.yesNoOptions = {
     true: 'Yes',
     false: 'No',
 };
+
+/**
+ * Get the Hero Point cost for a given number of APs and Factor Cost using the AP Purchase Chart.
+ * @param {number} aps - The number of Action Points (APs) to purchase (1-60)
+ * @param {number} factorCost - The Factor Cost (FC) of the ability (1-10)
+ * @returns {number} The Hero Point cost, or 0 if invalid parameters
+ */
+MEGS.getAPCost = function(aps, factorCost) {
+    // Validate inputs - 0 APs is valid (costs 0), but FC must be 1-10
+    if (aps === null || aps === undefined || aps < 0 ||
+        factorCost === null || factorCost === undefined || factorCost < 1 || factorCost > 10) {
+        if (game.settings.get('megs', 'debugLogging')) {
+            console.warn(`Invalid AP cost lookup: ${aps} APs at FC ${factorCost}`);
+        }
+        return 0;
+    }
+
+    // 0 APs always costs 0 HP
+    if (aps === 0) {
+        return 0;
+    }
+
+    // Wait for apCostChart to be loaded
+    if (!CONFIG.apCostChart?.chart) {
+        console.warn('AP Cost Chart not loaded yet');
+        return 0;
+    }
+
+    const chart = CONFIG.apCostChart.chart;
+    const incrementalCosts = CONFIG.apCostChart.incrementalCostPerAPOver40;
+
+    // For APs 1-40, use the chart directly
+    if (aps <= 40) {
+        const chartRow = chart[aps.toString()];
+        if (chartRow) {
+            return chartRow[factorCost - 1];
+        }
+    }
+
+    // For APs over 40, calculate using base cost at 40 + incremental cost
+    if (aps > 40) {
+        const baseAPs = 40;
+        const extraAPs = aps - baseAPs;
+        const baseCost = chart[baseAPs.toString()][factorCost - 1];
+        const incrementalCost = incrementalCosts[factorCost - 1];
+        return baseCost + (extraAPs * incrementalCost);
+    }
+
+    console.warn(`Could not find AP cost for ${aps} APs at FC ${factorCost}`);
+    return 0;
+};

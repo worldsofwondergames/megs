@@ -70,9 +70,9 @@
                 <label>{{localize "MEGS.ResultTableShifts"}}</label>
                 <div class="flexrow">
                     {{#if isUnskilled}}
-                        {{> plusMinusInput id='resultColumnShifts' value="-2"}}
+                        {{> plusMinusInput id='resultColumnShifts' value="-2" min="-10"}}
                     {{else}}
-                        {{> plusMinusInput id='resultColumnShifts' value=0}}
+                        {{> plusMinusInput id='resultColumnShifts' value=0 min="-10"}}
                     {{/if}}
                 </div>
             </div>

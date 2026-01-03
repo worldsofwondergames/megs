@@ -1605,7 +1605,7 @@ li.chat-message .tooltip .tooltiptext {
   transition: opacity 0.3s;
 }
 li.chat-message .tooltip .tooltiptext.narrow {
-  width: 150px;
+  width: 260px;
 }
 li.chat-message .tooltip .tooltiptext.wide {
   width: 300px;

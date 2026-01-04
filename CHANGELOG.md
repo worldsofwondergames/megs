@@ -107,6 +107,18 @@
         - Inflation adjustment feature with year selection (1940-2025)
         - Dollar value display adjusted for selected year using CPI-based multipliers
         - Wealth cost integrated into Hero Point budget tracking
+- Powers tab accordion display for bonuses and limitations
+    - Powers with modifiers show expandable chevron icon instead of power icon
+    - Bonuses displayed first (alphabetically sorted), then limitations (alphabetically sorted)
+    - Each modifier prefixed with "BONUS:" or "LIMITATION:" for clarity
+    - Modifiers displayed indented beneath parent power with edit and delete controls
+    - Accordion state preserved across sheet re-renders, item updates, and deletions
+- Drag and drop support for power modifiers
+    - Drag modifiers from one power to another to re-parent them
+    - Drag modifiers from sidebar or compendiums onto powers to attach them
+    - Drop zones on both power rows and modifier areas
+    - Visual feedback with blue dashed border on valid drop targets
+    - All accordion states preserved during drag and drop operations
 - Gadget cost calculation implements complete MEGS rules
     - Reliability Number modifies Factor Cost for all abilities
     - AV/EV/Range have Base Cost 5 and Factor Cost 1 (modified by R#)

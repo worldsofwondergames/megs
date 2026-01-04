@@ -66,27 +66,54 @@
                 </a>
             </div>
         </li>
-        {{!-- Display Bonuses/Limitations under the Power --}}
-        {{#each (getPowerModifiers item._id ../items) as |modifier|}}
-            <li class='item flexrow item-row modifier-row power-modifier-row' data-item-id='{{modifier._id}}' data-parent-id='{{item._id}}' style='display: none;'>
+        {{!-- Display Bonuses under the Power (sorted alphabetically) --}}
+        {{#each (getPowerBonuses item._id ../items) as |bonus|}}
+            <li class='item flexrow item-row modifier-row power-modifier-row' data-item-id='{{bonus._id}}' data-parent-id='{{item._id}}' style='display: none;'>
                 <div class='item-toggle'></div>
                 <div class='item-name modifier-name'>
-                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=modifier.name}}'>
-                        {{modifier.name}}
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=bonus.name}}'>
+                        BONUS: {{bonus.name}}
                     </a>
                 </div>
                 <div class='item-aps'></div>
                 {{#if ../showHeroPointCosts}}
                     <div class='item-total-cost'>
-                        {{formatSigned modifier.system.factorCostMod}}
+                        {{formatSigned bonus.system.factorCostMod}}
                     </div>
                 {{/if}}
                 <div class='item-controls'>
-                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=modifier.name}}'>
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=bonus.name}}'>
                         <i class='fas fa-edit'></i>
                     </a>
                     {{#if ../../flags.megs.edit-mode}}
-                        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=modifier.name}}'>
+                        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=bonus.name}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    {{/if}}
+                </div>
+            </li>
+        {{/each}}
+        {{!-- Display Limitations under the Power (sorted alphabetically) --}}
+        {{#each (getPowerLimitations item._id ../items) as |limitation|}}
+            <li class='item flexrow item-row modifier-row power-modifier-row' data-item-id='{{limitation._id}}' data-parent-id='{{item._id}}' style='display: none;'>
+                <div class='item-toggle'></div>
+                <div class='item-name modifier-name'>
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=limitation.name}}'>
+                        LIMITATION: {{limitation.name}}
+                    </a>
+                </div>
+                <div class='item-aps'></div>
+                {{#if ../showHeroPointCosts}}
+                    <div class='item-total-cost'>
+                        {{formatSigned limitation.system.factorCostMod}}
+                    </div>
+                {{/if}}
+                <div class='item-controls'>
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=limitation.name}}'>
+                        <i class='fas fa-edit'></i>
+                    </a>
+                    {{#if ../../flags.megs.edit-mode}}
+                        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=limitation.name}}'>
                             <i class='fas fa-trash'></i>
                         </a>
                     {{/if}}

@@ -351,6 +351,34 @@ Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
     return modifiers;
 });
 
+Handlebars.registerHelper('getPowerBonuses', function (powerId, items) {
+    // Filter and sort bonuses for this power alphabetically
+    if (!items) return [];
+
+    const bonuses = [];
+    items.forEach(item => {
+        if (item.type === 'bonus' && item.system.parent === powerId) {
+            bonuses.push(item);
+        }
+    });
+
+    return bonuses.sort((a, b) => a.name.localeCompare(b.name));
+});
+
+Handlebars.registerHelper('getPowerLimitations', function (powerId, items) {
+    // Filter and sort limitations for this power alphabetically
+    if (!items) return [];
+
+    const limitations = [];
+    items.forEach(item => {
+        if (item.type === 'limitation' && item.system.parent === powerId) {
+            limitations.push(item);
+        }
+    });
+
+    return limitations.sort((a, b) => a.name.localeCompare(b.name));
+});
+
 Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
     // Filter items to find subskills that belong to this skill
     if (!items) return [];

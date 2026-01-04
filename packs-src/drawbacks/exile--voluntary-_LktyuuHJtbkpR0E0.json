@@ -1,0 +1,24 @@
+{
+  "_id": "LktyuuHJtbkpR0E0",
+  "name": "Exile (Voluntary)",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Exile (Voluntary)",
+    "description": "",
+    "baseCost": 10,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

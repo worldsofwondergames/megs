@@ -1,0 +1,23 @@
+{
+  "_id": "RyI9r4rFScKJR6UB",
+  "name": "No Range",
+  "type": "limitation",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "No Range",
+    "description": "",
+    "factorCostMod": -1,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

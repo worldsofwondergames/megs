@@ -1,0 +1,138 @@
+{
+  "_id": "JC2IsmKBynk3zjx7",
+  "name": "Jumping",
+  "type": "power",
+  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "system": {
+    "name": "Jumping",
+    "description": "",
+    "attributes": {
+      "dex": {
+        "value": 0,
+        "factorCost": 7,
+        "label": "Dexterity",
+        "type": "physical",
+        "rolls": [
+          "action",
+          "opposing"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "str": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Strength",
+        "type": "physical",
+        "rolls": [
+          "effect"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "body": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Body",
+        "type": "physical",
+        "rolls": [
+          "resistance"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "int": {
+        "value": 0,
+        "factorCost": 7,
+        "label": "Intelligence",
+        "type": "mental",
+        "rolls": [
+          "action",
+          "opposing"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "will": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Will",
+        "type": "mental",
+        "rolls": [
+          "effect"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "mind": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Mind",
+        "type": "mental",
+        "rolls": [
+          "resistance"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "infl": {
+        "value": 0,
+        "factorCost": 7,
+        "label": "Influence",
+        "type": "mystical",
+        "rolls": [
+          "action",
+          "opposing"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "aura": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Aura",
+        "type": "mystical",
+        "rolls": [
+          "effect"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "spirit": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Spirit",
+        "type": "mystical",
+        "rolls": [
+          "resistance"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      }
+    },
+    "link": "str",
+    "isLinked": "false",
+    "range": "self",
+    "rangeAPs": 0,
+    "formula": "1d10 + 1d10",
+    "baseCost": 15,
+    "totalCost": 0,
+    "factorCost": 2,
+    "aps": 0,
+    "source": "physical",
+    "activateFree": "false",
+    "bonuses": [],
+    "customBonuses": [],
+    "limitations": [],
+    "customLimitations": [],
+    "parent": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

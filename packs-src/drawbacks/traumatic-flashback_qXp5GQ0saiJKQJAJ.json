@@ -1,0 +1,24 @@
+{
+  "_id": "qXp5GQ0saiJKQJAJ",
+  "name": "Traumatic Flashback",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Traumatic Flashback",
+    "description": "",
+    "baseCost": 60,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

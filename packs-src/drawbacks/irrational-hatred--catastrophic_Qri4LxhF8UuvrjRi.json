@@ -1,0 +1,24 @@
+{
+  "_id": "Qri4LxhF8UuvrjRi",
+  "name": "Irrational Hatred, Catastrophic",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Irrational Hatred, Catastrophic",
+    "description": "",
+    "baseCost": 50,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

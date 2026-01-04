@@ -1,0 +1,24 @@
+{
+  "_id": "MC9HYMmchbpKsz7x",
+  "name": "Married",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Married",
+    "description": "",
+    "baseCost": 25,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

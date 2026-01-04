@@ -1,0 +1,24 @@
+{
+  "_id": "KnNb6RH9iOwM1FWR",
+  "name": "Free Access",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/free%20access.png",
+  "system": {
+    "name": "Free Access",
+    "description": "",
+    "baseCost": 10,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

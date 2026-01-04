@@ -1,0 +1,24 @@
+{
+  "_id": "Kdh0yHw9czDLsWie",
+  "name": "Genius",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/genius.png",
+  "system": {
+    "name": "Genius",
+    "description": "",
+    "baseCost": 25,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

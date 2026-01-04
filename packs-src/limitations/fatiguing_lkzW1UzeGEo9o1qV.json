@@ -1,0 +1,23 @@
+{
+  "_id": "lkzW1UzeGEo9o1qV",
+  "name": "Fatiguing",
+  "type": "limitation",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Fatiguing",
+    "description": "",
+    "factorCostMod": -2,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

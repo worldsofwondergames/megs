@@ -16,5 +16,12 @@ foundry
 build/
 megs.iml
 
+# Compendium packs (LevelDB)
+/packs/*/LOCK
+/packs/*/LOG*
+
+# Temporary extraction directory
+/temp/
+
 # Claude Code
 .claude/

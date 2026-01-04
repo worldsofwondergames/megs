@@ -1,0 +1,23 @@
+{
+  "_id": "iKCUMmQ2knBJOkpv",
+  "name": "Power Burnout, Catastrophic",
+  "type": "limitation",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Power Burnout, Catastrophic",
+    "description": "",
+    "factorCostMod": -2,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

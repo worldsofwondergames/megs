@@ -1,0 +1,24 @@
+{
+  "_id": "IXWjJ1nwcNEELMVX",
+  "name": "Area Knowledge (Space Sector)",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/galaxy.png",
+  "system": {
+    "name": "Area Knowledge (Space Sector)",
+    "description": "",
+    "baseCost": 150,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

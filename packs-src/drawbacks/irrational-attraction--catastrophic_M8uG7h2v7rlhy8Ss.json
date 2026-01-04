@@ -1,0 +1,24 @@
+{
+  "_id": "M8uG7h2v7rlhy8Ss",
+  "name": "Irrational Attraction, Catastrophic",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Irrational Attraction, Catastrophic",
+    "description": "",
+    "baseCost": 50,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

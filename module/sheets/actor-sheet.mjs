@@ -842,6 +842,10 @@ export class MEGSActorSheet extends ActorSheet {
         // Check if item already belongs to this actor
         const isOnActor = droppedItem.parent?.id === this.actor.id;
 
+        // Save accordion state before re-render
+        const html = $(event.currentTarget).closest('.sheet');
+        this._saveAccordionState(html);
+
         if (isOnActor) {
             // Item is already on this actor - update its parent (move it)
 

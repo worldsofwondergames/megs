@@ -107,6 +107,8 @@
         - Inflation adjustment feature with year selection (1940-2025)
         - Dollar value display adjusted for selected year using CPI-based multipliers
         - Wealth cost integrated into Hero Point budget tracking
+- Powers tab accordion display shows bonuses and limitations beneath each power (alphabetically sorted and labeled)
+- Drag and drop support for power modifiers with visual feedback and state persistence
 - Gadget cost calculation implements complete MEGS rules
     - Reliability Number modifies Factor Cost for all abilities
     - AV/EV/Range have Base Cost 5 and Factor Cost 1 (modified by R#)

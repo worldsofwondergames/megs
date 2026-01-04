@@ -1159,7 +1159,46 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once('ready', function () {
+Hooks.once('ready', async function () {
+    // Log compendium pack loading information
+    console.log('=== MEGS Compendium Pack Verification ===');
+
+    try {
+        // Get all compendium packs for the MEGS system
+        const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
+        console.log(`Found ${megsPacks.length} MEGS compendium packs`);
+
+        // Check each pack
+        for (const pack of megsPacks) {
+            console.log(`\n--- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
+            console.log(`  Path: ${pack.metadata.path}`);
+            console.log(`  Type: ${pack.metadata.type}`);
+
+            try {
+                // Get the index (this doesn't load all items, just the index)
+                const index = await pack.getIndex();
+                console.log(`  Items in index: ${index.size}`);
+
+                if (index.size > 0) {
+                    // Show first 3 items as sample
+                    const sampleItems = Array.from(index.values()).slice(0, 3);
+                    console.log(`  Sample items:`);
+                    sampleItems.forEach(item => {
+                        console.log(`    - ${item.name} (${item._id})`);
+                    });
+                } else {
+                    console.warn(`  WARNING: Pack "${pack.metadata.label}" has no items in index!`);
+                }
+            } catch (error) {
+                console.error(`  ERROR loading pack "${pack.metadata.label}":`, error);
+            }
+        }
+
+        console.log('\n=== End Compendium Verification ===\n');
+    } catch (error) {
+        console.error('CRITICAL ERROR during compendium verification:', error);
+    }
+
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {
         let item = fromUuidSync(data.uuid);

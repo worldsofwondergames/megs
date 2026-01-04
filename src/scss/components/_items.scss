@@ -200,6 +200,56 @@ li.directory-item img[src*='assets/images/icons'] {
 }
 
 /*------------------------------------------------------------------------*/
+/* Actor Sheet Powers Tab Accordion Styles
+/*------------------------------------------------------------------------*/
+
+&.sheet.actor .tab.powers .items-list {
+    .power-row {
+        background-color: #f0f8ff;
+        min-height: 31px;
+        display: flex;
+        align-items: center;
+    }
+
+    .power-modifier-row {
+        min-height: 27px;
+        background-color: $c-white;
+        display: flex;
+        align-items: center;
+    }
+
+    .item-toggle {
+        flex: 0 0 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        img {
+            max-width: 20px;
+            max-height: 20px;
+        }
+    }
+
+    .modifier-name {
+        margin-left: 25px;
+        padding-left: 0;
+        font-style: italic;
+        color: #666;
+    }
+
+    .toggle-icon {
+        color: #666;
+        font-size: 0.85em;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            color: $c-black;
+        }
+    }
+}
+
+/*------------------------------------------------------------------------*/
 /* Item Sheet Subskills Tab
 /*------------------------------------------------------------------------*/
 

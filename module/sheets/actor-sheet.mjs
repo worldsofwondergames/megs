@@ -549,6 +549,9 @@ export class MEGSActorSheet extends ActorSheet {
         // Skill accordion toggle
         html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => this._handleSkillAccordionToggle(ev, html));
 
+        // Power accordion toggle
+        html.on('click', '.tab.powers .power-row .toggle-icon', (ev) => this._handlePowerAccordionToggle(ev, html));
+
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
             const itemId = $(ev.currentTarget).data('itemId');
@@ -742,6 +745,32 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /**
+     * Handle power accordion toggle
+     * @param {Event} event The click event
+     * @param {jQuery} html The HTML element
+     * @private
+     */
+    _handlePowerAccordionToggle(event, html) {
+        event.preventDefault();
+        const powerRow = $(event.currentTarget).closest('.power-row');
+        const powerId = powerRow.data('itemId');
+        const isExpanded = powerRow.data('expanded');
+        const icon = $(event.currentTarget);
+
+        if (isExpanded) {
+            // Collapse - hide modifiers
+            html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).slideUp(200);
+            icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+            powerRow.data('expanded', false);
+        } else {
+            // Expand - show modifiers
+            html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).slideDown(200);
+            icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+            powerRow.data('expanded', true);
+        }
+    }
+
+    /**
      * Handle clickable rolls.
      * @param {Event} event   The originating click event
      * @private
@@ -897,6 +926,12 @@ export class MEGSActorSheet extends ActorSheet {
             const isExpanded = $(row).data('expanded');
             state[skillId] = isExpanded;
         });
+        // Save powers accordion state
+        html.find('.tab.powers .power-row').each((i, row) => {
+            const powerId = $(row).data('itemId');
+            const isExpanded = $(row).data('expanded');
+            state[powerId] = isExpanded;
+        });
         this._accordionState = state;
     }
 
@@ -917,6 +952,18 @@ export class MEGSActorSheet extends ActorSheet {
                 $(row).data('expanded', true);
                 $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
                 html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
+            }
+        });
+
+        // Restore powers accordion state
+        html.find('.tab.powers .power-row').each((i, row) => {
+            const powerId = $(row).data('itemId');
+            const wasExpanded = this._accordionState[powerId];
+
+            if (wasExpanded) {
+                $(row).data('expanded', true);
+                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).show();
             }
         });
     }

@@ -352,6 +352,9 @@ details summary.no-arrow {
   /* Actor Sheet Skills Tab Accordion Styles
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
+  /* Actor Sheet Powers Tab Accordion Styles
+  /*------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------*/
   /* Item Sheet Subskills Tab
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
@@ -1007,6 +1010,43 @@ details summary.no-arrow {
   transition: transform 0.2s ease;
 }
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
+  color: #000;
+}
+.megs.sheet.actor .tab.powers .items-list .power-row {
+  background-color: #f0f8ff;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+}
+.megs.sheet.actor .tab.powers .items-list .power-modifier-row {
+  min-height: 27px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
+.megs.sheet.actor .tab.powers .items-list .item-toggle {
+  flex: 0 0 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.megs.sheet.actor .tab.powers .items-list .item-toggle img {
+  max-width: 20px;
+  max-height: 20px;
+}
+.megs.sheet.actor .tab.powers .items-list .modifier-name {
+  margin-left: 25px;
+  padding-left: 0;
+  font-style: italic;
+  color: #666;
+}
+.megs.sheet.actor .tab.powers .items-list .toggle-icon {
+  color: #666;
+  font-size: 0.85em;
+  transition: transform 0.2s ease;
+}
+.megs.sheet.actor .tab.powers .items-list .toggle-icon:hover {
   color: #000;
 }
 .megs.sheet.item .tab.subskills .items-list .item-trained {

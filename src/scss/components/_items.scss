@@ -247,6 +247,20 @@ li.directory-item img[src*='assets/images/icons'] {
             color: $c-black;
         }
     }
+
+    .power-row.drop-target {
+        background-color: #d4edff;
+        border: 2px dashed #0066cc;
+        box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
+    }
+
+    .power-modifier-row {
+        cursor: grab;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
 }
 
 /*------------------------------------------------------------------------*/

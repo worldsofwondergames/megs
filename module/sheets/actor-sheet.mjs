@@ -552,6 +552,9 @@ export class MEGSActorSheet extends ActorSheet {
         // Power accordion toggle
         html.on('click', '.tab.powers .power-row .toggle-icon', (ev) => this._handlePowerAccordionToggle(ev, html));
 
+        // Enable power row drop zones for bonuses/limitations
+        this._enablePowerRowDropZones(html);
+
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
             const itemId = $(ev.currentTarget).data('itemId');
@@ -767,6 +770,95 @@ export class MEGSActorSheet extends ActorSheet {
             html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).slideDown(200);
             icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
             powerRow.data('expanded', true);
+        }
+    }
+
+    /**
+     * Enable drag and drop zones for power rows
+     * @param {jQuery} html The HTML element
+     * @private
+     */
+    _enablePowerRowDropZones(html) {
+        const powerRows = html.find('.tab.powers .power-row');
+
+        powerRows.each((i, row) => {
+            row.addEventListener('dragover', this._onDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnPower.bind(this));
+        });
+    }
+
+    /**
+     * Handle dragover event for power rows
+     * @param {DragEvent} event The dragover event
+     * @private
+     */
+    _onDragOver(event) {
+        event.preventDefault();
+        event.currentTarget.classList.add('drop-target');
+    }
+
+    /**
+     * Handle dragleave event for power rows
+     * @param {DragEvent} event The dragleave event
+     * @private
+     */
+    _onDragLeave(event) {
+        event.currentTarget.classList.remove('drop-target');
+    }
+
+    /**
+     * Handle drop event on power rows
+     * @param {DragEvent} event The drop event
+     * @private
+     */
+    async _onDropOnPower(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('drop-target');
+
+        const row = event.currentTarget;
+        const powerId = row.dataset.itemId;
+
+        // Get dropped item data
+        const data = TextEditor.getDragEventData(event);
+
+        // Only process Item drops
+        if (data.type !== 'Item') return;
+
+        // Get the dropped item
+        let droppedItem;
+        if (data.uuid) {
+            droppedItem = await fromUuid(data.uuid);
+        } else {
+            return;
+        }
+
+        // Validate item type - only bonuses and limitations can be dropped
+        if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
+            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            return;
+        }
+
+        // Check if item already belongs to this actor
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+
+        if (isOnActor) {
+            // Item is already on this actor - update its parent (move it)
+
+            // Check if dropping onto self (already attached to this power)
+            if (droppedItem.system.parent === powerId) {
+                return; // No action needed
+            }
+
+            await droppedItem.update({ 'system.parent': powerId });
+            ui.notifications.info(`${droppedItem.name} moved to power.`);
+        } else {
+            // Item is from sidebar/compendium - create it with parent set
+            const itemData = droppedItem.toObject();
+            itemData.system.parent = powerId;
+
+            await this.actor.createEmbeddedDocuments('Item', [itemData]);
+            ui.notifications.info(`${droppedItem.name} added to power.`);
         }
     }
 

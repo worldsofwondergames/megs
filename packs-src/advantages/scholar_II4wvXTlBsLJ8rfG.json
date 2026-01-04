@@ -1,0 +1,24 @@
+{
+  "_id": "II4wvXTlBsLJ8rfG",
+  "name": "Scholar",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/scholar.png",
+  "system": {
+    "name": "Scholar",
+    "description": "",
+    "baseCost": 10,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

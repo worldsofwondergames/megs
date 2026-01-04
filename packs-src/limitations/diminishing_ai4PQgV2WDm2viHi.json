@@ -1,0 +1,23 @@
+{
+  "_id": "ai4PQgV2WDm2viHi",
+  "name": "Diminishing",
+  "type": "limitation",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Diminishing",
+    "description": "",
+    "factorCostMod": -1,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

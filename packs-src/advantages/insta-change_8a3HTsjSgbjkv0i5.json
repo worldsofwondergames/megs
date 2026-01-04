@@ -1,0 +1,24 @@
+{
+  "_id": "8a3HTsjSgbjkv0i5",
+  "name": "Insta-Change",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/insta%20change.png",
+  "system": {
+    "name": "Insta-Change",
+    "description": "",
+    "baseCost": 5,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

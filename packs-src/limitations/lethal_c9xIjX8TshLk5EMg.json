@@ -1,0 +1,23 @@
+{
+  "_id": "c9xIjX8TshLk5EMg",
+  "name": "Lethal",
+  "type": "limitation",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Lethal",
+    "description": "",
+    "factorCostMod": -1,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "_id": "3FURHyUEfpdMom0M",
+  "name": "Sharp Eye",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/sharp-eye.png",
+  "system": {
+    "name": "Sharp Eye",
+    "description": "",
+    "baseCost": 15,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

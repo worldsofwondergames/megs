@@ -1,0 +1,24 @@
+{
+  "_id": "2hdLkcDAzu2tPzOF",
+  "name": "Public Identity",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Public Identity",
+    "description": "",
+    "baseCost": 5,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

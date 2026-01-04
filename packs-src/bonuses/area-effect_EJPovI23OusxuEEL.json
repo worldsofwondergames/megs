@@ -1,0 +1,23 @@
+{
+  "_id": "EJPovI23OusxuEEL",
+  "name": "Area Effect",
+  "type": "bonus",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "name": "Area Effect",
+    "description": "",
+    "factorCostMod": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

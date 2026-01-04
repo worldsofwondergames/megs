@@ -1,0 +1,24 @@
+{
+  "_id": "n8i7EopBbySH4ObD",
+  "name": "Rage (Minor)",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Rage (Minor)",
+    "description": "",
+    "baseCost": 5,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

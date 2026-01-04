@@ -1,0 +1,24 @@
+{
+  "_id": "fXg2kZmj58uJmFXm",
+  "name": "Leadership",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/leadership.png",
+  "system": {
+    "name": "Leadership",
+    "description": "",
+    "baseCost": 25,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

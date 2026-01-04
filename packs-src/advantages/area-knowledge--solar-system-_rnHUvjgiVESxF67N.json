@@ -1,0 +1,24 @@
+{
+  "_id": "rnHUvjgiVESxF67N",
+  "name": "Area Knowledge (Solar System)",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/solar-system.png",
+  "system": {
+    "name": "Area Knowledge (Solar System)",
+    "description": "",
+    "baseCost": 100,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "_id": "8yvTk627chCl6Mr8",
+  "name": "Usable on Others",
+  "type": "bonus",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "name": "Usable on Others",
+    "description": "",
+    "factorCostMod": 5,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

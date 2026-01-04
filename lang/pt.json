@@ -197,5 +197,13 @@
             "name": "Permitir exclusão de habilidades",
             "label": "Marque para permitir a exclusão de habilidades e sub-habilidades das fichas de personagens e gadgets"
         }
+    },
+    "Compendium": {
+        "Powers": "Poderes MEGS",
+        "Advantages": "Vantagens MEGS",
+        "Drawbacks": "Desvantagens MEGS",
+        "Bonuses": "Bônus MEGS",
+        "Limitations": "Limitações MEGS",
+        "Folder": "Repositório de Itens MEGS"
     }
 }

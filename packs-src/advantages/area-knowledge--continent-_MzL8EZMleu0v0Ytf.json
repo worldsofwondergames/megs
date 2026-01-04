@@ -1,0 +1,24 @@
+{
+  "_id": "MzL8EZMleu0v0Ytf",
+  "name": "Area Knowledge (Continent)",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/area-knowledge.png",
+  "system": {
+    "name": "Area Knowledge (Continent)",
+    "description": "",
+    "baseCost": 50,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

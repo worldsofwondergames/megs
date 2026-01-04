@@ -1,0 +1,23 @@
+{
+  "_id": "cPEzLOYQ6WZ6bOh4",
+  "name": "Self-Link",
+  "type": "bonus",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "name": "Self-Link",
+    "description": "",
+    "factorCostMod": 50,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

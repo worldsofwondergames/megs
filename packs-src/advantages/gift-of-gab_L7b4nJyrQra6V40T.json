@@ -1,0 +1,24 @@
+{
+  "_id": "L7b4nJyrQra6V40T",
+  "name": "Gift of Gab",
+  "type": "advantage",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "name": "Gift of Gab",
+    "description": "",
+    "baseCost": 20,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

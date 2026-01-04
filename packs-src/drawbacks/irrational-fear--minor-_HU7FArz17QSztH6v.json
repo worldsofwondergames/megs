@@ -1,0 +1,24 @@
+{
+  "_id": "HU7FArz17QSztH6v",
+  "name": "Irrational Fear (Minor)",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Irrational Fear (Minor)",
+    "description": "",
+    "baseCost": 5,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "megs",
+    "systemVersion": "1.0.0"
+  }
+}

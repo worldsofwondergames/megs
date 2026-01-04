@@ -705,6 +705,10 @@ export class MEGSActorSheet extends ActorSheet {
 
         if (!confirmed) return;
 
+        // Save accordion state before deletion
+        const html = $(event.currentTarget).closest('.sheet');
+        this._saveAccordionState(html);
+
         // If deleting a power or skill, also delete all associated bonuses/limitations
         if (item.type === 'power' || item.type === 'skill') {
             const modifiers = this.actor.items.filter(i =>

@@ -1,5 +1,6 @@
 <ol class='items-list'>
     <li class='item flexrow items-header'>
+        <div class='item-toggle'></div>
         <div class='item-name'>{{localize 'MEGS.Name'}}</div>
         <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
         {{#if showHeroPointCosts}}
@@ -15,15 +16,19 @@
         </div>
     </li>
     {{#each powers as |item id|}}
-        <li class='item flexrow item-row
+        <li class='item flexrow item-row power-row
     {{#if item.system.aps}}bold{{/if}}
-    ' data-item-id='{{item._id}}'>
-            <div class='item-name'>
-                <div class='item-image'>
+    ' data-item-id='{{item._id}}' data-expanded='false'>
+            <div class='item-toggle'>
+                {{#if (powerHasModifiers item._id ../items)}}
+                    <i class='fas fa-chevron-right toggle-icon'></i>
+                {{else}}
                     <a class='rollable' data-roll-type='item'>
                         <img src='{{item.img}}' title='{{item.name}}' width='24' height='24' />
                     </a>
-                </div>
+                {{/if}}
+            </div>
+            <div class='item-name'>
                 <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=item.name}}'>
                     {{getPowerDisplayName item}}
                 </a>
@@ -61,5 +66,32 @@
                 </a>
             </div>
         </li>
+        {{!-- Display Bonuses/Limitations under the Power --}}
+        {{#each (getPowerModifiers item._id ../items) as |modifier|}}
+            <li class='item flexrow item-row modifier-row power-modifier-row' data-item-id='{{modifier._id}}' data-parent-id='{{item._id}}' style='display: none;'>
+                <div class='item-toggle'></div>
+                <div class='item-name modifier-name'>
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=modifier.name}}'>
+                        {{modifier.name}}
+                    </a>
+                </div>
+                <div class='item-aps'></div>
+                {{#if ../showHeroPointCosts}}
+                    <div class='item-total-cost'>
+                        {{formatSigned modifier.system.factorCostMod}}
+                    </div>
+                {{/if}}
+                <div class='item-controls'>
+                    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=modifier.name}}'>
+                        <i class='fas fa-edit'></i>
+                    </a>
+                    {{#if ../../flags.megs.edit-mode}}
+                        <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=modifier.name}}'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    {{/if}}
+                </div>
+            </li>
+        {{/each}}
     {{/each}}
 </ol>

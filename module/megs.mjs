@@ -365,6 +365,16 @@ Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
     return subskills;
 });
 
+Handlebars.registerHelper('powerHasModifiers', function (powerId, items) {
+    // Check if this power has any bonuses or limitations
+    if (!items) return false;
+
+    return items.some(item =>
+        (item.type === 'bonus' || item.type === 'limitation') &&
+        item.system.parent === powerId
+    );
+});
+
 Handlebars.registerHelper('skillHasSubskillsWithAPs', function (skillId, items) {
     // Check if this skill has any subskills with APs > 0
     if (!items) return false;

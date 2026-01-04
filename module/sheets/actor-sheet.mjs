@@ -778,17 +778,25 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /**
-     * Enable drag and drop zones for power rows
+     * Enable drag and drop zones for power rows and modifier rows
      * @param {jQuery} html The HTML element
      * @private
      */
     _enablePowerRowDropZones(html) {
         const powerRows = html.find('.tab.powers .power-row');
+        const modifierRows = html.find('.tab.powers .power-modifier-row');
 
         powerRows.each((i, row) => {
             row.addEventListener('dragover', this._onDragOver.bind(this));
             row.addEventListener('dragleave', this._onDragLeave.bind(this));
             row.addEventListener('drop', this._onDropOnPower.bind(this));
+        });
+
+        // Modifier rows also accept drops and delegate to parent power
+        modifierRows.each((i, row) => {
+            row.addEventListener('dragover', this._onDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnModifierRow.bind(this));
         });
     }
 
@@ -812,13 +820,42 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /**
+     * Handle drop event on modifier rows (delegate to parent power)
+     * @param {DragEvent} event The drop event
+     * @private
+     */
+    async _onDropOnModifierRow(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('drop-target');
+
+        const modifierRow = event.currentTarget;
+        const powerId = modifierRow.dataset.parentId; // Get parent power ID
+
+        // Create a synthetic event with the power ID for delegation
+        const syntheticEvent = new DragEvent(event.type, event);
+        Object.defineProperty(syntheticEvent, 'currentTarget', {
+            value: { dataset: { itemId: powerId } },
+            writable: false
+        });
+        Object.defineProperty(syntheticEvent, 'dataTransfer', {
+            value: event.dataTransfer,
+            writable: false
+        });
+
+        // Delegate to power drop handler
+        await this._onDropOnPower(syntheticEvent);
+    }
+
+    /**
      * Handle drop event on power rows
      * @param {DragEvent} event The drop event
      * @private
      */
     async _onDropOnPower(event) {
         event.preventDefault();
-        event.currentTarget.classList.remove('drop-target');
+        if (event.currentTarget.classList) {
+            event.currentTarget.classList.remove('drop-target');
+        }
 
         const row = event.currentTarget;
         const powerId = row.dataset.itemId;
@@ -965,6 +1002,10 @@ export class MEGSActorSheet extends ActorSheet {
 
     /** @override **/
     async _onDrop(event) {
+        // Save accordion state before any drop operation
+        const html = $(event.currentTarget).closest('.sheet');
+        this._saveAccordionState(html);
+
         super._onDrop(event);
     }
 

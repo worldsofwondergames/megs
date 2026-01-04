@@ -1049,6 +1049,17 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .toggle-icon:hover {
   color: #000;
 }
+.megs.sheet.actor .tab.powers .items-list .power-row.drop-target {
+  background-color: #d4edff;
+  border: 2px dashed #0066cc;
+  box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
+}
+.megs.sheet.actor .tab.powers .items-list .power-modifier-row {
+  cursor: grab;
+}
+.megs.sheet.actor .tab.powers .items-list .power-modifier-row:active {
+  cursor: grabbing;
+}
 .megs.sheet.item .tab.subskills .items-list .item-trained {
   display: flex;
   justify-content: center;

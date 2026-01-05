@@ -12,12 +12,21 @@
     "parent": "",
     "originalId": ""
   },
+  "effects": [],
   "flags": {},
   "ownership": {
     "default": 0
   },
+  "sort": 0,
   "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
     "systemId": "megs",
-    "systemVersion": "1.0.0"
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265589,
+    "modifiedTime": 1767583265589,
+    "lastModifiedBy": "megs-system"
   }
 }

@@ -92,11 +92,20 @@ function transformPower(dcItem) {
       customLimitations: [],
       parent: ''
     },
+    effects: [],
     flags: {},
     ownership: { default: 0 },
+    sort: 0,
     _stats: {
+      compendiumSource: null,
+      duplicateSource: null,
+      exportSource: null,
+      coreVersion: '13.346',
       systemId: 'megs',
-      systemVersion: '1.0.0'
+      systemVersion: '1.0.0',
+      createdTime: Date.now(),
+      modifiedTime: Date.now(),
+      lastModifiedBy: 'megs-system'
     }
   };
 }
@@ -118,11 +127,20 @@ function transformAdvantage(dcItem) {
       parent: '',
       originalId: ''
     },
+    effects: [],
     flags: {},
     ownership: { default: 0 },
+    sort: 0,
     _stats: {
+      compendiumSource: null,
+      duplicateSource: null,
+      exportSource: null,
+      coreVersion: '13.346',
       systemId: 'megs',
-      systemVersion: '1.0.0'
+      systemVersion: '1.0.0',
+      createdTime: Date.now(),
+      modifiedTime: Date.now(),
+      lastModifiedBy: 'megs-system'
     }
   };
 }
@@ -144,11 +162,20 @@ function transformDrawback(dcItem) {
       parent: '',
       originalId: ''
     },
+    effects: [],
     flags: {},
     ownership: { default: 0 },
+    sort: 0,
     _stats: {
+      compendiumSource: null,
+      duplicateSource: null,
+      exportSource: null,
+      coreVersion: '13.346',
       systemId: 'megs',
-      systemVersion: '1.0.0'
+      systemVersion: '1.0.0',
+      createdTime: Date.now(),
+      modifiedTime: Date.now(),
+      lastModifiedBy: 'megs-system'
     }
   };
 }
@@ -169,11 +196,20 @@ function transformBonus(dcItem) {
       parent: '',
       originalId: ''
     },
+    effects: [],
     flags: {},
     ownership: { default: 0 },
+    sort: 0,
     _stats: {
+      compendiumSource: null,
+      duplicateSource: null,
+      exportSource: null,
+      coreVersion: '13.346',
       systemId: 'megs',
-      systemVersion: '1.0.0'
+      systemVersion: '1.0.0',
+      createdTime: Date.now(),
+      modifiedTime: Date.now(),
+      lastModifiedBy: 'megs-system'
     }
   };
 }
@@ -194,11 +230,20 @@ function transformLimitation(dcItem) {
       parent: '',
       originalId: ''
     },
+    effects: [],
     flags: {},
     ownership: { default: 0 },
+    sort: 0,
     _stats: {
+      compendiumSource: null,
+      duplicateSource: null,
+      exportSource: null,
+      coreVersion: '13.346',
       systemId: 'megs',
-      systemVersion: '1.0.0'
+      systemVersion: '1.0.0',
+      createdTime: Date.now(),
+      modifiedTime: Date.now(),
+      lastModifiedBy: 'megs-system'
     }
   };
 }

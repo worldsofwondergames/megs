@@ -1,0 +1,33 @@
+{
+  "_id": "5UtfDW1kOYfi65Pv",
+  "name": "Strange Appearance",
+  "type": "drawback",
+  "img": "icons/svg/degen.svg",
+  "system": {
+    "name": "Strange Appearance",
+    "description": "",
+    "baseCost": 10,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265589,
+    "modifiedTime": 1767583265589,
+    "lastModifiedBy": "megs-system"
+  }
+}

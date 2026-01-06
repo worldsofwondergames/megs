@@ -1,0 +1,32 @@
+{
+  "_id": "cPEzLOYQ6WZ6bOh4",
+  "name": "Self-Link",
+  "type": "bonus",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "name": "Self-Link",
+    "description": "",
+    "factorCostMod": 50,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265588,
+    "modifiedTime": 1767583265588,
+    "lastModifiedBy": "megs-system"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "_id": "8yvTk627chCl6Mr8",
+  "name": "Usable on Others",
+  "type": "bonus",
+  "img": "icons/svg/regen.svg",
+  "system": {
+    "name": "Usable on Others",
+    "description": "",
+    "factorCostMod": 5,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265589,
+    "modifiedTime": 1767583265589,
+    "lastModifiedBy": "megs-system"
+  }
+}

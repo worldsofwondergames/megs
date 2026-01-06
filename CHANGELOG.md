@@ -127,6 +127,16 @@
 - Added column shift tooltip displaying calculation breakdown (roll result, combat maneuver, unskilled penalty, manual shifts)
 - Implemented table extrapolation for attribute values beyond 60 (Action and Result tables)
 - Changed "Result Table Shifts" label to "Manual Result Shifts" for clarity
+- Added MEGS Item Repository with 5 compendium packs:
+    - Powers compendium (168 items)
+    - Advantages compendium (34 items)
+    - Drawbacks compendium (38 items)
+    - Bonuses compendium (4 items)
+    - Limitations compendium (10 items)
+- Item repository auto-loads with new MEGS worlds
+- Compendium items extracted from DC Heroes 3rd Edition content with names and costs
+- 180+ power icons and 50+ trait/modifier icons included
+- Build automation scripts for compendium management via npm scripts (build:packs, extract:packs)
 
 ### Bug Fixes
 

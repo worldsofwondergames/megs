@@ -197,5 +197,13 @@
             "name": "Allow skill deletion",
             "label": "Check to allow deletion of skills and subskills from actor and gadget sheets"
         }
+    },
+    "Compendium": {
+        "Powers": "MEGS Powers",
+        "Advantages": "MEGS Advantages",
+        "Drawbacks": "MEGS Drawbacks",
+        "Bonuses": "MEGS Bonuses",
+        "Limitations": "MEGS Limitations",
+        "Folder": "MEGS Item Repository"
     }
 }

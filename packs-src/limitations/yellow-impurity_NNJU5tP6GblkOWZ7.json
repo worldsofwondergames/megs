@@ -1,0 +1,32 @@
+{
+  "_id": "NNJU5tP6GblkOWZ7",
+  "name": "Yellow Impurity",
+  "type": "limitation",
+  "img": "systems/megs/assets/images/icons/limitations/Yellow%20Impurity.png",
+  "system": {
+    "name": "Yellow Impurity",
+    "description": "",
+    "factorCostMod": -1,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265590,
+    "modifiedTime": 1767583265590,
+    "lastModifiedBy": "megs-system"
+  }
+}

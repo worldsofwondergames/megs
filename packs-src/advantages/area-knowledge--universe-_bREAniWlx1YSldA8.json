@@ -1,0 +1,33 @@
+{
+  "_id": "bREAniWlx1YSldA8",
+  "name": "Area Knowledge (Universe)",
+  "type": "advantage",
+  "img": "systems/megs/assets/images/icons/advantages/galaxy.png",
+  "system": {
+    "name": "Area Knowledge (Universe)",
+    "description": "",
+    "baseCost": 200,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265585,
+    "modifiedTime": 1767583265585,
+    "lastModifiedBy": "megs-system"
+  }
+}

@@ -2,7 +2,7 @@
   "_id": "sXayFhCIi43v1rue",
   "name": "Flight",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/flight.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Flight",
     "description": "",

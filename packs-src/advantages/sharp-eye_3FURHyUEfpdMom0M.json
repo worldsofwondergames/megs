@@ -2,7 +2,7 @@
   "_id": "3FURHyUEfpdMom0M",
   "name": "Sharp Eye",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/sharp-eye.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Sharp Eye",
     "description": "",

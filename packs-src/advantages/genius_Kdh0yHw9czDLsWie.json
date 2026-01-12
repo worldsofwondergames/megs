@@ -2,7 +2,7 @@
   "_id": "Kdh0yHw9czDLsWie",
   "name": "Genius",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/genius.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Genius",
     "description": "",

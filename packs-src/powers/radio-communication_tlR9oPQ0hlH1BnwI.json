@@ -2,7 +2,7 @@
   "_id": "tlR9oPQ0hlH1BnwI",
   "name": "Radio Communication",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Radio Communication",
     "description": "",

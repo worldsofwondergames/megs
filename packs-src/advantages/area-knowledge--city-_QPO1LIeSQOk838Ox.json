@@ -2,7 +2,7 @@
   "_id": "QPO1LIeSQOk838Ox",
   "name": "Area Knowledge (City)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/area-knowledge.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (City)",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "VLHTcxSFCAXl6YRn",
   "name": "Intensive Training",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/intensive%20training.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Intensive Training",
     "description": "",

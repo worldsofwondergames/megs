@@ -2,7 +2,7 @@
   "_id": "VKwvk7EHfvXNq1TE",
   "name": "Area Knowledge (Neighborhood)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/area-knowledge.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (Neighborhood)",
     "description": "",

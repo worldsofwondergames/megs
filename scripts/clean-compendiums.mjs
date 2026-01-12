@@ -15,7 +15,20 @@ const ITEMS_TO_REMOVE = [
   'Advantages',
   'Drawbacks',
   'Bonuses',
-  'Limitations'
+  'Limitations',
+  // Category/folder items that shouldn't be in compendiums
+  'Mental',
+  'Physical',
+  'Mystical',
+  'Special',
+  'Background',
+  'Innate',
+  'Serious',
+  'Minor',
+  'Catastrophic',
+  'Misc',
+  'Attack Vulnerability',
+  'Strange Appearance'
 ];
 
 async function cleanPack(packType) {

@@ -1,0 +1,187 @@
+===========================================
+Checking for Missing Icons...
+===========================================
+
+
+POWERS (8 missing):
+==================================================
+  - Dispersal
+    Current: systems/megs/assets/images/icons/powers/dispersal.webp
+  - Heat Vision
+    Current: systems/megs/assets/images/icons/powers/heat vision.png
+  - Omni-Power
+    Current: modules/dcheroes3e-shared/assets/images/icons/gadgets/omni-gadget.png
+  - Invulnerability
+    Current: systems/megs/assets/images/icons/powers/invulnerability.webp
+  - Superspeed
+    Current: systems/megs/assets/images/icons/powers/superspeed.webp
+  - Teleportation
+    Current: systems/megs/assets/images/icons/powers/teleportation.webp
+  - Ice Production
+    Current: systems/megs/assets/images/icons/powers/ice control.webp
+  - Flame Control
+    Current: systems/megs/assets/images/icons/powers/flame control.webp
+
+ADVANTAGES (16 missing):
+==================================================
+  - Headquarters
+    Current: NO ICON SET
+  - Security Clearance
+    Current: NO ICON SET
+  - Area Knowledge
+    Current: NO ICON SET
+  - Connection
+    Current: NO ICON SET
+  - Rich Family/Friends
+    Current: icons/svg/regen.svg
+  - Connection (High)
+    Current: icons/svg/regen.svg
+  - Connection (Low)
+    Current: icons/svg/regen.svg
+  - Luck
+    Current: icons/svg/regen.svg
+  - Gift of Gab
+    Current: icons/svg/regen.svg
+  - Omni-Connection
+    Current: icons/svg/regen.svg
+  - Popularity
+    Current: icons/svg/regen.svg
+  - Headquarters (Confined)
+    Current: icons/svg/regen.svg
+  - Security Clearance (High)
+    Current: icons/svg/regen.svg
+  - Security Clearance (Medium)
+    Current: icons/svg/regen.svg
+  - Security Clearance (Low)
+    Current: icons/svg/regen.svg
+  - Headquarters (Expansive)
+    Current: icons/svg/regen.svg
+
+DRAWBACKS (45 missing):
+==================================================
+  - Physical Restriction
+    Current: NO ICON SET
+  - Irrational Hatred
+    Current: NO ICON SET
+  - Irrational Attraction
+    Current: NO ICON SET
+  - Exile
+    Current: NO ICON SET
+  - Rage
+    Current: NO ICON SET
+  - Irrational Fear
+    Current: NO ICON SET
+  - Vulnerability
+    Current: NO ICON SET
+  - Alter Ego
+    Current: NO ICON SET
+  - Psychological Instability
+    Current: NO ICON SET
+  - Physical Restriction (Catastrophic)
+    Current: icons/svg/degen.svg
+  - Public Identity
+    Current: icons/svg/degen.svg
+  - Vulnerability (Attack)
+    Current: icons/svg/degen.svg
+  - Dark Secret
+    Current: icons/svg/degen.svg
+  - Irrational Attraction, Minor
+    Current: icons/svg/degen.svg
+  - Rage (Catastrophic)
+    Current: icons/svg/degen.svg
+  - Uncertainty
+    Current: icons/svg/degen.svg
+  - Irrational Fear (Catastrophic)
+    Current: icons/svg/degen.svg
+  - Irrational Attraction, Serious
+    Current: icons/svg/degen.svg
+  - Psychological Instability (Serious)
+    Current: icons/svg/degen.svg
+  - Rage (Serious)
+    Current: icons/svg/degen.svg
+  - Alter Ego (Involuntary)
+    Current: icons/svg/degen.svg
+  - Unluck
+    Current: icons/svg/degen.svg
+  - Irrational Fear (Minor)
+    Current: icons/svg/degen.svg
+  - Irrational Hatred, Serious
+    Current: icons/svg/degen.svg
+  - Mistrust
+    Current: icons/svg/degen.svg
+  - Alter Ego (Voluntary)
+    Current: icons/svg/degen.svg
+  - Arch Enemy
+    Current: icons/svg/degen.svg
+  - Exile (Voluntary)
+    Current: icons/svg/degen.svg
+  - Irrational Attraction, Catastrophic
+    Current: icons/svg/degen.svg
+  - Married
+    Current: icons/svg/degen.svg
+  - Guilt
+    Current: icons/svg/degen.svg
+  - Vulnerability (Loss)
+    Current: icons/svg/degen.svg
+  - Irrational Hatred, Catastrophic
+    Current: icons/svg/degen.svg
+  - Psychological Instability (Catastrophic)
+    Current: icons/svg/degen.svg
+  - Physical Restriction (Serious)
+    Current: icons/svg/degen.svg
+  - Vulnerability (Fatal)
+    Current: icons/svg/degen.svg
+  - Irrational Hatred, Minor
+    Current: icons/svg/degen.svg
+  - Physical Restriction (Minor)
+    Current: icons/svg/degen.svg
+  - Rage (Minor)
+    Current: icons/svg/degen.svg
+  - Traumatic Flashback
+    Current: icons/svg/degen.svg
+  - Authority Figure
+    Current: icons/svg/degen.svg
+  - Innocent
+    Current: icons/svg/degen.svg
+  - Irrational Fear (Serious)
+    Current: icons/svg/degen.svg
+  - Psychological Instability (Minor)
+    Current: icons/svg/degen.svg
+  - Exile (Involuntary)
+    Current: icons/svg/degen.svg
+
+BONUSES (4 missing):
+==================================================
+  - Usable on Others
+    Current: icons/svg/regen.svg
+  - Self-Link
+    Current: icons/svg/regen.svg
+  - Area Effect
+    Current: icons/svg/regen.svg
+  - Range
+    Current: icons/svg/regen.svg
+
+LIMITATIONS (9 missing):
+==================================================
+  - Power Restriction
+    Current: icons/svg/degen.svg
+  - Power Burnout, Minor
+    Current: icons/svg/degen.svg
+  - Power Burnout, Serious
+    Current: icons/svg/degen.svg
+  - No Range
+    Current: icons/svg/degen.svg
+  - Diminishing
+    Current: icons/svg/degen.svg
+  - Lethal
+    Current: icons/svg/degen.svg
+  - Power Burnout, Catastrophic
+    Current: icons/svg/degen.svg
+  - Fatiguing
+    Current: icons/svg/degen.svg
+  - Power Always On
+    Current: icons/svg/degen.svg
+
+===========================================
+Total items missing icons: 82
+===========================================

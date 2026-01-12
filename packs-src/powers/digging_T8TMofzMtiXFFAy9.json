@@ -2,7 +2,7 @@
   "_id": "T8TMofzMtiXFFAy9",
   "name": "Digging",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/digging.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Digging",
     "description": "",

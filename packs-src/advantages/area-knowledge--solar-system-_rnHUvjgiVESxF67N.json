@@ -2,7 +2,7 @@
   "_id": "rnHUvjgiVESxF67N",
   "name": "Area Knowledge (Solar System)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/solar-system.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (Solar System)",
     "description": "",

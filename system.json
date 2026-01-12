@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/199-create-item-repository-compendiums/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/201-remove-all-icons-for-powers-advantages-bonuses-drawbacks-limitations/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -115,8 +115,8 @@
         }
     ],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/199-create-item-repository-compendiums/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/199-create-item-repository-compendiums/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/201-remove-all-icons-for-powers-advantages-bonuses-drawbacks-limitations/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/201-remove-all-icons-for-powers-advantages-bonuses-drawbacks-limitations/",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

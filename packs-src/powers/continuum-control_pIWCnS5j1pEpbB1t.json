@@ -2,7 +2,7 @@
   "_id": "pIWCnS5j1pEpbB1t",
   "name": "Continuum Control",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Continuum Control",
     "description": "",

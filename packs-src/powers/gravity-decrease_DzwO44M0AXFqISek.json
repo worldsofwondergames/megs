@@ -2,7 +2,7 @@
   "_id": "DzwO44M0AXFqISek",
   "name": "Gravity Decrease",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Gravity Decrease",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "eeoOdO2GIPotA0AF",
   "name": "Warp",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Warp",
     "description": "",

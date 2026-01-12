@@ -2,7 +2,7 @@
   "_id": "l1Y3bb1RDYRwdAyk",
   "name": "Remote Sensing",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Remote Sensing",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "rKf36G8EnoBncgoJ",
   "name": "Sensory Block",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Sensory Block",
     "description": "",

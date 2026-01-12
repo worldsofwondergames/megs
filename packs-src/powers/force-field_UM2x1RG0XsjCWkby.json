@@ -2,7 +2,7 @@
   "_id": "UM2x1RG0XsjCWkby",
   "name": "Force Field",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/force%20field.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Force Field",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "CQVliab7yu3LJVyY",
   "name": "Iron Nerves",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/iron%20nerves.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Iron Nerves",
     "description": "",

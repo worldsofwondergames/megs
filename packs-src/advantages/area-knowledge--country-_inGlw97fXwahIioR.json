@@ -2,7 +2,7 @@
   "_id": "inGlw97fXwahIioR",
   "name": "Area Knowledge (Country)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/area-knowledge.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (Country)",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "ymRrfVpRCnxsheUI",
   "name": "Magnetic Control",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/magnetic%20control.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Magnetic Control",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "GOVF7h8Wq8sizLJM",
   "name": "Force Shield",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/force%20shield.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Force Shield",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "X5yp1sW50iFbR23v",
   "name": "Enchantment",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Enchantment",
     "description": "",

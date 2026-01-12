@@ -2,7 +2,7 @@
   "_id": "j6z0pZQm79NmWP6Z",
   "name": "Attractive",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/attractive.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Attractive",
     "description": "",

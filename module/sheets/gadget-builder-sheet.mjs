@@ -226,7 +226,7 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             const totalCost = baseCost + apCost;
 
             powers.push({
-                _id: `virtual-power-${powerName}`,
+                _id: `virtual-power-${this.object.id}-${foundry.utils.randomID()}`,
                 name: powerName,
                 type: 'power',
                 isVirtual: true,
@@ -260,7 +260,7 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             const totalCost = baseCost + apCost;
 
             skills.push({
-                _id: `virtual-skill-${skillName}`,
+                _id: `virtual-skill-${this.object.id}-${foundry.utils.randomID()}`,
                 name: skillName,
                 type: 'skill',
                 isVirtual: true,
@@ -286,7 +286,7 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
         for (const [key, trait] of Object.entries(traitData)) {
             traits.push({
-                _id: `virtual-trait-${key}`,
+                _id: `virtual-trait-${this.object.id}-${foundry.utils.randomID()}`,
                 name: trait.name,
                 type: trait.type,
                 img: trait.img,

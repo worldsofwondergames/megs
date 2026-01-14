@@ -61,13 +61,6 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             Array.from(this.object.parent.items) :
             [...context.powers, ...context.skills, ...context.advantages, ...context.drawbacks];
 
-        // Ensure budget is calculated
-        context.gadgetBudget = context.system.gadgetPointBudget || {
-            base: 0,
-            totalSpent: 0,
-            remaining: 0
-        };
-
         // Add reliability scores for settings dropdown
         context.reliabilityScores = CONFIG.reliabilityScores || [0, 2, 3, 5, 7, 9, 11];
 

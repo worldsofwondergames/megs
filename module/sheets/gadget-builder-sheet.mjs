@@ -31,21 +31,22 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
     async getData() {
         const context = await super.getData();
 
-        // Prepare powers for the Powers tab
+        // Prepare items for tabs
         if (this.object.parent) {
-            // Owned gadget - filter embedded items
-            context.powers = this.object.parent.items.filter(
-                i => i.type === 'power' && i.system.parent === this.object.id
-            );
-            context.skills = this.object.parent.items.filter(
-                i => i.type === 'skill' && i.system.parent === this.object.id
-            );
-            context.advantages = this.object.parent.items.filter(
-                i => i.type === 'advantage' && i.system.parent === this.object.id
-            );
-            context.drawbacks = this.object.parent.items.filter(
-                i => i.type === 'drawback' && i.system.parent === this.object.id
-            );
+            // Owned gadget - filter embedded items in a single pass
+            const itemsByType = { powers: [], skills: [], advantages: [], drawbacks: [] };
+            for (const item of this.object.parent.items) {
+                if (item.system.parent === this.object.id) {
+                    if (item.type === 'power') itemsByType.powers.push(item);
+                    else if (item.type === 'skill') itemsByType.skills.push(item);
+                    else if (item.type === 'advantage') itemsByType.advantages.push(item);
+                    else if (item.type === 'drawback') itemsByType.drawbacks.push(item);
+                }
+            }
+            context.powers = itemsByType.powers;
+            context.skills = itemsByType.skills;
+            context.advantages = itemsByType.advantages;
+            context.drawbacks = itemsByType.drawbacks;
         } else {
             // Unowned gadget - create virtual items from flattened data
             context.powers = this._createVirtualPowersFromData(context);

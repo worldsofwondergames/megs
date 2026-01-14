@@ -5,6 +5,7 @@ import { MEGSItem } from './documents/item.mjs';
 import { MEGSActorSheet } from './sheets/actor-sheet.mjs';
 import { MEGSCharacterBuilderSheet } from './sheets/character-creator-sheet.mjs';
 import { MEGSItemSheet } from './sheets/item-sheet.mjs';
+import { MEGSGadgetBuilderSheet } from './sheets/gadget-builder-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { MEGS } from './helpers/config.mjs';
@@ -125,6 +126,11 @@ Hooks.once('init', function () {
     Items.registerSheet('megs', MEGSItemSheet, {
         makeDefault: true,
         label: 'MEGS.SheetLabels.Item',
+    });
+    Items.registerSheet('megs', MEGSGadgetBuilderSheet, {
+        types: ['gadget'],
+        makeDefault: false,
+        label: 'MEGS.SheetLabels.GadgetBuilder',
     });
 
     // Preload Handlebars templates.
@@ -1036,6 +1042,51 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
     console.log(`  Final Cost: ${totalBeforeBonus} ÷ ${gadgetBonus} = ${finalCost} HP`);
     tooltip += 'Final Cost: ' + finalCost;
+
+    return tooltip;
+});
+
+Handlebars.registerHelper('getGadgetAttributeCost', function (aps, baseFc, reliabilityIndex, hasHardenedDefenses, attrKey) {
+    if (aps === 0) return 0;
+
+    const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
+    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+    const reliabilityMod = table[reliability] ?? 0;
+
+    let fc = baseFc + reliabilityMod;
+    if (attrKey === 'body' && (hasHardenedDefenses === true || hasHardenedDefenses === 'true')) {
+        fc += 2;
+    }
+    fc = Math.max(1, fc);
+
+    return MEGS.getAPCost(aps, fc) || 0;
+});
+
+Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
+    if (!budget) return '';
+
+    const attrs = budget.attributesCost || 0;
+    const avEv = budget.avEvCost || 0;
+    const powers = budget.powersCost || 0;
+    const skills = budget.skillsCost || 0;
+    const advantages = budget.advantagesCost || 0;
+    const drawbacks = budget.drawbacksCost || 0;
+    const totalBeforeBonus = budget.totalBeforeBonus || 0;
+    const total = budget.totalSpent || 0;
+
+    let tooltip = 'HP Spent Breakdown:\n';
+    if (attrs > 0) tooltip += `Attributes: ${attrs} HP\n`;
+    if (avEv > 0) tooltip += `AV/EV: ${avEv} HP\n`;
+    if (powers > 0) tooltip += `Powers: ${powers} HP\n`;
+    if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
+    if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
+    if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
+    const canBeTakenAway = budget.base !== undefined; // Use a proxy check
+    tooltip += `Gadget Bonus: ÷${totalBeforeBonus > 0 ? Math.ceil(totalBeforeBonus / total) : '2 or 4'}\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Total: ${total} HP`;
 
     return tooltip;
 });

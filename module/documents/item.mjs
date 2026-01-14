@@ -576,6 +576,148 @@ export class MEGSItem extends Item {
     }
 
     /**
+     * Calculate gadget point budget for gadget builder
+     * Similar to _calculateHeroPointBudget in MEGSActor
+     */
+    _calculateGadgetPointBudget() {
+        if (this.type !== MEGS.itemTypes.gadget) return;
+
+        const systemData = this.system;
+        const baseBudget = systemData.creationBudget?.base ?? 0;
+
+        // Calculate attribute costs with reliability modifier
+        let attributesCost = 0;
+        const reliabilityIndex = systemData.reliability ?? 3;
+        const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+        const reliabilityMod = this._getReliabilityModifier(reliability);
+
+        if (systemData.attributes) {
+            for (const [key, attr] of Object.entries(systemData.attributes)) {
+                if (attr.value > 0) {
+                    let fc = attr.factorCost + reliabilityMod;
+                    if (attr.alwaysSubstitute) fc += 2;
+                    if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
+                        fc += 2;
+                    }
+                    fc = Math.max(1, fc);
+                    attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
+                }
+            }
+        }
+
+        // Calculate AV/EV costs
+        let avEvCost = 0;
+        if (systemData.actionValue > 0) {
+            const fc = Math.max(1, 1 + reliabilityMod);
+            avEvCost += 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
+        }
+        if (systemData.effectValue > 0) {
+            const fc = Math.max(1, 1 + reliabilityMod);
+            avEvCost += 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
+        }
+
+        // Calculate power/skill/trait costs from embedded items or virtual data
+        let powersCost = 0;
+        let skillsCost = 0;
+        let advantagesCost = 0;
+        let drawbacksCost = 0;
+
+        if (this.parent && this.parent.items) {
+            // Owned gadget - use embedded items
+            this.parent.items.forEach(item => {
+                if (item.system.parent === this.id) {
+                    let itemCost = 0;
+                    if (item.type === MEGS.itemTypes.power && item.system.aps > 0) {
+                        let effectiveFC = item.system.factorCost;
+                        if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+                            effectiveFC = Math.max(1, effectiveFC - 2);
+                        }
+                        itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
+                        powersCost += itemCost;
+                    } else if (item.type === MEGS.itemTypes.skill && item.system.aps > 0) {
+                        let effectiveFC = item.system.factorCost;
+                        if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+                            effectiveFC = Math.max(1, effectiveFC - 2);
+                        }
+                        itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
+                        skillsCost += itemCost;
+                    } else if (item.type === MEGS.itemTypes.advantage) {
+                        advantagesCost += item.system.totalCost || item.system.baseCost || 0;
+                    } else if (item.type === MEGS.itemTypes.drawback) {
+                        let cost = item.system.totalCost || item.system.baseCost || 0;
+                        if (cost > 0) cost = -cost;
+                        drawbacksCost += cost;
+                    }
+                }
+            });
+        } else {
+            // Unowned gadget - calculate from virtual/flattened data
+            powersCost = this._calculateVirtualPowersCost();
+            // Traits from traitData
+            const traitData = systemData.traitData || {};
+            for (const trait of Object.values(traitData)) {
+                if (trait.type === MEGS.itemTypes.advantage) {
+                    advantagesCost += trait.system?.baseCost || 0;
+                } else if (trait.type === MEGS.itemTypes.drawback) {
+                    let cost = trait.system?.baseCost || 0;
+                    if (cost > 0) cost = -cost;
+                    drawbacksCost += cost;
+                }
+            }
+        }
+
+        const traitsCost = advantagesCost + drawbacksCost;
+        const totalBeforeBonus = attributesCost + avEvCost + powersCost + skillsCost + traitsCost;
+
+        // Apply gadget bonus (÷4 if can be taken away, ÷2 if cannot)
+        const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
+        const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
+
+        systemData.gadgetPointBudget = {
+            base: baseBudget,
+            totalSpent: finalCost,
+            remaining: baseBudget - finalCost,
+            totalBeforeBonus: totalBeforeBonus,
+            attributesCost: attributesCost,
+            avEvCost: avEvCost,
+            powersCost: powersCost,
+            skillsCost: skillsCost,
+            advantagesCost: advantagesCost,
+            drawbacksCost: drawbacksCost,
+            traitsCost: traitsCost
+        };
+    }
+
+    /**
+     * Calculate cost of virtual powers for unowned gadgets
+     */
+    _calculateVirtualPowersCost() {
+        const systemData = this.system;
+        const powerAPs = systemData.powerAPs || {};
+        const powerBaseCosts = systemData.powerBaseCosts || {};
+        const powerFactorCosts = systemData.powerFactorCosts || {};
+        const powerIsLinked = systemData.powerIsLinked || {};
+
+        let totalCost = 0;
+        for (const powerName of Object.keys(powerAPs)) {
+            const aps = powerAPs[powerName] || 0;
+            if (aps === 0) continue;
+
+            const baseCost = powerBaseCosts[powerName] || 0;
+            let fc = powerFactorCosts[powerName] || 0;
+            const isLinked = powerIsLinked[powerName];
+
+            if (isLinked === 'true' || isLinked === true) {
+                fc = Math.max(1, fc - 2);
+            }
+
+            const apCost = MEGS.getAPCost(aps, fc) || 0;
+            totalCost += baseCost + apCost;
+        }
+        return totalCost;
+    }
+
+    /**
      * Augment the basic Item data model with additional dynamic data.
      */
     prepareData() {
@@ -779,6 +921,9 @@ export class MEGSItem extends Item {
 
             systemData.totalCost = totalCost;
             this.totalCost = totalCost;
+
+            // Calculate gadget point budget for gadget builder
+            this._calculateGadgetPointBudget();
         }
         // Calculate total cost for powers, skills, advantages, drawbacks (but not gadgets or subskills)
         else if (systemData.hasOwnProperty('baseCost')) {

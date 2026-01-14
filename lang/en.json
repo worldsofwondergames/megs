@@ -14,7 +14,8 @@
         "SheetLabels": {
             "Actor": "MEGS Actor Sheet",
             "CharacterBuilder": "MEGS Character Builder",
-            "Item": "MEGS Item Sheet"
+            "Item": "MEGS Item Sheet",
+            "GadgetBuilder": "MEGS Gadget Builder"
         },
         "Effects": {
             "Source": "Source",

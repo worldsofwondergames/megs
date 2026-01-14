@@ -164,11 +164,19 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         });
     }
 
+    /**
+     * Handle dragover event for power rows
+     * @param {DragEvent} event - The dragover event
+     */
     _onDragOver(event) {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy';
     }
 
+    /**
+     * Handle drop event for bonuses/limitations onto power rows
+     * @param {DragEvent} event - The drop event
+     */
     async _onDropOnPower(event) {
         event.preventDefault();
         event.stopPropagation();

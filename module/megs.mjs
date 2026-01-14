@@ -1083,8 +1083,9 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
     if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
     tooltip += `─────────────────\n`;
     tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
-    const canBeTakenAway = budget.base !== undefined; // Use a proxy check
-    tooltip += `Gadget Bonus: ÷${totalBeforeBonus > 0 ? Math.ceil(totalBeforeBonus / total) : '2 or 4'}\n`;
+    // Determine gadget bonus from the actual division
+    const gadgetBonus = totalBeforeBonus > 0 && total > 0 ? Math.round(totalBeforeBonus / total) : 4;
+    tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
     tooltip += `─────────────────\n`;
     tooltip += `Total: ${total} HP`;
 

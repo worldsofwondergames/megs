@@ -415,6 +415,8 @@
                 "hideZeroAPSkills": "true"
             },
             "skillData": {},
+            "skillBaseCosts": {},
+            "skillFactorCosts": {},
             "subskillData": {},
             "powerAPs": {},
             "powerBaseCosts": {},

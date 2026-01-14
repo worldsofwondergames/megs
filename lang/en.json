@@ -157,7 +157,29 @@
 
         "Superspeed": "Superspeed",
         "MartialArtist": "Martial Artist",
-        "LightningReflexes": "Lightning Reflexes"
+        "LightningReflexes": "Lightning Reflexes",
+
+        "GadgetName": "Gadget Name",
+        "HPBudget": "HP Budget",
+        "HPRemaining": "HP Remaining",
+        "TotalAttributesCost": "Total Attributes Cost:",
+        "AVEVCost": "AV/EV Cost:",
+        "MysticalAttributes": "Mystical Attributes",
+        "ActionValueAndEffectValue": "Action Value & Effect Value",
+        "TotalPowersCost": "Total Powers Cost:",
+        "TotalSkillsCost": "Total Skills Cost:",
+        "NetTraitsCost": "Net Traits Cost:",
+        "GadgetSettings": "Gadget Settings",
+        "CanBeTakenAwayHint": "Can Be Taken Away (÷4 cost)",
+        "CanBeTakenAwayHintDesc": "If unchecked, gadget bonus is ÷2",
+        "HardenedDefensesHint": "Hardened Defenses (+2 to BODY FC)",
+        "AttributeGroups": "Attribute Groups",
+        "HasPhysicalAttributesHint": "Has Physical Attributes (DEX, STR, BODY)",
+        "HasMentalAttributesHint": "Has Mental Attributes (INT, WILL, MIND)",
+        "HasMysticalAttributesHint": "Has Mystical Attributes (INFL, AURA, SPIRIT)",
+        "HasActionValueAndEffectValue": "Has Action Value & Effect Value",
+        "OnlyBonusesAndLimitationsCanBeDropped": "Only Bonuses and Limitations can be dropped onto Powers.",
+        "ModifiersOnlyForOwnedGadgets": "Modifiers can only be added to powers on gadgets owned by a character."
     },
 
     "TYPES": {

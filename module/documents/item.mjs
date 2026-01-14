@@ -24,6 +24,8 @@ export class MEGSItem extends Item {
                 }
 
                 const skillData = {};
+                const skillBaseCosts = {};
+                const skillFactorCosts = {};
                 const subskillData = {};
                 const subskillTrainingData = {};
                 // Flatten power data to primitives only (like skills)
@@ -44,6 +46,8 @@ export class MEGSItem extends Item {
                 for (let item of childItems) {
                     if (item.type === MEGS.itemTypes.skill) {
                         skillData[item.name] = item.system.aps;
+                        skillBaseCosts[item.name] = item.system.baseCost || 0;
+                        skillFactorCosts[item.name] = item.system.factorCost || 0;
                     } else if (item.type === MEGS.itemTypes.subskill) {
                         subskillData[item.name] = item.system.aps;
                         // Preserve training status
@@ -86,6 +90,8 @@ export class MEGSItem extends Item {
                 data.flags.megs = data.flags.megs || {};
                 data.flags.megs._transferData = {
                     skillData: skillData,
+                    skillBaseCosts: skillBaseCosts,
+                    skillFactorCosts: skillFactorCosts,
                     subskillData: subskillData,
                     subskillTrainingData: subskillTrainingData,
                     powerAPs: powerAPs,
@@ -99,6 +105,8 @@ export class MEGSItem extends Item {
 
                 // Also store in system for direct access
                 data.system.skillData = skillData;
+                data.system.skillBaseCosts = skillBaseCosts;
+                data.system.skillFactorCosts = skillFactorCosts;
                 data.system.subskillData = subskillData;
                 data.system.subskillTrainingData = subskillTrainingData;
                 data.system.powerAPs = powerAPs;
@@ -562,6 +570,48 @@ export class MEGSItem extends Item {
      * @returns {number} Factor Cost modifier
      * @private
      */
+    /**
+     * Convert a value to boolean, handling both string and boolean types
+     * @param {*} value - Value to convert
+     * @returns {boolean}
+     * @private
+     */
+    _toBoolean(value) {
+        if (value === 'true' || value === true) return true;
+        if (value === 'false' || value === false) return false;
+        return Boolean(value);
+    }
+
+    /**
+     * Safely get AP cost with validation
+     * @param {number} aps - Action Points
+     * @param {number} fc - Factor Cost
+     * @returns {number} Cost in Hero Points
+     * @private
+     */
+    _getAPCost(aps, fc) {
+        if (typeof aps !== 'number' || aps < 0) {
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.warn(`[MEGS] Invalid APs value: ${aps}`);
+            }
+            return 0;
+        }
+        if (typeof fc !== 'number' || fc < 1) {
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.warn(`[MEGS] Invalid Factor Cost: ${fc}`);
+            }
+            return 0;
+        }
+        const result = MEGS.getAPCost(aps, fc);
+        if (result === undefined || result === null) {
+            if (game.settings.get('megs', 'debugLogging')) {
+                console.warn(`[MEGS] getAPCost returned invalid result for APs=${aps}, FC=${fc}`);
+            }
+            return 0;
+        }
+        return result;
+    }
+
     _getReliabilityModifier(reliability) {
         const reliabilityTable = {
             0: 3,
@@ -596,11 +646,11 @@ export class MEGSItem extends Item {
                 if (attr.value > 0) {
                     let fc = attr.factorCost + reliabilityMod;
                     if (attr.alwaysSubstitute) fc += 2;
-                    if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
+                    if (key === 'body' && this._toBoolean(systemData.hasHardenedDefenses)) {
                         fc += 2;
                     }
                     fc = Math.max(1, fc);
-                    attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
+                    attributesCost += this._getAPCost(attr.value, fc);
                 }
             }
         }
@@ -609,11 +659,11 @@ export class MEGSItem extends Item {
         let avEvCost = 0;
         if (systemData.actionValue > 0) {
             const fc = Math.max(1, 1 + reliabilityMod);
-            avEvCost += 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
+            avEvCost += 5 + this._getAPCost(systemData.actionValue, fc);
         }
         if (systemData.effectValue > 0) {
             const fc = Math.max(1, 1 + reliabilityMod);
-            avEvCost += 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
+            avEvCost += 5 + this._getAPCost(systemData.effectValue, fc);
         }
 
         // Calculate power/skill/trait costs from embedded items or virtual data
@@ -629,16 +679,40 @@ export class MEGSItem extends Item {
                     let itemCost = 0;
                     if (item.type === MEGS.itemTypes.power && item.system.aps > 0) {
                         let effectiveFC = item.system.factorCost;
-                        if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+
+                        // Add bonuses and limitations to factor cost
+                        const modifiers = this.parent.items.filter(i =>
+                            (i.type === MEGS.itemTypes.bonus || i.type === MEGS.itemTypes.limitation) &&
+                            i.system.parent === item.id
+                        );
+                        for (const modifier of modifiers) {
+                            effectiveFC += modifier.system.factorCostMod || 0;
+                        }
+
+                        if (this._toBoolean(item.system.isLinked)) {
                             effectiveFC = Math.max(1, effectiveFC - 2);
                         }
+                        effectiveFC = Math.max(1, effectiveFC);
+
                         itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         powersCost += itemCost;
                     } else if (item.type === MEGS.itemTypes.skill && item.system.aps > 0) {
                         let effectiveFC = item.system.factorCost;
-                        if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+
+                        // Check for subskills and reduce FC for untrained subskills
+                        const subskills = this.parent.items.filter(i =>
+                            i.type === MEGS.itemTypes.subskill && i.system.parent === item.id
+                        );
+                        if (subskills.length > 0) {
+                            const untrainedCount = subskills.filter(s => !s.system.isTrained).length;
+                            effectiveFC = effectiveFC - untrainedCount;
+                        }
+
+                        if (this._toBoolean(item.system.isLinked)) {
                             effectiveFC = Math.max(1, effectiveFC - 2);
                         }
+                        effectiveFC = Math.max(1, effectiveFC);
+
                         itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         skillsCost += itemCost;
                     } else if (item.type === MEGS.itemTypes.advantage) {
@@ -653,6 +727,7 @@ export class MEGSItem extends Item {
         } else {
             // Unowned gadget - calculate from virtual/flattened data
             powersCost = this._calculateVirtualPowersCost();
+            skillsCost = this._calculateVirtualSkillsCost();
             // Traits from traitData
             const traitData = systemData.traitData || {};
             for (const trait of Object.values(traitData)) {
@@ -707,9 +782,32 @@ export class MEGSItem extends Item {
             let fc = powerFactorCosts[powerName] || 0;
             const isLinked = powerIsLinked[powerName];
 
-            if (isLinked === 'true' || isLinked === true) {
+            if (this._toBoolean(isLinked)) {
                 fc = Math.max(1, fc - 2);
             }
+
+            const apCost = MEGS.getAPCost(aps, fc) || 0;
+            totalCost += baseCost + apCost;
+        }
+        return totalCost;
+    }
+
+    /**
+     * Calculate cost of virtual skills for unowned gadgets
+     */
+    _calculateVirtualSkillsCost() {
+        const systemData = this.system;
+        const skillData = systemData.skillData || {};
+        const skillBaseCosts = systemData.skillBaseCosts || {};
+        const skillFactorCosts = systemData.skillFactorCosts || {};
+
+        let totalCost = 0;
+        for (const skillName of Object.keys(skillData)) {
+            const aps = skillData[skillName] || 0;
+            if (aps === 0) continue;
+
+            const baseCost = skillBaseCosts[skillName] || 0;
+            const fc = skillFactorCosts[skillName] || 0;
 
             const apCost = MEGS.getAPCost(aps, fc) || 0;
             totalCost += baseCost + apCost;
@@ -798,7 +896,7 @@ export class MEGSItem extends Item {
                         }
 
                         // Hardened Defenses add +2 to BODY FC
-                        if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
+                        if (key === 'body' && this._toBoolean(systemData.hasHardenedDefenses)) {
                             fc += 2;
                             if (game.settings.get('megs', 'debugLogging')) {
                                 console.log(`    +2 for Hardened Defenses → FC=${fc}`);
@@ -866,7 +964,7 @@ export class MEGSItem extends Item {
 
                             // Calculate effective FC (with linking bonus if applicable)
                             let effectiveFC = item.system.factorCost;
-                            if (item.system.isLinked === 'true' || item.system.isLinked === true) {
+                            if (this._toBoolean(item.system.isLinked)) {
                                 effectiveFC = Math.max(1, effectiveFC - 2);
                             }
                             itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
@@ -953,7 +1051,7 @@ export class MEGSItem extends Item {
 
                 // Check if power/skill is linked to an attribute
                 // Linking reduces Factor Cost by 2 (minimum 1)
-                if (systemData.isLinked === 'true' || systemData.isLinked === true) {
+                if (this._toBoolean(systemData.isLinked)) {
                     effectiveFC = Math.max(1, effectiveFC - 2);
                 }
 

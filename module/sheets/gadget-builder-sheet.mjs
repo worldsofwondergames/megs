@@ -143,9 +143,6 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
         // Enable drag-and-drop for Bonuses/Limitations onto Powers
         this._enablePowerRowDropZones(html);
-
-        // Restore accordion state for skills
-        this._restoreAccordionState(html);
     }
 
     /**
@@ -246,11 +243,12 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
     _createVirtualSkillsFromData(context) {
         const skills = [];
         const skillData = context.system.skillData || {};
+        const skillBaseCosts = context.system.skillBaseCosts || {};
+        const skillFactorCosts = context.system.skillFactorCosts || {};
 
         for (const [skillName, aps] of Object.entries(skillData)) {
-            // Skills typically have FC 2 and base cost 0
-            const baseCost = 0;
-            const factorCost = 2;
+            const baseCost = skillBaseCosts[skillName] || 0;
+            const factorCost = skillFactorCosts[skillName] || 2; // Default to 2 if not set
             const apCost = MEGS.getAPCost(aps, factorCost) || 0;
             const totalCost = baseCost + apCost;
 

@@ -96,9 +96,11 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             ev.preventDefault();
             const attrKey = $(ev.currentTarget).data('attribute');
             const currentValue = this.object.system.attributes[attrKey]?.value || 0;
-            await this.object.update({
-                [`system.attributes.${attrKey}.value`]: currentValue + 1
-            });
+            if (currentValue < 60) {
+                await this.object.update({
+                    [`system.attributes.${attrKey}.value`]: currentValue + 1
+                });
+            }
         });
 
         html.on('click', '.attribute-minus', async (ev) => {
@@ -116,7 +118,9 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         html.on('click', '.av-plus', async (ev) => {
             ev.preventDefault();
             const currentValue = this.object.system.actionValue || 0;
-            await this.object.update({ 'system.actionValue': currentValue + 1 });
+            if (currentValue < 60) {
+                await this.object.update({ 'system.actionValue': currentValue + 1 });
+            }
         });
 
         html.on('click', '.av-minus', async (ev) => {
@@ -130,7 +134,9 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         html.on('click', '.ev-plus', async (ev) => {
             ev.preventDefault();
             const currentValue = this.object.system.effectValue || 0;
-            await this.object.update({ 'system.effectValue': currentValue + 1 });
+            if (currentValue < 60) {
+                await this.object.update({ 'system.effectValue': currentValue + 1 });
+            }
         });
 
         html.on('click', '.ev-minus', async (ev) => {

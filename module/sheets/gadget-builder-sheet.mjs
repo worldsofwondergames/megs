@@ -181,7 +181,7 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         if (!droppedItem) return;
 
         if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
-            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            ui.notifications.warn(game.i18n.localize('MEGS.OnlyBonusesAndLimitationsCanBeDropped'));
             return;
         }
 
@@ -193,7 +193,7 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             await this.object.parent.createEmbeddedDocuments('Item', [itemData]);
         } else {
             // Unowned gadget - not supported yet
-            ui.notifications.warn('Modifiers can only be added to powers on gadgets owned by a character.');
+            ui.notifications.warn(game.i18n.localize('MEGS.ModifiersOnlyForOwnedGadgets'));
         }
 
         this.render(false);

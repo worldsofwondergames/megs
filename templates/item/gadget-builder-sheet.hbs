@@ -5,13 +5,13 @@
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="100" width="100" />
         <div class="header-fields">
             <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="Gadget Name" />
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.GadgetName'}}" />
             </h1>
 
             {{!-- HP Budget Display --}}
             <div class="resources grid grid-3col">
                 <div class="resource flex-group-center">
-                    <label for="system.creationBudget.base" class="resource-label">HP Budget</label>
+                    <label for="system.creationBudget.base" class="resource-label">{{localize 'MEGS.HPBudget'}}</label>
                     <div class="resource-content flexrow flex-center flex-between">
                         <input type="number" name="system.creationBudget.base"
                                value="{{system.creationBudget.base}}"
@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="resource flex-group-center">
-                    <label class="resource-label">HP Spent</label>
+                    <label class="resource-label">{{localize 'MEGS.HPSpent'}}</label>
                     <div class="resource-content flexrow flex-center flex-between">
                         <span class="resource-value" title="{{getGadgetBudgetTooltip system.gadgetPointBudget}}">
                             {{formatNumber system.gadgetPointBudget.totalSpent}}
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="resource flex-group-center">
-                    <label class="resource-label">HP Remaining</label>
+                    <label class="resource-label">{{localize 'MEGS.HPRemaining'}}</label>
                     <div class="resource-content flexrow flex-center flex-between">
                         <span class="resource-value {{#if (compare system.gadgetPointBudget.remaining '<' 0)}}over-budget{{/if}}">
                             {{formatNumber system.gadgetPointBudget.remaining}}
@@ -42,11 +42,11 @@
 
     {{!-- Tab Navigation --}}
     <nav class='sheet-tabs tabs' data-group='primary'>
-        <a class='item' data-tab='attributes'>Attributes</a>
-        <a class='item' data-tab='powers'>Powers</a>
-        <a class='item' data-tab='skills'>Skills</a>
-        <a class='item' data-tab='traits'>Traits</a>
-        <a class='item' data-tab='settings'>Settings</a>
+        <a class='item' data-tab='attributes'>{{localize 'MEGS.Attributes'}}</a>
+        <a class='item' data-tab='powers'>{{localize 'MEGS.Powers'}}</a>
+        <a class='item' data-tab='skills'>{{localize 'MEGS.Skills'}}</a>
+        <a class='item' data-tab='traits'>{{localize 'MEGS.Traits'}}</a>
+        <a class='item' data-tab='settings'>{{localize 'MEGS.Settings'}}</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -56,18 +56,18 @@
         <div class="tab attributes" data-group="primary" data-tab="attributes">
             <section class="attributes-summary">
                 <div class="summary-row">
-                    <label class="summary-label">Total Attributes Cost:</label>
+                    <label class="summary-label">{{localize 'MEGS.TotalAttributesCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.attributesCost}} HP</span>
                 </div>
                 <div class="summary-row">
-                    <label class="summary-label">AV/EV Cost:</label>
+                    <label class="summary-label">{{localize 'MEGS.AVEVCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.avEvCost}} HP</span>
                 </div>
             </section>
 
             {{!-- Physical Attributes --}}
             {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}
-                <h3>Physical Attributes</h3>
+                <h3>{{localize 'MEGS.PhysicalAttributes'}}</h3>
                 <section class="attributes grid grid-3col attributeRow">
                     <div class="attribute flex-group-center">
                         <label class="resource-label flexlarge align-left" title="Dexterity">DEX</label>
@@ -113,7 +113,7 @@
 
             {{!-- Mental Attributes --}}
             {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
-                <h3>Mental Attributes</h3>
+                <h3>{{localize 'MEGS.MentalAttributes'}}</h3>
                 <section class="attributes grid grid-3col attributeRow">
                     <div class="attribute flex-group-center">
                         <label class="resource-label flexlarge align-left" title="Intelligence">INT</label>
@@ -159,7 +159,7 @@
 
             {{!-- Mystical Attributes --}}
             {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
-                <h3>Mystical Attributes</h3>
+                <h3>{{localize 'MEGS.MysticalAttributes'}}</h3>
                 <section class="attributes grid grid-3col attributeRow">
                     <div class="attribute flex-group-center">
                         <label class="resource-label flexlarge align-left" title="Influence">INFL</label>
@@ -205,7 +205,7 @@
 
             {{!-- AV/EV Section --}}
             {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
-                <h3>Action Value & Effect Value</h3>
+                <h3>{{localize 'MEGS.ActionValueAndEffectValue'}}</h3>
                 <section class="av-ev-section">
                     <div class="grid grid-2col">
                         <div class="attribute flex-group-center">
@@ -233,7 +233,7 @@
         <div class="tab powers" data-group="primary" data-tab="powers">
             <section class="powers-summary">
                 <div class="summary-row">
-                    <label class="summary-label">Total Powers Cost:</label>
+                    <label class="summary-label">{{localize 'MEGS.TotalPowersCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.powersCost}} HP</span>
                 </div>
             </section>
@@ -303,7 +303,7 @@
         <div class="tab skills" data-group="primary" data-tab="skills">
             <section class="skills-summary">
                 <div class="summary-row">
-                    <label class="summary-label">Total Skills Cost:</label>
+                    <label class="summary-label">{{localize 'MEGS.TotalSkillsCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.skillsCost}} HP</span>
                 </div>
             </section>
@@ -340,22 +340,22 @@
         <div class="tab traits" data-group="primary" data-tab="traits">
             <section class="traits-summary">
                 <div class="summary-row">
-                    <label class="summary-label">Net Traits Cost:</label>
+                    <label class="summary-label">{{localize 'MEGS.NetTraitsCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.traitsCost}} HP</span>
                 </div>
                 <div class="summary-row">
-                    <label class="summary-label">Advantages:</label>
+                    <label class="summary-label">{{localize 'MEGS.Advantages'}}:</label>
                     <span class="summary-value">{{system.gadgetPointBudget.advantagesCost}} HP</span>
                 </div>
                 <div class="summary-row">
-                    <label class="summary-label">Drawbacks:</label>
+                    <label class="summary-label">{{localize 'MEGS.Drawbacks'}}:</label>
                     <span class="summary-value">{{system.gadgetPointBudget.drawbacksCost}} HP</span>
                 </div>
             </section>
 
             <div class="grid grid-2col traits-grid">
                 <div class="advantages-column">
-                    <h3>Advantages</h3>
+                    <h3>{{localize 'MEGS.Advantages'}}</h3>
                     <ol class='items-list'>
                         {{#each advantages as |item id|}}
                             <li class='item flexrow item-row' data-item-id='{{item._id}}'>
@@ -371,7 +371,7 @@
                     </ol>
                 </div>
                 <div class="drawbacks-column">
-                    <h3>Drawbacks</h3>
+                    <h3>{{localize 'MEGS.Drawbacks'}}</h3>
                     <ol class='items-list'>
                         {{#each drawbacks as |item id|}}
                             <li class='item flexrow item-row' data-item-id='{{item._id}}'>
@@ -391,10 +391,10 @@
 
         {{!-- Settings Tab --}}
         <div class="tab settings" data-group="primary" data-tab="settings">
-            <h3>Gadget Settings</h3>
+            <h3>{{localize 'MEGS.GadgetSettings'}}</h3>
 
             <div class="form-group">
-                <label>Reliability:</label>
+                <label>{{localize 'MEGS.Reliability'}}:</label>
                 <select name="system.reliability">
                     {{#each reliabilityScores as |score index|}}
                         <option value="{{index}}" {{#if (eq index ../system.reliability)}}selected{{/if}}>
@@ -408,46 +408,46 @@
                 <label>
                     <input type="checkbox" name="system.canBeTakenAway"
                            {{checked system.canBeTakenAway}} />
-                    Can Be Taken Away (÷4 cost)
+                    {{localize 'MEGS.CanBeTakenAwayHint'}}
                 </label>
-                <p class="hint">If unchecked, gadget bonus is ÷2</p>
+                <p class="hint">{{localize 'MEGS.CanBeTakenAwayHintDesc'}}</p>
             </div>
 
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.hasHardenedDefenses"
                            {{checked system.hasHardenedDefenses}} />
-                    Hardened Defenses (+2 to BODY FC)
+                    {{localize 'MEGS.HardenedDefensesHint'}}
                 </label>
             </div>
 
-            <h3>Attribute Groups</h3>
+            <h3>{{localize 'MEGS.AttributeGroups'}}</h3>
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.settings.hasAttributes.physical"
                            value="true" {{checked (compare system.settings.hasAttributes.physical "eq" "true")}} />
-                    Has Physical Attributes (DEX, STR, BODY)
+                    {{localize 'MEGS.HasPhysicalAttributesHint'}}
                 </label>
             </div>
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.settings.hasAttributes.mental"
                            value="true" {{checked (compare system.settings.hasAttributes.mental "eq" "true")}} />
-                    Has Mental Attributes (INT, WILL, MIND)
+                    {{localize 'MEGS.HasMentalAttributesHint'}}
                 </label>
             </div>
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.settings.hasAttributes.mystical"
                            value="true" {{checked (compare system.settings.hasAttributes.mystical "eq" "true")}} />
-                    Has Mystical Attributes (INFL, AURA, SPIRIT)
+                    {{localize 'MEGS.HasMysticalAttributesHint'}}
                 </label>
             </div>
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.settings.hasAVAndEV"
                            value="true" {{checked (compare system.settings.hasAVAndEV "eq" "true")}} />
-                    Has Action Value & Effect Value
+                    {{localize 'MEGS.HasActionValueAndEffectValue'}}
                 </label>
             </div>
         </div>

@@ -2,7 +2,7 @@
   "_id": "NNJU5tP6GblkOWZ7",
   "name": "Yellow Impurity",
   "type": "limitation",
-  "img": "systems/megs/assets/images/icons/limitations/Yellow%20Impurity.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Yellow Impurity",
     "description": "",

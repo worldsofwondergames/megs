@@ -2,7 +2,7 @@
   "_id": "5jwUZywEI9yCQOVy",
   "name": "Detect",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Detect",
     "description": "",

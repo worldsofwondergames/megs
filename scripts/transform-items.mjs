@@ -22,19 +22,18 @@ async function readExtractedItems() {
   return items;
 }
 
-// Update icon path from module path to system path
+// Update icon path - use generic icons only per issue #201
 function updateIconPath(originalPath, type) {
-  if (!originalPath) return `systems/megs/assets/images/icons/${type}/default.png`;
+  // Map item types to their generic icons
+  const GENERIC_ICONS = {
+    powers: 'systems/megs/assets/images/icons/power.png',
+    advantages: 'icons/svg/item-bag.svg',
+    drawbacks: 'icons/svg/item-bag.svg',
+    bonuses: 'icons/svg/item-bag.svg',
+    limitations: 'icons/svg/item-bag.svg'
+  };
 
-  // Extract filename from path
-  const filename = path.basename(originalPath);
-
-  // Handle Foundry core icons
-  if (originalPath.startsWith('icons/svg/')) {
-    return originalPath; // Keep Foundry core icons as-is
-  }
-
-  return `systems/megs/assets/images/icons/${type}/${filename}`;
+  return GENERIC_ICONS[type] || originalPath;
 }
 
 // Transform attributes object

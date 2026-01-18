@@ -2,7 +2,7 @@
   "_id": "KnNb6RH9iOwM1FWR",
   "name": "Free Access",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/free%20access.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Free Access",
     "description": "",

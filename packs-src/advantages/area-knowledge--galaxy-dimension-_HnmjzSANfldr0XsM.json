@@ -2,7 +2,7 @@
   "_id": "HnmjzSANfldr0XsM",
   "name": "Area Knowledge (Galaxy/Dimension)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/galaxy.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (Galaxy/Dimension)",
     "description": "",

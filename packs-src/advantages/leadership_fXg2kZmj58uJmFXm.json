@@ -2,7 +2,7 @@
   "_id": "fXg2kZmj58uJmFXm",
   "name": "Leadership",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/leadership.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Leadership",
     "description": "",

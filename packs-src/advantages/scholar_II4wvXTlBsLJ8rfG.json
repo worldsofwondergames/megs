@@ -2,7 +2,7 @@
   "_id": "II4wvXTlBsLJ8rfG",
   "name": "Scholar",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/scholar.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Scholar",
     "description": "",

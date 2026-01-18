@@ -2,7 +2,7 @@
   "_id": "1ouiLmqPImfBw5Wf",
   "name": "Buddy",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/buddy.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Buddy",
     "description": "",

@@ -1323,6 +1323,10 @@ details summary.no-arrow {
   cursor: not-allowed;
   opacity: 0.5;
 }
+.megs .gadget-builder .cost-tooltip {
+  cursor: help;
+  border-bottom: 1px dotted #1f5079;
+}
 /*------------------------------------------------------------------------*/
 /* Gadget Builder - Skills Tab
 /*------------------------------------------------------------------------*/

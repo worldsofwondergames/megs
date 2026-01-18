@@ -85,8 +85,8 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             }
         });
 
-        // Attribute group toggle checkboxes
-        html.on('change', '.attribute-group-toggle', async (ev) => {
+        // Attribute group toggle checkboxes (both Attributes tab and Settings tab)
+        html.on('change', '.attribute-group-toggle, .settings-attribute-group-toggle', async (ev) => {
             ev.preventDefault();
             const group = $(ev.currentTarget).data('group');
             const isEnabled = ev.currentTarget.checked;
@@ -140,8 +140,8 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             }
         });
 
-        // AV/EV toggle checkbox
-        html.on('change', '.avev-toggle', async (ev) => {
+        // AV/EV toggle checkbox (both Attributes tab and Settings tab)
+        html.on('change', '.avev-toggle, .settings-avev-toggle', async (ev) => {
             ev.preventDefault();
             const isEnabled = ev.currentTarget.checked;
 

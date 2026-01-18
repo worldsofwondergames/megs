@@ -1,5 +1,3 @@
-console.log('[MEGS] ======= megs.mjs LOADED (v2 with diagnostics) =======');
-
 // Import document classes.
 import { MEGSActor } from './documents/actor.mjs';
 import { MEGSItem } from './documents/item.mjs';
@@ -47,10 +45,8 @@ Hooks.once('init', function () {
 
     // Load MEGS tables
     _loadData('systems/megs/assets/data/tables.json').then((data) => {
-        console.log(`[MEGS] Tables data loaded:`, data ? `${Object.keys(data).length} keys` : 'NULL/UNDEFINED');
         if (data) {
             CONFIG.tables = data;
-            console.log(`[MEGS] CONFIG.tables set successfully`);
         } else {
             console.error(`[MEGS] Failed to set CONFIG.tables - data is null/undefined`);
         }
@@ -68,12 +64,10 @@ Hooks.once('init', function () {
     // Combat maneuvers
     _loadData('systems/megs/assets/data/combatManeuvers.json')
         .then((data) => {
-            console.log(`[MEGS] Combat maneuvers data loaded:`, data ? `${Array.isArray(data) ? data.length + ' items' : Object.keys(data).length + ' keys'}` : 'NULL/UNDEFINED');
             if (data) {
                 CONFIG.combatManeuvers = data;
-                console.log(`[MEGS] CONFIG.combatManeuvers set successfully`);
             } else {
-                console.error(`[MEGS] Failed to set CONFIG.combatManeuvers - data is null/undefined`);
+                console.error(`[MEGS] Failed to load combat maneuvers`);
             }
         })
         .catch((error) => {
@@ -82,12 +76,10 @@ Hooks.once('init', function () {
 
     _loadData('systems/megs/assets/data/motivations.json')
         .then((data) => {
-            console.log(`[MEGS] Motivations data loaded:`, data ? `${Array.isArray(data) ? data.length + ' items' : Object.keys(data).length + ' keys'}` : 'NULL/UNDEFINED');
             if (data) {
                 CONFIG.motivations = data;
-                console.log(`[MEGS] CONFIG.motivations set successfully`);
             } else {
-                console.error(`[MEGS] Failed to set CONFIG.motivations - data is null/undefined`);
+                console.error(`[MEGS] Failed to load motivations`);
             }
         })
         .catch((error) => {
@@ -96,12 +88,10 @@ Hooks.once('init', function () {
 
     _loadData('systems/megs/assets/data/skills.json')
         .then((data) => {
-            console.log(`[MEGS] Skills data loaded:`, data ? `${Array.isArray(data) ? data.length + ' items' : Object.keys(data).length + ' keys'}` : 'NULL/UNDEFINED');
             if (data) {
                 CONFIG.skills = data;
-                console.log(`[MEGS] CONFIG.skills set successfully`);
             } else {
-                console.error(`[MEGS] Failed to set CONFIG.skills - data is null/undefined`);
+                console.error(`[MEGS] Failed to load skills`);
             }
         })
         .catch((error) => {
@@ -110,12 +100,10 @@ Hooks.once('init', function () {
 
     _loadData('systems/megs/assets/data/apCostChart.json')
         .then((data) => {
-            console.log(`[MEGS] AP cost chart data loaded:`, data ? `${Array.isArray(data) ? data.length + ' items' : Object.keys(data).length + ' keys'}` : 'NULL/UNDEFINED');
             if (data) {
                 CONFIG.apCostChart = data;
-                console.log(`[MEGS] CONFIG.apCostChart set successfully`);
             } else {
-                console.error(`[MEGS] Failed to set CONFIG.apCostChart - data is null/undefined`);
+                console.error(`[MEGS] Failed to load AP cost chart`);
             }
         })
         .catch((error) => {
@@ -124,12 +112,10 @@ Hooks.once('init', function () {
 
     _loadData('systems/megs/assets/data/wealth.json')
         .then((data) => {
-            console.log(`[MEGS] Wealth data loaded:`, data ? `${Array.isArray(data) ? data.length + ' items' : Object.keys(data).length + ' keys'}` : 'NULL/UNDEFINED');
             if (data) {
                 CONFIG.wealth = data;
-                console.log(`[MEGS] CONFIG.wealth set successfully`);
             } else {
-                console.error(`[MEGS] Failed to set CONFIG.wealth - data is null/undefined`);
+                console.error(`[MEGS] Failed to load wealth`);
             }
         })
         .catch((error) => {
@@ -1192,62 +1178,64 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
 /* -------------------------------------------- */
 
 Hooks.once('ready', async function () {
-    // Always log compendium pack loading information for diagnostics
-    console.log('[MEGS] ===========================================');
-    console.log('[MEGS] Compendium Pack Verification Starting...');
-    console.log('[MEGS] ===========================================');
+    // Log compendium pack loading information only if debug logging is enabled
+    if (game.settings.get('megs', 'debugLogging')) {
+        console.log('[MEGS] ===========================================');
+        console.log('[MEGS] Compendium Pack Verification Starting...');
+        console.log('[MEGS] ===========================================');
 
-    try {
-        // Log all available packs first
-        console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
+        try {
+            // Log all available packs first
+            console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
 
-        // Get all compendium packs for the MEGS system
-        const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
-        console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
+            // Get all compendium packs for the MEGS system
+            const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
+            console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
 
-        if (megsPacks.length === 0) {
-            console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
-            game.packs.forEach(pack => {
-                console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
-            });
-        }
-
-        // Check each pack
-        for (const pack of megsPacks) {
-            console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
-            console.log(`[MEGS]   Collection: ${pack.collection}`);
-            console.log(`[MEGS]   Path: ${pack.metadata.path}`);
-            console.log(`[MEGS]   Type: ${pack.metadata.type}`);
-            console.log(`[MEGS]   Locked: ${pack.locked}`);
-
-            try {
-                // Get the index (this doesn't load all items, just the index)
-                console.log(`[MEGS]   Attempting to get index...`);
-                const index = await pack.getIndex();
-                console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
-
-                if (index.size > 0) {
-                    // Show first 3 items as sample
-                    const sampleItems = Array.from(index.values()).slice(0, 3);
-                    console.log(`[MEGS]   Sample items:`);
-                    sampleItems.forEach(item => {
-                        console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
-                    });
-                } else {
-                    console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
-                }
-            } catch (error) {
-                console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
-                console.error(`[MEGS]   Error details:`, error.message, error.stack);
+            if (megsPacks.length === 0) {
+                console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
+                game.packs.forEach(pack => {
+                    console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
+                });
             }
-        }
 
-        console.log('[MEGS] ===========================================');
-        console.log('[MEGS] Compendium Pack Verification Complete');
-        console.log('[MEGS] ===========================================');
-    } catch (error) {
-        console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
-        console.error('[MEGS] Error details:', error.message, error.stack);
+            // Check each pack
+            for (const pack of megsPacks) {
+                console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
+                console.log(`[MEGS]   Collection: ${pack.collection}`);
+                console.log(`[MEGS]   Path: ${pack.metadata.path}`);
+                console.log(`[MEGS]   Type: ${pack.metadata.type}`);
+                console.log(`[MEGS]   Locked: ${pack.locked}`);
+
+                try {
+                    // Get the index (this doesn't load all items, just the index)
+                    console.log(`[MEGS]   Attempting to get index...`);
+                    const index = await pack.getIndex();
+                    console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
+
+                    if (index.size > 0) {
+                        // Show first 3 items as sample
+                        const sampleItems = Array.from(index.values()).slice(0, 3);
+                        console.log(`[MEGS]   Sample items:`);
+                        sampleItems.forEach(item => {
+                            console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
+                        });
+                    } else {
+                        console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
+                    }
+                } catch (error) {
+                    console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
+                    console.error(`[MEGS]   Error details:`, error.message, error.stack);
+                }
+            }
+
+            console.log('[MEGS] ===========================================');
+            console.log('[MEGS] Compendium Pack Verification Complete');
+            console.log('[MEGS] ===========================================');
+        } catch (error) {
+            console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
+            console.error('[MEGS] Error details:', error.message, error.stack);
+        }
     }
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
@@ -1310,21 +1298,34 @@ function interceptMegsRoll(message, data) {
 /* -------------------------------------------- */
 
 /**
+ * Check if debug logging is enabled
+ * @returns {boolean}
+ */
+function _isDebugEnabled() {
+    try {
+        return game.settings.get('megs', 'debugLogging');
+    } catch {
+        return false;
+    }
+}
+
+/**
  * Grab the JSON from a file and place it in an object.
  * @param {Object} jsonPath     The path in the Foundry Data directory to the JSON asset
  * @returns {Promise}
  */
 async function _loadData(jsonPath) {
-    console.log(`[MEGS] _loadData: Fetching ${jsonPath}`);
+    const debug = _isDebugEnabled();
+    if (debug) console.log(`[MEGS] _loadData: Fetching ${jsonPath}`);
     try {
         const response = await fetch(jsonPath);
-        console.log(`[MEGS] _loadData: Fetch response status: ${response.status}, ok: ${response.ok}`);
+        if (debug) console.log(`[MEGS] _loadData: Fetch response status: ${response.status}, ok: ${response.ok}`);
         if (!response.ok) {
             console.error(`[MEGS] _loadData: Failed to fetch ${jsonPath} - HTTP ${response.status}`);
             return null;
         }
         const contents = await response.json();
-        console.log(`[MEGS] _loadData: Parsed JSON from ${jsonPath}, keys:`, contents ? Object.keys(contents) : 'null');
+        if (debug) console.log(`[MEGS] _loadData: Parsed JSON from ${jsonPath}, keys:`, contents ? Object.keys(contents) : 'null');
         return contents;
     } catch (error) {
         console.error(`[MEGS] _loadData: Error loading ${jsonPath}:`, error);

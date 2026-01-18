@@ -57,12 +57,16 @@
             <section class="attributes-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalAttributesCost'}}</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.attributesCost}} HP</span>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.attributesCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.attributesCost system.canBeTakenAway)}} HP
+                    </span>
                 </div>
                 {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.AVEVCost'}}</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.avEvCost}} HP</span>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.avEvCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.avEvCost system.canBeTakenAway)}} HP
+                    </span>
                 </div>
                 {{/if}}
             </section>
@@ -244,7 +248,9 @@
             <section class="powers-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalPowersCost'}}</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.powersCost}} HP</span>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.powersCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.powersCost system.canBeTakenAway)}} HP
+                    </span>
                 </div>
             </section>
 
@@ -314,7 +320,9 @@
             <section class="skills-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalSkillsCost'}}</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.skillsCost}} HP</span>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.skillsCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.skillsCost system.canBeTakenAway)}} HP
+                    </span>
                 </div>
             </section>
 
@@ -351,15 +359,9 @@
             <section class="traits-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.NetTraitsCost'}}</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.traitsCost}} HP</span>
-                </div>
-                <div class="summary-row">
-                    <label class="summary-label">{{localize 'MEGS.Advantages'}}:</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.advantagesCost}} HP</span>
-                </div>
-                <div class="summary-row">
-                    <label class="summary-label">{{localize 'MEGS.Drawbacks'}}:</label>
-                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.drawbacksCost}} HP</span>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.traitsCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.traitsCost system.canBeTakenAway)}} HP
+                    </span>
                 </div>
             </section>
 
@@ -434,29 +436,29 @@
             <h3 class="section-header">{{localize 'MEGS.AttributeGroups'}}</h3>
             <div class="form-group">
                 <label>
-                    <input type="checkbox" name="system.settings.hasAttributes.physical"
-                           value="true" {{checked (compare system.settings.hasAttributes.physical "eq" "true")}} />
+                    <input type="checkbox" class="settings-attribute-group-toggle" data-group="physical"
+                           {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}checked{{/if}} />
                     {{localize 'MEGS.HasPhysicalAttributesHint'}}
                 </label>
             </div>
             <div class="form-group">
                 <label>
-                    <input type="checkbox" name="system.settings.hasAttributes.mental"
-                           value="true" {{checked (compare system.settings.hasAttributes.mental "eq" "true")}} />
+                    <input type="checkbox" class="settings-attribute-group-toggle" data-group="mental"
+                           {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}checked{{/if}} />
                     {{localize 'MEGS.HasMentalAttributesHint'}}
                 </label>
             </div>
             <div class="form-group">
                 <label>
-                    <input type="checkbox" name="system.settings.hasAttributes.mystical"
-                           value="true" {{checked (compare system.settings.hasAttributes.mystical "eq" "true")}} />
+                    <input type="checkbox" class="settings-attribute-group-toggle" data-group="mystical"
+                           {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}checked{{/if}} />
                     {{localize 'MEGS.HasMysticalAttributesHint'}}
                 </label>
             </div>
             <div class="form-group">
                 <label>
-                    <input type="checkbox" name="system.settings.hasAVAndEV"
-                           value="true" {{checked (compare system.settings.hasAVAndEV "eq" "true")}} />
+                    <input type="checkbox" class="settings-avev-toggle"
+                           {{#if (compare system.settings.hasAVAndEV "eq" "true")}}checked{{/if}} />
                     {{localize 'MEGS.HasActionValueAndEffectValue'}}
                 </label>
             </div>

@@ -20,8 +20,8 @@ async function extractPack(packType) {
   // Ensure destination directory exists
   await fs.mkdir(destPath, { recursive: true });
 
-  // Open the LevelDB database
-  const db = new ClassicLevel(packPath, { valueEncoding: 'json' });
+  // Open the LevelDB database - Foundry v10+ uses string values
+  const db = new ClassicLevel(packPath, { valueEncoding: 'utf8' });
 
   try {
     await db.open();
@@ -31,7 +31,11 @@ async function extractPack(packType) {
     // Iterate through all entries
     const iterator = db.iterator();
     for await (const [key, value] of iterator) {
-      const item = value;
+      // Skip non-item entries (like metadata)
+      if (!key.startsWith('!items!')) continue;
+
+      // Parse the JSON string value
+      const item = typeof value === 'string' ? JSON.parse(value) : value;
       const filename = `${item.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}_${item._id}.json`;
       const filepath = path.join(destPath, filename);
 

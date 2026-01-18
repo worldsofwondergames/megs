@@ -17,11 +17,17 @@ async function buildPack(packType) {
   console.log(`  Source: ${srcPath}`);
   console.log(`  Destination: ${destPath}`);
 
-  // Ensure destination directory exists
+  // Clear and recreate destination directory to avoid stale data
+  try {
+    await fs.rm(destPath, { recursive: true, force: true });
+  } catch (e) {
+    // Directory might not exist, that's fine
+  }
   await fs.mkdir(destPath, { recursive: true });
 
   // Open/create the LevelDB database
-  const db = new ClassicLevel(destPath, { valueEncoding: 'json' });
+  // Foundry v10+ expects string values, not JSON-encoded objects
+  const db = new ClassicLevel(destPath, { valueEncoding: 'utf8' });
 
   try {
     await db.open();
@@ -36,8 +42,10 @@ async function buildPack(packType) {
         const content = await fs.readFile(filePath, 'utf-8');
         const item = JSON.parse(content);
 
-        // Use item._id as the key
-        await db.put(item._id, item);
+        // Foundry v10+ expects keys in format: !items!<id>
+        const key = `!items!${item._id}`;
+        // Store value as JSON string
+        await db.put(key, JSON.stringify(item));
         count++;
       }
     }

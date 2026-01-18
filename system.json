@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/201-remove-all-icons-for-powers-advantages-bonuses-drawbacks-limitations/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -115,8 +115,8 @@
         }
     ],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/201-remove-all-icons-for-powers-advantages-bonuses-drawbacks-limitations/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/201-remove-all-icons-for-powers-advantages-bonuses-drawbacks-limitations/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-1.0.0-Release",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

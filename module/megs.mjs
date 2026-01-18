@@ -127,11 +127,13 @@ Hooks.once('init', function () {
         makeDefault: true,
         label: 'MEGS.SheetLabels.Item',
     });
+    console.log('[MEGS] Registering MEGSGadgetBuilderSheet for gadget items...');
     Items.registerSheet('megs', MEGSGadgetBuilderSheet, {
         types: ['gadget'],
         makeDefault: false,
         label: 'MEGS.SheetLabels.GadgetBuilder',
     });
+    console.log('[MEGS] MEGSGadgetBuilderSheet registered successfully');
 
     // Preload Handlebars templates.
     preloadHandlebarsTemplates();

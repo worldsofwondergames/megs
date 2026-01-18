@@ -59,10 +59,12 @@
                     <label class="summary-label">{{localize 'MEGS.TotalAttributesCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.attributesCost}} HP</span>
                 </div>
+                {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.AVEVCost'}}</label>
                     <span class="summary-value">{{system.gadgetPointBudget.avEvCost}} HP</span>
                 </div>
+                {{/if}}
             </section>
 
             {{!-- Physical Attributes --}}

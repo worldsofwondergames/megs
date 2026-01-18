@@ -54,7 +54,7 @@
             <section class="attributes-summary">
                 <div class="summary-row">
                     <label class="summary-label">Total Attributes Cost:</label>
-                    <span class="summary-value">{{system.heroPointBudget.attributesCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.heroPointBudget.attributesCost}} HP</span>
                 </div>
             </section>
 
@@ -177,7 +177,7 @@
             <section class="powers-summary">
                 <div class="summary-row">
                     <label class="summary-label">Total Powers Cost:</label>
-                    <span class="summary-value">{{system.heroPointBudget.powersCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.heroPointBudget.powersCost}} HP</span>
                 </div>
             </section>
 
@@ -253,7 +253,7 @@
             <section class="skills-summary">
                 <div class="summary-row">
                     <label class="summary-label">Total Skills Cost:</label>
-                    <span class="summary-value">{{getTotalSkillsCost skills items}} HP</span>
+                    <span class="summary-value">{{formatNumber (getTotalSkillsCost skills items)}} HP</span>
                 </div>
             </section>
 
@@ -321,7 +321,7 @@
             <section class="traits-summary">
                 <div class="summary-row">
                     <label class="summary-label">Net Traits Cost:</label>
-                    <span class="summary-value">{{system.heroPointBudget.traitsCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.heroPointBudget.traitsCost}} HP</span>
                 </div>
             </section>
 
@@ -332,7 +332,7 @@
                 <div class="resource flex-group-center">
                     <div class="grid-2col-header">
                         {{localize "MEGS.Advantages"}}
-                        <span class="header-cost">({{system.heroPointBudget.advantagesCost}} HP)</span>
+                        <span class="header-cost">({{formatNumber system.heroPointBudget.advantagesCost}} HP)</span>
                     </div>
                     <ol class='items-list'>
                         <li class='item flexrow items-header'>
@@ -362,7 +362,7 @@
                 <div class="resource flex-group-center">
                     <div class="grid-2col-header">
                         {{localize "MEGS.Drawbacks"}}
-                        <span class="header-cost">({{system.heroPointBudget.drawbacks}} HP)</span>
+                        <span class="header-cost">({{formatNumber system.heroPointBudget.drawbacks}} HP)</span>
                     </div>
                     <ol class='items-list'>
                         <li class='item flexrow items-header'>
@@ -398,7 +398,7 @@
             <section class="gadgets-summary">
                 <div class="summary-row">
                     <label class="summary-label">Total Gadgets Cost:</label>
-                    <span class="summary-value">{{system.heroPointBudget.gadgetsCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.heroPointBudget.gadgetsCost}} HP</span>
                 </div>
             </section>
 

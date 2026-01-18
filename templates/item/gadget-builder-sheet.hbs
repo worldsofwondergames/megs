@@ -57,12 +57,12 @@
             <section class="attributes-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalAttributesCost'}}</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.attributesCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.attributesCost}} HP</span>
                 </div>
                 {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.AVEVCost'}}</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.avEvCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.avEvCost}} HP</span>
                 </div>
                 {{/if}}
             </section>
@@ -236,7 +236,7 @@
             <section class="powers-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalPowersCost'}}</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.powersCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.powersCost}} HP</span>
                 </div>
             </section>
 
@@ -306,7 +306,7 @@
             <section class="skills-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalSkillsCost'}}</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.skillsCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.skillsCost}} HP</span>
                 </div>
             </section>
 
@@ -343,15 +343,15 @@
             <section class="traits-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.NetTraitsCost'}}</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.traitsCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.traitsCost}} HP</span>
                 </div>
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.Advantages'}}:</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.advantagesCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.advantagesCost}} HP</span>
                 </div>
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.Drawbacks'}}:</label>
-                    <span class="summary-value">{{system.gadgetPointBudget.drawbacksCost}} HP</span>
+                    <span class="summary-value">{{formatNumber system.gadgetPointBudget.drawbacksCost}} HP</span>
                 </div>
             </section>
 

@@ -848,7 +848,7 @@ details summary.no-arrow {
   width: 25%;
 }
 .megs .factor-cost-tooltip {
-  cursor: pointer;
+  cursor: help;
   white-space: pre-line;
 }
 .megs .resource-label {
@@ -1089,7 +1089,7 @@ details summary.no-arrow {
   text-align: center;
 }
 .megs .hp-spent-tooltip {
-  cursor: pointer;
+  cursor: help;
 }
 .megs .attributes-summary {
   margin-bottom: 10px;
@@ -1176,7 +1176,7 @@ details summary.no-arrow {
   flex: 0 0 30px; /* Fixed width just for trash icon */
 }
 .megs .character-creator .tab.gadgets .gadget-cost-tooltip {
-  cursor: pointer;
+  cursor: help;
 }
 .megs .character-creator .tab.traits .grid-2col-header {
   display: flex;
@@ -1390,10 +1390,10 @@ details summary.no-arrow {
   color: #666;
 }
 .megs .character-creator .items-list .factor-cost-calculated {
-  cursor: pointer;
+  cursor: help;
 }
 .megs .character-creator .items-list .total-cost-calculated {
-  cursor: pointer;
+  cursor: help;
 }
 .megs .character-creator .tab.skills .items-list {
   /* Skills table background colors */

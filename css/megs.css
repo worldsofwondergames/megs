@@ -1240,6 +1240,89 @@ details summary.no-arrow {
   justify-content: center;
   align-items: center;
 }
+/*------------------------------------------------------------------------*/
+/* Gadget Builder - Powers Tab
+/*------------------------------------------------------------------------*/
+.megs .gadget-builder .tab.powers .items-list .item-row {
+  min-height: 40px;
+}
+.megs .gadget-builder .tab.powers .items-list .item-name {
+  flex: 3;
+}
+.megs .gadget-builder .tab.powers .items-list .item-linked {
+  flex: 0 0 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.megs .gadget-builder .tab.powers .items-list .item-base-cost,
+.megs .gadget-builder .tab.powers .items-list .item-factor-cost,
+.megs .gadget-builder .tab.powers .items-list .item-total-cost {
+  flex: 1;
+  text-align: center;
+}
+.megs .gadget-builder .tab.powers .items-list .item-aps {
+  flex: 1.15;
+}
+.megs .gadget-builder .tab.powers .items-list .item-controls {
+  flex: 0 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.megs .gadget-builder .tab.powers .items-list .modifier-row {
+  background: rgba(0, 0, 0, 0.02);
+  font-size: 0.9em;
+}
+.megs .gadget-builder .tab.powers .items-list .modifier-name {
+  margin-left: 25px;
+  padding-left: 0;
+  font-style: italic;
+  color: #666;
+}
+/*------------------------------------------------------------------------*/
+/* Gadget Builder - Skills Tab
+/*------------------------------------------------------------------------*/
+.megs .gadget-builder .tab.skills .items-list .item-row {
+  min-height: 40px;
+}
+.megs .gadget-builder .tab.skills .items-list .item-name {
+  flex: 3;
+}
+.megs .gadget-builder .tab.skills .items-list .item-aps {
+  flex: 1.15;
+}
+.megs .gadget-builder .tab.skills .items-list .item-total-cost {
+  flex: 1;
+  text-align: center;
+}
+.megs .gadget-builder .tab.skills .items-list .item-controls {
+  flex: 0 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*------------------------------------------------------------------------*/
+/* Gadget Builder - Settings Tab
+/*------------------------------------------------------------------------*/
+.megs .gadget-builder .tab.settings {
+  font-family: "Roboto", sans-serif;
+}
+.megs .gadget-builder .tab.settings h3 {
+  font-family: "DecoturaICG", sans-serif;
+  color: #1f5079;
+}
+.megs .gadget-builder .tab.settings .form-group {
+  margin-bottom: 10px;
+}
+.megs .gadget-builder .tab.settings .form-group label {
+  font-size: 14px;
+}
+.megs .gadget-builder .tab.settings .form-group .hint {
+  font-size: 12px;
+  color: #666;
+  margin-left: 20px;
+}
 .megs .megs.character-creator .tab.powers .items-list .modifier-row {
   background: rgba(0, 0, 0, 0.02);
   font-size: 0.9em;

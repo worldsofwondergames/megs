@@ -69,7 +69,7 @@
 
             {{!-- Physical Attributes --}}
             {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}
-                <h3>{{localize 'MEGS.PhysicalAttributes'}}</h3>
+                <h3 class="section-header">{{localize 'MEGS.PhysicalAttributes'}}</h3>
                 <section class="attributes grid grid-3col attributeRow">
                     <div class="attribute flex-group-center">
                         <label class="resource-label flexlarge align-left" title="Dexterity">DEX</label>
@@ -115,7 +115,7 @@
 
             {{!-- Mental Attributes --}}
             {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
-                <h3>{{localize 'MEGS.MentalAttributes'}}</h3>
+                <h3 class="section-header">{{localize 'MEGS.MentalAttributes'}}</h3>
                 <section class="attributes grid grid-3col attributeRow">
                     <div class="attribute flex-group-center">
                         <label class="resource-label flexlarge align-left" title="Intelligence">INT</label>
@@ -161,7 +161,7 @@
 
             {{!-- Mystical Attributes --}}
             {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
-                <h3>{{localize 'MEGS.MysticalAttributes'}}</h3>
+                <h3 class="section-header">{{localize 'MEGS.MysticalAttributes'}}</h3>
                 <section class="attributes grid grid-3col attributeRow">
                     <div class="attribute flex-group-center">
                         <label class="resource-label flexlarge align-left" title="Influence">INFL</label>
@@ -207,7 +207,7 @@
 
             {{!-- AV/EV Section --}}
             {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
-                <h3>{{localize 'MEGS.ActionValueAndEffectValue'}}</h3>
+                <h3 class="section-header">{{localize 'MEGS.ActionValueAndEffectValue'}}</h3>
                 <section class="av-ev-section">
                     <div class="grid grid-2col">
                         <div class="attribute flex-group-center">
@@ -357,7 +357,7 @@
 
             <div class="grid grid-2col traits-grid">
                 <div class="advantages-column">
-                    <h3>{{localize 'MEGS.Advantages'}}</h3>
+                    <h3 class="section-header">{{localize 'MEGS.Advantages'}}</h3>
                     <ol class='items-list'>
                         {{#each advantages as |item id|}}
                             <li class='item flexrow item-row' data-item-id='{{item._id}}'>
@@ -373,7 +373,7 @@
                     </ol>
                 </div>
                 <div class="drawbacks-column">
-                    <h3>{{localize 'MEGS.Drawbacks'}}</h3>
+                    <h3 class="section-header">{{localize 'MEGS.Drawbacks'}}</h3>
                     <ol class='items-list'>
                         {{#each drawbacks as |item id|}}
                             <li class='item flexrow item-row' data-item-id='{{item._id}}'>
@@ -393,7 +393,7 @@
 
         {{!-- Settings Tab --}}
         <div class="tab settings" data-group="primary" data-tab="settings">
-            <h3>{{localize 'MEGS.GadgetSettings'}}</h3>
+            <h3 class="section-header">{{localize 'MEGS.GadgetSettings'}}</h3>
 
             <div class="form-group">
                 <label>{{localize 'MEGS.Reliability'}}:</label>
@@ -423,7 +423,7 @@
                 </label>
             </div>
 
-            <h3>{{localize 'MEGS.AttributeGroups'}}</h3>
+            <h3 class="section-header">{{localize 'MEGS.AttributeGroups'}}</h3>
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.settings.hasAttributes.physical"

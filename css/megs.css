@@ -1306,6 +1306,7 @@ details summary.no-arrow {
 /* Gadget Builder - Section Headers
 /*------------------------------------------------------------------------*/
 .megs .gadget-builder h3.section-header {
+  font-family: "DecoturaICG", sans-serif;
   font-weight: bold;
   font-size: 24px;
   letter-spacing: 0.1em;
@@ -1319,9 +1320,6 @@ details summary.no-arrow {
 /*------------------------------------------------------------------------*/
 .megs .gadget-builder .tab.settings {
   font-family: "Roboto", sans-serif;
-}
-.megs .gadget-builder .tab.settings h3.section-header {
-  font-family: "DecoturaICG", sans-serif;
 }
 .megs .gadget-builder .tab.settings .form-group {
   margin-bottom: 10px;

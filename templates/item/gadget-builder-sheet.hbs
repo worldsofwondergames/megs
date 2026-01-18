@@ -67,143 +67,149 @@
                 {{/if}}
             </section>
 
-            {{!-- Physical Attributes --}}
-            {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}
-                <h3 class="section-header">{{localize 'MEGS.PhysicalAttributes'}}</h3>
-                <section class="attributes grid grid-3col attributeRow">
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Dexterity">DEX</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="dex">&minus;</button>
-                            <input type="text" value="{{system.attributes.dex.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="dex">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.dex.value 7 system.reliability system.hasHardenedDefenses "dex"}} HP
-                            </span>
-                        </div>
-                    </div>
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Strength">STR</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="str">&minus;</button>
-                            <input type="text" value="{{system.attributes.str.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="str">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.str.value 6 system.reliability system.hasHardenedDefenses "str"}} HP
-                            </span>
-                        </div>
-                    </div>
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Body">BODY</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="body">&minus;</button>
-                            <input type="text" value="{{system.attributes.body.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="body">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.body.value 6 system.reliability system.hasHardenedDefenses "body"}} HP
-                            </span>
-                        </div>
-                    </div>
-                </section>
-            {{/if}}
+            {{!-- Attributes Section --}}
+            <h3 class="section-header">{{localize 'MEGS.Attributes'}}</h3>
 
-            {{!-- Mental Attributes --}}
-            {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}
-                <h3 class="section-header">{{localize 'MEGS.MentalAttributes'}}</h3>
-                <section class="attributes grid grid-3col attributeRow">
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Intelligence">INT</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="int">&minus;</button>
-                            <input type="text" value="{{system.attributes.int.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="int">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.int.value 7 system.reliability system.hasHardenedDefenses "int"}} HP
-                            </span>
-                        </div>
+            {{!-- Physical Attributes Row --}}
+            <section class="attributes grid grid-4col attributeRow {{#unless (compare system.settings.hasAttributes.physical 'eq' 'true')}}disabled-row{{/unless}}" data-attribute-group="physical">
+                <div class="attribute-toggle flex-group-center">
+                    <input type="checkbox" class="attribute-group-toggle" data-group="physical"
+                           {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}checked{{/if}} />
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Dexterity">DEX</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="dex" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.dex.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="dex" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&plus;</button>
                     </div>
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Will">WILL</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="will">&minus;</button>
-                            <input type="text" value="{{system.attributes.will.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="will">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.will.value 6 system.reliability system.hasHardenedDefenses "will"}} HP
-                            </span>
-                        </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.dex.value 7 system.reliability system.hasHardenedDefenses "dex"}} HP
+                        </span>
                     </div>
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Mind">MIND</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="mind">&minus;</button>
-                            <input type="text" value="{{system.attributes.mind.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="mind">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.mind.value 6 system.reliability system.hasHardenedDefenses "mind"}} HP
-                            </span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Strength">STR</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="str" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.str.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="str" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&plus;</button>
                     </div>
-                </section>
-            {{/if}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.str.value 6 system.reliability system.hasHardenedDefenses "str"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Body">BODY</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="body" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.body.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="body" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.body.value 6 system.reliability system.hasHardenedDefenses "body"}} HP
+                        </span>
+                    </div>
+                </div>
+            </section>
 
-            {{!-- Mystical Attributes --}}
-            {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}
-                <h3 class="section-header">{{localize 'MEGS.MysticalAttributes'}}</h3>
-                <section class="attributes grid grid-3col attributeRow">
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Influence">INFL</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="infl">&minus;</button>
-                            <input type="text" value="{{system.attributes.infl.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="infl">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.infl.value 7 system.reliability system.hasHardenedDefenses "infl"}} HP
-                            </span>
-                        </div>
+            {{!-- Mental Attributes Row --}}
+            <section class="attributes grid grid-4col attributeRow {{#unless (compare system.settings.hasAttributes.mental 'eq' 'true')}}disabled-row{{/unless}}" data-attribute-group="mental">
+                <div class="attribute-toggle flex-group-center">
+                    <input type="checkbox" class="attribute-group-toggle" data-group="mental"
+                           {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}checked{{/if}} />
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Intelligence">INT</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="int" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.int.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="int" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&plus;</button>
                     </div>
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Aura">AURA</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="aura">&minus;</button>
-                            <input type="text" value="{{system.attributes.aura.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="aura">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.aura.value 6 system.reliability system.hasHardenedDefenses "aura"}} HP
-                            </span>
-                        </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.int.value 7 system.reliability system.hasHardenedDefenses "int"}} HP
+                        </span>
                     </div>
-                    <div class="attribute flex-group-center">
-                        <label class="resource-label flexlarge align-left" title="Spirit">SPIRIT</label>
-                        <div class="quantity attribute-input">
-                            <button class="attribute-minus" data-attribute="spirit">&minus;</button>
-                            <input type="text" value="{{system.attributes.spirit.value}}" readonly class="input-box" />
-                            <button class="attribute-plus" data-attribute="spirit">&plus;</button>
-                        </div>
-                        <div class="attribute-cost">
-                            <span class="cost-value">
-                                {{getGadgetAttributeCost system.attributes.spirit.value 6 system.reliability system.hasHardenedDefenses "spirit"}} HP
-                            </span>
-                        </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Will">WILL</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="will" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.will.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="will" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&plus;</button>
                     </div>
-                </section>
-            {{/if}}
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.will.value 6 system.reliability system.hasHardenedDefenses "will"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Mind">MIND</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="mind" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.mind.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="mind" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.mind.value 6 system.reliability system.hasHardenedDefenses "mind"}} HP
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {{!-- Mystical Attributes Row --}}
+            <section class="attributes grid grid-4col attributeRow {{#unless (compare system.settings.hasAttributes.mystical 'eq' 'true')}}disabled-row{{/unless}}" data-attribute-group="mystical">
+                <div class="attribute-toggle flex-group-center">
+                    <input type="checkbox" class="attribute-group-toggle" data-group="mystical"
+                           {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}checked{{/if}} />
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Influence">INFL</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="infl" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.infl.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="infl" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.infl.value 7 system.reliability system.hasHardenedDefenses "infl"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Aura">AURA</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="aura" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.aura.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="aura" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.aura.value 6 system.reliability system.hasHardenedDefenses "aura"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Spirit">SPIRIT</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="spirit" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.spirit.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="spirit" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.spirit.value 6 system.reliability system.hasHardenedDefenses "spirit"}} HP
+                        </span>
+                    </div>
+                </div>
+            </section>
 
             {{!-- AV/EV Section --}}
             {{#if (compare system.settings.hasAVAndEV "eq" "true")}}

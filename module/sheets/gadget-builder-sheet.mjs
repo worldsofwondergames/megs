@@ -85,10 +85,39 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             }
         });
 
+        // Attribute group toggle checkboxes
+        html.on('change', '.attribute-group-toggle', async (ev) => {
+            ev.preventDefault();
+            const group = $(ev.currentTarget).data('group');
+            const isEnabled = ev.currentTarget.checked;
+
+            const updateData = {
+                [`system.settings.hasAttributes.${group}`]: isEnabled ? 'true' : 'false'
+            };
+
+            // If disabling, reset all attributes in this group to 0
+            if (!isEnabled) {
+                const groupAttributes = {
+                    physical: ['dex', 'str', 'body'],
+                    mental: ['int', 'will', 'mind'],
+                    mystical: ['infl', 'aura', 'spirit']
+                };
+
+                for (const attr of groupAttributes[group] || []) {
+                    updateData[`system.attributes.${attr}.value`] = 0;
+                }
+            }
+
+            await this.object.update(updateData);
+        });
+
         // Attribute plus/minus buttons
         html.on('click', '.attribute-plus', async (ev) => {
             ev.preventDefault();
-            const attrKey = $(ev.currentTarget).data('attribute');
+            const button = ev.currentTarget;
+            if (button.disabled) return;
+
+            const attrKey = $(button).data('attribute');
             const currentValue = this.object.system.attributes[attrKey]?.value || 0;
             if (currentValue < 60) {
                 await this.object.update({
@@ -99,7 +128,10 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
         html.on('click', '.attribute-minus', async (ev) => {
             ev.preventDefault();
-            const attrKey = $(ev.currentTarget).data('attribute');
+            const button = ev.currentTarget;
+            if (button.disabled) return;
+
+            const attrKey = $(button).data('attribute');
             const currentValue = this.object.system.attributes[attrKey]?.value || 0;
             if (currentValue > 0) {
                 await this.object.update({

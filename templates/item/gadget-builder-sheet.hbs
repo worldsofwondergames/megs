@@ -212,29 +212,31 @@
             </section>
 
             {{!-- AV/EV Section --}}
-            {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
-                <h3 class="section-header">{{localize 'MEGS.ActionValueAndEffectValue'}}</h3>
-                <section class="av-ev-section">
-                    <div class="grid grid-2col">
-                        <div class="attribute flex-group-center">
-                            <label class="resource-label">AV</label>
-                            <div class="quantity attribute-input">
-                                <button class="av-minus">&minus;</button>
-                                <input type="text" value="{{system.actionValue}}" readonly class="input-box" />
-                                <button class="av-plus">&plus;</button>
-                            </div>
-                        </div>
-                        <div class="attribute flex-group-center">
-                            <label class="resource-label">EV</label>
-                            <div class="quantity attribute-input">
-                                <button class="ev-minus">&minus;</button>
-                                <input type="text" value="{{system.effectValue}}" readonly class="input-box" />
-                                <button class="ev-plus">&plus;</button>
-                            </div>
+            <h3 class="section-header av-ev-header">
+                <input type="checkbox" class="avev-toggle" name="system.settings.hasAVAndEV"
+                       {{#if (compare system.settings.hasAVAndEV "eq" "true")}}checked{{/if}} />
+                {{localize 'MEGS.ActionValueAndEffectValue'}}
+            </h3>
+            <section class="av-ev-section {{#unless (compare system.settings.hasAVAndEV 'eq' 'true')}}disabled-row{{/unless}}">
+                <div class="grid grid-2col">
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label">AV</label>
+                        <div class="quantity attribute-input">
+                            <button class="av-minus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                            <input type="text" value="{{system.actionValue}}" readonly class="input-box" />
+                            <button class="av-plus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&plus;</button>
                         </div>
                     </div>
-                </section>
-            {{/if}}
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label">EV</label>
+                        <div class="quantity attribute-input">
+                            <button class="ev-minus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                            <input type="text" value="{{system.effectValue}}" readonly class="input-box" />
+                            <button class="ev-plus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         {{!-- Powers Tab --}}

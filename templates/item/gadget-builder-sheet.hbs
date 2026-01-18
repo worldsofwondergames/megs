@@ -338,9 +338,9 @@
                         <div class='item-name'>{{item.name}}</div>
                         <div class='item-aps'>
                             <div class="quantity skill-input">
-                                <button class="ap-minus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&minus;</button>
+                                <button class="ap-minus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}" data-skill-name="{{item.name}}">&minus;</button>
                                 <input type="text" class="input-box" value="{{item.system.aps}}" readonly />
-                                <button class="ap-plus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&plus;</button>
+                                <button class="ap-plus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}" data-skill-name="{{item.name}}">&plus;</button>
                             </div>
                         </div>
                         <div class='item-total-cost'>{{item.system.totalCost}}</div>

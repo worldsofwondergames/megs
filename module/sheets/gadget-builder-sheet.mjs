@@ -140,9 +140,30 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             }
         });
 
+        // AV/EV toggle checkbox
+        html.on('change', '.avev-toggle', async (ev) => {
+            ev.preventDefault();
+            const isEnabled = ev.currentTarget.checked;
+
+            const updateData = {
+                'system.settings.hasAVAndEV': isEnabled ? 'true' : 'false'
+            };
+
+            // If disabling, reset AV and EV to 0
+            if (!isEnabled) {
+                updateData['system.actionValue'] = 0;
+                updateData['system.effectValue'] = 0;
+            }
+
+            await this.object.update(updateData);
+        });
+
         // AV/EV plus/minus buttons
         html.on('click', '.av-plus', async (ev) => {
             ev.preventDefault();
+            const button = ev.currentTarget;
+            if (button.disabled) return;
+
             const currentValue = this.object.system.actionValue || 0;
             if (currentValue < 60) {
                 await this.object.update({ 'system.actionValue': currentValue + 1 });
@@ -151,6 +172,9 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
         html.on('click', '.av-minus', async (ev) => {
             ev.preventDefault();
+            const button = ev.currentTarget;
+            if (button.disabled) return;
+
             const currentValue = this.object.system.actionValue || 0;
             if (currentValue > 0) {
                 await this.object.update({ 'system.actionValue': currentValue - 1 });
@@ -159,6 +183,9 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
         html.on('click', '.ev-plus', async (ev) => {
             ev.preventDefault();
+            const button = ev.currentTarget;
+            if (button.disabled) return;
+
             const currentValue = this.object.system.effectValue || 0;
             if (currentValue < 60) {
                 await this.object.update({ 'system.effectValue': currentValue + 1 });
@@ -167,6 +194,9 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
         html.on('click', '.ev-minus', async (ev) => {
             ev.preventDefault();
+            const button = ev.currentTarget;
+            if (button.disabled) return;
+
             const currentValue = this.object.system.effectValue || 0;
             if (currentValue > 0) {
                 await this.object.update({ 'system.effectValue': currentValue - 1 });

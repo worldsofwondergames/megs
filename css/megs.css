@@ -1305,6 +1305,24 @@ details summary.no-arrow {
   cursor: not-allowed;
   opacity: 0.5;
 }
+.megs .gadget-builder .tab.attributes .av-ev-header input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row {
+  opacity: 0.5;
+  background-color: #e0e0e0;
+}
+.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .av-minus,
+.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .av-plus,
+.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .ev-minus,
+.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .ev-plus {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 /*------------------------------------------------------------------------*/
 /* Gadget Builder - Skills Tab
 /*------------------------------------------------------------------------*/

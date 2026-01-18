@@ -1281,6 +1281,31 @@ details summary.no-arrow {
   color: #666;
 }
 /*------------------------------------------------------------------------*/
+/* Gadget Builder - Attributes Tab
+/*------------------------------------------------------------------------*/
+.megs .gadget-builder .tab.attributes .grid-4col {
+  grid-template-columns: 40px repeat(3, 1fr);
+}
+.megs .gadget-builder .tab.attributes .attribute-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.megs .gadget-builder .tab.attributes .attribute-toggle input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.megs .gadget-builder .tab.attributes .attributeRow.disabled-row {
+  opacity: 0.5;
+  background-color: #e0e0e0;
+}
+.megs .gadget-builder .tab.attributes .attributeRow.disabled-row .attribute-minus,
+.megs .gadget-builder .tab.attributes .attributeRow.disabled-row .attribute-plus {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+/*------------------------------------------------------------------------*/
 /* Gadget Builder - Skills Tab
 /*------------------------------------------------------------------------*/
 .megs .gadget-builder .tab.skills .items-list .item-row {

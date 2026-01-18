@@ -1096,14 +1096,14 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
 
 /**
  * Calculate the adjusted gadget cost (divided by Can Be Taken Away factor)
- * Returns the adjusted value as a number
+ * Returns the adjusted value as a number (rounded up)
  */
 Handlebars.registerHelper('getGadgetAdjustedCost', function (rawCost, canBeTakenAway) {
     const cost = Number(rawCost) || 0;
     if (cost === 0) return 0;
 
     const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
-    return Math.floor(cost / divisor);
+    return Math.ceil(cost / divisor);
 });
 
 /**
@@ -1114,7 +1114,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (rawCost, canBeTakenA
     if (cost === 0) return '';
 
     const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
-    const adjustedCost = Math.floor(cost / divisor);
+    const adjustedCost = Math.ceil(cost / divisor);
     const takenAwayText = divisor === 4 ? 'Can Be Taken Away (÷4)' : 'Cannot Be Taken Away (÷2)';
 
     return `Raw Cost: ${cost} HP\n${takenAwayText}\nAdjusted: ${adjustedCost} HP`;

@@ -2,7 +2,7 @@
   "_id": "ubnmG64iNambp5SA",
   "name": "Attraction/Repulsion",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Attraction/Repulsion",
     "description": "",

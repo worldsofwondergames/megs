@@ -2,7 +2,7 @@
   "_id": "bREAniWlx1YSldA8",
   "name": "Area Knowledge (Universe)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/galaxy.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (Universe)",
     "description": "",

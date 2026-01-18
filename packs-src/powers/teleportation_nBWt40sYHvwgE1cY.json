@@ -2,7 +2,7 @@
   "_id": "nBWt40sYHvwgE1cY",
   "name": "Teleportation",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/teleportation.webp",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Teleportation",
     "description": "",

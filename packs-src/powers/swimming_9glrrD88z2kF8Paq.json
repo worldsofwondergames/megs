@@ -2,7 +2,7 @@
   "_id": "9glrrD88z2kF8Paq",
   "name": "Swimming",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/swimming.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Swimming",
     "description": "",

@@ -2,7 +2,7 @@
   "_id": "8a3HTsjSgbjkv0i5",
   "name": "Insta-Change",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/insta%20change.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Insta-Change",
     "description": "",

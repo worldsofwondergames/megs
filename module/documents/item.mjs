@@ -193,7 +193,7 @@ export class MEGSItem extends Item {
                 itemsToCreate.push({
                     name: bonus.name,
                     type: MEGS.itemTypes.bonus,
-                    img: bonus.img,
+                    img: 'icons/svg/item-bag.svg',
                     system: {
                         parent: this._id,
                         factorCostMod: bonus.factorCostMod || 0,
@@ -206,7 +206,7 @@ export class MEGSItem extends Item {
                 itemsToCreate.push({
                     name: limitation.name,
                     type: MEGS.itemTypes.limitation,
-                    img: limitation.img,
+                    img: 'icons/svg/item-bag.svg',
                     system: {
                         parent: this._id,
                         factorCostMod: limitation.factorCostMod || 0,
@@ -542,7 +542,7 @@ export class MEGSItem extends Item {
             const traitObj = {
                 name: trait.name || traitKey,  // Use trait.name if available, fallback to key
                 type: trait.type || 'advantage',
-                img: trait.img || (trait.type === 'drawback' ? 'icons/svg/degen.svg' : 'icons/svg/regen.svg'),
+                img: 'icons/svg/item-bag.svg',
                 system: {
                     parent: this.id,  // Set parent to this gadget's ID
                     baseCost: trait.system?.baseCost || trait.baseCost || 0,  // Handle both formats

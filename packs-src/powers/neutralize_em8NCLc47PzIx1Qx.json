@@ -2,7 +2,7 @@
   "_id": "em8NCLc47PzIx1Qx",
   "name": "Neutralize",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Neutralize",
     "description": "",

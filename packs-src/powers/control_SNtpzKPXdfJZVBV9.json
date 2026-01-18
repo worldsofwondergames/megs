@@ -2,7 +2,7 @@
   "_id": "SNtpzKPXdfJZVBV9",
   "name": "Control",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Control",
     "description": "",

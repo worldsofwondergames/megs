@@ -2,7 +2,7 @@
   "_id": "AQBZTaaPTW9v2Ric",
   "name": "Heat Vision",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/heat%20vision.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Heat Vision",
     "description": "",

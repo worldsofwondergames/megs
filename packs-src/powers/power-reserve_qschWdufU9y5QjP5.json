@@ -2,7 +2,7 @@
   "_id": "qschWdufU9y5QjP5",
   "name": "Power Reserve",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/power.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Power Reserve",
     "description": "",

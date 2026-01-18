@@ -2,7 +2,7 @@
   "_id": "QmqywbR5fSIb3abA",
   "name": "Fog",
   "type": "power",
-  "img": "systems/megs/assets/images/icons/powers/fog.png",
+  "img": "systems/megs/assets/images/icons/power.png",
   "system": {
     "name": "Fog",
     "description": "",

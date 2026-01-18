@@ -2,7 +2,7 @@
   "_id": "5XjhU8JtqZMruIfF",
   "name": "Connoisseur",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/conoisseur.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Connoisseur",
     "description": "",

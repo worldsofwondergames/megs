@@ -2,7 +2,7 @@
   "_id": "syHEYa7AtvhvjtuE",
   "name": "Area Knowledge (Planet)",
   "type": "advantage",
-  "img": "systems/megs/assets/images/icons/advantages/area-knowledge.png",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "name": "Area Knowledge (Planet)",
     "description": "",

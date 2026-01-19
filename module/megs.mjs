@@ -5,6 +5,7 @@ import { MEGSItem } from './documents/item.mjs';
 import { MEGSActorSheet } from './sheets/actor-sheet.mjs';
 import { MEGSCharacterBuilderSheet } from './sheets/character-creator-sheet.mjs';
 import { MEGSItemSheet } from './sheets/item-sheet.mjs';
+import { MEGSGadgetBuilderSheet } from './sheets/gadget-builder-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { MEGS } from './helpers/config.mjs';
@@ -144,6 +145,13 @@ Hooks.once('init', function () {
         makeDefault: true,
         label: 'MEGS.SheetLabels.Item',
     });
+    console.log('[MEGS] Registering MEGSGadgetBuilderSheet for gadget items...');
+    Items.registerSheet('megs', MEGSGadgetBuilderSheet, {
+        types: ['gadget'],
+        makeDefault: false,
+        label: 'MEGS.SheetLabels.GadgetBuilder',
+    });
+    console.log('[MEGS] MEGSGadgetBuilderSheet registered successfully');
 
     // Preload Handlebars templates.
     preloadHandlebarsTemplates();
@@ -1056,6 +1064,78 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     tooltip += 'Final Cost: ' + finalCost;
 
     return tooltip;
+});
+
+Handlebars.registerHelper('getGadgetAttributeCost', function (aps, baseFc, reliabilityIndex, hasHardenedDefenses, attrKey) {
+    if (aps === 0) return 0;
+
+    const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
+    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+    const reliabilityMod = table[reliability] ?? 0;
+
+    let fc = baseFc + reliabilityMod;
+    if (attrKey === 'body' && (hasHardenedDefenses === true || hasHardenedDefenses === 'true')) {
+        fc += 2;
+    }
+    fc = Math.max(1, fc);
+
+    return MEGS.getAPCost(aps, fc) || 0;
+});
+
+Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
+    if (!budget) return '';
+
+    const attrs = budget.attributesCost || 0;
+    const avEv = budget.avEvCost || 0;
+    const powers = budget.powersCost || 0;
+    const skills = budget.skillsCost || 0;
+    const advantages = budget.advantagesCost || 0;
+    const drawbacks = budget.drawbacksCost || 0;
+    const totalBeforeBonus = budget.totalBeforeBonus || 0;
+    const total = budget.totalSpent || 0;
+
+    let tooltip = 'HP Spent Breakdown:\n';
+    if (attrs > 0) tooltip += `Attributes: ${attrs} HP\n`;
+    if (avEv > 0) tooltip += `AV/EV: ${avEv} HP\n`;
+    if (powers > 0) tooltip += `Powers: ${powers} HP\n`;
+    if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
+    if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
+    if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
+    // Determine gadget bonus from the actual division
+    const gadgetBonus = totalBeforeBonus > 0 && total > 0 ? Math.round(totalBeforeBonus / total) : 4;
+    tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Total: ${total} HP`;
+
+    return tooltip;
+});
+
+/**
+ * Calculate the adjusted gadget cost (divided by Can Be Taken Away factor)
+ * Returns the adjusted value as a number (rounded up)
+ */
+Handlebars.registerHelper('getGadgetAdjustedCost', function (rawCost, canBeTakenAway) {
+    const cost = Number(rawCost) || 0;
+    if (cost === 0) return 0;
+
+    const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
+    return Math.ceil(cost / divisor);
+});
+
+/**
+ * Get tooltip explaining the gadget cost calculation
+ */
+Handlebars.registerHelper('getGadgetCostTooltip', function (rawCost, canBeTakenAway) {
+    const cost = Number(rawCost) || 0;
+    if (cost === 0) return '';
+
+    const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
+    const adjustedCost = Math.ceil(cost / divisor);
+    const takenAwayText = divisor === 4 ? 'Can Be Taken Away (÷4)' : 'Cannot Be Taken Away (÷2)';
+
+    return `Raw Cost: ${cost} HP\n${takenAwayText}\nAdjusted: ${adjustedCost} HP`;
 });
 
 Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {

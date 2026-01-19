@@ -5,6 +5,7 @@ import { MEGSItem } from './documents/item.mjs';
 import { MEGSActorSheet } from './sheets/actor-sheet.mjs';
 import { MEGSCharacterBuilderSheet } from './sheets/character-creator-sheet.mjs';
 import { MEGSItemSheet } from './sheets/item-sheet.mjs';
+import { MEGSGadgetBuilderSheet } from './sheets/gadget-builder-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { MEGS } from './helpers/config.mjs';
@@ -44,9 +45,12 @@ Hooks.once('init', function () {
     CONFIG.Dice.rolls.push(MegsRoll);
 
     // Load MEGS tables
-    _loadData('systems/megs/assets/data/tables.json').then((response) => {
-        console.log(`Received response for tables data: ${response.status}`);
-        CONFIG.tables = response;
+    _loadData('systems/megs/assets/data/tables.json').then((data) => {
+        if (data) {
+            CONFIG.tables = data;
+        } else {
+            console.error(`[MEGS] Failed to set CONFIG.tables - data is null/undefined`);
+        }
     });
 
     /**
@@ -60,48 +64,63 @@ Hooks.once('init', function () {
 
     // Combat maneuvers
     _loadData('systems/megs/assets/data/combatManeuvers.json')
-        .then((response) => {
-            console.log(`Received response for combat maneuvers data: ${response.status}`);
-            CONFIG.combatManeuvers = response;
+        .then((data) => {
+            if (data) {
+                CONFIG.combatManeuvers = data;
+            } else {
+                console.error(`[MEGS] Failed to load combat maneuvers`);
+            }
         })
         .catch((error) => {
-            console.error(`Error loading combat manuevers: ${error.message}`);
+            console.error(`[MEGS] Error loading combat maneuvers:`, error);
         });
 
     _loadData('systems/megs/assets/data/motivations.json')
-        .then((response) => {
-            console.log(`Received response for motivations data: ${response.status}`);
-            CONFIG.motivations = response;
+        .then((data) => {
+            if (data) {
+                CONFIG.motivations = data;
+            } else {
+                console.error(`[MEGS] Failed to load motivations`);
+            }
         })
         .catch((error) => {
-            console.error(`Error loading motivations data: ${error.message}`);
+            console.error(`[MEGS] Error loading motivations:`, error);
         });
 
     _loadData('systems/megs/assets/data/skills.json')
-        .then((response) => {
-            console.log(`Received response for skills data: ${response.status}`);
-            CONFIG.skills = response;
+        .then((data) => {
+            if (data) {
+                CONFIG.skills = data;
+            } else {
+                console.error(`[MEGS] Failed to load skills`);
+            }
         })
         .catch((error) => {
-            console.error(`Error loading skills data: ${error.message}`);
+            console.error(`[MEGS] Error loading skills:`, error);
         });
 
     _loadData('systems/megs/assets/data/apCostChart.json')
-        .then((response) => {
-            console.log(`Received response for AP cost chart data: ${response.status}`);
-            CONFIG.apCostChart = response;
+        .then((data) => {
+            if (data) {
+                CONFIG.apCostChart = data;
+            } else {
+                console.error(`[MEGS] Failed to load AP cost chart`);
+            }
         })
         .catch((error) => {
-            console.error(`Error loading AP cost chart data: ${error.message}`);
+            console.error(`[MEGS] Error loading AP cost chart:`, error);
         });
 
     _loadData('systems/megs/assets/data/wealth.json')
-        .then((response) => {
-            console.log(`Received response for wealth data: ${response.status}`);
-            CONFIG.wealth = response;
+        .then((data) => {
+            if (data) {
+                CONFIG.wealth = data;
+            } else {
+                console.error(`[MEGS] Failed to load wealth`);
+            }
         })
         .catch((error) => {
-            console.error(`Error loading wealth data: ${error.message}`);
+            console.error(`[MEGS] Error loading wealth:`, error);
         });
 
     // Active Effects are never copied to the Actor,
@@ -126,6 +145,13 @@ Hooks.once('init', function () {
         makeDefault: true,
         label: 'MEGS.SheetLabels.Item',
     });
+    console.log('[MEGS] Registering MEGSGadgetBuilderSheet for gadget items...');
+    Items.registerSheet('megs', MEGSGadgetBuilderSheet, {
+        types: ['gadget'],
+        makeDefault: false,
+        label: 'MEGS.SheetLabels.GadgetBuilder',
+    });
+    console.log('[MEGS] MEGSGadgetBuilderSheet registered successfully');
 
     // Preload Handlebars templates.
     preloadHandlebarsTemplates();
@@ -351,6 +377,34 @@ Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
     return modifiers;
 });
 
+Handlebars.registerHelper('getPowerBonuses', function (powerId, items) {
+    // Filter and sort bonuses for this power alphabetically
+    if (!items) return [];
+
+    const bonuses = [];
+    items.forEach(item => {
+        if (item.type === 'bonus' && item.system.parent === powerId) {
+            bonuses.push(item);
+        }
+    });
+
+    return bonuses.sort((a, b) => a.name.localeCompare(b.name));
+});
+
+Handlebars.registerHelper('getPowerLimitations', function (powerId, items) {
+    // Filter and sort limitations for this power alphabetically
+    if (!items) return [];
+
+    const limitations = [];
+    items.forEach(item => {
+        if (item.type === 'limitation' && item.system.parent === powerId) {
+            limitations.push(item);
+        }
+    });
+
+    return limitations.sort((a, b) => a.name.localeCompare(b.name));
+});
+
 Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
     // Filter items to find subskills that belong to this skill
     if (!items) return [];
@@ -363,6 +417,16 @@ Handlebars.registerHelper('getSkillSubskills', function (skillId, items) {
     });
 
     return subskills;
+});
+
+Handlebars.registerHelper('powerHasModifiers', function (powerId, items) {
+    // Check if this power has any bonuses or limitations
+    if (!items) return false;
+
+    return items.some(item =>
+        (item.type === 'bonus' || item.type === 'limitation') &&
+        item.system.parent === powerId
+    );
 });
 
 Handlebars.registerHelper('skillHasSubskillsWithAPs', function (skillId, items) {
@@ -1002,6 +1066,78 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     return tooltip;
 });
 
+Handlebars.registerHelper('getGadgetAttributeCost', function (aps, baseFc, reliabilityIndex, hasHardenedDefenses, attrKey) {
+    if (aps === 0) return 0;
+
+    const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
+    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+    const reliabilityMod = table[reliability] ?? 0;
+
+    let fc = baseFc + reliabilityMod;
+    if (attrKey === 'body' && (hasHardenedDefenses === true || hasHardenedDefenses === 'true')) {
+        fc += 2;
+    }
+    fc = Math.max(1, fc);
+
+    return MEGS.getAPCost(aps, fc) || 0;
+});
+
+Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
+    if (!budget) return '';
+
+    const attrs = budget.attributesCost || 0;
+    const avEv = budget.avEvCost || 0;
+    const powers = budget.powersCost || 0;
+    const skills = budget.skillsCost || 0;
+    const advantages = budget.advantagesCost || 0;
+    const drawbacks = budget.drawbacksCost || 0;
+    const totalBeforeBonus = budget.totalBeforeBonus || 0;
+    const total = budget.totalSpent || 0;
+
+    let tooltip = 'HP Spent Breakdown:\n';
+    if (attrs > 0) tooltip += `Attributes: ${attrs} HP\n`;
+    if (avEv > 0) tooltip += `AV/EV: ${avEv} HP\n`;
+    if (powers > 0) tooltip += `Powers: ${powers} HP\n`;
+    if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
+    if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
+    if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
+    // Determine gadget bonus from the actual division
+    const gadgetBonus = totalBeforeBonus > 0 && total > 0 ? Math.round(totalBeforeBonus / total) : 4;
+    tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
+    tooltip += `─────────────────\n`;
+    tooltip += `Total: ${total} HP`;
+
+    return tooltip;
+});
+
+/**
+ * Calculate the adjusted gadget cost (divided by Can Be Taken Away factor)
+ * Returns the adjusted value as a number (rounded up)
+ */
+Handlebars.registerHelper('getGadgetAdjustedCost', function (rawCost, canBeTakenAway) {
+    const cost = Number(rawCost) || 0;
+    if (cost === 0) return 0;
+
+    const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
+    return Math.ceil(cost / divisor);
+});
+
+/**
+ * Get tooltip explaining the gadget cost calculation
+ */
+Handlebars.registerHelper('getGadgetCostTooltip', function (rawCost, canBeTakenAway) {
+    const cost = Number(rawCost) || 0;
+    if (cost === 0) return '';
+
+    const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
+    const adjustedCost = Math.ceil(cost / divisor);
+    const takenAwayText = divisor === 4 ? 'Can Be Taken Away (÷4)' : 'Cannot Be Taken Away (÷2)';
+
+    return `Raw Cost: ${cost} HP\n${takenAwayText}\nAdjusted: ${adjustedCost} HP`;
+});
+
 Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {
     if (!power || !power.system) return '';
 
@@ -1121,7 +1257,67 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once('ready', function () {
+Hooks.once('ready', async function () {
+    // Log compendium pack loading information only if debug logging is enabled
+    if (game.settings.get('megs', 'debugLogging')) {
+        console.log('[MEGS] ===========================================');
+        console.log('[MEGS] Compendium Pack Verification Starting...');
+        console.log('[MEGS] ===========================================');
+
+        try {
+            // Log all available packs first
+            console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
+
+            // Get all compendium packs for the MEGS system
+            const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
+            console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
+
+            if (megsPacks.length === 0) {
+                console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
+                game.packs.forEach(pack => {
+                    console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
+                });
+            }
+
+            // Check each pack
+            for (const pack of megsPacks) {
+                console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
+                console.log(`[MEGS]   Collection: ${pack.collection}`);
+                console.log(`[MEGS]   Path: ${pack.metadata.path}`);
+                console.log(`[MEGS]   Type: ${pack.metadata.type}`);
+                console.log(`[MEGS]   Locked: ${pack.locked}`);
+
+                try {
+                    // Get the index (this doesn't load all items, just the index)
+                    console.log(`[MEGS]   Attempting to get index...`);
+                    const index = await pack.getIndex();
+                    console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
+
+                    if (index.size > 0) {
+                        // Show first 3 items as sample
+                        const sampleItems = Array.from(index.values()).slice(0, 3);
+                        console.log(`[MEGS]   Sample items:`);
+                        sampleItems.forEach(item => {
+                            console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
+                        });
+                    } else {
+                        console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
+                    }
+                } catch (error) {
+                    console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
+                    console.error(`[MEGS]   Error details:`, error.message, error.stack);
+                }
+            }
+
+            console.log('[MEGS] ===========================================');
+            console.log('[MEGS] Compendium Pack Verification Complete');
+            console.log('[MEGS] ===========================================');
+        } catch (error) {
+            console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
+            console.error('[MEGS] Error details:', error.message, error.stack);
+        }
+    }
+
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {
         let item = fromUuidSync(data.uuid);
@@ -1182,14 +1378,39 @@ function interceptMegsRoll(message, data) {
 /* -------------------------------------------- */
 
 /**
+ * Check if debug logging is enabled
+ * @returns {boolean}
+ */
+function _isDebugEnabled() {
+    try {
+        return game.settings.get('megs', 'debugLogging');
+    } catch {
+        return false;
+    }
+}
+
+/**
  * Grab the JSON from a file and place it in an object.
  * @param {Object} jsonPath     The path in the Foundry Data directory to the JSON asset
  * @returns {Promise}
  */
 async function _loadData(jsonPath) {
-    const response = await fetch(jsonPath);
-    const contents = await response.json();
-    return contents;
+    const debug = _isDebugEnabled();
+    if (debug) console.log(`[MEGS] _loadData: Fetching ${jsonPath}`);
+    try {
+        const response = await fetch(jsonPath);
+        if (debug) console.log(`[MEGS] _loadData: Fetch response status: ${response.status}, ok: ${response.ok}`);
+        if (!response.ok) {
+            console.error(`[MEGS] _loadData: Failed to fetch ${jsonPath} - HTTP ${response.status}`);
+            return null;
+        }
+        const contents = await response.json();
+        if (debug) console.log(`[MEGS] _loadData: Parsed JSON from ${jsonPath}, keys:`, contents ? Object.keys(contents) : 'null');
+        return contents;
+    } catch (error) {
+        console.error(`[MEGS] _loadData: Error loading ${jsonPath}:`, error);
+        return null;
+    }
 }
 
 /* -------------------------------------------- */

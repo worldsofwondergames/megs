@@ -549,6 +549,12 @@ export class MEGSActorSheet extends ActorSheet {
         // Skill accordion toggle
         html.on('click', '.tab.skills .skill-row .toggle-icon', (ev) => this._handleSkillAccordionToggle(ev, html));
 
+        // Power accordion toggle
+        html.on('click', '.tab.powers .power-row .toggle-icon', (ev) => this._handlePowerAccordionToggle(ev, html));
+
+        // Enable power row drop zones for bonuses/limitations
+        this._enablePowerRowDropZones(html);
+
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
             const itemId = $(ev.currentTarget).data('itemId');
@@ -699,6 +705,10 @@ export class MEGSActorSheet extends ActorSheet {
 
         if (!confirmed) return;
 
+        // Save accordion state before deletion
+        const html = $(event.currentTarget).closest('.sheet');
+        this._saveAccordionState(html);
+
         // If deleting a power or skill, also delete all associated bonuses/limitations
         if (item.type === 'power' || item.type === 'skill') {
             const modifiers = this.actor.items.filter(i =>
@@ -738,6 +748,162 @@ export class MEGSActorSheet extends ActorSheet {
             html.find(`.subskill-row[data-parent-id="${skillId}"]`).slideDown(200);
             icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
             skillRow.data('expanded', true);
+        }
+    }
+
+    /**
+     * Handle power accordion toggle
+     * @param {Event} event The click event
+     * @param {jQuery} html The HTML element
+     * @private
+     */
+    _handlePowerAccordionToggle(event, html) {
+        event.preventDefault();
+        const powerRow = $(event.currentTarget).closest('.power-row');
+        const powerId = powerRow.data('itemId');
+        const isExpanded = powerRow.data('expanded');
+        const icon = $(event.currentTarget);
+
+        if (isExpanded) {
+            // Collapse - hide modifiers
+            html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).slideUp(200);
+            icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+            powerRow.data('expanded', false);
+        } else {
+            // Expand - show modifiers
+            html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).slideDown(200);
+            icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+            powerRow.data('expanded', true);
+        }
+    }
+
+    /**
+     * Enable drag and drop zones for power rows and modifier rows
+     * @param {jQuery} html The HTML element
+     * @private
+     */
+    _enablePowerRowDropZones(html) {
+        const powerRows = html.find('.tab.powers .power-row');
+        const modifierRows = html.find('.tab.powers .power-modifier-row');
+
+        powerRows.each((i, row) => {
+            row.addEventListener('dragover', this._onDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnPower.bind(this));
+        });
+
+        // Modifier rows also accept drops and delegate to parent power
+        modifierRows.each((i, row) => {
+            row.addEventListener('dragover', this._onDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnModifierRow.bind(this));
+        });
+    }
+
+    /**
+     * Handle dragover event for power rows
+     * @param {DragEvent} event The dragover event
+     * @private
+     */
+    _onDragOver(event) {
+        event.preventDefault();
+        event.currentTarget.classList.add('drop-target');
+    }
+
+    /**
+     * Handle dragleave event for power rows
+     * @param {DragEvent} event The dragleave event
+     * @private
+     */
+    _onDragLeave(event) {
+        event.currentTarget.classList.remove('drop-target');
+    }
+
+    /**
+     * Handle drop event on modifier rows (delegate to parent power)
+     * @param {DragEvent} event The drop event
+     * @private
+     */
+    async _onDropOnModifierRow(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('drop-target');
+
+        const modifierRow = event.currentTarget;
+        const powerId = modifierRow.dataset.parentId; // Get parent power ID
+
+        // Create a synthetic event with the power ID for delegation
+        const syntheticEvent = new DragEvent(event.type, event);
+        Object.defineProperty(syntheticEvent, 'currentTarget', {
+            value: { dataset: { itemId: powerId } },
+            writable: false
+        });
+        Object.defineProperty(syntheticEvent, 'dataTransfer', {
+            value: event.dataTransfer,
+            writable: false
+        });
+
+        // Delegate to power drop handler
+        await this._onDropOnPower(syntheticEvent);
+    }
+
+    /**
+     * Handle drop event on power rows
+     * @param {DragEvent} event The drop event
+     * @private
+     */
+    async _onDropOnPower(event) {
+        event.preventDefault();
+        if (event.currentTarget.classList) {
+            event.currentTarget.classList.remove('drop-target');
+        }
+
+        const row = event.currentTarget;
+        const powerId = row.dataset.itemId;
+
+        // Get dropped item data
+        const data = TextEditor.getDragEventData(event);
+
+        // Only process Item drops
+        if (data.type !== 'Item') return;
+
+        // Get the dropped item
+        let droppedItem;
+        if (data.uuid) {
+            droppedItem = await fromUuid(data.uuid);
+        } else {
+            return;
+        }
+
+        // Validate item type - only bonuses and limitations can be dropped
+        if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
+            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            return;
+        }
+
+        // Check if item already belongs to this actor
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+
+        // Save accordion state before re-render
+        const html = $(event.currentTarget).closest('.sheet');
+        this._saveAccordionState(html);
+
+        if (isOnActor) {
+            // Item is already on this actor - update its parent (move it)
+
+            // Check if dropping onto self (already attached to this power)
+            if (droppedItem.system.parent === powerId) {
+                return; // No action needed
+            }
+
+            await droppedItem.update({ 'system.parent': powerId });
+            ui.notifications.info(`${droppedItem.name} moved to power.`);
+        } else {
+            // Item is from sidebar/compendium - create it with parent set
+            const itemData = droppedItem.toObject();
+            itemData.system.parent = powerId;
+
+            await this.actor.createEmbeddedDocuments('Item', [itemData]);
+            ui.notifications.info(`${droppedItem.name} added to power.`);
         }
     }
 
@@ -836,6 +1002,10 @@ export class MEGSActorSheet extends ActorSheet {
 
     /** @override **/
     async _onDrop(event) {
+        // Save accordion state before any drop operation
+        const html = $(event.currentTarget).closest('.sheet');
+        this._saveAccordionState(html);
+
         super._onDrop(event);
     }
 
@@ -897,6 +1067,12 @@ export class MEGSActorSheet extends ActorSheet {
             const isExpanded = $(row).data('expanded');
             state[skillId] = isExpanded;
         });
+        // Save powers accordion state
+        html.find('.tab.powers .power-row').each((i, row) => {
+            const powerId = $(row).data('itemId');
+            const isExpanded = $(row).data('expanded');
+            state[powerId] = isExpanded;
+        });
         this._accordionState = state;
     }
 
@@ -917,6 +1093,18 @@ export class MEGSActorSheet extends ActorSheet {
                 $(row).data('expanded', true);
                 $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
                 html.find(`.subskill-row[data-parent-id="${skillId}"]`).show();
+            }
+        });
+
+        // Restore powers accordion state
+        html.find('.tab.powers .power-row').each((i, row) => {
+            const powerId = $(row).data('itemId');
+            const wasExpanded = this._accordionState[powerId];
+
+            if (wasExpanded) {
+                $(row).data('expanded', true);
+                $(row).find('.toggle-icon').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                html.find(`.power-modifier-row[data-parent-id="${powerId}"]`).show();
             }
         });
     }

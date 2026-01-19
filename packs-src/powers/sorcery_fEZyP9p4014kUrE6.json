@@ -1,0 +1,147 @@
+{
+  "_id": "fEZyP9p4014kUrE6",
+  "name": "Sorcery",
+  "type": "power",
+  "img": "systems/megs/assets/images/icons/power.png",
+  "system": {
+    "name": "Sorcery",
+    "description": "",
+    "attributes": {
+      "dex": {
+        "value": 0,
+        "factorCost": 7,
+        "label": "Dexterity",
+        "type": "physical",
+        "rolls": [
+          "action",
+          "opposing"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "str": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Strength",
+        "type": "physical",
+        "rolls": [
+          "effect"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "body": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Body",
+        "type": "physical",
+        "rolls": [
+          "resistance"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "int": {
+        "value": 0,
+        "factorCost": 7,
+        "label": "Intelligence",
+        "type": "mental",
+        "rolls": [
+          "action",
+          "opposing"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "will": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Will",
+        "type": "mental",
+        "rolls": [
+          "effect"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "mind": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Mind",
+        "type": "mental",
+        "rolls": [
+          "resistance"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "infl": {
+        "value": 0,
+        "factorCost": 7,
+        "label": "Influence",
+        "type": "mystical",
+        "rolls": [
+          "action",
+          "opposing"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "aura": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Aura",
+        "type": "mystical",
+        "rolls": [
+          "effect"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      },
+      "spirit": {
+        "value": 0,
+        "factorCost": 6,
+        "label": "Spirit",
+        "type": "mystical",
+        "rolls": [
+          "resistance"
+        ],
+        "alwaysSubstitute": false,
+        "isAttribute": true
+      }
+    },
+    "link": "aura",
+    "isLinked": false,
+    "range": "varies",
+    "rangeAPs": 0,
+    "formula": "1d10 + 1d10",
+    "baseCost": 750,
+    "totalCost": 0,
+    "factorCost": 10,
+    "aps": 0,
+    "source": "mystical",
+    "activateFree": false,
+    "bonuses": [],
+    "customBonuses": [],
+    "limitations": [],
+    "customLimitations": [],
+    "parent": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265588,
+    "modifiedTime": 1767583265588,
+    "lastModifiedBy": "megs-system"
+  }
+}

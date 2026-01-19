@@ -1,0 +1,33 @@
+{
+  "_id": "Hl0Vf4M9by7npu03",
+  "name": "Irrational Hatred, Serious",
+  "type": "drawback",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "name": "Irrational Hatred, Serious",
+    "description": "",
+    "baseCost": 25,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265587,
+    "modifiedTime": 1767583265587,
+    "lastModifiedBy": "megs-system"
+  }
+}

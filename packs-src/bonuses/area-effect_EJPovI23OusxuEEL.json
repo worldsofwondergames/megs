@@ -1,0 +1,32 @@
+{
+  "_id": "EJPovI23OusxuEEL",
+  "name": "Area Effect",
+  "type": "bonus",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "name": "Area Effect",
+    "description": "",
+    "factorCostMod": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265585,
+    "modifiedTime": 1767583265585,
+    "lastModifiedBy": "megs-system"
+  }
+}

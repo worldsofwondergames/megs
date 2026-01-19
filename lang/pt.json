@@ -14,7 +14,8 @@
         "SheetLabels": {
             "Actor": " MEGS Ficha de personagem",
             "CharacterBuilder": "MEGS Criador de personagem",
-            "Item": " MEGS Ficha de item"
+            "Item": " MEGS Ficha de item",
+            "GadgetBuilder": "MEGS Construtor de Equipamento"
         },
         "Effects": {
             "Source": "Fonte",
@@ -156,7 +157,29 @@
 
         "Superspeed": "Supervelocidade",
         "MartialArtist": "Artista Marcial",
-        "LightningReflexes": "Reflexos de Relâmpago"
+        "LightningReflexes": "Reflexos de Relâmpago",
+
+        "GadgetName": "Nome do Equipamento",
+        "HPBudget": "Orçamento de PH",
+        "HPRemaining": "PH Restante",
+        "TotalAttributesCost": "Custo Total de Atributos:",
+        "AVEVCost": "Custo de VA/VE:",
+        "MysticalAttributes": "Atributos Místicos",
+        "ActionValueAndEffectValue": "Valor de Ação e Valor de Efeito",
+        "TotalPowersCost": "Custo Total de Poderes:",
+        "TotalSkillsCost": "Custo Total de Perícias:",
+        "NetTraitsCost": "Custo Líquido de Traços:",
+        "GadgetSettings": "Configurações do Equipamento",
+        "CanBeTakenAwayHint": "Pode Ser Tomado (custo ÷4)",
+        "CanBeTakenAwayHintDesc": "Se desmarcado, bônus do equipamento é ÷2",
+        "HardenedDefensesHint": "Defesas Reforçadas (+2 ao FC de CORPO)",
+        "AttributeGroups": "Grupos de Atributos",
+        "HasPhysicalAttributesHint": "Possui Atributos Físicos (DES, FOR, CORPO)",
+        "HasMentalAttributesHint": "Possui Atributos Mentais (INT, VON, MENTE)",
+        "HasMysticalAttributesHint": "Possui Atributos Místicos (INFL, AURA, ESPÍRITO)",
+        "HasActionValueAndEffectValue": "Possui Valor de Ação e Valor de Efeito",
+        "OnlyBonusesAndLimitationsCanBeDropped": "Apenas Bônus e Limitações podem ser soltos em Poderes.",
+        "ModifiersOnlyForOwnedGadgets": "Modificadores só podem ser adicionados a poderes em equipamentos pertencentes a um personagem."
     },
 
     "TYPES": {

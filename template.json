@@ -381,6 +381,22 @@
             "isCarried": true,
             "canBeTakenAway": true,
             "hasHardenedDefenses": false,
+            "creationBudget": {
+                "base": 0
+            },
+            "gadgetPointBudget": {
+                "base": 0,
+                "totalSpent": 0,
+                "remaining": 0,
+                "totalBeforeBonus": 0,
+                "attributesCost": 0,
+                "avEvCost": 0,
+                "powersCost": 0,
+                "skillsCost": 0,
+                "advantagesCost": 0,
+                "drawbacksCost": 0,
+                "traitsCost": 0
+            },
             "settings": {
                 "isDetailsOpen": {
                     "attributes": "false",
@@ -399,6 +415,8 @@
                 "hideZeroAPSkills": "true"
             },
             "skillData": {},
+            "skillBaseCosts": {},
+            "skillFactorCosts": {},
             "subskillData": {},
             "powerAPs": {},
             "powerBaseCosts": {},

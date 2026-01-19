@@ -997,7 +997,9 @@ export class MEGSItemSheet extends ItemSheet {
                     i.subskills = [];
                     if (i.system.aps === 0) {
                         i.unskilled = true;
-                        i.linkedAPs = this.object.system.attributes[i.system.link].value;
+                        // Safely access linked attribute value
+                        const linkedAttr = i.system.link && this.object.system.attributes?.[i.system.link];
+                        i.linkedAPs = linkedAttr?.value ?? 0;
                     } else {
                         i.unskilled = false;
                     }

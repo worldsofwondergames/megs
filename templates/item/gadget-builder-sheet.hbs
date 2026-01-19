@@ -1,0 +1,468 @@
+<form class='{{cssClass}} gadget-builder flexcol' autocomplete='off'>
+
+    {{!-- Gadget Builder Header --}}
+    <header class="sheet-header creator-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="100" width="100" />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'MEGS.GadgetName'}}" />
+            </h1>
+
+            {{!-- HP Budget Display --}}
+            <div class="resources grid grid-3col">
+                <div class="resource flex-group-center">
+                    <label for="system.creationBudget.base" class="resource-label">{{localize 'MEGS.HPBudget'}}</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <input type="number" name="system.creationBudget.base"
+                               value="{{system.creationBudget.base}}"
+                               data-dtype="Number" min="0" class="resource-value-input" />
+                    </div>
+                </div>
+
+                <div class="resource flex-group-center">
+                    <label class="resource-label">{{localize 'MEGS.HPSpent'}}</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <span class="resource-value" title="{{getGadgetBudgetTooltip system.gadgetPointBudget}}">
+                            {{formatNumber system.gadgetPointBudget.totalSpent}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="resource flex-group-center">
+                    <label class="resource-label">{{localize 'MEGS.HPRemaining'}}</label>
+                    <div class="resource-content flexrow flex-center flex-between">
+                        <span class="resource-value {{#if (compare system.gadgetPointBudget.remaining '<' 0)}}over-budget{{/if}}">
+                            {{formatNumber system.gadgetPointBudget.remaining}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Tab Navigation --}}
+    <nav class='sheet-tabs tabs' data-group='primary'>
+        <a class='item' data-tab='attributes'>{{localize 'MEGS.Attributes'}}</a>
+        <a class='item' data-tab='powers'>{{localize 'MEGS.Powers'}}</a>
+        <a class='item' data-tab='skills'>{{localize 'MEGS.Skills'}}</a>
+        <a class='item' data-tab='traits'>{{localize 'MEGS.Traits'}}</a>
+        <a class='item' data-tab='settings'>{{localize 'MEGS.Settings'}}</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Attributes Tab --}}
+        <div class="tab attributes" data-group="primary" data-tab="attributes">
+            <section class="attributes-summary">
+                <div class="summary-row">
+                    <label class="summary-label">{{localize 'MEGS.TotalAttributesCost'}}</label>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.attributesCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.attributesCost system.canBeTakenAway)}} HP
+                    </span>
+                </div>
+                {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
+                <div class="summary-row">
+                    <label class="summary-label">{{localize 'MEGS.AVEVCost'}}</label>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.avEvCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.avEvCost system.canBeTakenAway)}} HP
+                    </span>
+                </div>
+                {{/if}}
+            </section>
+
+            {{!-- Attributes Section --}}
+            <h3 class="section-header">{{localize 'MEGS.Attributes'}}</h3>
+
+            {{!-- Physical Attributes Row --}}
+            <section class="attributes grid grid-4col attributeRow {{#unless (compare system.settings.hasAttributes.physical 'eq' 'true')}}disabled-row{{/unless}}" data-attribute-group="physical">
+                <div class="attribute-toggle flex-group-center">
+                    <input type="checkbox" class="attribute-group-toggle" data-group="physical"
+                           {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}checked{{/if}} />
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Dexterity">DEX</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="dex" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.dex.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="dex" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.dex.value 7 system.reliability system.hasHardenedDefenses "dex"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Strength">STR</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="str" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.str.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="str" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.str.value 6 system.reliability system.hasHardenedDefenses "str"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Body">BODY</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="body" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.body.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="body" {{#unless (compare system.settings.hasAttributes.physical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.body.value 6 system.reliability system.hasHardenedDefenses "body"}} HP
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {{!-- Mental Attributes Row --}}
+            <section class="attributes grid grid-4col attributeRow {{#unless (compare system.settings.hasAttributes.mental 'eq' 'true')}}disabled-row{{/unless}}" data-attribute-group="mental">
+                <div class="attribute-toggle flex-group-center">
+                    <input type="checkbox" class="attribute-group-toggle" data-group="mental"
+                           {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}checked{{/if}} />
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Intelligence">INT</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="int" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.int.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="int" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.int.value 7 system.reliability system.hasHardenedDefenses "int"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Will">WILL</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="will" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.will.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="will" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.will.value 6 system.reliability system.hasHardenedDefenses "will"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Mind">MIND</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="mind" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.mind.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="mind" {{#unless (compare system.settings.hasAttributes.mental "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.mind.value 6 system.reliability system.hasHardenedDefenses "mind"}} HP
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {{!-- Mystical Attributes Row --}}
+            <section class="attributes grid grid-4col attributeRow {{#unless (compare system.settings.hasAttributes.mystical 'eq' 'true')}}disabled-row{{/unless}}" data-attribute-group="mystical">
+                <div class="attribute-toggle flex-group-center">
+                    <input type="checkbox" class="attribute-group-toggle" data-group="mystical"
+                           {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}checked{{/if}} />
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Influence">INFL</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="infl" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.infl.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="infl" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.infl.value 7 system.reliability system.hasHardenedDefenses "infl"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Aura">AURA</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="aura" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.aura.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="aura" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.aura.value 6 system.reliability system.hasHardenedDefenses "aura"}} HP
+                        </span>
+                    </div>
+                </div>
+                <div class="attribute flex-group-center">
+                    <label class="resource-label flexlarge align-left" title="Spirit">SPIRIT</label>
+                    <div class="quantity attribute-input">
+                        <button class="attribute-minus" data-attribute="spirit" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                        <input type="text" value="{{system.attributes.spirit.value}}" readonly class="input-box" />
+                        <button class="attribute-plus" data-attribute="spirit" {{#unless (compare system.settings.hasAttributes.mystical "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                    </div>
+                    <div class="attribute-cost">
+                        <span class="cost-value">
+                            {{getGadgetAttributeCost system.attributes.spirit.value 6 system.reliability system.hasHardenedDefenses "spirit"}} HP
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {{!-- AV/EV Section --}}
+            <h3 class="section-header av-ev-header">
+                <input type="checkbox" class="avev-toggle" name="system.settings.hasAVAndEV"
+                       {{#if (compare system.settings.hasAVAndEV "eq" "true")}}checked{{/if}} />
+                {{localize 'MEGS.ActionValueAndEffectValue'}}
+            </h3>
+            <section class="av-ev-section {{#unless (compare system.settings.hasAVAndEV 'eq' 'true')}}disabled-row{{/unless}}">
+                <div class="grid grid-2col">
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label">AV</label>
+                        <div class="quantity attribute-input">
+                            <button class="av-minus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                            <input type="text" value="{{system.actionValue}}" readonly class="input-box" />
+                            <button class="av-plus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                        </div>
+                    </div>
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label">EV</label>
+                        <div class="quantity attribute-input">
+                            <button class="ev-minus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&minus;</button>
+                            <input type="text" value="{{system.effectValue}}" readonly class="input-box" />
+                            <button class="ev-plus" {{#unless (compare system.settings.hasAVAndEV "eq" "true")}}disabled{{/unless}}>&plus;</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{!-- Powers Tab --}}
+        <div class="tab powers" data-group="primary" data-tab="powers">
+            <section class="powers-summary">
+                <div class="summary-row">
+                    <label class="summary-label">{{localize 'MEGS.TotalPowersCost'}}</label>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.powersCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.powersCost system.canBeTakenAway)}} HP
+                    </span>
+                </div>
+            </section>
+
+            <ol class='items-list'>
+                <li class='item flexrow items-header'>
+                    <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                    <div class='item-linked'>{{localize 'MEGS.Link'}}?</div>
+                    <div class='item-base-cost'>{{localize 'MEGS.Base'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-factor-cost'>{{localize 'MEGS.Factor'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
+                    <div class='item-total-cost'>{{localize 'MEGS.Total'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-controls'></div>
+                </li>
+                {{#each powers as |item id|}}
+                    <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+                        <div class='item-name'>{{getPowerDisplayName item}}</div>
+                        <div class='item-linked'>
+                            <input type="checkbox" data-field="isLinked"
+                                   {{#if (isTrue item.system.isLinked)}}checked{{/if}}
+                                   data-item-id="{{item._id}}" />
+                        </div>
+                        <div class='item-base-cost'>{{item.system.baseCost}}</div>
+                        <div class='item-factor-cost factor-cost-calculated'
+                             title='{{getFactorCostTooltip item ../items}}'>
+                            {{getEffectiveFactorCost item ../items}}
+                        </div>
+                        <div class='item-aps'>
+                            <div class="quantity skill-input">
+                                <button class="ap-minus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&minus;</button>
+                                <input type="text" class="input-box" value="{{item.system.aps}}" readonly />
+                                <button class="ap-plus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&plus;</button>
+                            </div>
+                        </div>
+                        <div class='item-total-cost' title='{{getTotalCostTooltip item ../items}}'>
+                            {{item.system.totalCost}}
+                        </div>
+                        <div class='item-controls'>
+                            <a class='item-control item-delete' title='Delete {{item.name}}' data-item-id="{{item._id}}">
+                                <i class='fas fa-trash'></i>
+                            </a>
+                        </div>
+                    </li>
+                    {{!-- Display modifiers --}}
+                    {{#each (getPowerModifiers item._id ../items) as |modifier|}}
+                        <li class='item flexrow item-row modifier-row' data-item-id='{{modifier._id}}'>
+                            <div class='item-name modifier-name'>
+                                <span style="display: inline-block; width: 25px;"></span>{{modifier.name}}
+                            </div>
+                            <div class='item-linked'></div>
+                            <div class='item-base-cost'></div>
+                            <div class='item-factor-cost'>{{formatSigned modifier.system.factorCostMod}}</div>
+                            <div class='item-aps'></div>
+                            <div class='item-total-cost'></div>
+                            <div class='item-controls'>
+                                <a class='item-control item-delete' title='Delete {{modifier.name}}' data-item-id="{{modifier._id}}">
+                                    <i class='fas fa-trash'></i>
+                                </a>
+                            </div>
+                        </li>
+                    {{/each}}
+                {{/each}}
+            </ol>
+        </div>
+
+        {{!-- Skills Tab --}}
+        <div class="tab skills" data-group="primary" data-tab="skills">
+            <section class="skills-summary">
+                <div class="summary-row">
+                    <label class="summary-label">{{localize 'MEGS.TotalSkillsCost'}}</label>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.skillsCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.skillsCost system.canBeTakenAway)}} HP
+                    </span>
+                </div>
+            </section>
+
+            <ol class='items-list'>
+                <li class='item flexrow items-header'>
+                    <div class='item-name'>{{localize 'MEGS.Name'}}</div>
+                    <div class='item-aps'>{{localize 'MEGS.APs'}}</div>
+                    <div class='item-total-cost'>{{localize 'MEGS.Total'}}<br>{{localize 'MEGS.Cost'}}</div>
+                    <div class='item-controls'></div>
+                </li>
+                {{#each skills as |item id|}}
+                    <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+                        <div class='item-name'>{{item.name}}</div>
+                        <div class='item-aps'>
+                            <div class="quantity skill-input">
+                                <button class="ap-minus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}" data-skill-name="{{item.name}}">&minus;</button>
+                                <input type="text" class="input-box" value="{{item.system.aps}}" readonly />
+                                <button class="ap-plus" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}" data-skill-name="{{item.name}}">&plus;</button>
+                            </div>
+                        </div>
+                        <div class='item-total-cost'>{{item.system.totalCost}}</div>
+                        <div class='item-controls'>
+                            <a class='item-control item-delete' title='Delete {{item.name}}' data-item-id="{{item._id}}">
+                                <i class='fas fa-trash'></i>
+                            </a>
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
+        </div>
+
+        {{!-- Traits Tab --}}
+        <div class="tab traits" data-group="primary" data-tab="traits">
+            <section class="traits-summary">
+                <div class="summary-row">
+                    <label class="summary-label">{{localize 'MEGS.NetTraitsCost'}}</label>
+                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.traitsCost system.canBeTakenAway}}">
+                        {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.traitsCost system.canBeTakenAway)}} HP
+                    </span>
+                </div>
+            </section>
+
+            <div class="grid grid-2col traits-grid">
+                <div class="advantages-column">
+                    <h3 class="section-header">{{localize 'MEGS.Advantages'}}</h3>
+                    <ol class='items-list'>
+                        {{#each advantages as |item id|}}
+                            <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+                                <div class='item-name'>{{item.name}}</div>
+                                <div class='item-cost'>{{item.system.totalCost}} HP</div>
+                                <div class='item-controls'>
+                                    <a class='item-control item-delete' title='Delete {{item.name}}' data-item-id="{{item._id}}">
+                                        <i class='fas fa-trash'></i>
+                                    </a>
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ol>
+                </div>
+                <div class="drawbacks-column">
+                    <h3 class="section-header">{{localize 'MEGS.Drawbacks'}}</h3>
+                    <ol class='items-list'>
+                        {{#each drawbacks as |item id|}}
+                            <li class='item flexrow item-row' data-item-id='{{item._id}}'>
+                                <div class='item-name'>{{item.name}}</div>
+                                <div class='item-cost'>{{item.system.totalCost}} HP</div>
+                                <div class='item-controls'>
+                                    <a class='item-control item-delete' title='Delete {{item.name}}' data-item-id="{{item._id}}">
+                                        <i class='fas fa-trash'></i>
+                                    </a>
+                                </div>
+                            </li>
+                        {{/each}}
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Settings Tab --}}
+        <div class="tab settings" data-group="primary" data-tab="settings">
+            <h3 class="section-header">{{localize 'MEGS.GadgetSettings'}}</h3>
+
+            <div class="form-group">
+                <label>{{localize 'MEGS.Reliability'}}:</label>
+                <select name="system.reliability">
+                    {{#each reliabilityScores as |score index|}}
+                        <option value="{{index}}" {{#if (eq index ../system.reliability)}}selected{{/if}}>
+                            R# {{score}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="system.canBeTakenAway"
+                           {{checked system.canBeTakenAway}} />
+                    {{localize 'MEGS.CanBeTakenAwayHint'}}
+                </label>
+                <p class="hint">{{localize 'MEGS.CanBeTakenAwayHintDesc'}}</p>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="system.hasHardenedDefenses"
+                           {{checked system.hasHardenedDefenses}} />
+                    {{localize 'MEGS.HardenedDefensesHint'}}
+                </label>
+            </div>
+
+            <h3 class="section-header">{{localize 'MEGS.AttributeGroups'}}</h3>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" class="settings-attribute-group-toggle" data-group="physical"
+                           {{#if (compare system.settings.hasAttributes.physical "eq" "true")}}checked{{/if}} />
+                    {{localize 'MEGS.HasPhysicalAttributesHint'}}
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" class="settings-attribute-group-toggle" data-group="mental"
+                           {{#if (compare system.settings.hasAttributes.mental "eq" "true")}}checked{{/if}} />
+                    {{localize 'MEGS.HasMentalAttributesHint'}}
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" class="settings-attribute-group-toggle" data-group="mystical"
+                           {{#if (compare system.settings.hasAttributes.mystical "eq" "true")}}checked{{/if}} />
+                    {{localize 'MEGS.HasMysticalAttributesHint'}}
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" class="settings-avev-toggle"
+                           {{#if (compare system.settings.hasAVAndEV "eq" "true")}}checked{{/if}} />
+                    {{localize 'MEGS.HasActionValueAndEffectValue'}}
+                </label>
+            </div>
+        </div>
+
+    </section>
+</form>

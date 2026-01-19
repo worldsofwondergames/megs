@@ -745,8 +745,28 @@ export class MEGSItem extends Item {
         const totalBeforeBonus = attributesCost + avEvCost + powersCost + skillsCost + traitsCost;
 
         // Apply gadget bonus (÷4 if can be taken away, ÷2 if cannot)
+        // Round each category individually, then sum for total (matching displayed values)
         const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
-        const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
+
+        // Helper to adjust cost: divide by bonus and round up (handle negative values for drawbacks)
+        const adjustCost = (cost) => {
+            if (cost === 0) return 0;
+            if (cost < 0) return -Math.ceil(Math.abs(cost) / gadgetBonus);
+            return Math.ceil(cost / gadgetBonus);
+        };
+
+        // Calculate adjusted costs for each category
+        const adjustedAttributesCost = adjustCost(attributesCost);
+        const adjustedAvEvCost = adjustCost(avEvCost);
+        const adjustedPowersCost = adjustCost(powersCost);
+        const adjustedSkillsCost = adjustCost(skillsCost);
+        const adjustedAdvantagesCost = adjustCost(advantagesCost);
+        const adjustedDrawbacksCost = adjustCost(drawbacksCost);
+        const adjustedTraitsCost = adjustedAdvantagesCost + adjustedDrawbacksCost;
+
+        // Total is sum of rounded category values (matches what's displayed)
+        const finalCost = adjustedAttributesCost + adjustedAvEvCost + adjustedPowersCost +
+                          adjustedSkillsCost + adjustedTraitsCost;
 
         systemData.gadgetPointBudget = {
             base: baseBudget,

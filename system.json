@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/claude/gadget-builder-sheet-189-265cO/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -42,8 +42,8 @@
     "packs": [],
     "packFolders": [],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/claude/gadget-builder-sheet-189-265cO/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/claude/gadget-builder-sheet-189-265cO",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-1.0.0-Release",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

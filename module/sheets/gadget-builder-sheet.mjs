@@ -112,31 +112,19 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         });
 
         // Attribute plus/minus buttons
-        html.on('click', '.attribute-plus', async (ev) => {
+        html.on('click', '.attribute-plus, .attribute-minus', async (ev) => {
             ev.preventDefault();
             const button = ev.currentTarget;
             if (button.disabled) return;
 
             const attrKey = $(button).data('attribute');
             const currentValue = this.object.system.attributes[attrKey]?.value || 0;
-            if (currentValue < 60) {
-                await this.object.update({
-                    [`system.attributes.${attrKey}.value`]: currentValue + 1
-                });
-            }
-        });
+            const isIncrement = button.classList.contains('attribute-plus');
 
-        html.on('click', '.attribute-minus', async (ev) => {
-            ev.preventDefault();
-            const button = ev.currentTarget;
-            if (button.disabled) return;
-
-            const attrKey = $(button).data('attribute');
-            const currentValue = this.object.system.attributes[attrKey]?.value || 0;
-            if (currentValue > 0) {
-                await this.object.update({
-                    [`system.attributes.${attrKey}.value`]: currentValue - 1
-                });
+            if (isIncrement && currentValue < 60) {
+                await this.object.update({ [`system.attributes.${attrKey}.value`]: currentValue + 1 });
+            } else if (!isIncrement && currentValue > 0) {
+                await this.object.update({ [`system.attributes.${attrKey}.value`]: currentValue - 1 });
             }
         });
 
@@ -159,47 +147,20 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         });
 
         // AV/EV plus/minus buttons
-        html.on('click', '.av-plus', async (ev) => {
+        html.on('click', '.av-plus, .av-minus, .ev-plus, .ev-minus', async (ev) => {
             ev.preventDefault();
             const button = ev.currentTarget;
             if (button.disabled) return;
 
-            const currentValue = this.object.system.actionValue || 0;
-            if (currentValue < 60) {
-                await this.object.update({ 'system.actionValue': currentValue + 1 });
-            }
-        });
+            const isAV = button.classList.contains('av-plus') || button.classList.contains('av-minus');
+            const isIncrement = button.classList.contains('av-plus') || button.classList.contains('ev-plus');
+            const field = isAV ? 'actionValue' : 'effectValue';
+            const currentValue = this.object.system[field] || 0;
 
-        html.on('click', '.av-minus', async (ev) => {
-            ev.preventDefault();
-            const button = ev.currentTarget;
-            if (button.disabled) return;
-
-            const currentValue = this.object.system.actionValue || 0;
-            if (currentValue > 0) {
-                await this.object.update({ 'system.actionValue': currentValue - 1 });
-            }
-        });
-
-        html.on('click', '.ev-plus', async (ev) => {
-            ev.preventDefault();
-            const button = ev.currentTarget;
-            if (button.disabled) return;
-
-            const currentValue = this.object.system.effectValue || 0;
-            if (currentValue < 60) {
-                await this.object.update({ 'system.effectValue': currentValue + 1 });
-            }
-        });
-
-        html.on('click', '.ev-minus', async (ev) => {
-            ev.preventDefault();
-            const button = ev.currentTarget;
-            if (button.disabled) return;
-
-            const currentValue = this.object.system.effectValue || 0;
-            if (currentValue > 0) {
-                await this.object.update({ 'system.effectValue': currentValue - 1 });
+            if (isIncrement && currentValue < 60) {
+                await this.object.update({ [`system.${field}`]: currentValue + 1 });
+            } else if (!isIncrement && currentValue > 0) {
+                await this.object.update({ [`system.${field}`]: currentValue - 1 });
             }
         });
 

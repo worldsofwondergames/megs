@@ -1,0 +1,32 @@
+{
+  "_id": "sJ9ehVM9F2NfHYo1",
+  "name": "Range",
+  "type": "bonus",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "name": "Range",
+    "description": "",
+    "factorCostMod": 1,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265588,
+    "modifiedTime": 1767583265588,
+    "lastModifiedBy": "megs-system"
+  }
+}

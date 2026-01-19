@@ -55,10 +55,15 @@
         "build": "sass src/scss/megs.scss css/megs.css --style=expanded --no-source-map",
         "watch": "sass src/scss/megs.scss css/megs.css --style=expanded --source-map --watch",
         "generate": "node src/generate-megs-system.mjs",
+        "build:packs": "node scripts/build-compendiums.mjs",
+        "extract:packs": "node scripts/extract-compendiums.mjs",
         "format": "standard --fix && stylelint \"**/*.scss\"",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --silent=false",
         "scss": "sass styles/dcc.scss styles/dcc.css"
     },
     "type": "module",
-    "version": "0.2.1"
+    "version": "0.2.1",
+    "dependencies": {
+        "classic-level": "^3.0.0"
+    }
 }

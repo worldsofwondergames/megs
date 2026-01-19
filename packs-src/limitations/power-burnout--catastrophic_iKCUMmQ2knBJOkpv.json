@@ -1,0 +1,32 @@
+{
+  "_id": "iKCUMmQ2knBJOkpv",
+  "name": "Power Burnout, Catastrophic",
+  "type": "limitation",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "name": "Power Burnout, Catastrophic",
+    "description": "",
+    "factorCostMod": -2,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265588,
+    "modifiedTime": 1767583265588,
+    "lastModifiedBy": "megs-system"
+  }
+}

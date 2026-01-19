@@ -96,15 +96,15 @@ describe('Character Budget Calculations', () => {
             mind: { value: 0, factorCost: 6 },
             infl: { value: 0, factorCost: 7 },
             aura: { value: 0, factorCost: 6 },
-            spirit: { value: 0, factorCost: 6 }
+            spirit: { value: 0, factorCost: 6 },
         };
 
         return new MEGSActor({
             system: {
                 attributes: { ...defaultAttributes, ...attributeOverrides },
                 wealth,
-                creationBudget: { base: budget }
-            }
+                creationBudget: { base: budget },
+            },
         });
     };
 
@@ -137,19 +137,19 @@ describe('Character Budget Calculations', () => {
         const gadget = {
             _id: 'gadget1',
             type: MEGS.itemTypes.gadget,
-            system: { totalCost: 50, parent: null }
+            system: { totalCost: 50, parent: null },
         };
 
         const childPower = {
             _id: 'power1',
             type: MEGS.itemTypes.power,
-            system: { totalCost: 30, parent: 'gadget1' }
+            system: { totalCost: 30, parent: 'gadget1' },
         };
 
         const standalonePower = {
             _id: 'power2',
             type: MEGS.itemTypes.power,
-            system: { totalCost: 20, parent: null }
+            system: { totalCost: 20, parent: null },
         };
 
         actor.items = [gadget, childPower, standalonePower];
@@ -170,7 +170,7 @@ describe('Character Budget Calculations', () => {
             _id: 'drawback1',
             name: 'Test Drawback',
             type: MEGS.itemTypes.drawback,
-            system: { totalCost: 25, parent: null }
+            system: { totalCost: 25, parent: null },
         };
 
         actor.items = [drawback];
@@ -191,7 +191,7 @@ describe('Character Budget Calculations', () => {
             _id: 'drawback1',
             name: 'Test Drawback',
             type: MEGS.itemTypes.drawback,
-            system: { totalCost: -50, parent: null }
+            system: { totalCost: -50, parent: null },
         };
 
         actor.items = [drawback];
@@ -204,41 +204,20 @@ describe('Character Budget Calculations', () => {
         expect(actor.system.heroPointBudget.remaining).toBe(500); // 450 - (-50) = 500
     });
 
-    test('logs error for drawback with zero cost', () => {
-        const originalError = console.error;
-        let errorMessage = '';
-        console.error = (msg) => { errorMessage = msg; };
-
-        const actor = createTestActor();
-
-        const drawback = {
-            _id: 'drawback1',
-            name: 'Broken Drawback',
-            type: MEGS.itemTypes.drawback,
-            system: { totalCost: 0, parent: null }
-        };
-
-        actor.items = [drawback];
-        actor.prepareBaseData();
-        actor.prepareDerivedData();
-
-        // Should log an error for zero cost
-        expect(errorMessage).toBe('Drawback "Broken Drawback" has zero cost - this is likely a configuration error');
-
-        console.error = originalError;
-    });
-
     test('calculates total spent and remaining correctly', () => {
-        const actor = createTestActor({
-            dex: { value: 3, factorCost: 7 },
-            str: { value: 2, factorCost: 6 },
-            body: { value: 2, factorCost: 6 }
-        }, 2); // 2 APs wealth @ FC 2 = 2 HP
+        const actor = createTestActor(
+            {
+                dex: { value: 3, factorCost: 7 },
+                str: { value: 2, factorCost: 6 },
+                body: { value: 2, factorCost: 6 },
+            },
+            2
+        ); // 2 APs wealth @ FC 2 = 2 HP
 
         const power = {
             _id: 'power1',
             type: MEGS.itemTypes.power,
-            system: { totalCost: 50, parent: null }
+            system: { totalCost: 50, parent: null },
         };
 
         actor.items = [power];

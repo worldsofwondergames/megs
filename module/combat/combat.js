@@ -173,7 +173,7 @@ export default class MEGSCombat extends Combat {
                         callback: (html) => {},
                     },
                     button1: {
-                        label: game.i18n.localize('MEGS.Submit'),
+                        label: game.i18n.localize('MEGS.Roll'),
                         callback: (html) => {
                             const response = this._processHeroPointsEntry(
                                 html[0].querySelector('form')

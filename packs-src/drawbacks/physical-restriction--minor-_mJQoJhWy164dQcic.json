@@ -1,0 +1,33 @@
+{
+  "_id": "mJQoJhWy164dQcic",
+  "name": "Physical Restriction (Minor)",
+  "type": "drawback",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "name": "Physical Restriction (Minor)",
+    "description": "",
+    "baseCost": 5,
+    "totalCost": 0,
+    "text": "",
+    "hasSubtext": true,
+    "parent": "",
+    "originalId": ""
+  },
+  "effects": [],
+  "flags": {},
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.346",
+    "systemId": "megs",
+    "systemVersion": "1.0.0",
+    "createdTime": 1767583265588,
+    "modifiedTime": 1767583265588,
+    "lastModifiedBy": "megs-system"
+  }
+}

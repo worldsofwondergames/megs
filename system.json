@@ -39,11 +39,84 @@
             "path": "lang/pt.json"
         }
     ],
-    "packs": [],
-    "packFolders": [],
+    "packs": [
+        {
+            "name": "powers",
+            "label": "MEGS Powers",
+            "path": "packs/powers",
+            "type": "Item",
+            "system": "megs",
+            "ownership": {
+                "PLAYER": "LIMITED",
+                "TRUSTED": "OBSERVER",
+                "ASSISTANT": "OWNER"
+            }
+        },
+        {
+            "name": "advantages",
+            "label": "MEGS Advantages",
+            "path": "packs/advantages",
+            "type": "Item",
+            "system": "megs",
+            "ownership": {
+                "PLAYER": "LIMITED",
+                "TRUSTED": "OBSERVER",
+                "ASSISTANT": "OWNER"
+            }
+        },
+        {
+            "name": "drawbacks",
+            "label": "MEGS Drawbacks",
+            "path": "packs/drawbacks",
+            "type": "Item",
+            "system": "megs",
+            "ownership": {
+                "PLAYER": "LIMITED",
+                "TRUSTED": "OBSERVER",
+                "ASSISTANT": "OWNER"
+            }
+        },
+        {
+            "name": "bonuses",
+            "label": "MEGS Bonuses",
+            "path": "packs/bonuses",
+            "type": "Item",
+            "system": "megs",
+            "ownership": {
+                "PLAYER": "LIMITED",
+                "TRUSTED": "OBSERVER",
+                "ASSISTANT": "OWNER"
+            }
+        },
+        {
+            "name": "limitations",
+            "label": "MEGS Limitations",
+            "path": "packs/limitations",
+            "type": "Item",
+            "system": "megs",
+            "ownership": {
+                "PLAYER": "LIMITED",
+                "TRUSTED": "OBSERVER",
+                "ASSISTANT": "OWNER"
+            }
+        }
+    ],
+    "packFolders": [
+        {
+            "name": "MEGS Item Repository",
+            "sorting": "a",
+            "packs": [
+                "powers",
+                "advantages",
+                "drawbacks",
+                "bonuses",
+                "limitations"
+            ]
+        }
+    ],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/refs/heads/MEGS-1.0.0-Release/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-1.0.0-Release/",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/MEGS-1.0.0-Release/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/MEGS-1.0.0-Release",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

@@ -14,7 +14,8 @@
         "SheetLabels": {
             "Actor": "MEGS Actor Sheet",
             "CharacterBuilder": "MEGS Character Builder",
-            "Item": "MEGS Item Sheet"
+            "Item": "MEGS Item Sheet",
+            "GadgetBuilder": "MEGS Gadget Builder"
         },
         "Effects": {
             "Source": "Source",
@@ -50,6 +51,7 @@
         "Base": "Base",
         "Biography": "Biography",
         "Bonus": "Bonus",
+        "BonusPrefix": "BONUS:",
         "BuybackCost": "Buyback Cost",
         "CanBeTakenAway": "Can Be Taken Away?'",
         "Characteristics": "Characteristics",
@@ -101,6 +103,7 @@
         "ItalicizedAttributesText": " Italicized Attributes (An Omni-Gadget allowing Italicized Attributes must also have the ability to mimic Attributes - A and/or B).",
         "Item": "Item",
         "Limitation": "Limitation",
+        "LimitationPrefix": "LIMITATION:",
         "Link": "Link",
         "LinkedAttribute": "Linked Attribute",
         "LinkedItem": "Linked Item",
@@ -125,8 +128,9 @@
         "Reliability": "Reliability",
         "Resistance": "Resistance",
         "ResistanceValue": "Resistance Value",
-        "ResultTableShifts": "Result Table Shifts",
+        "ResultTableShifts": "Manual Result Shifts",
         "Roll": "Roll",
+        "RollResult": "Roll Result",
         "RolledDoublesPrompt": "You have rolled doubles; would you like to roll again?",
         "Settings": "Settings",
         "Shifts": "Shifts",
@@ -153,7 +157,29 @@
 
         "Superspeed": "Superspeed",
         "MartialArtist": "Martial Artist",
-        "LightningReflexes": "Lightning Reflexes"
+        "LightningReflexes": "Lightning Reflexes",
+
+        "GadgetName": "Gadget Name",
+        "HPBudget": "HP Budget",
+        "HPRemaining": "HP Remaining",
+        "TotalAttributesCost": "Total Attributes Cost:",
+        "AVEVCost": "AV/EV Cost:",
+        "MysticalAttributes": "Mystical Attributes",
+        "ActionValueAndEffectValue": "Action Value & Effect Value",
+        "TotalPowersCost": "Total Powers Cost:",
+        "TotalSkillsCost": "Total Skills Cost:",
+        "NetTraitsCost": "Net Traits Cost:",
+        "GadgetSettings": "Gadget Settings",
+        "CanBeTakenAwayHint": "Can Be Taken Away (÷4 cost)",
+        "CanBeTakenAwayHintDesc": "If unchecked, gadget bonus is ÷2",
+        "HardenedDefensesHint": "Hardened Defenses (+2 to BODY FC)",
+        "AttributeGroups": "Attribute Groups",
+        "HasPhysicalAttributesHint": "Has Physical Attributes (DEX, STR, BODY)",
+        "HasMentalAttributesHint": "Has Mental Attributes (INT, WILL, MIND)",
+        "HasMysticalAttributesHint": "Has Mystical Attributes (INFL, AURA, SPIRIT)",
+        "HasActionValueAndEffectValue": "Has Action Value & Effect Value",
+        "OnlyBonusesAndLimitationsCanBeDropped": "Only Bonuses and Limitations can be dropped onto Powers.",
+        "ModifiersOnlyForOwnedGadgets": "Modifiers can only be added to powers on gadgets owned by a character."
     },
 
     "TYPES": {
@@ -194,5 +220,13 @@
             "name": "Allow skill deletion",
             "label": "Check to allow deletion of skills and subskills from actor and gadget sheets"
         }
+    },
+    "Compendium": {
+        "Powers": "MEGS Powers",
+        "Advantages": "MEGS Advantages",
+        "Drawbacks": "MEGS Drawbacks",
+        "Bonuses": "MEGS Bonuses",
+        "Limitations": "MEGS Limitations",
+        "Folder": "MEGS Item Repository"
     }
 }

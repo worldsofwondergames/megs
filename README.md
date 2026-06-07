@@ -56,10 +56,9 @@ Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=i
 
 **YouTube demo videos** are planned by the beginning of February 2026 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 
-Then... **version 1.0.0**, by March 1, 2026. Incorporating any feedback I've gotten and:
+Then... **version 1.1.0**, by August 1, 2026. Incorporating any feedback I've gotten and:
 
-- Adding character builder/creator view for characters
-- Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
+- Integration with third-party modules like Dice So Nice (buggy right now) and Token Action HUD.
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
 And then after the rush, I rest for a very, very long time.

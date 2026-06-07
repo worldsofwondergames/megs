@@ -1,0 +1,28 @@
+#!/bin/sh
+# Post-merge hook: Update README.md version references to match system.json
+
+VERSION=$(sed -n 's/.*"version": "\([0-9]*\.[0-9]*\.[0-9]*\)".*/\1/p' system.json | head -1)
+
+if [ -z "$VERSION" ]; then
+    echo "post-merge: Could not extract version from system.json"
+    exit 0
+fi
+
+if [ ! -f "README.md" ]; then
+    exit 0
+fi
+
+# Update "current version (X.Y.Z)" references
+sed -i -E "s/current version \([0-9]+\.[0-9]+\.[0-9]+\)/current version ($VERSION)/" README.md
+
+# Update "currently sitting at **version X.Y.Z**" references
+sed -i -E "s/currently sitting at \*\*version [0-9]+\.[0-9]+\.[0-9]+\*\*/currently sitting at **version $VERSION**/" README.md
+
+# If README changed, commit the update
+if ! git diff --quiet README.md 2>/dev/null; then
+    git add README.md
+    git commit -m "Update README version references to $VERSION"
+    echo "post-merge: Updated README.md version references to $VERSION"
+else
+    echo "post-merge: README.md version references already at $VERSION"
+fi

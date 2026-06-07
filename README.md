@@ -1,8 +1,12 @@
 # MEGS System
 
-![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
+![Foundry v13](https://img.shields.io/badge/foundry-v13-green)
 
 ![Mutiversal Exponential Gaming System](https://github.com/worldsofwondergames/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
+
+Support this and other projects via these platforms.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/worldsofwonder)
 
 ## What is the Multiversal Exponential Gaming System system for Foundry Virtual Tabletop?
 

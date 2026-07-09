@@ -457,7 +457,7 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (isStandalonePowerOrSkill && (isVirtualBonus || isVirtualLimitation)) {
                 // Standalone power/skill - delete virtual modifier from flattened array
-                const index = parseInt(itemId.split('-')[2]);
+                const index = Number.parseInt(itemId.split('-')[2]);
                 const arrayKey = isVirtualBonus ? 'bonuses' : 'limitations';
                 const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
 
@@ -519,8 +519,8 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (this.object.type === MEGS.itemTypes.power) {
                 // for powers, AV and EV are typically APs of power
-                actionValue = parseInt(dataset.value);
-                effectValue = parseInt(dataset.value);
+                actionValue = Number.parseInt(dataset.value);
+                effectValue = Number.parseInt(dataset.value);
 
                 // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
 
@@ -547,14 +547,14 @@ export class MEGSItemSheet extends ItemSheet {
                 dataset.type === MEGS.itemTypes.skill ||
                 dataset.type === MEGS.itemTypes.subskill
             ) {
-                actionValue = parseInt(dataset.value);
-                effectValue = parseInt(dataset.value);
+                actionValue = Number.parseInt(dataset.value);
+                effectValue = Number.parseInt(dataset.value);
             }
 
             // values of powers on gadget sheets
             if (dataset.type === MEGS.itemTypes.power) {
-                actionValue = parseInt(dataset.value);
-                effectValue = parseInt(dataset.value);
+                actionValue = Number.parseInt(dataset.value);
+                effectValue = Number.parseInt(dataset.value);
             }
 
             // If dataset.type is not set, use the object type (for backward compatibility)
@@ -611,7 +611,7 @@ export class MEGSItemSheet extends ItemSheet {
             let resistanceValue = 0;
 
             if (dataset.type === 'attribute') {
-                actionValue = parseInt(dataset.value);
+                actionValue = Number.parseInt(dataset.value);
                 const targetActor = MegsTableRolls.getTargetActor();
                 if (targetActor) {
                     opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
@@ -621,8 +621,8 @@ export class MEGSItemSheet extends ItemSheet {
                 effectValue = Utils.getEffectValue(dataset.key, this.object);
             } else if (dataset.type === 'gadget') {
                 // For gadgets, use the actionValue and effectValue from the dataset
-                actionValue = parseInt(dataset.actionvalue);
-                effectValue = parseInt(dataset.effectvalue);
+                actionValue = Number.parseInt(dataset.actionvalue);
+                effectValue = Number.parseInt(dataset.effectvalue);
             }
 
             let label = dataset.label;

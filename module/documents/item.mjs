@@ -1044,8 +1044,8 @@ export class MEGSItem extends Item {
             this._calculateGadgetPointBudget();
         }
         // Calculate total cost for powers, skills, advantages, drawbacks (but not gadgets or subskills)
-        else if (systemData.hasOwnProperty('baseCost')) {
-            if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
+        else if (Object.hasOwn(systemData, 'baseCost')) {
+            if (Object.hasOwn(systemData, 'factorCost') && Object.hasOwn(systemData, 'aps')) {
                 // Subskills don't have costs - skip validation and calculation for them
                 // Only validate factorCost for actual powers and skills
                 if (this.type !== MEGS.itemTypes.subskill &&

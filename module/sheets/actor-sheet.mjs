@@ -904,7 +904,7 @@ export class MEGSActorSheet extends ActorSheet {
         const element = event.currentTarget;
         const dataset = element.dataset;
 
-        let actionValue = parseInt(dataset.value);
+        let actionValue = Number.parseInt(dataset.value);
         let opposingValue = 0;
         let effectValue = 0;
         let resistanceValue = 0;
@@ -934,11 +934,11 @@ export class MEGSActorSheet extends ActorSheet {
             dataset.type === MEGS.itemTypes.skill ||
             dataset.type === MEGS.itemTypes.subskill
         ) {
-            effectValue = parseInt(dataset.value);
+            effectValue = Number.parseInt(dataset.value);
         } else if (dataset.type === MEGS.itemTypes.gadget) {
             // TODO clean all this up; waaaay too complex
-            actionValue = parseInt(dataset.actionvalue);
-            effectValue = parseInt(dataset.effectvalue);
+            actionValue = Number.parseInt(dataset.actionvalue);
+            effectValue = Number.parseInt(dataset.effectvalue);
 
             if (effectValue === 0) {
                 // no EV specified; check attributes

@@ -46,7 +46,7 @@ export class RollValues {
         this.opposingValue = opposingValue;
         this.effectValue = effectValue;
         this.resistanceValue = resistanceValue;
-        this.rollFormula = rollFormula ? rollFormula : '1d10 + 1d10';
+        this.rollFormula = rollFormula || '1d10 + 1d10';
         this.unskilled = unskilled || false;
     }
 }
@@ -267,8 +267,8 @@ export class MegsTableRolls {
         }
         if (combatManeuverKey) {
             const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-            ovColumnShifts += parseInt(combatManeuver.ovShifts);
-            rvColumnShifts += parseInt(combatManeuver.rvShifts);
+            ovColumnShifts += Number.parseInt(combatManeuver.ovShifts);
+            rvColumnShifts += Number.parseInt(combatManeuver.rvShifts);
         }
         if (resultColumnShifts) {
             rvColumnShifts += resultColumnShifts;
@@ -277,7 +277,7 @@ export class MegsTableRolls {
         /**********************************
          * ACTION TABLE
          **********************************/
-        const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
+        const avAdjusted = Number.parseInt(this.actionValue) + Number.parseInt(hpSpentAV);
 
         let avInfo = '';
         // Only show tooltip if there's additional information beyond base value
@@ -342,7 +342,7 @@ export class MegsTableRolls {
         await avRoll.evaluate();
 
         let dice = [];
-        let resultData = {
+        const resultData = {
             result: '',
             actionValue: avAdjusted,
             actionValueInfo: avInfo,
@@ -366,11 +366,11 @@ export class MegsTableRolls {
 
         let avRollTotal = 0;
         dice.forEach((die) => {
-            avRollTotal = avRollTotal + parseInt(die);
+            avRollTotal = avRollTotal + Number.parseInt(die);
         });
         resultData.rollTotal = avRollTotal;
 
-        if (parseInt(dice[dice.length - 2]) === 1 && parseInt(dice[dice.length - 1]) === 1) {
+        if (Number.parseInt(dice[dice.length - 2]) === 1 && Number.parseInt(dice[dice.length - 1]) === 1) {
             // dice are both 1s
             resultData.result = game.i18n.localize('MEGS.Double1s');
             await this._showRollResultInChat(resultData, avRoll, ShowResultCall.DOUBLE_1S);
@@ -419,7 +419,7 @@ export class MegsTableRolls {
             // Show combat maneuver contribution
             if (combatManeuverKey) {
                 const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-                const maneuverShifts = parseInt(combatManeuver.rvShifts);
+                const maneuverShifts = Number.parseInt(combatManeuver.rvShifts);
                 if (maneuverShifts !== 0) {
                     shiftExplanation +=
                         '    <tr>' +
@@ -454,8 +454,6 @@ export class MegsTableRolls {
         /**********************************
          * RESULT TABLE
          **********************************/
-        const resultTable = CONFIG.tables.resultTable;
-
         // get effect value column  index
         const evAdjusted = this.effectValue + hpSpentEV;
         const evIndex = this._getRangeIndex(evAdjusted);
@@ -469,7 +467,7 @@ export class MegsTableRolls {
         // apply shifts
         // Column Shifts on the Result Table are made to the left, decreasing numbers in the Resistance Value row,
         // but increasing the number of Result APs within the Table itself
-        let shiftedRvIndex = rvIndex - columnShifts;
+        const shiftedRvIndex = rvIndex - columnShifts;
         if (shiftedRvIndex <= 0) {
             // calculate column shifts that push past the 0 column
             // If the result is in the +1 Column, add 1 AP to your Result APs for every time you shift into this Column.
@@ -527,14 +525,14 @@ export class MegsTableRolls {
      * @returns
      */
     async _rollDice(data, initialRoll) {
-        let dice = [];
+        const dice = [];
         let stopRolling = false;
         if (data) {
             if (data.columnShifts) {
-                data['isOneColumnShift'] = data.columnShifts === 1;
+                data.isOneColumnShift = data.columnShifts === 1;
             } else {
                 data.columnShifts = 0;
-                data['isOneColumnShift'] = false;
+                data.isOneColumnShift = false;
             }
         }
 
@@ -561,8 +559,8 @@ export class MegsTableRolls {
             } else if (currentRoll.result && typeof currentRoll.result === 'string') {
                 // Fallback for mocks or legacy: parse the result string
                 const rolledDice = currentRoll.result.split(' + ');
-                die1 = parseInt(rolledDice[0]);
-                die2 = parseInt(rolledDice[1]);
+                die1 = Number.parseInt(rolledDice[0]);
+                die2 = Number.parseInt(rolledDice[1]);
             } else {
                 // Ultimate fallback: use mock dice values or defaults
                 die1 = (currentRoll.dice && currentRoll.dice[0] && currentRoll.dice[0].results) ? currentRoll.dice[0].results[0] : 1;
@@ -695,16 +693,16 @@ export class MegsTableRolls {
      */
     _processOpposingValuesEntry(form) {
         return {
-            actionValue: parseInt(form.actionValue?.value) || 0,
-            effectValue: parseInt(form.effectValue?.value) || 0,
-            opposingValue: parseInt(form.opposingValue?.value) || 0,
-            resistanceValue: parseInt(form.resistanceValue?.value) || 0,
-            hpSpentAV: parseInt(form.hpSpentAV.value) || 0,
-            hpSpentEV: parseInt(form.hpSpentEV.value) || 0,
-            hpSpentRV: parseInt(form.hpSpentRV.value) || 0,
-            hpSpentOV: parseInt(form.hpSpentOV.value) || 0,
+            actionValue: Number.parseInt(form.actionValue?.value) || 0,
+            effectValue: Number.parseInt(form.effectValue?.value) || 0,
+            opposingValue: Number.parseInt(form.opposingValue?.value) || 0,
+            resistanceValue: Number.parseInt(form.resistanceValue?.value) || 0,
+            hpSpentAV: Number.parseInt(form.hpSpentAV.value) || 0,
+            hpSpentEV: Number.parseInt(form.hpSpentEV.value) || 0,
+            hpSpentRV: Number.parseInt(form.hpSpentRV.value) || 0,
+            hpSpentOV: Number.parseInt(form.hpSpentOV.value) || 0,
             combatManeuver: form.combatManeuver.value,
-            resultColumnShifts: parseInt(form.resultColumnShiftsInput.value) || 0,
+            resultColumnShifts: Number.parseInt(form.resultColumnShiftsInput.value) || 0,
             isUnskilled: (form.isUnskilled && form.isUnskilled.checked) || false,
         };
     }

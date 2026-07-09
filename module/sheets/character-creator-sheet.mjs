@@ -7,7 +7,7 @@ import { MEGSActorSheet } from './actor-sheet.mjs';
 export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
     /** @override */
     static get defaultOptions() {
-        let newOptions = super.defaultOptions;
+        const newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
         newOptions.width = 650;
         newOptions.height = 600;
@@ -23,7 +23,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
 
     /** @override */
     get template() {
-        return `systems/megs/templates/actor/character-creator-sheet.hbs`;
+        return 'systems/megs/templates/actor/character-creator-sheet.hbs';
     }
 
     /** @override */
@@ -65,10 +65,10 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
 
         // Ensure wealth values are always numbers (Foundry form handling can convert to string)
         if (context.system.wealth !== undefined && context.system.wealth !== null) {
-            context.system.wealth = parseInt(context.system.wealth);
+            context.system.wealth = Number.parseInt(context.system.wealth);
         }
         if (context.system.wealthYear !== undefined && context.system.wealthYear !== null) {
-            context.system.wealthYear = parseInt(context.system.wealthYear);
+            context.system.wealthYear = Number.parseInt(context.system.wealthYear);
         }
 
         // Debug: Log wealth value in getData
@@ -164,7 +164,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             const isChecked = ev.currentTarget.checked;
 
             // Store current wealth selection to restore after render
-            const currentWealth = parseInt(this.actor.system.wealth ?? 0);
+            const currentWealth = Number.parseInt(this.actor.system.wealth ?? 0);
             console.log('Checkbox change - current wealth:', currentWealth, 'checked:', isChecked);
 
             // If unchecking, reset year to 1990
@@ -172,12 +172,12 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
                 await this.actor.update({
                     'system.wealthAdjustForInflation': false,
                     'system.wealthYear': 1990,
-                    'system.wealth': currentWealth  // Preserve wealth selection
+                    'system.wealth': currentWealth // Preserve wealth selection
                 });
             } else {
                 await this.actor.update({
                     'system.wealthAdjustForInflation': true,
-                    'system.wealth': currentWealth  // Preserve wealth selection
+                    'system.wealth': currentWealth // Preserve wealth selection
                 });
             }
             console.log('After update - wealth:', this.actor.system.wealth);
@@ -186,15 +186,15 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
         // Wealth year selection
         html.on('change', '.wealth-year-select', async (ev) => {
             ev.preventDefault();
-            const selectedYear = parseInt(ev.currentTarget.value);
+            const selectedYear = Number.parseInt(ev.currentTarget.value);
 
             // Store current wealth selection to restore after render
-            const currentWealth = parseInt(this.actor.system.wealth ?? 0);
+            const currentWealth = Number.parseInt(this.actor.system.wealth ?? 0);
             console.log('Year change - current wealth:', currentWealth, 'new year:', selectedYear);
 
             await this.actor.update({
                 'system.wealthYear': selectedYear,
-                'system.wealth': currentWealth  // Preserve wealth selection
+                'system.wealth': currentWealth // Preserve wealth selection
             });
             console.log('After update - wealth:', this.actor.system.wealth);
         });
@@ -202,7 +202,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
         // Wealth radio button selection
         html.on('change', '.wealth-radio', async (ev) => {
             ev.preventDefault();
-            const selectedAP = parseInt(ev.currentTarget.value);
+            const selectedAP = Number.parseInt(ev.currentTarget.value);
             await this.actor.update({ 'system.wealth': selectedAP });
         });
 

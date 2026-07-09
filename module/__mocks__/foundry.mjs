@@ -1,4 +1,3 @@
-/* global jest */
 /* eslint-env jest */
 import { MEGS } from '../helpers/config.mjs';
 import { jest } from '@jest/globals';
@@ -463,10 +462,8 @@ global.mergeObject = function (
     if (!inplace && _d === 0) original = global.duplicate(original);
 
     // Enforce object expansion at depth 0
-    if (_d === 0 && Object.keys(original).some((k) => /\./.test(k)))
-        original = global.expandObject(original);
-    if (_d === 0 && Object.keys(other).some((k) => /\./.test(k)))
-        other = global.expandObject(other);
+    if (_d === 0 && Object.keys(original).some((k) => /\./.test(k))) { original = global.expandObject(original); }
+    if (_d === 0 && Object.keys(other).some((k) => /\./.test(k))) { other = global.expandObject(other); }
 
     // Iterate over the other object
     for (let [k, v] of Object.entries(other)) {
@@ -541,11 +538,11 @@ global.renderTemplate = async function (template, data) {};
  * Foundry namespaced APIs (V13+)
  */
 global.foundry = {
-  applications: {
-    handlebars: {
-      renderTemplate: async function(template, data) {  }
+    applications: {
+        handlebars: {
+            renderTemplate: async function (template, data) { }
+        }
     }
-  }
 };
 
 /**

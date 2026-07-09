@@ -147,7 +147,7 @@ export class MegsTableRolls {
                 classes: ['megs', 'dialog']
             }).render(true);
         } else if (game.user.targets.size > 1) {
-            ui.notifications.warn(localize('MEGS.ErrorMessages.OnlyOneTarget'));
+            ui.notifications.warn(game.i18n.localize('MEGS.ErrorMessages.OnlyOneTarget'));
         } else {
             // use target token for OV and RV values
             await this._handleTargetedRolls(label);

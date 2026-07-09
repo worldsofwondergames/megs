@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "rules": {
+    "max-nesting-depth": null,
+    "selector-no-qualifying-type": null,
+    "selector-max-compound-selectors": null,
+    "rule-empty-line-before": null,
+    "declaration-property-value-disallowed-list": null,
+    "color-named": null,
+    "shorthand-property-no-redundant-values": null,
+    "property-no-vendor-prefix": null,
+    "selector-class-pattern": null
+  }
+}

@@ -1,0 +1,24 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      # Informational for now: the codebase predates these configs and still
+      # has residual findings. Non-blocking until the backlog is cleared.
+      - name: ESLint
+        run: npx eslint "module/**/*.mjs"
+        continue-on-error: true
+      - name: Stylelint
+        run: npx stylelint "src/scss/**/*.scss"
+        continue-on-error: true

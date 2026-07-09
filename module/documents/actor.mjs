@@ -177,9 +177,9 @@ export class MEGSActor extends Actor {
         // Get all powers and skills (subskills no longer have costs)
         const itemsWithCosts = this.items.filter(item =>
             (item.type === MEGS.itemTypes.power || item.type === MEGS.itemTypes.skill) &&
-            item.system.hasOwnProperty('baseCost') &&
-            item.system.hasOwnProperty('factorCost') &&
-            item.system.hasOwnProperty('aps')
+            Object.hasOwn(item.system, 'baseCost') &&
+            Object.hasOwn(item.system, 'factorCost') &&
+            Object.hasOwn(item.system, 'aps')
         );
 
         itemsWithCosts.forEach(item => {

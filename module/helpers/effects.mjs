@@ -23,7 +23,7 @@ export async function onManageActiveEffect(event, owner) {
             ]);
         case 'edit':
             return effect.sheet.render(true);
-        case 'delete':
+        case 'delete': {
             const confirmed = await Dialog.confirm({
                 title: `Delete Active Effect: ${effect.name}`,
                 content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
@@ -36,6 +36,7 @@ export async function onManageActiveEffect(event, owner) {
                 return effect.delete();
             }
             break;
+        }
         case 'toggle':
             return effect.update({ disabled: !effect.disabled });
     }

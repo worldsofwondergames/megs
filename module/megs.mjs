@@ -217,7 +217,7 @@ Handlebars.registerHelper('isDivisor', function (num1, num2) {
     return num1 !== 0 && num2 % num1 === 0;
 });
 
-Handlebars.registerHelper('compare', function (v1, operator, v2) {
+Handlebars.registerHelper('compare', function (v1, operator, v2, options) {
     switch (operator) {
         case 'eq':
             return v1 === v2;

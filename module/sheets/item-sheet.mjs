@@ -303,7 +303,7 @@ export class MEGSItemSheet extends ItemSheet {
                     const powerName = itemId.replace('virtual-power-', '');
                     const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
 
-                    if (powerAPs.hasOwnProperty(powerName)) {
+                    if (Object.hasOwn(powerAPs, powerName)) {
                         powerAPs[powerName] = (powerAPs[powerName] || 0) + 1;
                         await this.object.update({ 'system.powerAPs': powerAPs });
                         this.render(false);
@@ -313,10 +313,10 @@ export class MEGSItemSheet extends ItemSheet {
                     const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
                     const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
 
-                    if (skillData.hasOwnProperty(skillName)) {
+                    if (Object.hasOwn(skillData, skillName)) {
                         skillData[skillName] = (skillData[skillName] || 0) + 1;
                         await this.object.update({ 'system.skillData': skillData });
-                    } else if (subskillData.hasOwnProperty(skillName)) {
+                    } else if (Object.hasOwn(subskillData, skillName)) {
                         subskillData[skillName] = (subskillData[skillName] || 0) + 1;
                         await this.object.update({ 'system.subskillData': subskillData });
                     }
@@ -346,7 +346,7 @@ export class MEGSItemSheet extends ItemSheet {
                     const powerName = itemId.replace('virtual-power-', '');
                     const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
 
-                    if (powerAPs.hasOwnProperty(powerName) && (powerAPs[powerName] || 0) > 0) {
+                    if (Object.hasOwn(powerAPs, powerName) && (powerAPs[powerName] || 0) > 0) {
                         powerAPs[powerName] = (powerAPs[powerName] || 0) - 1;
                         await this.object.update({ 'system.powerAPs': powerAPs });
                         this.render(false);
@@ -356,11 +356,11 @@ export class MEGSItemSheet extends ItemSheet {
                     const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
                     const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
 
-                    if (skillData.hasOwnProperty(skillName) && (skillData[skillName] || 0) > 0) {
+                    if (Object.hasOwn(skillData, skillName) && (skillData[skillName] || 0) > 0) {
                         skillData[skillName] = (skillData[skillName] || 0) - 1;
                         await this.object.update({ 'system.skillData': skillData });
                         this.render(false);
-                    } else if (subskillData.hasOwnProperty(skillName) && (subskillData[skillName] || 0) > 0) {
+                    } else if (Object.hasOwn(subskillData, skillName) && (subskillData[skillName] || 0) > 0) {
                         subskillData[skillName] = (subskillData[skillName] || 0) - 1;
                         await this.object.update({ 'system.subskillData': subskillData });
                         this.render(false);

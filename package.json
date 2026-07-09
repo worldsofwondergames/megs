@@ -61,8 +61,6 @@
         "extract:packs": "node scripts/extract-compendiums.mjs",
         "format": "eslint \"module/**/*.mjs\" --fix && stylelint \"src/scss/**/*.scss\" --fix",
         "lint": "eslint \"module/**/*.mjs\" && stylelint \"src/scss/**/*.scss\"",
-        "prepare": "git config core.hooksPath scripts/hooks",
-        "setup:hooks": "git config core.hooksPath scripts/hooks",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --silent=false",
         "scss": "sass styles/dcc.scss styles/dcc.css"
     },

@@ -1168,8 +1168,8 @@ export class MEGSItem extends Item {
      */
     rollMegs() {
         // for powers, AV and EV are typically APs of power
-        const actionValue = parseInt(this.system.aps);
-        const effectValue = parseInt(this.system.aps);
+        const actionValue = Number.parseInt(this.system.aps);
+        const effectValue = Number.parseInt(this.system.aps);
         let opposingValue = 0;
         let resistanceValue = 0;
 

@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { jest } from '@jest/globals';
-import { log, error } from 'console'; // jest overrides console; use these instead
 
 /**
  * Mocks for Foundry's Roll class

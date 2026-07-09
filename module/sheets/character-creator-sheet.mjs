@@ -7,7 +7,7 @@ import { MEGSActorSheet } from './actor-sheet.mjs';
 export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
     /** @override */
     static get defaultOptions() {
-        let newOptions = super.defaultOptions;
+        const newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
         newOptions.width = 650;
         newOptions.height = 600;
@@ -23,7 +23,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
 
     /** @override */
     get template() {
-        return `systems/megs/templates/actor/character-creator-sheet.hbs`;
+        return 'systems/megs/templates/actor/character-creator-sheet.hbs';
     }
 
     /** @override */
@@ -172,12 +172,12 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
                 await this.actor.update({
                     'system.wealthAdjustForInflation': false,
                     'system.wealthYear': 1990,
-                    'system.wealth': currentWealth  // Preserve wealth selection
+                    'system.wealth': currentWealth // Preserve wealth selection
                 });
             } else {
                 await this.actor.update({
                     'system.wealthAdjustForInflation': true,
-                    'system.wealth': currentWealth  // Preserve wealth selection
+                    'system.wealth': currentWealth // Preserve wealth selection
                 });
             }
             console.log('After update - wealth:', this.actor.system.wealth);
@@ -194,7 +194,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
 
             await this.actor.update({
                 'system.wealthYear': selectedYear,
-                'system.wealth': currentWealth  // Preserve wealth selection
+                'system.wealth': currentWealth // Preserve wealth selection
             });
             console.log('After update - wealth:', this.actor.system.wealth);
         });

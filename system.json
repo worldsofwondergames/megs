@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/claude/next-issue-selection-zzli01/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/feature/auto-update-system-json-urls/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -119,8 +119,8 @@
         }
     ],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/claude/next-issue-selection-zzli01/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/claude/next-issue-selection-zzli01",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/feature/auto-update-system-json-urls/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/feature/auto-update-system-json-urls",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

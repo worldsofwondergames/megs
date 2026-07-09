@@ -21,7 +21,7 @@ export class MEGSItemSheet extends ItemSheet {
 
     /** @override */
     static get defaultOptions() {
-        let newOptions = super.defaultOptions;
+        const newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'item'];
         newOptions.width = 667;
         newOptions.height = 480;
@@ -102,7 +102,7 @@ export class MEGSItemSheet extends ItemSheet {
             // Always display parent skill's APs
             const actor = game.actors.get(context.document.system.actorId);
             if (actor) {
-                var skill = actor.items.filter((obj) => {
+                const skill = actor.items.filter((obj) => {
                     return obj._id === context.document.system.parent;
                 })[0];
                 if (skill) {
@@ -137,8 +137,8 @@ export class MEGSItemSheet extends ItemSheet {
 
         // store all skills for dropdown on subskill page
         if (itemData.type === MEGS.itemTypes.subskill) {
-            let allSkills = {};
-            for (let i of game.items) {
+            const allSkills = {};
+            for (const i of game.items) {
                 if (i.type === MEGS.itemTypes.skill) {
                     allSkills[i.name] = i;
                 }
@@ -148,14 +148,14 @@ export class MEGSItemSheet extends ItemSheet {
 
         context.isRollable = this._isRollable(itemData);
 
-        context.hasActor = this.object.parent ? true : false;
+        context.hasActor = !!this.object.parent;
 
         // if has actor parent, store powers that actor has; otherwise, store all powers
         if (itemData.type === MEGS.itemTypes.bonus || itemData.type === MEGS.itemTypes.limitation) {
             if (context.hasActor) {
-                let powers = [];
+                const powers = [];
                 const actor = this.object.parent;
-                for (let i of actor.items) {
+                for (const i of actor.items) {
                     if (i.type === MEGS.itemTypes.power) {
                         powers.push(i);
                     }
@@ -203,7 +203,7 @@ export class MEGSItemSheet extends ItemSheet {
         // only subskills with dice or both types for parent skill + rollable are rollable
         if (itemData.type === MEGS.itemTypes.subskill) {
             const actor = game.actors.get(itemData.system.actorId);
-            var skill = actor.items.filter((obj) => {
+            const skill = actor.items.filter((obj) => {
                 return obj._id === itemData.system.parent;
             })[0];
 
@@ -242,7 +242,7 @@ export class MEGSItemSheet extends ItemSheet {
             const isEditMode = this.object.getFlag('megs', 'edit-mode') === true;
             const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
 
-            checkboxes.each(function() {
+            checkboxes.each(function () {
                 const checkbox = $(this);
 
                 if (skillAps === 0) {
@@ -446,7 +446,7 @@ export class MEGSItemSheet extends ItemSheet {
             const typeDisplay = typeof itemType === 'string' ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : 'Item';
             const confirmed = await Dialog.confirm({
                 title: `Delete ${typeDisplay}: ${itemName}`,
-                content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+                content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
                 defaultYes: false,
                 options: {
                     classes: ['megs', 'dialog']
@@ -515,7 +515,7 @@ export class MEGSItemSheet extends ItemSheet {
             let opposingValue = 0;
             let resistanceValue = 0;
 
-            let targetActor = MegsTableRolls.getTargetActor();
+            const targetActor = MegsTableRolls.getTargetActor();
 
             if (this.object.type === MEGS.itemTypes.power) {
                 // for powers, AV and EV are typically APs of power
@@ -612,7 +612,7 @@ export class MEGSItemSheet extends ItemSheet {
 
             if (dataset.type === 'attribute') {
                 actionValue = parseInt(dataset.value);
-                let targetActor = MegsTableRolls.getTargetActor();
+                const targetActor = MegsTableRolls.getTargetActor();
                 if (targetActor) {
                     opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
                     resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
@@ -660,7 +660,7 @@ export class MEGSItemSheet extends ItemSheet {
         });
 
         if (this.object.parent && this.object.parent.isOwner) {
-            let handler = (ev) => this._onDragStart(ev);
+            const handler = (ev) => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {
                 if (li.classList.contains('inventory-header')) return;
                 li.setAttribute('draggable', true);
@@ -690,7 +690,7 @@ export class MEGSItemSheet extends ItemSheet {
         // For items on actors/gadgets, read from embedded items collection
         if (this.object.parent && this.object.parent.items) {
             // Iterate through items, allocating to containers
-            for (let i of this.object.parent.items) {
+            for (const i of this.object.parent.items) {
                 // if modifier belongs to this power/skill
                 if (i.system.parent === this.item._id) {
                     i.img = i.img || Item.DEFAULT_ICON;
@@ -762,7 +762,7 @@ export class MEGSItemSheet extends ItemSheet {
             let subskills = [];
 
             if (this.object.parent) {
-                for (let i of this.object.parent.items) {
+                for (const i of this.object.parent.items) {
                     if (i.type === MEGS.itemTypes.subskill) {
                         if (i.system.parent === context.item._id) {
                             // Subskills inherit APs from parent skill
@@ -832,7 +832,7 @@ export class MEGSItemSheet extends ItemSheet {
         const subskillData = context.system.subskillData || {};
 
         // Create virtual skill items
-        for (let [skillName, aps] of Object.entries(skillData)) {
+        for (const [skillName, aps] of Object.entries(skillData)) {
             // Look up the correct icon for this skill from CONFIG.skills
             let skillImg = 'systems/megs/assets/images/icons/skillls/skill.png'; // default
             if (CONFIG.skills) {
@@ -859,7 +859,7 @@ export class MEGSItemSheet extends ItemSheet {
         }
 
         // Create virtual subskill items
-        for (let [subskillName, aps] of Object.entries(subskillData)) {
+        for (const [subskillName, aps] of Object.entries(subskillData)) {
             const virtualSubskill = {
                 _id: `virtual-subskill-${subskillName}`,
                 name: subskillName,
@@ -867,7 +867,7 @@ export class MEGSItemSheet extends ItemSheet {
                 img: 'systems/megs/assets/images/icons/skillls/skill.png',
                 system: {
                     aps: aps,
-                    parent: `virtual-skill-parent`,
+                    parent: 'virtual-skill-parent',
                     linkedSkill: '',
                     useUnskilled: 'false'
                 },
@@ -889,7 +889,7 @@ export class MEGSItemSheet extends ItemSheet {
         const traitData = context.system.traitData || {};
 
         // Create virtual trait items (advantages and drawbacks)
-        for (let [key, trait] of Object.entries(traitData)) {
+        for (const [key, trait] of Object.entries(traitData)) {
             const virtualTrait = {
                 _id: `virtual-trait-${key}`,
                 name: trait.name,
@@ -920,7 +920,7 @@ export class MEGSItemSheet extends ItemSheet {
         const powerLinks = context.system.powerLinks || {};
 
         // Create virtual power items from flattened data
-        for (let powerName of Object.keys(powerAPs)) {
+        for (const powerName of Object.keys(powerAPs)) {
             const virtualPower = {
                 _id: `virtual-power-${powerName}`,
                 name: powerName,
@@ -948,7 +948,7 @@ export class MEGSItemSheet extends ItemSheet {
      */
     _prepareGadgetData(context) {
         // Handle attribute scores.
-        for (let [k, v] of Object.entries(context.system.attributes)) {
+        for (const [k, v] of Object.entries(context.system.attributes)) {
             v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
         }
 
@@ -964,7 +964,7 @@ export class MEGSItemSheet extends ItemSheet {
         const gadgets = [];
 
         let items = [];
-        let isStandalone = !context.document.parent;
+        const isStandalone = !context.document.parent;
 
         if (context.document.parent) {
             // Gadget owned by actor - get actual items from the actor
@@ -984,37 +984,28 @@ export class MEGSItemSheet extends ItemSheet {
         }
 
         // First pass: collect items that belong to this gadget
-        for (let i of items) {
+        for (const i of items) {
             if (isStandalone || i.system.parent === this.document._id) {
                 i.img = i.img || Item.DEFAULT_ICON;
 
                 // Append to powers
                 if (i.type === MEGS.itemTypes.power) {
                     powers.push(i);
-                }
-                // Append to skills
-                else if (i.type === MEGS.itemTypes.skill) {
+                } else if (i.type === MEGS.itemTypes.skill) {
                     i.subskills = [];
                     if (i.system.aps === 0) {
                         i.unskilled = true;
-                        // Safely access linked attribute value
                         const linkedAttr = i.system.link && this.object.system.attributes?.[i.system.link];
                         i.linkedAPs = linkedAttr?.value ?? 0;
                     } else {
                         i.unskilled = false;
                     }
                     skills.push(i);
-                }
-                // Append to advantages
-                else if (i.type === MEGS.itemTypes.advantage) {
+                } else if (i.type === MEGS.itemTypes.advantage) {
                     advantages.push(i);
-                }
-                // Append to drawbacks
-                else if (i.type === MEGS.itemTypes.drawback) {
+                } else if (i.type === MEGS.itemTypes.drawback) {
                     drawbacks.push(i);
-                }
-                // Append to gadgets
-                else if (i.type === MEGS.itemTypes.gadget) {
+                } else if (i.type === MEGS.itemTypes.gadget) {
                     gadgets.push(i);
                 }
             }
@@ -1022,7 +1013,7 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Second pass: collect subskills whose parent is one of the gadget's skills
         const skillIds = skills.map(s => s._id);
-        for (let i of items) {
+        for (const i of items) {
             if (i.type === MEGS.itemTypes.subskill && skillIds.includes(i.system.parent)) {
                 i.skill = context.item;
                 subskills.push(i);
@@ -1033,8 +1024,8 @@ export class MEGSItemSheet extends ItemSheet {
         const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
         arrays.forEach((element) => {
             element.sort(function (a, b) {
-                let textA = a.name.toUpperCase();
-                let textB = b.name.toUpperCase();
+                const textA = a.name.toUpperCase();
+                const textB = b.name.toUpperCase();
                 return textA < textB ? -1 : textA > textB ? 1 : 0;
             });
         });
@@ -1089,7 +1080,7 @@ export class MEGSItemSheet extends ItemSheet {
         };
 
         // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system['type'];
+        delete itemData.system.type;
 
         // Handle standalone gadgets creating traits
         if (!this.object.parent && this.object.type === MEGS.itemTypes.gadget &&
@@ -1213,10 +1204,10 @@ export class MEGSItemSheet extends ItemSheet {
         // Handle different data types
         // TODO remove this?
         switch (data.type) {
-            // case "ActiveEffect":
-            //   return this._onDropActiveEffect(event, data);
-            case 'Item':
-                return this._onDropItem(event, data);
+        // case "ActiveEffect":
+        //   return this._onDropActiveEffect(event, data);
+        case 'Item':
+            return this._onDropItem(event, data);
         }
     }
 
@@ -1417,7 +1408,7 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Identify sibling items based on adjacent HTML elements
         const siblings = [];
-        for (let el of dropTarget.parentElement.children) {
+        for (const el of dropTarget.parentElement.children) {
             const siblingId = el.dataset.itemId;
             if (siblingId && siblingId !== source.id) siblings.push(items.get(el.dataset.itemId));
         }
@@ -1472,11 +1463,7 @@ export class MEGSItemSheet extends ItemSheet {
     _openSettings(e) {
         e.preventDefault();
         // Find and activate the settings tab
-        const tabs = this.element.find('.tabs[data-group="primary"]');
-        const settingsTab = tabs.find('a[data-tab="settings"]');
-
-        // If the tab link doesn't exist in nav (which it doesn't), we need to manually activate
-        // Find the tab content and activate it
+        // Manually activate the settings tab content
         this.element.find('.tab[data-tab="settings"]').addClass('active');
         this.element.find('.tab').not('[data-tab="settings"]').removeClass('active');
     }

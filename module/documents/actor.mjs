@@ -17,9 +17,9 @@ export class MEGSActor extends Actor {
     async _getSkills() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
-        let skills = [];
-        let subskills = [];
-        for (let i of skillsJson) {
+        const skills = [];
+        const subskills = [];
+        for (const i of skillsJson) {
             i.img = i.img
                 ? 'systems/megs/assets/images/icons/skillls/' + i.img
                 : 'systems/megs/assets/images/icons/skillls/skill.png';
@@ -30,7 +30,7 @@ export class MEGSActor extends Actor {
             skills.push(item);
 
             if (i.system.subskills) {
-                for (let j of i.system.subskills) {
+                for (const j of i.system.subskills) {
                     const subskillObj = {
                         name: j.name,
                         type: 'subskill',
@@ -56,12 +56,12 @@ export class MEGSActor extends Actor {
 
         this.updateSource({ items: skills });
 
-        let actorSkills = {};
+        const actorSkills = {};
         this.items.forEach((skill) => {
             actorSkills[skill.name] = skill._id;
         });
 
-        for (let i of subskills) {
+        for (const i of subskills) {
             i.system.parent = actorSkills[i.system.linkedSkill];
         }
         this.updateSource({ items: subskills });
@@ -130,6 +130,7 @@ export class MEGSActor extends Actor {
             this.system.creationBudget = { base: 450 };
         }
     }
+
     /**
      * @override
      * Augment the actor source data with additional dynamic data. Typically,
@@ -246,18 +247,18 @@ export class MEGSActor extends Actor {
 
         if (attributes) {
             // Physical attributes
-            attributesCost += MEGS.getAPCost(attributes.dex?.value ?? 0, 7) || 0;  // DEX is FC 7
-            attributesCost += MEGS.getAPCost(attributes.str?.value ?? 0, 6) || 0;  // STR is FC 6
+            attributesCost += MEGS.getAPCost(attributes.dex?.value ?? 0, 7) || 0; // DEX is FC 7
+            attributesCost += MEGS.getAPCost(attributes.str?.value ?? 0, 6) || 0; // STR is FC 6
             attributesCost += MEGS.getAPCost(attributes.body?.value ?? 0, 6) || 0; // BODY is FC 6
 
             // Mental attributes
-            attributesCost += MEGS.getAPCost(attributes.int?.value ?? 0, 7) || 0;  // INT is FC 7
+            attributesCost += MEGS.getAPCost(attributes.int?.value ?? 0, 7) || 0; // INT is FC 7
             attributesCost += MEGS.getAPCost(attributes.will?.value ?? 0, 6) || 0; // WILL is FC 6
             attributesCost += MEGS.getAPCost(attributes.mind?.value ?? 0, 6) || 0; // MIND is FC 6
 
             // Mystical attributes
-            attributesCost += MEGS.getAPCost(attributes.infl?.value ?? 0, 7) || 0;  // INFL is FC 7
-            attributesCost += MEGS.getAPCost(attributes.aura?.value ?? 0, 6) || 0;  // AURA is FC 6
+            attributesCost += MEGS.getAPCost(attributes.infl?.value ?? 0, 7) || 0; // INFL is FC 7
+            attributesCost += MEGS.getAPCost(attributes.aura?.value ?? 0, 6) || 0; // AURA is FC 6
             attributesCost += MEGS.getAPCost(attributes.spirit?.value ?? 0, 6) || 0; // SPIRIT is FC 6
         }
 
@@ -437,26 +438,19 @@ export class MEGSActor extends Actor {
     /**
      * Prepare hero roll data.
      */
-    _getHeroRollData(data) {
-        if (this.type !== MEGS.characterTypes.hero) return;
+    _getHeroRollData(data) { // eslint-disable-line no-unused-vars
+    }
+
+    /**
+     * Prepare villain roll data.
+     */
+    _getVillainRollData(data) { // eslint-disable-line no-unused-vars
     }
 
     /**
      * Prepare NPC roll data.
      */
-    _getVillainRollData(data) {
-        if (this.type !== MEGS.characterTypes.villain) return;
-
-        // Process additional NPC data here.
-    }
-
-    /**
-     * Prepare NPC roll data.
-     */
-    _getNpcRollData(data) {
-        if (this.type !== MEGS.characterTypes.npc) return;
-
-        // Process additional NPC data here.
+    _getNpcRollData(data) { // eslint-disable-line no-unused-vars
     }
 }
 

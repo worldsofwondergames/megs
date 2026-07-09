@@ -46,7 +46,7 @@ export class RollValues {
         this.opposingValue = opposingValue;
         this.effectValue = effectValue;
         this.resistanceValue = resistanceValue;
-        this.rollFormula = rollFormula ? rollFormula : '1d10 + 1d10';
+        this.rollFormula = rollFormula || '1d10 + 1d10';
         this.unskilled = unskilled || false;
     }
 }
@@ -342,7 +342,7 @@ export class MegsTableRolls {
         await avRoll.evaluate();
 
         let dice = [];
-        let resultData = {
+        const resultData = {
             result: '',
             actionValue: avAdjusted,
             actionValueInfo: avInfo,
@@ -454,8 +454,6 @@ export class MegsTableRolls {
         /**********************************
          * RESULT TABLE
          **********************************/
-        const resultTable = CONFIG.tables.resultTable;
-
         // get effect value column  index
         const evAdjusted = this.effectValue + hpSpentEV;
         const evIndex = this._getRangeIndex(evAdjusted);
@@ -469,7 +467,7 @@ export class MegsTableRolls {
         // apply shifts
         // Column Shifts on the Result Table are made to the left, decreasing numbers in the Resistance Value row,
         // but increasing the number of Result APs within the Table itself
-        let shiftedRvIndex = rvIndex - columnShifts;
+        const shiftedRvIndex = rvIndex - columnShifts;
         if (shiftedRvIndex <= 0) {
             // calculate column shifts that push past the 0 column
             // If the result is in the +1 Column, add 1 AP to your Result APs for every time you shift into this Column.
@@ -527,14 +525,14 @@ export class MegsTableRolls {
      * @returns
      */
     async _rollDice(data, initialRoll) {
-        let dice = [];
+        const dice = [];
         let stopRolling = false;
         if (data) {
             if (data.columnShifts) {
-                data['isOneColumnShift'] = data.columnShifts === 1;
+                data.isOneColumnShift = data.columnShifts === 1;
             } else {
                 data.columnShifts = 0;
-                data['isOneColumnShift'] = false;
+                data.isOneColumnShift = false;
             }
         }
 

@@ -1,5 +1,4 @@
 import { MEGS } from '../helpers/config.mjs';
-import { prepareActiveEffectCategories } from '../helpers/effects.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs';
 import { Utils } from '../utils.js';
 
@@ -19,7 +18,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     /** @override */
     static get defaultOptions() {
-        let newOptions = super.defaultOptions;
+        const newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
         newOptions.width = 667;
         newOptions.height = 600;
@@ -226,7 +225,7 @@ export class MEGSActorSheet extends ActorSheet {
      */
     _prepareCharacterData(context) {
         // Handle attribute scores.
-        for (let [k, v] of Object.entries(context.system.attributes)) {
+        for (const [k, v] of Object.entries(context.system.attributes)) {
             v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
         }
 
@@ -413,12 +412,9 @@ export class MEGSActorSheet extends ActorSheet {
         context.items.forEach((i) => {
             i.img = i.img || Item.DEFAULT_ICON;
 
-            // Append to powers
             if (i.type === MEGS.itemTypes.power && !i.system.parent) {
                 powers.push(i);
-            }
-            // Append to skills.
-            else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
+            } else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
                 i.subskills = [];
                 if (i.system.aps === 0) {
                     i.unskilled = true;
@@ -428,21 +424,13 @@ export class MEGSActorSheet extends ActorSheet {
                 }
                 i.subskills = [];
                 skills.push(i);
-            }
-            // Append to advantages.
-            else if (i.type === MEGS.itemTypes.advantage && !i.system.parent) {
+            } else if (i.type === MEGS.itemTypes.advantage && !i.system.parent) {
                 advantages.push(i);
-            }
-            // Append to drawbacks.
-            else if (i.type === MEGS.itemTypes.drawback && !i.system.parent) {
+            } else if (i.type === MEGS.itemTypes.drawback && !i.system.parent) {
                 drawbacks.push(i);
-            }
-            // Append to subskills.
-            else if (i.type === MEGS.itemTypes.subskill) {
+            } else if (i.type === MEGS.itemTypes.subskill) {
                 subskills.push(i);
-            }
-            // Append to gadgets; do not show if gadget is owned by another gadget
-            else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
+            } else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
                 i.ownerId = this.object._id;
                 i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
                 gadgets.push(i);
@@ -481,8 +469,8 @@ export class MEGSActorSheet extends ActorSheet {
         const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
         arrays.forEach((element) => {
             element.sort(function (a, b) {
-                let textA = a.name.toUpperCase();
-                let textB = b.name.toUpperCase();
+                const textA = a.name.toUpperCase();
+                const textB = b.name.toUpperCase();
                 return textA < textB ? -1 : textA > textB ? 1 : 0;
             });
         });
@@ -573,7 +561,7 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Drag events for macros.
         if (this.actor.isOwner) {
-            let handler = (ev) => this._onDragStart(ev);
+            const handler = (ev) => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {
                 if (li.classList.contains('inventory-header')) return;
                 li.setAttribute('draggable', true);
@@ -611,7 +599,7 @@ export class MEGSActorSheet extends ActorSheet {
             system: data,
         };
         // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system['type'];
+        delete itemData.system.type;
 
         // Finally, create the item!
         return await Item.create(itemData, { parent: this.actor });
@@ -696,7 +684,7 @@ export class MEGSActorSheet extends ActorSheet {
         const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
         const confirmed = await Dialog.confirm({
             title: `Delete ${type}: ${item.name}`,
-            content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+            content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
             defaultYes: false,
             options: {
                 classes: ['megs', 'dialog']
@@ -921,7 +909,7 @@ export class MEGSActorSheet extends ActorSheet {
         let effectValue = 0;
         let resistanceValue = 0;
 
-        let targetActor = MegsTableRolls.getTargetActor();
+        const targetActor = MegsTableRolls.getTargetActor();
         if (targetActor) {
             if (dataset.type === MEGS.rollTypes.attribute) {
                 opposingValue = targetActor.system.attributes[dataset.key].value;
@@ -991,7 +979,7 @@ export class MEGSActorSheet extends ActorSheet {
     _getOwnedItemById(id) {
         let ownedItem;
         const items = this.object.collections.items;
-        for (let i of items) {
+        for (const i of items) {
             if (i._id === id) {
                 ownedItem = i;
                 break;

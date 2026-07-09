@@ -71,11 +71,11 @@
             margin-top: 5px;
 
             &.isLocked {
-                background-image: url(/systems/megs/assets/images/icons/locked.png);
+                background-image: url("/systems/megs/assets/images/icons/locked.png");
             }
 
             &.isUnlocked {
-                background-image: url(/systems/megs/assets/images/icons/unlocked.png);
+                background-image: url("/systems/megs/assets/images/icons/unlocked.png");
             }
         }
     }
@@ -93,7 +93,7 @@
         vertical-align: bottom;
         border: none;
         cursor: pointer;
-        background-image: url(/systems/megs/assets/images/icons/reset.png);
+        background-image: url("/systems/megs/assets/images/icons/reset.png");
         background-size: 30px auto;
         background-color: $c-white;
     }
@@ -127,7 +127,7 @@
     // D10 roll button styles
     .header-fields .grid .d10 {
         display: inline-block;
-        background-image: url(/systems/megs/assets/images/icons/2d10-blue.png);
+        background-image: url("/systems/megs/assets/images/icons/2d10-blue.png");
         margin-right: 1px;
         background-repeat: no-repeat;
         background-size: 45px 45px;
@@ -148,15 +148,15 @@
         transition: 0.2s background linear;
 
         &.unskilled {
-            background-image: url(/systems/megs/assets/images/icons/2d10-blue-2.png);
+            background-image: url("/systems/megs/assets/images/icons/2d10-blue-2.png");
 
             &:hover {
-                background-image: url(/systems/megs/assets/images/icons/2d10-white-2.png);
+                background-image: url("/systems/megs/assets/images/icons/2d10-white-2.png");
             }
         }
 
         &:hover {
-            background-image: url(/systems/megs/assets/images/icons/2d10-white.png);
+            background-image: url("/systems/megs/assets/images/icons/2d10-white.png");
             background-color: $c-darkblue;
             background-size: 50px 50px;
             transition: 0.2s background linear;

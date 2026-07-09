@@ -8,6 +8,7 @@
     "declaration-property-value-disallowed-list": null,
     "color-named": null,
     "shorthand-property-no-redundant-values": null,
-    "property-no-vendor-prefix": null
+    "property-no-vendor-prefix": null,
+    "selector-class-pattern": null
   }
 }

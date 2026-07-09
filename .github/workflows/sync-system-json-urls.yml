@@ -4,6 +4,9 @@ on:
   push:
     branches-ignore: [main]
 
+permissions:
+  contents: write
+
 jobs:
   sync-urls:
     runs-on: ubuntu-latest

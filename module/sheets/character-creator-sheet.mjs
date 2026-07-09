@@ -42,8 +42,9 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
         context.skills = this.actor.items.filter(i => i.type === 'skill' && !i.system.parent);
 
         // Prepare advantages and drawbacks for the Traits tab (exclude those that belong to gadgets)
-        context.advantages = this.actor.items.filter(i => i.type === 'advantage' && !i.system.parent);
-        context.drawbacks = this.actor.items.filter(i => i.type === 'drawback' && !i.system.parent);
+        const sortByName = (a, b) => a.name.toUpperCase().localeCompare(b.name.toUpperCase());
+        context.advantages = this.actor.items.filter(i => i.type === 'advantage' && !i.system.parent).sort(sortByName);
+        context.drawbacks = this.actor.items.filter(i => i.type === 'drawback' && !i.system.parent).sort(sortByName);
 
         // Prepare gadgets for the Gadgets tab (exclude sub-gadgets that belong to other gadgets)
         context.gadgets = this.actor.items.filter(i => i.type === 'gadget' && !i.system.parent);

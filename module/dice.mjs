@@ -680,6 +680,7 @@ export class MegsTableRolls {
      */
     static getTargetActor() {
         let targetActor;
+        // eslint-disable-next-line no-unreachable-loop -- Set has no direct way to grab the first entry
         for (const value of game.user.targets) {
             targetActor = game.actors.get(value.document.actorId);
             break;

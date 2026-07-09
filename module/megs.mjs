@@ -222,11 +222,11 @@ Handlebars.registerHelper('compare', function (v1, operator, v2) {
         case 'eq':
             return v1 === v2;
         case '==':
-            return v1 == v2;
+            return v1 == v2; // eslint-disable-line eqeqeq -- '==' is the operator being tested
         case '===':
             return v1 === v2;
         case '!=':
-            return v1 != v2;
+            return v1 != v2; // eslint-disable-line eqeqeq -- '!=' is the operator being tested
         case '!==':
             return v1 !== v2;
         case '<':

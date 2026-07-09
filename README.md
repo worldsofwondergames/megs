@@ -1,8 +1,12 @@
 # MEGS System
 
-![Foundry v12](https://img.shields.io/badge/foundry-v12-green)
+![Foundry v13](https://img.shields.io/badge/foundry-v13-green)
 
 ![Mutiversal Exponential Gaming System](https://github.com/worldsofwondergames/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
+
+Support this and other projects via these platforms.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/worldsofwonder)
 
 ## What is the Multiversal Exponential Gaming System system for Foundry Virtual Tabletop?
 
@@ -10,7 +14,7 @@ It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
 This is a fan-created implementation of the Mayfair Exponential Gaming System, whose core mechanics were used in games such as DC Heroes, Underground, and Blood of Heroes. The core mechanics of the DC Heroes / Underground / Blood of Heroes games were dubbed "MEGS" by its fans, short for ["Mayfair Eponential Gaming System."](https://en.wikipedia.org/wiki/Mayfair_Exponential_Game_System) This was an informal name, never trademarked.
 
-The current version (0.7.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
+The current version (1.0.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get to version 1.0.0.
 
@@ -44,7 +48,7 @@ To use compendium items:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 0.7.0**.
+Do I ever! MEGS for Foundry is currently sitting at **version 1.0.0**.
 
 (Note that everything below is subject to change.)
 
@@ -52,10 +56,9 @@ Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=i
 
 **YouTube demo videos** are planned by the beginning of February 2026 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 
-Then... **version 1.0.0**, by March 1, 2026. Incorporating any feedback I've gotten and:
+Then... **version 1.1.0**, by August 1, 2026. Incorporating any feedback I've gotten and:
 
-- Adding character builder/creator view for characters
-- Active Effects (basically automating the effects of powers, gadgets, etc. when placed in a character's inventory)
+- Integration with third-party modules like Dice So Nice (buggy right now) and Token Action HUD.
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
 And then after the rush, I rest for a very, very long time.

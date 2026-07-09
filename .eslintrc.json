@@ -1,0 +1,60 @@
+{
+  "extends": "standard",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true
+  },
+  "globals": {
+    "game": "readonly",
+    "CONFIG": "readonly",
+    "CONST": "readonly",
+    "foundry": "readonly",
+    "Hooks": "readonly",
+    "ui": "readonly",
+    "Actor": "readonly",
+    "Actors": "readonly",
+    "ActorSheet": "readonly",
+    "Item": "readonly",
+    "Items": "readonly",
+    "ItemSheet": "readonly",
+    "ActiveEffect": "readonly",
+    "ChatMessage": "readonly",
+    "Dialog": "readonly",
+    "Roll": "readonly",
+    "TextEditor": "readonly",
+    "Macro": "readonly",
+    "SortingHelpers": "readonly",
+    "Handlebars": "readonly",
+    "duplicate": "readonly",
+    "mergeObject": "readonly",
+    "loadTemplates": "readonly",
+    "fromUuid": "readonly",
+    "fromUuidSync": "readonly",
+    "$": "readonly"
+  },
+  "rules": {
+    "indent": [
+      "error",
+      4
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "comma-dangle": "off",
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "object-shorthand": "off"
+  }
+}

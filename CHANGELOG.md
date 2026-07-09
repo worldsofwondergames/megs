@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## 1.0.1
+
+### Enhancements
+
+- Alphabetized advantages and drawbacks on character builder sheet
+- Added post-merge hook to sync README version references automatically
+- Added post-checkout hook to auto-update system.json branch URLs on branch switch
+- Added GitHub Action to sync system.json URLs on push to non-main branches
+- Added GitHub Action to auto-close linked issues when PRs are merged to any branch
+
+### Bug Fixes
+
+- Fixed `ReferenceError` crash when selecting multiple targets — `localize()` replaced with `game.i18n.localize()` (issue #215)
+- Fixed `ReferenceError` in `compare` Handlebars helper — added missing `options` parameter (issue #215)
+- Fixed trailing slash in system.json download URL that prevented Foundry from resolving the package
+
+### Code Quality
+
+- Configured ESLint and Stylelint with project-specific rules and added lint CI workflow (issue #214)
+- Wrapped switch-case lexical declaration in a block to prevent temporal dead zone issues (issue #216)
+- Replaced 12 direct `.hasOwnProperty()` calls with `Object.hasOwn()` across actor, item, and item-sheet modules (issue #217)
+- Cleaned up 249 lint findings across 16 files — `prefer-const`, `quotes`, `indent`, brace-style, unused variables/imports, URL quoting, hex shorthand (issue #218)
+- Replaced 37 global `parseInt()` calls with `Number.parseInt()` across 6 modules for consistency (issue #218)
+
 ## 0.4.0 (May 15, 2024)
 
 - Officially entered beta with a very barebones system

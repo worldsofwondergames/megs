@@ -45,7 +45,7 @@
             }
 
             &:active {
-                background-color: darken($c-darkblue, 10%);
+                background-color: darken($c-darkblue, 10%); /* stylelint-disable-line scss/no-global-function-names */
             }
         }
     }

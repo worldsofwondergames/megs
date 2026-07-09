@@ -195,7 +195,7 @@ export default class MEGSCombat extends Combat {
      */
     _processHeroPointsEntry(form) {
         return {
-            hpSpentInitiative: parseInt(form.hpSpentInitiative.value) || 0,
+            hpSpentInitiative: Number.parseInt(form.hpSpentInitiative.value) || 0,
         };
     }
 }

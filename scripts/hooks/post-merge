@@ -1,7 +1,51 @@
 #!/bin/sh
-# Post-merge hook: Update README.md version references to match system.json
+# Post-merge hook:
+# 1. Update system.json URLs to match the current branch
+# 2. Update README.md version references to match system.json
 
-VERSION=$(sed -n 's/.*"version": "\([0-9]*\.[0-9]*\.[0-9]*\)".*/\1/p' system.json | head -1)
+BRANCH=$(git branch --show-current)
+SYSTEM_JSON="system.json"
+
+# --- Update system.json URLs ---
+if [ -n "$BRANCH" ] && [ -f "$SYSTEM_JSON" ]; then
+    MEDIA_URL="https://raw.githubusercontent.com/worldsofwondergames/megs/${BRANCH}/system.json"
+    MANIFEST_URL="https://raw.githubusercontent.com/worldsofwondergames/megs/${BRANCH}/system.json"
+    DOWNLOAD_URL="https://github.com/worldsofwondergames/megs/zipball/${BRANCH}"
+
+    node -e "
+    const fs = require('fs');
+    const raw = fs.readFileSync('${SYSTEM_JSON}', 'utf8');
+    const data = JSON.parse(raw);
+
+    let changed = false;
+    const mediaUrl = '${MEDIA_URL}';
+    const manifestUrl = '${MANIFEST_URL}';
+    const downloadUrl = '${DOWNLOAD_URL}';
+
+    if (data.media && data.media[0] && data.media[0].url !== mediaUrl) {
+        data.media[0].url = mediaUrl;
+        changed = true;
+    }
+    if (data.manifest !== manifestUrl) {
+        data.manifest = manifestUrl;
+        changed = true;
+    }
+    if (data.download !== downloadUrl) {
+        data.download = downloadUrl;
+        changed = true;
+    }
+
+    if (changed) {
+        fs.writeFileSync('${SYSTEM_JSON}', JSON.stringify(data, null, 4) + '\n');
+        console.log('post-merge: Updated system.json URLs to branch \"${BRANCH}\"');
+    } else {
+        console.log('post-merge: system.json URLs already match branch \"${BRANCH}\"');
+    }
+    " 2>/dev/null
+fi
+
+# --- Update README.md version references ---
+VERSION=$(sed -n 's/.*"version": "\([0-9]*\.[0-9]*\.[0-9]*\)".*/\1/p' "$SYSTEM_JSON" | head -1)
 
 if [ -z "$VERSION" ]; then
     echo "post-merge: Could not extract version from system.json"
@@ -12,13 +56,9 @@ if [ ! -f "README.md" ]; then
     exit 0
 fi
 
-# Update "current version (X.Y.Z)" references
 sed -i -E "s/current version \([0-9]+\.[0-9]+\.[0-9]+\)/current version ($VERSION)/" README.md
-
-# Update "currently sitting at **version X.Y.Z**" references
 sed -i -E "s/currently sitting at \*\*version [0-9]+\.[0-9]+\.[0-9]+\*\*/currently sitting at **version $VERSION**/" README.md
 
-# If README changed, commit the update
 if ! git diff --quiet README.md 2>/dev/null; then
     git add README.md
     git commit -m "Update README version references to $VERSION"
@@ -26,3 +66,5 @@ if ! git diff --quiet README.md 2>/dev/null; then
 else
     echo "post-merge: README.md version references already at $VERSION"
 fi
+
+exit 0

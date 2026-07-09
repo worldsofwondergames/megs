@@ -12,6 +12,7 @@
 
 ### Bug Fixes
 
+- Fixed Dice So Nice 3D dice not showing before doubles prompt and re-triggering on final chat message (issue #196)
 - Fixed `ReferenceError` crash when selecting multiple targets — `localize()` replaced with `game.i18n.localize()` (issue #215)
 - Fixed `ReferenceError` in `compare` Handlebars helper — added missing `options` parameter (issue #215)
 - Fixed trailing slash in system.json download URL that prevented Foundry from resolving the package

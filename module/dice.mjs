@@ -11,13 +11,16 @@ export const ShowResultCall = Object.freeze({
 const COLUMN_SHIFT_THRESHOLD = 11;
 
 export class MegsRoll extends Roll {
-    async toMessage(dialogHtml = {}, { rollMode, create = true, speaker = null } = {}) {
+    async toMessage(dialogHtml = {}, { rollMode, create = true, speaker = null, skipDSN = false } = {}) {
         const messageData = {
             user: game.user.id,
-            rolls: [this],
             content: dialogHtml,
             sound: CONFIG.sounds.dice,
         };
+
+        if (!skipDSN) {
+            messageData.rolls = [this];
+        }
 
         if (speaker) {
             messageData.speaker = speaker;
@@ -527,6 +530,7 @@ export class MegsTableRolls {
     async _rollDice(data, initialRoll) {
         const dice = [];
         let stopRolling = false;
+        let hadDoubles = false;
         if (data) {
             if (data.columnShifts) {
                 data.isOneColumnShift = data.columnShifts === 1;
@@ -538,11 +542,9 @@ export class MegsTableRolls {
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
-        let isFirstRoll = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
-            // Fallback: create new roll (for tests or when initialRoll is not provided)
             currentRoll = new Roll(this.rollFormula, {});
             await currentRoll.evaluate();
         }
@@ -553,16 +555,13 @@ export class MegsTableRolls {
             let die1, die2;
 
             if (currentRoll.terms && currentRoll.terms.length >= 3) {
-                // Real Foundry Roll structure: terms[0] is first die, terms[2] is second die
                 die1 = currentRoll.terms[0].results[0].result;
                 die2 = currentRoll.terms[2].results[0].result;
             } else if (currentRoll.result && typeof currentRoll.result === 'string') {
-                // Fallback for mocks or legacy: parse the result string
                 const rolledDice = currentRoll.result.split(' + ');
                 die1 = Number.parseInt(rolledDice[0]);
                 die2 = Number.parseInt(rolledDice[1]);
             } else {
-                // Ultimate fallback: use mock dice values or defaults
                 die1 = (currentRoll.dice && currentRoll.dice[0] && currentRoll.dice[0].results) ? currentRoll.dice[0].results[0] : 1;
                 die2 = (currentRoll.dice && currentRoll.dice[1] && currentRoll.dice[1].results) ? currentRoll.dice[1].results[0] : 1;
             }
@@ -571,14 +570,13 @@ export class MegsTableRolls {
             dice.push(die2);
 
             if (die1 === 1 && die2 === 1) {
-                // dice are both 1s
+                if (hadDoubles && game.dice3d) {
+                    await game.dice3d.showForRoll(currentRoll, game.user, true);
+                }
                 stopRolling = true;
             } else if (die1 === die2) {
-                // dice match but are not 1s
-                // Show the Dice So Nice animation if available before prompting
-                // For first roll, DSN animation already triggered by evaluate(), but we need to wait for it
-                // For subsequent rolls, we need to explicitly show the animation
-                if (game.dice3d && !isFirstRoll) {
+                hadDoubles = true;
+                if (game.dice3d) {
                     await game.dice3d.showForRoll(currentRoll, game.user, true);
                 }
 
@@ -592,18 +590,22 @@ export class MegsTableRolls {
                     }
                 });
                 if (confirmed) {
-                    // Create and evaluate a new roll for subsequent pairs
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
-                    isFirstRoll = false;
                     stopRolling = false;
                 } else {
                     stopRolling = true;
                 }
             } else {
-                // dice do not match
+                if (hadDoubles && game.dice3d) {
+                    await game.dice3d.showForRoll(currentRoll, game.user, true);
+                }
                 stopRolling = true;
             }
+        }
+
+        if (data) {
+            data.hadDoubles = hadDoubles;
         }
 
         return dice;
@@ -629,7 +631,7 @@ export class MegsTableRolls {
         }
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-        await roll.toMessage(dialogHtml, { speaker });
+        await roll.toMessage(dialogHtml, { speaker, skipDSN: !!data.hadDoubles });
     }
 
     /**

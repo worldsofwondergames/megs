@@ -118,7 +118,7 @@ MEGS.yesNoOptions = {
  * @param {number} factorCost - The Factor Cost (FC) of the ability (1-10)
  * @returns {number} The Hero Point cost, or 0 if invalid parameters
  */
-MEGS.getAPCost = function(aps, factorCost) {
+MEGS.getAPCost = function (aps, factorCost) {
     // Validate inputs - 0 APs is valid (costs 0), but FC must be 1-10
     if (aps === null || aps === undefined || aps < 0 ||
         factorCost === null || factorCost === undefined || factorCost < 1 || factorCost > 10) {

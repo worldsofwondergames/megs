@@ -1,0 +1,58 @@
+name: Sync system.json URLs
+
+on:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  sync-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update system.json URLs to match branch
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          node -e "
+          const fs = require('fs');
+          const raw = fs.readFileSync('system.json', 'utf8');
+          const data = JSON.parse(raw);
+
+          const base = 'https://raw.githubusercontent.com/worldsofwondergames/megs';
+          const mediaUrl = base + '/${BRANCH}/system.json';
+          const manifestUrl = base + '/${BRANCH}/system.json';
+          const downloadUrl = 'https://github.com/worldsofwondergames/megs/zipball/${BRANCH}';
+
+          let changed = false;
+          if (data.media && data.media[0] && data.media[0].url !== mediaUrl) {
+              data.media[0].url = mediaUrl;
+              changed = true;
+          }
+          if (data.manifest !== manifestUrl) {
+              data.manifest = manifestUrl;
+              changed = true;
+          }
+          if (data.download !== downloadUrl) {
+              data.download = downloadUrl;
+              changed = true;
+          }
+
+          if (changed) {
+              fs.writeFileSync('system.json', JSON.stringify(data, null, 4) + '\n');
+              console.log('Updated system.json URLs to branch \"${BRANCH}\"');
+          } else {
+              console.log('system.json URLs already match branch \"${BRANCH}\"');
+          }
+          "
+
+      - name: Commit if changed
+        run: |
+          git diff --quiet system.json && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add system.json
+          git commit -m "Update system.json URLs to match branch ${GITHUB_REF_NAME}"
+          git push

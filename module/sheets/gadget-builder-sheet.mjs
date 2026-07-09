@@ -8,7 +8,7 @@ import { MEGS } from '../helpers/config.mjs';
 export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
     /** @override */
     static get defaultOptions() {
-        let newOptions = super.defaultOptions;
+        const newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'item', 'gadget-builder'];
         newOptions.width = 750;
         newOptions.height = 700;
@@ -24,7 +24,7 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
 
     /** @override */
     get template() {
-        return `systems/megs/templates/item/gadget-builder-sheet.hbs`;
+        return 'systems/megs/templates/item/gadget-builder-sheet.hbs';
     }
 
     /** @override */
@@ -57,9 +57,9 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         }
 
         // Provide all items for helpers
-        context.items = this.object.parent ?
-            Array.from(this.object.parent.items) :
-            [...context.powers, ...context.skills, ...context.advantages, ...context.drawbacks];
+        context.items = this.object.parent
+            ? Array.from(this.object.parent.items)
+            : [...context.powers, ...context.skills, ...context.advantages, ...context.drawbacks];
 
         // Add reliability scores for settings dropdown
         context.reliabilityScores = CONFIG.reliabilityScores || [0, 2, 3, 5, 7, 9, 11];

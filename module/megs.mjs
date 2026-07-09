@@ -49,7 +49,7 @@ Hooks.once('init', function () {
         if (data) {
             CONFIG.tables = data;
         } else {
-            console.error(`[MEGS] Failed to set CONFIG.tables - data is null/undefined`);
+            console.error('[MEGS] Failed to set CONFIG.tables - data is null/undefined');
         }
     });
 
@@ -68,11 +68,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.combatManeuvers = data;
             } else {
-                console.error(`[MEGS] Failed to load combat maneuvers`);
+                console.error('[MEGS] Failed to load combat maneuvers');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading combat maneuvers:`, error);
+            console.error('[MEGS] Error loading combat maneuvers:', error);
         });
 
     _loadData('systems/megs/assets/data/motivations.json')
@@ -80,11 +80,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.motivations = data;
             } else {
-                console.error(`[MEGS] Failed to load motivations`);
+                console.error('[MEGS] Failed to load motivations');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading motivations:`, error);
+            console.error('[MEGS] Error loading motivations:', error);
         });
 
     _loadData('systems/megs/assets/data/skills.json')
@@ -92,11 +92,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.skills = data;
             } else {
-                console.error(`[MEGS] Failed to load skills`);
+                console.error('[MEGS] Failed to load skills');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading skills:`, error);
+            console.error('[MEGS] Error loading skills:', error);
         });
 
     _loadData('systems/megs/assets/data/apCostChart.json')
@@ -104,11 +104,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.apCostChart = data;
             } else {
-                console.error(`[MEGS] Failed to load AP cost chart`);
+                console.error('[MEGS] Failed to load AP cost chart');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading AP cost chart:`, error);
+            console.error('[MEGS] Error loading AP cost chart:', error);
         });
 
     _loadData('systems/megs/assets/data/wealth.json')
@@ -116,11 +116,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.wealth = data;
             } else {
-                console.error(`[MEGS] Failed to load wealth`);
+                console.error('[MEGS] Failed to load wealth');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading wealth:`, error);
+            console.error('[MEGS] Error loading wealth:', error);
         });
 
     // Active Effects are never copied to the Actor,
@@ -219,30 +219,30 @@ Handlebars.registerHelper('isDivisor', function (num1, num2) {
 
 Handlebars.registerHelper('compare', function (v1, operator, v2, options) {
     switch (operator) {
-        case 'eq':
-            return v1 === v2;
-        case '==':
-            return v1 == v2; // eslint-disable-line eqeqeq -- '==' is the operator being tested
-        case '===':
-            return v1 === v2;
-        case '!=':
-            return v1 != v2; // eslint-disable-line eqeqeq -- '!=' is the operator being tested
-        case '!==':
-            return v1 !== v2;
-        case '<':
-            return v1 < v2;
-        case '<=':
-            return v1 <= v2;
-        case '>':
-            return v1 > v2;
-        case '>=':
-            return v1 >= v2;
-        case '&&':
-            return v1 && v2;
-        case '||':
-            return v1 || v2;
-        default:
-            return options.inverse(this);
+    case 'eq':
+        return v1 === v2;
+    case '==':
+        return v1 == v2; // eslint-disable-line eqeqeq -- '==' is the operator being tested
+    case '===':
+        return v1 === v2;
+    case '!=':
+        return v1 != v2; // eslint-disable-line eqeqeq -- '!=' is the operator being tested
+    case '!==':
+        return v1 !== v2;
+    case '<':
+        return v1 < v2;
+    case '<=':
+        return v1 <= v2;
+    case '>':
+        return v1 > v2;
+    case '>=':
+        return v1 >= v2;
+    case '&&':
+        return v1 && v2;
+    case '||':
+        return v1 || v2;
+    default:
+        return options.inverse(this);
     }
 });
 
@@ -254,7 +254,7 @@ Handlebars.registerHelper('trueFalseToYesNo', function (str) {
 // skill-related
 /* -------------------------------------------- */
 Handlebars.registerHelper('getSelectedSkillRange', function (skillName) {
-    for (let i of game.items) {
+    for (const i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
             if (i.name === skillName) {
                 return i.system.range;
@@ -265,7 +265,7 @@ Handlebars.registerHelper('getSelectedSkillRange', function (skillName) {
 });
 
 Handlebars.registerHelper('getSelectedSkillType', function (skillName) {
-    for (let i of game.items) {
+    for (const i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
             if (i.name === skillName) {
                 return i.system.type;
@@ -277,7 +277,7 @@ Handlebars.registerHelper('getSelectedSkillType', function (skillName) {
 
 Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
     if (game.items) {
-        for (let i of game.items) {
+        for (const i of game.items) {
             if (i.type === MEGS.itemTypes.skill) {
                 if (i.name === skillName) {
                     return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
@@ -285,7 +285,7 @@ Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
             }
         }
     } else {
-        console.error(`Returned undefined for game.items!`);
+        console.error('Returned undefined for game.items!');
     }
     return 'N/A';
 });
@@ -565,7 +565,7 @@ Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items)
     // Calculate effective Factor Cost for a skill
     // FC = Base FC - (number of unchecked subskills) - (linking bonus)
     // Minimum FC is always 1
-    let baseFc = skill.system.factorCost || 0;
+    const baseFc = skill.system.factorCost || 0;
     let effectiveFc = baseFc;
 
     // Apply linking reduction (-2, minimum 1)
@@ -713,7 +713,7 @@ Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
     tooltip += `Advantages: ${advantages} HP\n`;
     tooltip += `Drawbacks: ${drawbacks} HP\n`;
     tooltip += `Gadgets: ${gadgets} HP\n`;
-    tooltip += `─────────────────\n`;
+    tooltip += '─────────────────\n';
     tooltip += `Total: ${total} HP`;
 
     return tooltip;
@@ -721,7 +721,7 @@ Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
 
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
-    let baseFc = power.system.factorCost || 0;
+    const baseFc = power.system.factorCost || 0;
     let effectiveFc = baseFc;
 
     // Apply linking reduction (-2, minimum 1)
@@ -832,7 +832,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
     }
 
     // attributes first
-    for (let attributeName in gadget.system.attributes) {
+    for (const attributeName in gadget.system.attributes) {
         if (Object.prototype.hasOwnProperty.call(gadget.system.attributes, attributeName)) {
             const attribute = gadget.system.attributes[attributeName];
             if (attribute.value > 0) {
@@ -853,7 +853,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
 
     if (owner && owner.items) {
         // powers
-        for (let i of owner.items) {
+        for (const i of owner.items) {
             if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) {
                 if (description) {
                     description += ', ';
@@ -863,7 +863,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         }
 
         // skills
-        for (let i of owner.items) {
+        for (const i of owner.items) {
             if (
                 i.type === MEGS.itemTypes.skill &&
                 i.system.parent === gadget._id &&
@@ -962,11 +962,11 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
                 console.log(`  ${key.toUpperCase()}: base FC=${attr.factorCost}, +reliabilityMod(${reliabilityMod})`);
                 if (attr.alwaysSubstitute) {
                     fc += 2;
-                    console.log(`    +2 for alwaysSubstitute`);
+                    console.log('    +2 for alwaysSubstitute');
                 }
                 if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                     fc += 2;
-                    console.log(`    +2 for Hardened Defenses`);
+                    console.log('    +2 for Hardened Defenses');
                 }
                 fc = Math.max(1, fc);
                 const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
@@ -1101,12 +1101,12 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
     if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
     if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
     if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
-    tooltip += `─────────────────\n`;
+    tooltip += '─────────────────\n';
     tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
     // Determine gadget bonus from the actual division
     const gadgetBonus = totalBeforeBonus > 0 && total > 0 ? Math.round(totalBeforeBonus / total) : 4;
     tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
-    tooltip += `─────────────────\n`;
+    tooltip += '─────────────────\n';
     tooltip += `Total: ${total} HP`;
 
     return tooltip;
@@ -1289,14 +1289,14 @@ Hooks.once('ready', async function () {
 
                 try {
                     // Get the index (this doesn't load all items, just the index)
-                    console.log(`[MEGS]   Attempting to get index...`);
+                    console.log('[MEGS]   Attempting to get index...');
                     const index = await pack.getIndex();
                     console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
 
                     if (index.size > 0) {
                         // Show first 3 items as sample
                         const sampleItems = Array.from(index.values()).slice(0, 3);
-                        console.log(`[MEGS]   Sample items:`);
+                        console.log('[MEGS]   Sample items:');
                         sampleItems.forEach(item => {
                             console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
                         });
@@ -1305,7 +1305,7 @@ Hooks.once('ready', async function () {
                     }
                 } catch (error) {
                     console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
-                    console.error(`[MEGS]   Error details:`, error.message, error.stack);
+                    console.error('[MEGS]   Error details:', error.message, error.stack);
                 }
             }
 
@@ -1320,7 +1320,7 @@ Hooks.once('ready', async function () {
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {
-        let item = fromUuidSync(data.uuid);
+        const item = fromUuidSync(data.uuid);
         if (item && item.system) {
             createMegsMacro(item, slot);
             return false;
@@ -1463,10 +1463,11 @@ function rollItemMacro(uuid) {
     const actorId = uuid.match(/^Actor\.([A-Za-z0-9]+)\.Item\..+/)[1];
     const actor = game.actors.get(actorId);
     const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
-    if (!item)
+    if (!item) {
         return ui.notifications.warn(
             `Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`
         );
+    }
 
     // Trigger the item roll
     return item.roll();

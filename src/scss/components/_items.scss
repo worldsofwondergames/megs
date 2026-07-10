@@ -294,6 +294,9 @@ li.directory-item img[src*='assets/images/icons'] {
 
         input[type='checkbox'] {
             margin: 0;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
         }
 
         input[type='checkbox']:disabled {

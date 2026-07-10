@@ -291,12 +291,13 @@ li.directory-item img[src*='assets/images/icons'] {
         cursor: pointer;
         font-weight: bold;
         color: $c-darkblue;
+        font-size: 14px;
+        line-height: 1;
 
         input[type='checkbox'] {
             margin: 0;
-            vertical-align: middle;
-            position: relative;
-            top: -1px;
+            flex-shrink: 0;
+            top: 0;
         }
 
         input[type='checkbox']:disabled {

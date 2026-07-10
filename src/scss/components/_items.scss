@@ -276,34 +276,6 @@ li.directory-item img[src*='assets/images/icons'] {
 }
 
 /*------------------------------------------------------------------------*/
-/* Gadget Sheet Roll Button
-/*------------------------------------------------------------------------*/
-
-.gadget-header-name {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-
-    h1.charname {
-        flex: 1;
-    }
-}
-
-.gadget-roll-btn {
-    cursor: pointer;
-    flex: 0 0 auto;
-
-    .gadget-roll-icon {
-        width: 36px;
-        height: 36px;
-    }
-
-    &:hover {
-        filter: brightness(1.2);
-    }
-}
-
-/*------------------------------------------------------------------------*/
 /* Gadget Attribute Editing
 /*------------------------------------------------------------------------*/
 

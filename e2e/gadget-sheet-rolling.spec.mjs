@@ -164,7 +164,7 @@ async function openGadgetSheet(page, actorId, gadgetId) {
  */
 async function hasGadgetSheetRollButton(page) {
     return page.evaluate(() => {
-        const btn = document.querySelector('.sheet.item .gadget-roll-btn');
+        const btn = document.querySelector('.sheet.item .d10.rollable[data-type="gadget-roll"]');
         return !!btn;
     });
 }
@@ -174,7 +174,7 @@ async function hasGadgetSheetRollButton(page) {
  */
 async function getGadgetSheetRollTooltip(page) {
     return page.evaluate(() => {
-        const btn = document.querySelector('.sheet.item .gadget-roll-btn');
+        const btn = document.querySelector('.sheet.item .d10.rollable[data-type="gadget-roll"]');
         return btn?.getAttribute('title') || null;
     });
 }
@@ -184,7 +184,7 @@ async function getGadgetSheetRollTooltip(page) {
  */
 async function clickGadgetSheetRollButton(page) {
     const clicked = await page.evaluate(() => {
-        const btn = document.querySelector('.sheet.item .gadget-roll-btn');
+        const btn = document.querySelector('.sheet.item .d10.rollable[data-type="gadget-roll"]');
         if (btn) { btn.click(); return true; }
         return false;
     });

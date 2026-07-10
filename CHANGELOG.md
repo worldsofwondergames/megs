@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- Gadget item sheets now have a d10 roll button in the header that triggers the full gadget roll flow, matching the power sheet visual pattern (issue #13)
 - Gadgets can now be rolled from the actor Gadgets tab for all rollable abilities: explicit AV/EV, child powers, child skills, and attribute pairs (issue #17)
 - Added picker dialog when a gadget has multiple rollable abilities
 - Added "Always Substitute" (italicized) checkbox per gadget attribute in edit mode; italicized attributes substitute for the actor's values when higher

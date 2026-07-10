@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- Added "Gadget Only" checkbox on advantage and drawback item sheets; gadget-only traits are blocked from being dropped directly onto actor sheets (issue #178)
 - Added editable detail/subtext field on advantage and drawback item sheets, displayed in parentheses on actor traits tab and character creator (issue #209)
 - Alphabetized advantages and drawbacks on character builder sheet
 - Added post-merge hook to sync README version references automatically

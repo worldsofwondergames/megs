@@ -44,6 +44,36 @@ Hooks.once('init', function () {
     // Register custom Roll class
     CONFIG.Dice.rolls.push(MegsRoll);
 
+    Hooks.on('renderChatMessage', (message, html) => {
+        const { scene: sceneId, token: tokenId, actor: actorId } = message.speaker;
+        const actor = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.actor
+            ?? game.actors?.get(actorId);
+        if (!actor) return;
+
+        const tokenImg = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.texture.src
+            ?? actor.prototypeToken?.texture?.src
+            ?? actor.img;
+        if (!tokenImg) return;
+
+        const header = html[0]?.querySelector?.('.message-header') ?? html.querySelector?.('.message-header');
+        if (!header) return;
+
+        const sender = header.querySelector('.message-sender');
+        if (!sender || sender.querySelector('.megs-chat-avatar')) return;
+
+        const tokenName = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.name
+            ?? actor.prototypeToken?.name;
+        if (tokenName && tokenName !== actor.name) {
+            sender.textContent = sender.textContent.replace(actor.name, tokenName);
+        }
+
+        const img = document.createElement('img');
+        img.classList.add('megs-chat-avatar');
+        img.src = tokenImg;
+        img.alt = tokenName || actor.name;
+        sender.prepend(img);
+    });
+
     // Load MEGS tables
     _loadData('systems/megs/assets/data/tables.json').then((data) => {
         if (data) {
@@ -1327,30 +1357,6 @@ Hooks.once('ready', async function () {
         }
     });
     Hooks.on('chatMessage', (log, message, data) => interceptMegsRoll(message, data));
-
-    Hooks.on('renderChatMessage', (message, html) => {
-        const { scene: sceneId, token: tokenId, actor: actorId } = message.speaker;
-        const actor = game.scenes.get(sceneId)?.tokens.get(tokenId)?.actor
-            ?? game.actors.get(actorId);
-        if (!actor) return;
-
-        const tokenImg = game.scenes.get(sceneId)?.tokens.get(tokenId)?.texture.src
-            ?? actor.prototypeToken?.texture?.src
-            ?? actor.img;
-        if (!tokenImg) return;
-
-        const header = html[0]?.querySelector?.('.message-header') ?? html.querySelector?.('.message-header');
-        if (!header) return;
-
-        const sender = header.querySelector('.message-sender');
-        if (!sender || sender.querySelector('.megs-chat-avatar')) return;
-
-        const img = document.createElement('img');
-        img.classList.add('megs-chat-avatar');
-        img.src = tokenImg;
-        img.alt = actor.name;
-        sender.prepend(img);
-    });
 
     // Hook to preserve gadget power/skill data when dragging from sidebar to actor
     Hooks.on('preCreateItem', (item, data, options, userId) => {

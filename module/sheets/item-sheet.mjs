@@ -150,6 +150,10 @@ export class MEGSItemSheet extends ItemSheet {
 
         context.hasActor = !!this.object.parent;
 
+        if (itemData.type === MEGS.itemTypes.power) {
+            context.hasSourceOverrides = Utils.hasPowerSourceOverrides(this.object);
+        }
+
         if (itemData.type === MEGS.itemTypes.advantage || itemData.type === MEGS.itemTypes.drawback) {
             context.gadgetOnlyLocked = context.hasActor && !this.object.system.parent;
         }
@@ -522,27 +526,29 @@ export class MEGSItemSheet extends ItemSheet {
             const targetActor = MegsTableRolls.getTargetActor();
 
             if (this.object.type === MEGS.itemTypes.power) {
-                // for powers, AV and EV are typically APs of power
-                actionValue = Number.parseInt(dataset.value);
-                effectValue = Number.parseInt(dataset.value);
+                if (Utils.hasPowerSourceOverrides(this.object)) {
+                    const resolved = Utils.resolvePowerRollValues(this.object, this.object.parent, targetActor);
+                    actionValue = resolved.av;
+                    effectValue = resolved.ev;
+                    opposingValue = resolved.ov;
+                    resistanceValue = resolved.rv;
+                } else {
+                    actionValue = Number.parseInt(dataset.value);
+                    effectValue = Number.parseInt(dataset.value);
 
-                // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
-
-                // Physical powers - OV and RV are DEX and BODY
-                if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {
-                    dataset.key = MEGS.attributeAbbreviations.str;
-                }
-                // Mental powers - OV and RV are INT and MIND
-                if (this.object.system.source === MEGS.powerSources.mental.toLowerCase()) {
-                    dataset.key = MEGS.attributeAbbreviations.int;
-                }
-                // Mystical powers - OV and RV are INFL and SPIRIT
-                if (this.object.system.source === MEGS.powerSources.mystical.toLowerCase()) {
-                    dataset.key = MEGS.attributeAbbreviations.infl;
-                }
-                if (targetActor) {
-                    opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
-                    resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
+                    if (this.object.system.source === MEGS.powerSources.physical.toLowerCase()) {
+                        dataset.key = MEGS.attributeAbbreviations.str;
+                    }
+                    if (this.object.system.source === MEGS.powerSources.mental.toLowerCase()) {
+                        dataset.key = MEGS.attributeAbbreviations.int;
+                    }
+                    if (this.object.system.source === MEGS.powerSources.mystical.toLowerCase()) {
+                        dataset.key = MEGS.attributeAbbreviations.infl;
+                    }
+                    if (targetActor) {
+                        opposingValue = Utils.getOpposingValue(dataset.key, targetActor);
+                        resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
+                    }
                 }
             }
 

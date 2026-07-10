@@ -274,3 +274,27 @@ li.directory-item img[src*='assets/images/icons'] {
         align-items: center;
     }
 }
+
+/*------------------------------------------------------------------------*/
+/* Trait Options Tab (Advantages/Drawbacks)
+/*------------------------------------------------------------------------*/
+
+.trait-options {
+    padding: 8px;
+
+    .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+        cursor: pointer;
+
+        input[type='checkbox'] {
+            margin: 0;
+        }
+
+        input[type='checkbox']:disabled {
+            cursor: default;
+        }
+    }
+}

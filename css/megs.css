@@ -278,12 +278,12 @@
 .megs .tabs .item.active {
   text-shadow: 0 0 10px #2c8dda;
 }
-.megs input[type=checkbox] {
-  vertical-align: middle;
-}
 .megs input[type=checkbox] + label {
   font-family: "Roboto", sans-serif;
   font-size: 13px;
+}
+.megs input[type=checkbox] {
+  vertical-align: middle;
 }
 
 body.game .app h4.window-title {
@@ -324,74 +324,6 @@ details summary.no-arrow {
 .megs {
   /*------------------------------------------------------------------------*/
   /* Sheet Forms and Components
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Resources and Attributes
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Quantity Controls (increment/decrement buttons)
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Biography and Description Sections
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Item Summaries (details/summary accordion)
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Tooltips
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Initiative Table (in tooltip)
-  /*------------------------------------------------------------------------*/
-  /* Factor Cost tooltip cursor */
-  /*------------------------------------------------------------------------*/
-  /* Items, Gadgets, Lists
-  /*------------------------------------------------------------------------*/
-  /* Directory item icons */
-  /*------------------------------------------------------------------------*/
-  /* Actor Sheet Skills Tab Accordion Styles
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Actor Sheet Powers Tab Accordion Styles
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Item Sheet Subskills Tab
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Trait Options Tab (Advantages/Drawbacks)
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Character Creator / Character Builder Styles
-  /*------------------------------------------------------------------------*/
-  /* Attribute Cost Display */
-  /* HP Budget Input */
-  /* HP Spent tooltip hover effect */
-  /* Attributes Summary */
-  /* Powers Summary */
-  /* Skills Summary */
-  /* Traits Summary */
-  /* Gadgets Summary */
-  /*------------------------------------------------------------------------*/
-  /* Character Creator - Gadgets Tab
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Character Creator - Traits Tab
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Character Creator - Powers Tab
-  /*------------------------------------------------------------------------*/
-  /* Power Modifiers (Bonuses/Limitations) */
-  /* Factor Cost tooltip cursor */
-  /* Total Cost tooltip cursor */
-  /*------------------------------------------------------------------------*/
-  /* Character Creator - Skills Tab
-  /*------------------------------------------------------------------------*/
-  /* Locked APs display */
-  /*------------------------------------------------------------------------*/
-  /* Error styling for budget and linked power mismatches
-  /*------------------------------------------------------------------------*/
-  /*------------------------------------------------------------------------*/
-  /* Character Creator - Wealth Tab
   /*------------------------------------------------------------------------*/
 }
 .megs .item-form {
@@ -454,10 +386,10 @@ details summary.no-arrow {
   margin-top: 5px;
 }
 .megs .sheet-header h1.charname button.isLocked {
-  background-image: url("/systems/megs/assets/images/icons/locked.png");
+  background-image: url(/systems/megs/assets/images/icons/locked.png);
 }
 .megs .sheet-header h1.charname button.isUnlocked {
-  background-image: url("/systems/megs/assets/images/icons/unlocked.png");
+  background-image: url(/systems/megs/assets/images/icons/unlocked.png);
 }
 .megs .sheet-header .attribute-container {
   display: inline-block;
@@ -471,7 +403,7 @@ details summary.no-arrow {
   vertical-align: bottom;
   border: none;
   cursor: pointer;
-  background-image: url("/systems/megs/assets/images/icons/reset.png");
+  background-image: url(/systems/megs/assets/images/icons/reset.png);
   background-size: 30px auto;
   background-color: #fff;
 }
@@ -499,7 +431,7 @@ details summary.no-arrow {
 }
 .megs .sheet-header .header-fields .grid .d10 {
   display: inline-block;
-  background-image: url("/systems/megs/assets/images/icons/2d10-blue.png");
+  background-image: url(/systems/megs/assets/images/icons/2d10-blue.png);
   margin-right: 1px;
   background-repeat: no-repeat;
   background-size: 45px 45px;
@@ -512,13 +444,13 @@ details summary.no-arrow {
   transition: 0.2s background linear;
 }
 .megs .sheet-header .header-fields .grid .d10.unskilled {
-  background-image: url("/systems/megs/assets/images/icons/2d10-blue-2.png");
+  background-image: url(/systems/megs/assets/images/icons/2d10-blue-2.png);
 }
 .megs .sheet-header .header-fields .grid .d10.unskilled:hover {
-  background-image: url("/systems/megs/assets/images/icons/2d10-white-2.png");
+  background-image: url(/systems/megs/assets/images/icons/2d10-white-2.png);
 }
 .megs .sheet-header .header-fields .grid .d10:hover {
-  background-image: url("/systems/megs/assets/images/icons/2d10-white.png");
+  background-image: url(/systems/megs/assets/images/icons/2d10-white.png);
   background-color: #1f5079;
   background-size: 50px 50px;
   transition: 0.2s background linear;
@@ -543,6 +475,11 @@ details summary.no-arrow {
 }
 .megs .tox .tox-edit-area {
   padding: 0 8px;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Resources and Attributes
+  /*------------------------------------------------------------------------*/
 }
 .megs .resources .resource-label {
   font-weight: 500;
@@ -654,6 +591,11 @@ details summary.no-arrow {
   padding: 4px 15px 0 15px;
   box-shadow: none;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Quantity Controls (increment/decrement buttons)
+  /*------------------------------------------------------------------------*/
+}
 .megs .quantity {
   display: flex;
   border: 2px solid #a9a7a7;
@@ -727,6 +669,11 @@ details summary.no-arrow {
 .megs .quantity.current-input input[type=number] {
   background-color: #ddebf6;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Biography and Description Sections
+  /*------------------------------------------------------------------------*/
+}
 .megs .sheet-body .grid-2col-header {
   font-size: 22px;
   color: #1f5079;
@@ -762,6 +709,11 @@ details summary.no-arrow {
 .megs div.tab.readableText label {
   font-family: "Roboto", sans-serif;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Item Summaries (details/summary accordion)
+  /*------------------------------------------------------------------------*/
+}
 .megs details summary.item-summary {
   font-weight: bold;
   font-size: 24px;
@@ -773,6 +725,11 @@ details summary.no-arrow {
 }
 .megs details[open] summary.item-summary {
   background-color: #5fa2d9;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Tooltips
+  /*------------------------------------------------------------------------*/
 }
 .megs .tooltip {
   position: relative;
@@ -812,6 +769,11 @@ details summary.no-arrow {
 .megs .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Initiative Table (in tooltip)
+  /*------------------------------------------------------------------------*/
+}
 .megs .init-table-header {
   width: 100%;
   background-color: green;
@@ -850,12 +812,20 @@ details summary.no-arrow {
 .megs .tooltip .tooltiptext.narrow .init-table .value {
   width: 25%;
 }
+.megs {
+  /* Factor Cost tooltip cursor */
+}
 .megs .factor-cost-tooltip {
   cursor: pointer;
   white-space: pre-line;
 }
 .megs .resource-label {
   font-weight: 500;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Items, Gadgets, Lists
+  /*------------------------------------------------------------------------*/
 }
 .megs .items-header {
   margin: 2px 0;
@@ -970,8 +940,16 @@ details summary.no-arrow {
 .megs .items-list .item-factor-cost {
   text-align: center;
 }
+.megs {
+  /* Directory item icons */
+}
 .megs li.directory-item img[src*="assets/images/icons"] {
   filter: invert(100%);
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Actor Sheet Skills Tab Accordion Styles
+  /*------------------------------------------------------------------------*/
 }
 .megs.sheet.actor .tab.skills .items-list .skill-row {
   background-color: #e8f4f8;
@@ -1014,6 +992,11 @@ details summary.no-arrow {
 }
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
   color: #000;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Actor Sheet Powers Tab Accordion Styles
+  /*------------------------------------------------------------------------*/
 }
 .megs.sheet.actor .tab.powers .items-list .power-row {
   background-color: #f0f8ff;
@@ -1063,10 +1046,38 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .power-modifier-row:active {
   cursor: grabbing;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Item Sheet Subskills Tab
+  /*------------------------------------------------------------------------*/
+}
 .megs.sheet.item .tab.subskills .items-list .item-trained {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Gadget Attribute Editing
+  /*------------------------------------------------------------------------*/
+}
+.megs .gadget-attribute {
+  position: relative;
+}
+.megs .always-substitute-checkbox {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  margin: 0;
+  cursor: pointer;
+}
+.megs .resource-label.italic {
+  font-style: italic;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Trait Options Tab (Advantages/Drawbacks)
+  /*------------------------------------------------------------------------*/
 }
 .megs .trait-options {
   padding: 8px;
@@ -1102,11 +1113,20 @@ details summary.no-arrow {
 .megs .effects .item .effect-controls {
   border: none;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Character Creator / Character Builder Styles
+  /*------------------------------------------------------------------------*/
+  /* Attribute Cost Display */
+}
 .megs .attribute-cost {
   background: rgba(0, 0, 0, 0.05);
 }
 .megs .attribute-cost .cost-value {
   font-size: 0.85em;
+}
+.megs {
+  /* HP Budget Input */
 }
 .megs .resource-value-input {
   background: #e8f4f8;
@@ -1114,8 +1134,14 @@ details summary.no-arrow {
   padding: 4px 8px;
   text-align: center;
 }
+.megs {
+  /* HP Spent tooltip hover effect */
+}
 .megs .hp-spent-tooltip {
   cursor: pointer;
+}
+.megs {
+  /* Attributes Summary */
 }
 .megs .attributes-summary {
   margin-bottom: 10px;
@@ -1131,6 +1157,9 @@ details summary.no-arrow {
 .megs .attributes-summary .summary-row .summary-value {
   font-size: 1.25em;
 }
+.megs {
+  /* Powers Summary */
+}
 .megs .powers-summary {
   margin-bottom: 10px;
 }
@@ -1144,6 +1173,9 @@ details summary.no-arrow {
 .megs .powers-summary .summary-row .summary-label,
 .megs .powers-summary .summary-row .summary-value {
   font-size: 1.25em;
+}
+.megs {
+  /* Skills Summary */
 }
 .megs .skills-summary {
   margin-bottom: 10px;
@@ -1160,6 +1192,9 @@ details summary.no-arrow {
 .megs .skills-summary .summary-row .summary-value {
   font-size: 1.25em;
 }
+.megs {
+  /* Traits Summary */
+}
 .megs .traits-summary {
   margin-bottom: 10px;
 }
@@ -1174,6 +1209,9 @@ details summary.no-arrow {
 .megs .traits-summary .summary-row .summary-label,
 .megs .traits-summary .summary-row .summary-value {
   font-size: 1.25em;
+}
+.megs {
+  /* Gadgets Summary */
 }
 .megs .gadgets-summary {
   margin-bottom: 10px;
@@ -1190,6 +1228,11 @@ details summary.no-arrow {
 .megs .gadgets-summary .summary-row .summary-value {
   font-size: 1.25em;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Character Creator - Gadgets Tab
+  /*------------------------------------------------------------------------*/
+}
 .megs .character-creator .tab.gadgets .items-list .item-name {
   flex: 1; /* Takes all remaining space */
   display: block; /* Ensure content flows as inline text */
@@ -1203,6 +1246,11 @@ details summary.no-arrow {
 }
 .megs .character-creator .tab.gadgets .gadget-cost-tooltip {
   cursor: pointer;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Character Creator - Traits Tab
+  /*------------------------------------------------------------------------*/
 }
 .megs .character-creator .tab.traits .grid-2col-header {
   display: flex;
@@ -1240,6 +1288,11 @@ details summary.no-arrow {
   flex: 0 0 30px;
   text-align: center;
 }
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Character Creator - Powers Tab
+  /*------------------------------------------------------------------------*/
+}
 .megs .character-creator .tab.powers .items-list .item-row {
   min-height: 40px;
 }
@@ -1266,6 +1319,9 @@ details summary.no-arrow {
   justify-content: center;
   align-items: center;
 }
+.megs {
+  /* Power Modifiers (Bonuses/Limitations) */
+}
 .megs .megs.character-creator .tab.powers .items-list .modifier-row {
   background: rgba(0, 0, 0, 0.02);
   font-size: 0.9em;
@@ -1276,18 +1332,28 @@ details summary.no-arrow {
   font-style: italic;
   color: #666;
 }
+.megs {
+  /* Factor Cost tooltip cursor */
+}
 .megs .character-creator .items-list .factor-cost-calculated {
   cursor: pointer;
+}
+.megs {
+  /* Total Cost tooltip cursor */
 }
 .megs .character-creator .items-list .total-cost-calculated {
   cursor: pointer;
 }
-.megs .character-creator .tab.skills .items-list {
-  /* Skills table background colors */
-  /* Skills accordion icon */
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Character Creator - Skills Tab
+  /*------------------------------------------------------------------------*/
 }
 .megs .character-creator .tab.skills .items-list .item-row {
   min-height: 40px;
+}
+.megs .character-creator .tab.skills .items-list {
+  /* Skills table background colors */
 }
 .megs .character-creator .tab.skills .items-list .skill-row {
   background-color: #e8f4f8; /* Light blue for skills */
@@ -1319,6 +1385,9 @@ details summary.no-arrow {
 .megs .character-creator .tab.skills .items-list .item-aps {
   flex: 1.15;
 }
+.megs .character-creator .tab.skills .items-list {
+  /* Skills accordion icon */
+}
 .megs .character-creator .tab.skills .items-list .toggle-icon {
   color: #666;
   font-size: 0.85em;
@@ -1327,14 +1396,27 @@ details summary.no-arrow {
 .megs .character-creator .tab.skills .items-list .toggle-icon:hover {
   color: #000;
 }
+.megs {
+  /* Locked APs display */
+}
 .megs .character-creator .tab.skills .aps-locked {
   display: block;
   text-align: center;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Error styling for budget and linked power mismatches
+  /*------------------------------------------------------------------------*/
 }
 .megs .over-budget,
 .megs .link-mismatch {
   color: #d32f2f;
   font-weight: bold;
+}
+.megs {
+  /*------------------------------------------------------------------------*/
+  /* Character Creator - Wealth Tab
+  /*------------------------------------------------------------------------*/
 }
 .megs .wealth-summary {
   margin-bottom: 10px;
@@ -1476,7 +1558,7 @@ details summary.no-arrow {
   border-color: #5fa2d9;
 }
 .megs.dialog .dialog-buttons button:active {
-  background-color: #153550; /* stylelint-disable-line scss/no-global-function-names */
+  background-color: rgb(20.5986842105, 53.1578947368, 80.4013157895); /* stylelint-disable-line scss/no-global-function-names */
 }
 
 .megs-dialog {
@@ -1570,6 +1652,17 @@ details summary.no-arrow {
   margin: 0;
 }
 
+.gadget-roll-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.gadget-roll-option input[type=radio] {
+  margin: 0;
+}
+
 /*------------------------------------------------------------------------*/
 /* Chat Messages
 /*------------------------------------------------------------------------*/
@@ -1577,9 +1670,6 @@ li.chat-message {
   background: #fff !important;
   font-family: "Roboto", sans-serif !important;
   letter-spacing: normal !important;
-  overflow: visible !important;
-  /* Tooltip styles for chat messages */
-  /* Initiative/Column Shift Table in tooltip */
 }
 li.chat-message .message-content {
   background: #fff !important;
@@ -1627,7 +1717,7 @@ li.chat-message .chat-result.failure:hover {
 }
 li.chat-message .chat-result .d10 {
   display: inline-block;
-  background-image: url("/icons/svg/d10-grey.svg");
+  background-image: url(/icons/svg/d10-grey.svg);
   min-width: 24px;
   line-height: 24px;
   margin-right: 1px;
@@ -1640,38 +1730,30 @@ li.chat-message .message-header {
   background-color: #1f5079 !important;
   color: #fff !important;
   padding: 5px !important;
-  overflow: visible !important;
-  position: relative;
-  z-index: 1;
 }
 li.chat-message .message-header .message-sender {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: #fff !important;
-  overflow: visible;
-}
-li.chat-message .message-header .message-sender .megs-chat-avatar {
-  width: 42px;
-  height: 42px;
-  margin: -11px 0 -11px -5px;
-  border: 2px solid #1f5079;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
 }
 li.chat-message .message-header .message-metadata {
   color: #fff !important;
 }
 li.chat-message .message-header .message-metadata .message-timestamp {
   color: #fff !important;
-  font-size: 10px;
 }
 li.chat-message .message-header .message-metadata .message-delete {
   color: #fff !important;
 }
+li.chat-message .megs-chat-title {
+  padding: 5px 0 2px 2px;
+  background-color: #1f5079;
+  color: #fff;
+  text-align: center;
+}
 li.chat-message .megs-chat-roll {
   margin: 0 3px 0 3px;
+}
+li.chat-message {
+  /* Tooltip styles for chat messages */
 }
 li.chat-message .tooltip {
   position: relative;
@@ -1712,6 +1794,9 @@ li.chat-message .tooltip .tooltiptext::after {
 li.chat-message .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+li.chat-message {
+  /* Initiative/Column Shift Table in tooltip */
 }
 li.chat-message .tooltip .tooltiptext .init-table {
   width: 100%;

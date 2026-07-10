@@ -10,20 +10,18 @@
             {{!-- Item name --}}
             {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
 
-            {{#if system.hasSubtext}}
-                <div class="resource flex-group-center">
-                    <label for="system.text" class="resource-label">{{localize 'MEGS.Detail'}}</label>
-                    <div class="resource-content flexrow flex-center flex-between">
-                        {{#if flags.megs.edit-mode}}
+            {{#if flags.megs.edit-mode}}
+                {{#if system.hasSubtext}}
+                    <div class="resource flex-group-center">
+                        <label for="system.text" class="resource-label">{{localize 'MEGS.Detail'}}</label>
+                        <div class="resource-content flexrow flex-center flex-between">
                             <input type="text" name="system.text" value="{{system.text}}" />
-                        {{else}}
-                            <span>{{system.text}}</span>
-                        {{/if}}
+                        </div>
                     </div>
-                </div>
+                {{/if}}
             {{/if}}
 
-            <div class="resources grid grid-2col">
+            <div class="resources grid grid-3col">
 
                 <div class="resource flex-group-center">
                     <label for="system.baseCost" class="resource-label">{{localize 'MEGS.InitialCost'}}</label>
@@ -40,6 +38,17 @@
                     <label for="system.purchaseCost" class="resource-label">{{localize 'MEGS.PurchaseCost'}}</label>
                     <div class="resource-content flexrow flex-center flex-between">
                         <span>{{multiply system.baseCost 5}}</span>
+                    </div>
+                </div>
+
+                <div class="resource flex-group-center">
+                    <label for="system.gadgetOnly" class="resource-label">{{localize 'MEGS.GadgetOnly'}}</label>
+                    <div class="resource-content flexrow flex-center" style="justify-content: center;">
+                        {{#if flags.megs.edit-mode}}
+                            <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} />
+                        {{else}}
+                            <span>{{#if system.gadgetOnly}}Yes{{else}}No{{/if}}</span>
+                        {{/if}}
                     </div>
                 </div>
 

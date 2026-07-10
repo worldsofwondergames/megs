@@ -289,6 +289,8 @@ li.directory-item img[src*='assets/images/icons'] {
         gap: 6px;
         margin-bottom: 6px;
         cursor: pointer;
+        font-weight: bold;
+        color: $c-darkblue;
 
         input[type='checkbox'] {
             margin: 0;

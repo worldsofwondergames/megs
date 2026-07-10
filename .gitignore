@@ -29,5 +29,10 @@ scripts/*
 !scripts/build-compendiums.mjs
 !scripts/extract-compendiums.mjs
 
+# Playwright
+e2e/.auth/
+test-results/
+playwright-report/
+
 # Claude Code
 .claude/

@@ -1017,83 +1017,73 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     _executeGadgetRoll(event, gadget, option) {
-        let actionValue = 0;
-        let effectValue = 0;
-        let opposingValue = 0;
-        let resistanceValue = 0;
-        let rollType = option.type;
-        let label = this.object.name + ' - ' + gadget.name;
-        let rollValue = 0;
-        const unskilled = false;
+        const resolved = this._resolveGadgetOption(option, gadget);
+        if (!resolved) return;
 
-        const targetActor = MegsTableRolls.getTargetActor();
-
-        if (option.type === 'gadget-av-ev') {
-            actionValue = option.av;
-            effectValue = option.ev;
-            rollValue = actionValue;
-            if (effectValue === 0) {
-                const values = this._getGadgetValues(gadget, actionValue);
-                effectValue = values.effectValue;
-                actionValue = values.actionValue;
-            }
-            rollType = MEGS.itemTypes.gadget;
-        } else if (option.type === 'power') {
-            const power = this.actor.items.get(option.itemId);
-            if (!power) return;
-            actionValue = option.aps;
-            effectValue = option.aps;
-            rollValue = option.aps;
-            label += ' — ' + power.name;
-            rollType = MEGS.itemTypes.power;
-            if (targetActor && option.link) {
-                opposingValue = Utils.getOpposingValue(option.link, targetActor);
-                resistanceValue = Utils.getResistanceValue(option.link, targetActor);
-            }
-        } else if (option.type === 'skill') {
-            const skill = this.actor.items.get(option.itemId);
-            if (!skill) return;
-            actionValue = option.aps;
-            effectValue = option.aps;
-            rollValue = option.aps;
-            label += ' — ' + skill.name;
-            rollType = MEGS.itemTypes.skill;
-            if (targetActor && option.link) {
-                opposingValue = Utils.getOpposingValue(option.link, targetActor);
-                resistanceValue = Utils.getResistanceValue(option.link, targetActor);
-            }
-        } else if (option.type === 'attribute') {
-            actionValue = option.av;
-            effectValue = option.ev;
-            rollValue = actionValue;
-            label += ' — ' + option.label;
-            rollType = MEGS.rollTypes.attribute;
-            if (targetActor) {
-                opposingValue = Utils.getOpposingValue(option.actionKey, targetActor);
-                resistanceValue = Utils.getResistanceValue(option.actionKey, targetActor);
-            }
-        }
-
-        this._applyAlwaysSubstitute(gadget, actionValue, effectValue, option, (av, ev) => {
-            actionValue = av;
-            effectValue = ev;
+        this._applyAlwaysSubstitute(gadget, resolved.actionValue, resolved.effectValue, option, (av, ev) => {
+            resolved.actionValue = av;
+            resolved.effectValue = ev;
         });
 
         console.info('Rolling gadget from actor-sheet._executeGadgetRoll()');
         const rollValues = new RollValues(
-            label,
-            rollType,
-            rollValue,
-            actionValue,
-            opposingValue,
-            effectValue,
-            resistanceValue,
+            resolved.label,
+            resolved.rollType,
+            resolved.actionValue,
+            resolved.actionValue,
+            resolved.opposingValue,
+            resolved.effectValue,
+            resolved.resistanceValue,
             '1d10 + 1d10',
-            unskilled
+            false
         );
         const speaker = ChatMessage.getSpeaker({ actor: this.object });
         const rollTables = new MegsTableRolls(rollValues, speaker);
         rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {});
+    }
+
+    _resolveGadgetOption(option, gadget) {
+        const result = {
+            actionValue: 0,
+            effectValue: 0,
+            opposingValue: 0,
+            resistanceValue: 0,
+            rollType: option.type,
+            label: this.object.name + ' - ' + gadget.name,
+        };
+        const targetActor = MegsTableRolls.getTargetActor();
+
+        if (option.type === 'gadget-av-ev') {
+            result.actionValue = option.av;
+            result.effectValue = option.ev;
+            if (result.effectValue === 0) {
+                const values = this._getGadgetValues(gadget, result.actionValue);
+                result.effectValue = values.effectValue;
+                result.actionValue = values.actionValue;
+            }
+            result.rollType = MEGS.itemTypes.gadget;
+        } else if (option.type === 'power' || option.type === 'skill') {
+            const item = this.actor.items.get(option.itemId);
+            if (!item) return null;
+            result.actionValue = option.aps;
+            result.effectValue = option.aps;
+            result.label += ' — ' + item.name;
+            result.rollType = option.type === 'power' ? MEGS.itemTypes.power : MEGS.itemTypes.skill;
+            if (targetActor && option.link) {
+                result.opposingValue = Utils.getOpposingValue(option.link, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(option.link, targetActor);
+            }
+        } else if (option.type === 'attribute') {
+            result.actionValue = option.av;
+            result.effectValue = option.ev;
+            result.label += ' — ' + option.label;
+            result.rollType = MEGS.rollTypes.attribute;
+            if (targetActor) {
+                result.opposingValue = Utils.getOpposingValue(option.actionKey, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(option.actionKey, targetActor);
+            }
+        }
+        return result;
     }
 
     _applyAlwaysSubstitute(gadget, actionValue, effectValue, option, callback) {

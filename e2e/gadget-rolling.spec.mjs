@@ -780,6 +780,73 @@ export default function gadgetRollingTests(test, expect) {
         }
     });
 
+    test('R10: Toggling AlwaysSubstitute persists after closing and reopening sheet', async ({ page }) => {
+        await page.goto(FOUNDRY_URL);
+        await page.waitForTimeout(3000);
+
+        const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R10_Persist', [
+            { name: 'Armor', av: 0, ev: 0, attrs: { dex: 8, str: 10 } },
+        ]);
+        try {
+            // Open the gadget sheet
+            await page.evaluate((info) => {
+                const actor = game.actors.get(info.actorId);
+                const gadget = actor.items.get(info.gadgetId);
+                gadget.sheet.render(true);
+            }, { actorId: data.actorId, gadgetId: data.gadgetIds['Armor'] });
+
+            await page.waitForSelector('.sheet.item', { timeout: 5000 });
+            await page.waitForTimeout(500);
+
+            // Verify DEX checkbox starts unchecked
+            const initialState = await page.$$eval(
+                '.sheet.item .always-substitute-label input[type="checkbox"]',
+                (cbs) => cbs.map(cb => cb.checked)
+            );
+            expect(initialState[0]).toBe(false);
+
+            // Click the DEX always-substitute checkbox
+            await page.evaluate(() => {
+                const cbs = document.querySelectorAll('.sheet.item .always-substitute-label input[type="checkbox"]');
+                if (cbs[0]) cbs[0].click();
+            });
+            await page.waitForTimeout(1000);
+
+            // Close all sheets
+            await closeAll(page);
+
+            // Verify data model persisted
+            const persisted = await page.evaluate((info) => {
+                const actor = game.actors.get(info.actorId);
+                const gadget = actor.items.get(info.gadgetId);
+                return gadget.system.attributes.dex.alwaysSubstitute;
+            }, { actorId: data.actorId, gadgetId: data.gadgetIds['Armor'] });
+            expect(persisted).toBe(true);
+
+            // Reopen the gadget sheet
+            await page.evaluate((info) => {
+                const actor = game.actors.get(info.actorId);
+                const gadget = actor.items.get(info.gadgetId);
+                gadget.sheet.render(true);
+            }, { actorId: data.actorId, gadgetId: data.gadgetIds['Armor'] });
+
+            await page.waitForSelector('.sheet.item', { timeout: 5000 });
+            await page.waitForTimeout(500);
+
+            // Verify the checkbox is still checked in the UI
+            const afterReopen = await page.$$eval(
+                '.sheet.item .always-substitute-label input[type="checkbox"]',
+                (cbs) => cbs.map(cb => cb.checked)
+            );
+            expect(afterReopen[0]).toBe(true);
+            // STR should still be unchecked
+            expect(afterReopen[1]).toBe(false);
+        } finally {
+            await closeAll(page);
+            await deleteTestActor(page, data.actorId);
+        }
+    });
+
     // ----------------------------------------------------------
     // R11: Macro support (item.roll())
     // ----------------------------------------------------------

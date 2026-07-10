@@ -343,6 +343,7 @@ export class MegsTableRolls {
 
         // Execute the roll
         await avRoll.evaluate();
+        MegsTableRolls._applyDiceAppearance(avRoll);
 
         let dice = [];
         const resultData = {
@@ -527,6 +528,18 @@ export class MegsTableRolls {
      * @param {Roll} initialRoll - The initial roll object to extract dice from
      * @returns
      */
+    static _applyDiceAppearance(roll) {
+        if (roll.dice && roll.dice.length >= 2) {
+            roll.dice[0].options.appearance = {
+                colorset: 'custom',
+                diceColor: '#cc0000',
+                labelColor: '#ffffff',
+                outlineColor: '#cc0000',
+                edgeColor: '#ffffff',
+            };
+        }
+    }
+
     async _rollDice(data, initialRoll) {
         const dice = [];
         let stopRolling = false;
@@ -548,6 +561,7 @@ export class MegsTableRolls {
             currentRoll = new Roll(this.rollFormula, {});
             await currentRoll.evaluate();
         }
+        MegsTableRolls._applyDiceAppearance(currentRoll);
 
         while (!stopRolling) {
             // Extract dice values from the roll object
@@ -592,6 +606,7 @@ export class MegsTableRolls {
                 if (confirmed) {
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
+                    MegsTableRolls._applyDiceAppearance(currentRoll);
                     stopRolling = false;
                 } else {
                     stopRolling = true;

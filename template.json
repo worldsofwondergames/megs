@@ -324,7 +324,11 @@
             "type": "power",
             "img": "systems/megs/assets/images/icons/power.png",
             "source": "",
-            "activateFree": false
+            "activateFree": false,
+            "avSource": "",
+            "evSource": "",
+            "ovSource": "",
+            "rvSource": ""
         },
         "skill": {
             "templates": [

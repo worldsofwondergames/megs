@@ -11,6 +11,7 @@ End-to-end tests for the MEGS Foundry VTT game system using Playwright MCP.
 ## Test Files
 
 - `gadget-rolling.spec.mjs` — Tests for Issue #17 (Gadgets - Rolling)
+- `gadget-sheet-rolling.spec.mjs` — Tests for Issue #13 (Roll attacks from gadget sheet)
 
 ## Running Tests
 

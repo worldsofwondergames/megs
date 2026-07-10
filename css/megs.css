@@ -1080,12 +1080,13 @@ details summary.no-arrow {
   cursor: pointer;
   font-weight: bold;
   color: #1f5079;
+  font-size: 14px;
+  line-height: 1;
 }
 .megs .trait-options .checkbox input[type=checkbox] {
   margin: 0;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
+  flex-shrink: 0;
+  top: 0;
 }
 .megs .trait-options .checkbox input[type=checkbox]:disabled {
   cursor: default;

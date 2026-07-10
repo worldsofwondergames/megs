@@ -74,6 +74,8 @@
         "EffectValue": "Valor de Efeito",
         "Factor": "Fator",
         "FactorCostMod": "Modificador do fator de custo",
+        "GadgetOnly": "Apenas Equipamento",
+        "GadgetOnlyWarning": "Este traço só pode ser adicionado a equipamentos, não diretamente a personagens.",
         "Gadgets": "Equipamentos",
         "HasAVAndEV": "Possui AV e EV?",
         "HasGadgets": "Possui equipamentos?",

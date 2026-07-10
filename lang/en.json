@@ -74,6 +74,8 @@
         "EffectValue": "Effect Value",
         "Factor": "Factor",
         "FactorCostMod": "Factor Cost Mod",
+        "GadgetOnly": "Gadget Only",
+        "GadgetOnlyWarning": "This trait can only be added to gadgets, not directly to characters.",
         "Gadgets": "Gadgets",
         "HasAVAndEV": "Has AV & EV?",
         "HasGadgets": "Has gadgets?",

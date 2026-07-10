@@ -166,6 +166,11 @@ export class MEGSItemSheet extends ItemSheet {
                 }
                 context.powers = powers;
             }
+            const options = this.object.system.factorCostModOptions;
+            if (Array.isArray(options) && options.length > 0) {
+                context.hasFactorCostOptions = true;
+                context.factorCostModOptions = options;
+            }
         }
 
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');

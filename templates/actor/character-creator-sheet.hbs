@@ -231,7 +231,15 @@
                             <div class='item-linked'></div>
                             <div class='item-base-cost'></div>
                             <div class='item-factor-cost'>
-                                {{formatSigned modifier.system.factorCostMod}}
+                                {{#if modifier.system.factorCostModOptions.length}}
+                                    <select class="modifier-fc-select" data-item-id="{{modifier._id}}">
+                                        {{#each modifier.system.factorCostModOptions}}
+                                            <option value="{{this}}" {{#if (compare this '===' ../modifier.system.factorCostMod)}}selected{{/if}}>{{formatSigned this}}</option>
+                                        {{/each}}
+                                    </select>
+                                {{else}}
+                                    {{formatSigned modifier.system.factorCostMod}}
+                                {{/if}}
                             </div>
                             <div class='item-aps'></div>
                             <div class='item-total-cost'></div>

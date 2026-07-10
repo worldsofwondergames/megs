@@ -155,6 +155,15 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             }
         });
 
+        // Modifier factor cost dropdown
+        html.on('change', '.modifier-fc-select', async (ev) => {
+            const itemId = $(ev.currentTarget).data('itemId');
+            const item = this.actor.items.get(itemId);
+            if (item) {
+                await item.update({ 'system.factorCostMod': Number(ev.currentTarget.value) });
+            }
+        });
+
         // Enable drag-and-drop for Bonuses/Limitations onto Powers
         this._enablePowerRowDropZones(html);
 

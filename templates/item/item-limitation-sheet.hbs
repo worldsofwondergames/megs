@@ -14,7 +14,15 @@
                 <div class="resource flex-group-center">
                     <label for="system.factorCostMod" class="resource-label">{{localize 'MEGS.FactorCostMod'}}</label>
                     <div class="resource-content flexrow flex-center flex-between">
-                        <input type="text" name="system.factorCostMod" value="{{system.factorCostMod}}" data-dtype="Number" />
+                        {{#if hasFactorCostOptions}}
+                            <select name="system.factorCostMod" data-dtype="Number">
+                                {{#each factorCostModOptions}}
+                                    <option value="{{this}}" {{#if (compare this '===' ../system.factorCostMod)}}selected{{/if}}>{{formatSigned this}}</option>
+                                {{/each}}
+                            </select>
+                        {{else}}
+                            <input type="text" name="system.factorCostMod" value="{{system.factorCostMod}}" data-dtype="Number" />
+                        {{/if}}
                     </div>
                 </div>
 

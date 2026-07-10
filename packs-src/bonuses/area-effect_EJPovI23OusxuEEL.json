@@ -6,7 +6,8 @@
   "system": {
     "name": "Area Effect",
     "description": "",
-    "factorCostMod": 0,
+    "factorCostMod": 1,
+    "factorCostModOptions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     "text": "",
     "hasSubtext": true,
     "parent": "",

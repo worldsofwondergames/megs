@@ -45,7 +45,7 @@
                     <label for="system.gadgetOnly" class="resource-label">{{localize 'MEGS.GadgetOnly'}}</label>
                     <div class="resource-content flexrow flex-center" style="justify-content: center;">
                         {{#if flags.megs.edit-mode}}
-                            <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} />
+                            <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} {{#if gadgetOnlyLocked}}disabled{{/if}} />
                         {{else}}
                             <span>{{#if system.gadgetOnly}}Yes{{else}}No{{/if}}</span>
                         {{/if}}

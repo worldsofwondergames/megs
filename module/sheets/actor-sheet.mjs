@@ -1000,11 +1000,18 @@ export class MEGSActorSheet extends ActorSheet {
     /** @override **/
     async _onDropItemCreate(itemData) {
         const items = Array.isArray(itemData) ? itemData : [itemData];
-        const blocked = items.filter(
-            (i) => (i.type === 'advantage' || i.type === 'drawback') && i.system?.gadgetOnly
-        );
-        if (blocked.length) {
+        const isTrait = (i) => i.type === 'advantage' || i.type === 'drawback';
+        const gadgetBlocked = items.filter((i) => isTrait(i) && i.system?.gadgetOnly);
+        const isCharacterCreator = this.constructor.name === 'MEGSCharacterBuilderSheet';
+        const creationBlocked = isCharacterCreator ? [] : items.filter((i) => isTrait(i) && i.system?.creationOnly);
+        if (gadgetBlocked.length) {
             ui.notifications.warn(game.i18n.localize('MEGS.GadgetOnlyWarning'));
+        }
+        if (creationBlocked.length) {
+            ui.notifications.warn(game.i18n.localize('MEGS.CreationOnlyWarning'));
+        }
+        const blocked = [...new Set([...gadgetBlocked, ...creationBlocked])];
+        if (blocked.length) {
             const allowed = items.filter((i) => !blocked.includes(i));
             if (!allowed.length) return false;
             return super._onDropItemCreate(allowed);

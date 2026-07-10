@@ -1070,6 +1070,7 @@ details summary.no-arrow {
 }
 .megs .trait-options {
   padding: 8px;
+  font-family: "Roboto", sans-serif;
 }
 .megs .trait-options .checkbox {
   display: flex;

@@ -30,6 +30,10 @@ export class MEGSItem extends Item {
                 const powerRanges = {};
                 const powerIsLinked = {};
                 const powerLinks = {};
+                const powerAvSources = {};
+                const powerEvSources = {};
+                const powerOvSources = {};
+                const powerRvSources = {};
                 const traitData = {};
 
                 // Get all child items
@@ -58,6 +62,10 @@ export class MEGSItem extends Item {
                         powerRanges[item.name] = item.system.range || '';
                         powerIsLinked[item.name] = item.system.isLinked || false;
                         powerLinks[item.name] = item.system.link || '';
+                        powerAvSources[item.name] = item.system.avSource || '';
+                        powerEvSources[item.name] = item.system.evSource || '';
+                        powerOvSources[item.name] = item.system.ovSource || '';
+                        powerRvSources[item.name] = item.system.rvSource || '';
                     } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`[MEGS] Serializing trait: ${item.name}`);
@@ -97,6 +105,10 @@ export class MEGSItem extends Item {
                     powerRanges: powerRanges,
                     powerIsLinked: powerIsLinked,
                     powerLinks: powerLinks,
+                    powerAvSources: powerAvSources,
+                    powerEvSources: powerEvSources,
+                    powerOvSources: powerOvSources,
+                    powerRvSources: powerRvSources,
                     traitData: traitData
                 };
 
@@ -112,6 +124,10 @@ export class MEGSItem extends Item {
                 data.system.powerRanges = powerRanges;
                 data.system.powerIsLinked = powerIsLinked;
                 data.system.powerLinks = powerLinks;
+                data.system.powerAvSources = powerAvSources;
+                data.system.powerEvSources = powerEvSources;
+                data.system.powerOvSources = powerOvSources;
+                data.system.powerRvSources = powerRvSources;
                 data.system.traitData = traitData;
             } else {
                 // Standalone gadget - ensure virtual data is preserved during drag
@@ -137,6 +153,10 @@ export class MEGSItem extends Item {
                     powerRanges: this.system.powerRanges || {},
                     powerIsLinked: this.system.powerIsLinked || {},
                     powerLinks: this.system.powerLinks || {},
+                    powerAvSources: this.system.powerAvSources || {},
+                    powerEvSources: this.system.powerEvSources || {},
+                    powerOvSources: this.system.powerOvSources || {},
+                    powerRvSources: this.system.powerRvSources || {},
                     traitData: this.system.traitData || {}
                 };
 
@@ -150,6 +170,10 @@ export class MEGSItem extends Item {
                 data.system.powerRanges = this.system.powerRanges || {};
                 data.system.powerIsLinked = this.system.powerIsLinked || {};
                 data.system.powerLinks = this.system.powerLinks || {};
+                data.system.powerAvSources = this.system.powerAvSources || {};
+                data.system.powerEvSources = this.system.powerEvSources || {};
+                data.system.powerOvSources = this.system.powerOvSources || {};
+                data.system.powerRvSources = this.system.powerRvSources || {};
                 data.system.traitData = this.system.traitData || {};
             }
         }
@@ -278,6 +302,10 @@ export class MEGSItem extends Item {
                 this.system.powerRanges = transferData.powerRanges || {};
                 this.system.powerIsLinked = transferData.powerIsLinked || {};
                 this.system.powerLinks = transferData.powerLinks || {};
+                this.system.powerAvSources = transferData.powerAvSources || {};
+                this.system.powerEvSources = transferData.powerEvSources || {};
+                this.system.powerOvSources = transferData.powerOvSources || {};
+                this.system.powerRvSources = transferData.powerRvSources || {};
                 this.system.traitData = transferData.traitData || {};
 
                 // Persist to database and remove transfer flag
@@ -291,6 +319,10 @@ export class MEGSItem extends Item {
                     'system.powerRanges': this.system.powerRanges,
                     'system.powerIsLinked': this.system.powerIsLinked,
                     'system.powerLinks': this.system.powerLinks,
+                    'system.powerAvSources': this.system.powerAvSources,
+                    'system.powerEvSources': this.system.powerEvSources,
+                    'system.powerOvSources': this.system.powerOvSources,
+                    'system.powerRvSources': this.system.powerRvSources,
                     'system.traitData': this.system.traitData,
                     'flags.megs.-=_transferData': null // Remove transfer flag
                 });
@@ -346,6 +378,10 @@ export class MEGSItem extends Item {
                     'system.powerRanges': this.system.powerRanges || {},
                     'system.powerIsLinked': this.system.powerIsLinked || {},
                     'system.powerLinks': this.system.powerLinks || {},
+                    'system.powerAvSources': this.system.powerAvSources || {},
+                    'system.powerEvSources': this.system.powerEvSources || {},
+                    'system.powerOvSources': this.system.powerOvSources || {},
+                    'system.powerRvSources': this.system.powerRvSources || {},
                     'system.traitData': this.system.traitData || {}
                 });
             }
@@ -493,6 +529,10 @@ export class MEGSItem extends Item {
         const powerRanges = this.system.powerRanges || {};
         const powerIsLinked = this.system.powerIsLinked || {};
         const powerLinks = this.system.powerLinks || {};
+        const powerAvSources = this.system.powerAvSources || {};
+        const powerEvSources = this.system.powerEvSources || {};
+        const powerOvSources = this.system.powerOvSources || {};
+        const powerRvSources = this.system.powerRvSources || {};
 
         if (game.settings.get('megs', 'debugLogging')) {
             console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerAPs).length} powers`);
@@ -513,13 +553,17 @@ export class MEGSItem extends Item {
                 type: 'power',
                 img: 'systems/megs/assets/images/icons/power.png',
                 system: {
-                    parent: this.id, // Set parent to this gadget's ID
+                    parent: this.id,
                     aps: powerAPs[powerName] || 0,
                     baseCost: powerBaseCosts[powerName] || 0,
                     factorCost: powerFactorCosts[powerName] || 0,
                     range: powerRanges[powerName] || '',
                     isLinked: powerIsLinked[powerName] || false,
-                    link: powerLinks[powerName] || ''
+                    link: powerLinks[powerName] || '',
+                    avSource: powerAvSources[powerName] || '',
+                    evSource: powerEvSources[powerName] || '',
+                    ovSource: powerOvSources[powerName] || '',
+                    rvSource: powerRvSources[powerName] || ''
                 }
             };
             powers.push(powerObj);
@@ -609,6 +653,37 @@ export class MEGSItem extends Item {
             return 0;
         }
         return result;
+    }
+
+    _prepareSourceFields(systemData) {
+        const sourceFields = ['avSource', 'evSource', 'ovSource', 'rvSource'];
+        for (const field of sourceFields) {
+            const value = systemData[field] || '';
+            const parts = value.split(':');
+            const prefix = field.replace('Source', 'Source');
+            if (parts.length === 2 && parts[0] === 'char') {
+                systemData[`${prefix}Attr`] = parts[1];
+                systemData[`${prefix}TargetAttr`] = '';
+                const attrLabel = systemData.attributesForLink[parts[1]] || parts[1];
+                systemData[`${prefix}Label`] = `${game.i18n.localize('MEGS.CharacterAttribute')}: ${attrLabel}`;
+            } else if (parts.length === 2 && parts[0] === 'target') {
+                systemData[`${prefix}Attr`] = '';
+                systemData[`${prefix}TargetAttr`] = parts[1];
+                const attrLabel = systemData.attributesForLink[parts[1]] || parts[1];
+                systemData[`${prefix}Label`] = `${game.i18n.localize('MEGS.TargetAttribute')}: ${attrLabel}`;
+            } else if (value === 'aps') {
+                systemData[`${prefix}Attr`] = '';
+                systemData[`${prefix}TargetAttr`] = '';
+                systemData[`${prefix}Label`] = game.i18n.localize('MEGS.PowerAPs');
+            } else {
+                systemData[`${prefix}Attr`] = '';
+                systemData[`${prefix}TargetAttr`] = '';
+                const isOvRv = field === 'ovSource' || field === 'rvSource';
+                systemData[`${prefix}Label`] = isOvRv
+                    ? game.i18n.localize('MEGS.AutomaticFromLink')
+                    : game.i18n.localize('MEGS.PowerAPs');
+            }
+        }
     }
 
     _getReliabilityModifier(reliability) {
@@ -872,6 +947,10 @@ export class MEGSItem extends Item {
         systemData.attributesForLink = {};
         for (const [key, value] of Object.entries(MEGS.attributeLabels)) {
             systemData.attributesForLink[key] = game.i18n.localize(value);
+        }
+
+        if (this.type === MEGS.itemTypes.power) {
+            this._prepareSourceFields(systemData);
         }
 
         // Subskills don't have costs - skip all cost calculations
@@ -1173,17 +1252,20 @@ export class MEGSItem extends Item {
      *
      */
     rollMegs() {
-        // for powers, AV and EV are typically APs of power
-        const actionValue = Number.parseInt(this.system.aps);
-        const effectValue = Number.parseInt(this.system.aps);
+        let actionValue = Number.parseInt(this.system.aps);
+        let effectValue = Number.parseInt(this.system.aps);
         let opposingValue = 0;
         let resistanceValue = 0;
 
         const targetActor = MegsTableRolls.getTargetActor();
 
-        if (targetActor) {
-            let key;
-
+        if (this.type === MEGS.itemTypes.power && Utils.hasPowerSourceOverrides(this)) {
+            const resolved = Utils.resolvePowerRollValues(this, this.parent, targetActor);
+            actionValue = resolved.av;
+            effectValue = resolved.ev;
+            opposingValue = resolved.ov;
+            resistanceValue = resolved.rv;
+        } else if (targetActor) {
             if (this.system.link) {
                 let linkedType = this.system[this.system.link];
                 if (!linkedType && this.parent) {
@@ -1191,15 +1273,13 @@ export class MEGSItem extends Item {
                 }
 
                 if (linkedType) {
-                    // Physical powers - OV and RV are DEX and BODY
+                    let key;
                     if (linkedType.type === MEGS.powerSources.physical.toLowerCase()) {
                         key = MEGS.attributeAbbreviations.str;
                     }
-                    // Mental powers - OV and RV are INT and MIND
                     if (linkedType.type === MEGS.powerSources.mental.toLowerCase()) {
                         key = MEGS.attributeAbbreviations.int;
                     }
-                    // Mystical powers - OV and RV are INFL and SPIRIT
                     if (linkedType.type === MEGS.powerSources.mystical.toLowerCase()) {
                         key = MEGS.attributeAbbreviations.infl;
                     }
@@ -1212,15 +1292,6 @@ export class MEGSItem extends Item {
             } else {
                 console.error('No linked attribute for this item');
             }
-        }
-
-        if (this.type === MEGS.itemTypes.power) {
-            // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
-        }
-
-        // values of skills and subskills
-        if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill) {
-            // TDOO anything skill-specific
         }
 
         let label = this.name;

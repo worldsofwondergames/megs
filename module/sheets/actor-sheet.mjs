@@ -910,18 +910,33 @@ export class MEGSActorSheet extends ActorSheet {
             return this._onGadgetRoll(event, dataset);
         }
 
-        const actionValue = Number.parseInt(dataset.value);
+        let actionValue = Number.parseInt(dataset.value);
         let opposingValue = 0;
         let effectValue = 0;
         let resistanceValue = 0;
 
         const targetActor = MegsTableRolls.getTargetActor();
-        if (targetActor) {
+
+        if (dataset.type === MEGS.itemTypes.power && dataset.itemId) {
+            const powerItem = this.actor.items.get(dataset.itemId);
+            if (powerItem && Utils.hasPowerSourceOverrides(powerItem)) {
+                const resolved = Utils.resolvePowerRollValues(powerItem, this.actor, targetActor);
+                actionValue = resolved.av;
+                effectValue = resolved.ev;
+                opposingValue = resolved.ov;
+                resistanceValue = resolved.rv;
+            } else {
+                effectValue = Number.parseInt(dataset.value);
+                if (targetActor && dataset.link) {
+                    opposingValue = targetActor.system.attributes[dataset.link].value;
+                    resistanceValue = Utils.getResistanceValue(dataset.link, targetActor);
+                }
+            }
+        } else if (targetActor) {
             if (dataset.type === MEGS.rollTypes.attribute) {
                 opposingValue = targetActor.system.attributes[dataset.key].value;
                 resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
             } else if (
-                dataset.type === MEGS.itemTypes.power ||
                 dataset.type === MEGS.itemTypes.skill
             ) {
                 if (dataset.link) {
@@ -936,7 +951,6 @@ export class MEGSActorSheet extends ActorSheet {
         if (dataset.type === MEGS.rollTypes.attribute) {
             effectValue = Utils.getEffectValue(dataset.key, this.actor);
         } else if (
-            dataset.type === MEGS.itemTypes.power ||
             dataset.type === MEGS.itemTypes.skill ||
             dataset.type === MEGS.itemTypes.subskill
         ) {

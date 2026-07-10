@@ -276,6 +276,34 @@ li.directory-item img[src*='assets/images/icons'] {
 }
 
 /*------------------------------------------------------------------------*/
+/* Gadget Attribute Editing
+/*------------------------------------------------------------------------*/
+
+.gadget-attr-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.always-substitute-label {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    font-style: italic;
+    color: #666;
+    font-size: 12px;
+
+    input[type='checkbox'] {
+        margin: 0;
+    }
+}
+
+.resource-label.italic {
+    font-style: italic;
+}
+
+/*------------------------------------------------------------------------*/
 /* Trait Options Tab (Advantages/Drawbacks)
 /*------------------------------------------------------------------------*/
 

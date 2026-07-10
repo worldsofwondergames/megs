@@ -276,6 +276,26 @@ li.directory-item img[src*='assets/images/icons'] {
 }
 
 /*------------------------------------------------------------------------*/
+/* Gadget Attribute Editing
+/*------------------------------------------------------------------------*/
+
+.gadget-attribute {
+    position: relative;
+}
+
+.always-substitute-checkbox {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.resource-label.italic {
+    font-style: italic;
+}
+
+/*------------------------------------------------------------------------*/
 /* Trait Options Tab (Advantages/Drawbacks)
 /*------------------------------------------------------------------------*/
 

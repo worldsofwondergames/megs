@@ -159,3 +159,15 @@
         }
     }
 }
+
+.gadget-roll-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 4px 0;
+
+    input[type='radio'] {
+        margin: 0;
+    }
+}

@@ -509,7 +509,7 @@ export class MEGSItemSheet extends ItemSheet {
 
         // MEGS roll
         html.on('click', '.d10.rollable', (event) => {
-            // TODO defer roll to item object
+            if (event.currentTarget.dataset.type === 'gadget-roll') return;
 
             const element = event.currentTarget;
             const dataset = element.dataset;
@@ -601,8 +601,9 @@ export class MEGSItemSheet extends ItemSheet {
         });
 
         // Gadget sheet roll button — uses full roll flow with picker + alwaysSubstitute
-        html.on('click', '.gadget-roll-btn', (event) => {
+        html.on('click', '.d10.rollable[data-type="gadget-roll"]', (event) => {
             event.preventDefault();
+            event.stopPropagation();
             if (this.item.type === MEGS.itemTypes.gadget) {
                 this.item.rollGadget();
             }

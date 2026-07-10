@@ -251,6 +251,7 @@ test('_rollDice should return if dice do not match', () => {
 
     dice._rollDice(resultData, {}).then((response) => {
         expect(response).toStrictEqual([2, 3]);
+        expect(resultData.hadDoubles).toBe(false);
     });
 });
 
@@ -287,6 +288,7 @@ test('_rollDice should roll again if have matching dice on first roll and elect 
 
     dice._rollDice(resultData, {}).then((response) => {
         expect(response).toStrictEqual([2, 2, 3, 4]);
+        expect(resultData.hadDoubles).toBe(true);
     });
 });
 
@@ -323,6 +325,7 @@ test('_rollDice should roll again if have matching dice on first and second roll
 
     dice._rollDice(resultData, {}).then((response) => {
         expect(response).toStrictEqual([2, 2, 3, 3, 4, 5]);
+        expect(resultData.hadDoubles).toBe(true);
     });
 });
 
@@ -359,6 +362,7 @@ test('_rollDice should not roll again if have matching dice on first roll and us
 
     dice._rollDice(resultData, {}).then((response) => {
         expect(response).toStrictEqual([2, 2]);
+        expect(resultData.hadDoubles).toBe(true);
     });
 });
 
@@ -403,7 +407,91 @@ test('_rollDice should extract dice from initialRoll with terms structure', () =
 
     dice._rollDice(resultData, mockRollWithTerms).then((response) => {
         expect(response).toStrictEqual([7, 4]);
+        expect(resultData.hadDoubles).toBe(false);
     });
+});
+
+test('_rollDice should show DSN for each pair when doubles are rolled', async () => {
+    global.Dialog = YesDialog;
+    const showForRollMock = jest.fn().mockResolvedValue(undefined);
+    global.game.dice3d = { showForRoll: showForRollMock };
+
+    const values = {
+        label: 'Test',
+        type: 'attribute',
+        valueOrAps: 0,
+        actionValue: 0,
+        opposingValue: 0,
+        effectValue: 0,
+        resistanceValue: 0,
+        rollFormula: '3 + 3 + 5 + 7',
+        unskilled: false,
+    };
+    global.rollIndex = 0;
+
+    const dice = new MegsTableRolls(values);
+
+    const resultData = {
+        result: '',
+        actionValue: 0,
+        opposingValue: 0,
+        difficulty: 0,
+        dice: [],
+        columnShifts: 0,
+        effectValue: 0,
+        resistanceValue: 0,
+        success: true,
+        evResult: '',
+        rvColumnShifts: 0,
+    };
+
+    const response = await dice._rollDice(resultData, {});
+    expect(response).toStrictEqual([3, 3, 5, 7]);
+    expect(resultData.hadDoubles).toBe(true);
+    expect(showForRollMock).toHaveBeenCalledTimes(2);
+
+    delete global.game.dice3d;
+});
+
+test('_rollDice should not call DSN showForRoll when no doubles', async () => {
+    const showForRollMock = jest.fn().mockResolvedValue(undefined);
+    global.game.dice3d = { showForRoll: showForRollMock };
+
+    const values = {
+        label: 'Test',
+        type: 'attribute',
+        valueOrAps: 0,
+        actionValue: 0,
+        opposingValue: 0,
+        effectValue: 0,
+        resistanceValue: 0,
+        rollFormula: '4 + 7',
+        unskilled: false,
+    };
+    global.rollIndex = 0;
+
+    const dice = new MegsTableRolls(values);
+
+    const resultData = {
+        result: '',
+        actionValue: 0,
+        opposingValue: 0,
+        difficulty: 0,
+        dice: [],
+        columnShifts: 0,
+        effectValue: 0,
+        resistanceValue: 0,
+        success: true,
+        evResult: '',
+        rvColumnShifts: 0,
+    };
+
+    const response = await dice._rollDice(resultData, {});
+    expect(response).toStrictEqual([4, 7]);
+    expect(resultData.hadDoubles).toBe(false);
+    expect(showForRollMock).not.toHaveBeenCalled();
+
+    delete global.game.dice3d;
 });
 
 /*

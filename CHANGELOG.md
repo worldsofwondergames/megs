@@ -4,6 +4,8 @@
 
 ### Enhancements
 
+- Added "On Creation Only" checkbox on advantage and drawback item sheets; creation-only traits are blocked from being dropped on actor sheets but allowed on the character creator (issue #3)
+- Added Options tab on advantage and drawback item sheets for Gadget Only and On Creation Only checkboxes; moved Gadget Only from header to Options tab (issue #3, #178)
 - Added "Gadget Only" checkbox on advantage and drawback item sheets; gadget-only traits are blocked from being dropped directly onto actor sheets (issue #178)
 - Added editable detail/subtext field on advantage and drawback item sheets, displayed in parentheses on actor traits tab and character creator (issue #209)
 - Alphabetized advantages and drawbacks on character builder sheet

@@ -910,7 +910,7 @@ export class MEGSActorSheet extends ActorSheet {
             return this._onGadgetRoll(event, dataset);
         }
 
-        let actionValue = Number.parseInt(dataset.value);
+        const actionValue = Number.parseInt(dataset.value);
         let opposingValue = 0;
         let effectValue = 0;
         let resistanceValue = 0;
@@ -986,7 +986,7 @@ export class MEGSActorSheet extends ActorSheet {
             ...opt,
             checked: idx === 0,
         }));
-        const dialogHtml = await renderTemplate(
+        const dialogHtml = await foundry.applications.handlebars.renderTemplate(
             'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
             { options }
         );
@@ -1024,7 +1024,7 @@ export class MEGSActorSheet extends ActorSheet {
         let rollType = option.type;
         let label = this.object.name + ' - ' + gadget.name;
         let rollValue = 0;
-        let unskilled = false;
+        const unskilled = false;
 
         const targetActor = MegsTableRolls.getTargetActor();
 

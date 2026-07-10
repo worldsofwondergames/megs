@@ -279,24 +279,16 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Gadget Attribute Editing
 /*------------------------------------------------------------------------*/
 
-.gadget-attr-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+.gadget-attribute {
+    position: relative;
 }
 
-.always-substitute-label {
-    display: flex;
-    align-items: center;
-    gap: 2px;
+.always-substitute-checkbox {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    margin: 0;
     cursor: pointer;
-    font-style: italic;
-    color: #666;
-    font-size: 12px;
-
-    input[type='checkbox'] {
-        margin: 0;
-    }
 }
 
 .resource-label.italic {

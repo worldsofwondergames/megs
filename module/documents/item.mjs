@@ -1271,7 +1271,7 @@ export class MEGSItem extends Item {
                 ...opt,
                 checked: idx === 0,
             }));
-            const dialogHtml = await renderTemplate(
+            const dialogHtml = await foundry.applications.handlebars.renderTemplate(
                 'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
                 { options }
             );

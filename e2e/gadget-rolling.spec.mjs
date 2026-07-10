@@ -135,6 +135,13 @@ async function createTestActor(page, name, gadgets) {
 }
 
 /**
+ * Wait for the Foundry game UI to be fully loaded.
+ */
+async function waitForGameReady(page) {
+    await page.waitForSelector('#sidebar', { timeout: 15000 });
+}
+
+/**
  * Delete a test actor by ID.
  */
 async function deleteTestActor(page, actorId) {
@@ -142,7 +149,6 @@ async function deleteTestActor(page, actorId) {
         const actor = game.actors.get(id);
         if (actor) await actor.delete();
     }, actorId);
-    await page.waitForTimeout(200);
 }
 
 /**
@@ -155,9 +161,8 @@ async function openActorGadgetsTab(page, actorId) {
         actor.sheet.render(true);
     }, actorId);
     await page.waitForSelector('.sheet.actor', { timeout: 5000 });
-    await page.waitForTimeout(300);
     await page.click('.sheet.actor .tabs .item[data-tab="gadgets"]');
-    await page.waitForTimeout(300);
+    await page.waitForSelector('.sheet.actor .tab.gadgets', { timeout: 5000 });
 }
 
 /**
@@ -167,7 +172,7 @@ async function closeAll(page) {
     await page.evaluate(() => {
         Object.values(ui.windows).forEach(w => w.close());
     });
-    await page.waitForTimeout(300);
+    await page.waitForFunction(() => Object.keys(ui.windows).length === 0, { timeout: 5000 });
 }
 
 /**
@@ -211,7 +216,7 @@ async function clickGadgetRollButton(page, gadgetName) {
         return false;
     }, gadgetName);
     if (!clicked) throw new Error(`Could not click roll button for "${gadgetName}"`);
-    await page.waitForTimeout(500);
+    await page.waitForSelector('.dialog', { timeout: 5000 });
 }
 
 /**
@@ -262,7 +267,7 @@ async function selectPickerOptionAndRoll(page, index) {
         if (radios[idx]) radios[idx].checked = true;
     }, index);
     await page.click('.dialog button:has-text("Roll")');
-    await page.waitForTimeout(500);
+    await page.waitForSelector('.dialog .megs-dialog #actionValue', { timeout: 5000 });
 }
 
 /**
@@ -276,7 +281,10 @@ async function cancelPickerDialog(page) {
         const x = document.querySelector('.dialog .header-button.close');
         if (x) x.click();
     });
-    await page.waitForTimeout(300);
+    await page.waitForFunction(
+        () => !document.querySelector('.dialog .megs-dialog input[name="selectedOption"]'),
+        { timeout: 5000 }
+    );
 }
 
 /**
@@ -289,6 +297,13 @@ async function isRollDialogOpen(page) {
         }
         return false;
     });
+}
+
+/**
+ * Wait for the roll dialog to appear.
+ */
+async function waitForRollDialog(page) {
+    await page.waitForSelector('.dialog .megs-dialog #actionValue', { timeout: 5000 });
 }
 
 /**
@@ -314,19 +329,26 @@ async function closeRollDialog(page) {
             if (btn.textContent.includes('Close')) { btn.click(); return; }
         }
     });
-    await page.waitForTimeout(300);
+    await page.waitForFunction(
+        () => !document.querySelector('.dialog .megs-dialog #actionValue'),
+        { timeout: 5000 }
+    );
 }
 
 /**
- * Submit the roll dialog via the Roll button.
+ * Submit the roll dialog via the Roll button and wait for chat message.
  */
-async function submitRollDialog(page) {
+async function submitRollDialog(page, beforeCount) {
     await page.evaluate(() => {
         for (const btn of document.querySelectorAll('.dialog button')) {
             if (btn.textContent.trim() === 'Roll') { btn.click(); return; }
         }
     });
-    await page.waitForTimeout(1500);
+    await page.waitForFunction(
+        (before) => document.querySelectorAll('#chat-log .chat-message').length > before,
+        { timeout: 10000 },
+        beforeCount
+    );
 }
 
 /**
@@ -361,7 +383,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R1: Gadget with explicit AV and EV shows roll button', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R1_AVEV', [
             { name: 'Blaster', av: 6, ev: 8 },
@@ -378,7 +400,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R1: Gadget with only EV (no AV) is still rollable', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R1_EVOnly', [
             { name: 'Baton', av: 0, ev: 7 },
@@ -395,7 +417,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R2: Gadget with only child powers (APs > 0) is rollable', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R2_Powers', [
             {
@@ -418,7 +440,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R5: Gadget with no AV/EV, no powers, no skills, no attributes is NOT rollable', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R5_Empty', [
             { name: 'Decorative Cape', av: 0, ev: 0 },
@@ -435,7 +457,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R5/R8: Gadget with only 0-AP skills is NOT rollable', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R5_ZeroSkills', [
             {
@@ -459,7 +481,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R5/R8: Gadget with only 0-AP powers is NOT rollable', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R5_ZeroPowers', [
             {
@@ -486,7 +508,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R6: Single AV/EV option skips picker, opens roll dialog directly', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R6_Single', [
             { name: 'Pistol', av: 5, ev: 5 },
@@ -514,7 +536,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R6: Single power option skips picker, opens roll dialog directly', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R6_SinglePower', [
             {
@@ -552,7 +574,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R7: Multiple options open picker dialog', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R7_Multi', [
             {
@@ -571,7 +593,7 @@ export default function gadgetRollingTests(test, expect) {
             expect(pickerOpen).toBe(true);
 
             const options = await getPickerOptions(page);
-            expect(options.length).toBe(2);
+            expect(options).toHaveLength(2);
             expect(options).toContain('Water Control');
 
             await cancelPickerDialog(page);
@@ -583,7 +605,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R7: Picker shows all powers when gadget has many', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R7_ManyPowers', [
             {
@@ -606,7 +628,7 @@ export default function gadgetRollingTests(test, expect) {
             expect(pickerOpen).toBe(true);
 
             const options = await getPickerOptions(page);
-            expect(options.length).toBe(5);
+            expect(options).toHaveLength(5);
             expect(options).toContain('Flight');
             expect(options).toContain('Force Field');
             expect(options).toContain('Energy Blast');
@@ -622,7 +644,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R7/R8: Picker excludes 0-AP items, only shows valid options', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R7_Mixed', [
             {
@@ -647,7 +669,7 @@ export default function gadgetRollingTests(test, expect) {
 
             const options = await getPickerOptions(page);
             // Should have: AV/EV, Flash, Thief — NOT Smoke Screen (0 AP) or Gadgetry (0 AP)
-            expect(options.length).toBe(3);
+            expect(options).toHaveLength(3);
             expect(options).toContain('Flash');
             expect(options).toContain('Thief');
             expect(options).not.toContain('Smoke Screen');
@@ -662,7 +684,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R7: Canceling picker produces no chat message', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R7_Cancel', [
             {
@@ -679,7 +701,6 @@ export default function gadgetRollingTests(test, expect) {
             expect(await isPickerDialogOpen(page)).toBe(true);
 
             await cancelPickerDialog(page);
-            await page.waitForTimeout(500);
 
             const afterCount = await getChatMessageCount(page);
             expect(afterCount).toBe(beforeCount);
@@ -695,7 +716,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R9: Single-option gadget tooltip shows the one option', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R9_Single', [
             { name: 'Knife', av: 3, ev: 4 },
@@ -715,7 +736,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R9: Multi-option gadget tooltip lists all options', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R9_Multi', [
             {
@@ -745,7 +766,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R10: AlwaysSubstitute checkbox visible in gadget edit mode', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R10_Italic', [
             { name: 'Power Suit', av: 0, ev: 0, attrs: { dex: 8, str: 10 } },
@@ -758,15 +779,7 @@ export default function gadgetRollingTests(test, expect) {
                 gadget.sheet.render(true);
             }, { actorId: data.actorId, gadgetId: data.gadgetIds['Power Suit'] });
 
-            await page.waitForSelector('.sheet.item', { timeout: 5000 });
-            await page.waitForTimeout(500);
-
-            // Enable edit mode
-            await page.evaluate(() => {
-                const toggle = document.querySelector('.sheet.item .toggle-edit-mode');
-                if (toggle) toggle.click();
-            });
-            await page.waitForTimeout(500);
+            await page.waitForSelector('.sheet.item .always-substitute-label input[type="checkbox"]', { timeout: 5000 });
 
             // Verify checkboxes exist for always-substitute
             const checkboxCount = await page.$$eval(
@@ -782,7 +795,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R10: Toggling AlwaysSubstitute persists after closing and reopening sheet', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R10_Persist', [
             { name: 'Armor', av: 0, ev: 0, attrs: { dex: 8, str: 10 } },
@@ -795,8 +808,7 @@ export default function gadgetRollingTests(test, expect) {
                 gadget.sheet.render(true);
             }, { actorId: data.actorId, gadgetId: data.gadgetIds['Armor'] });
 
-            await page.waitForSelector('.sheet.item', { timeout: 5000 });
-            await page.waitForTimeout(500);
+            await page.waitForSelector('.sheet.item .always-substitute-label input[type="checkbox"]', { timeout: 5000 });
 
             // Verify DEX checkbox starts unchecked
             const initialState = await page.$$eval(
@@ -805,12 +817,16 @@ export default function gadgetRollingTests(test, expect) {
             );
             expect(initialState[0]).toBe(false);
 
-            // Click the DEX always-substitute checkbox
+            // Click the DEX always-substitute checkbox and wait for Foundry to persist
             await page.evaluate(() => {
                 const cbs = document.querySelectorAll('.sheet.item .always-substitute-label input[type="checkbox"]');
                 if (cbs[0]) cbs[0].click();
             });
-            await page.waitForTimeout(1000);
+            await page.waitForFunction((info) => {
+                const actor = game.actors.get(info.actorId);
+                const gadget = actor?.items.get(info.gadgetId);
+                return gadget?.system?.attributes?.dex?.alwaysSubstitute === true;
+            }, { timeout: 5000 }, { actorId: data.actorId, gadgetId: data.gadgetIds['Armor'] });
 
             // Close all sheets
             await closeAll(page);
@@ -830,8 +846,7 @@ export default function gadgetRollingTests(test, expect) {
                 gadget.sheet.render(true);
             }, { actorId: data.actorId, gadgetId: data.gadgetIds['Armor'] });
 
-            await page.waitForSelector('.sheet.item', { timeout: 5000 });
-            await page.waitForTimeout(500);
+            await page.waitForSelector('.sheet.item .always-substitute-label input[type="checkbox"]', { timeout: 5000 });
 
             // Verify the checkbox is still checked in the UI
             const afterReopen = await page.$$eval(
@@ -853,7 +868,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R11: item.roll() on single-option gadget triggers roll flow', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R11_Macro', [
             { name: 'Sidearm', av: 4, ev: 6 },
@@ -867,14 +882,13 @@ export default function gadgetRollingTests(test, expect) {
                 gadget.roll();
             }, { actorId: data.actorId, gadgetId: data.gadgetIds['Sidearm'] });
 
-            await page.waitForTimeout(1000);
+            await waitForRollDialog(page);
 
             // Should open the roll dialog (single option, no picker)
             const rollOpen = await isRollDialogOpen(page);
             expect(rollOpen).toBe(true);
 
-            await submitRollDialog(page);
-            await page.waitForTimeout(1000);
+            await submitRollDialog(page, beforeCount);
 
             const afterCount = await getChatMessageCount(page);
             expect(afterCount).toBeGreaterThan(beforeCount);
@@ -886,7 +900,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R11: item.roll() on multi-option gadget shows picker', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R11_MacroPicker', [
             {
@@ -902,7 +916,7 @@ export default function gadgetRollingTests(test, expect) {
                 gadget.roll();
             }, { actorId: data.actorId, gadgetId: data.gadgetIds['Combo Weapon'] });
 
-            await page.waitForTimeout(1000);
+            await page.waitForSelector('.dialog', { timeout: 5000 });
 
             const pickerOpen = await isPickerDialogOpen(page);
             expect(pickerOpen).toBe(true);
@@ -916,7 +930,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R11: item.roll() on non-rollable gadget posts description to chat', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'R11_NoRoll', [
             { name: 'Trophy', av: 0, ev: 0, description: 'A decorative trophy.' },
@@ -930,7 +944,12 @@ export default function gadgetRollingTests(test, expect) {
                 gadget.roll();
             }, { actorId: data.actorId, gadgetId: data.gadgetIds['Trophy'] });
 
-            await page.waitForTimeout(1000);
+            // Wait for chat message to appear
+            await page.waitForFunction(
+                (before) => document.querySelectorAll('#chat-log .chat-message').length > before,
+                { timeout: 5000 },
+                beforeCount
+            );
 
             // No picker, no roll dialog
             expect(await isPickerDialogOpen(page)).toBe(false);
@@ -951,7 +970,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('R12: Chat message from gadget roll includes gadget name', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const actorName = TEST_ACTOR_PREFIX + 'R12_Label';
         const data = await createTestActor(page, actorName, [
@@ -959,13 +978,13 @@ export default function gadgetRollingTests(test, expect) {
         ]);
         try {
             await openActorGadgetsTab(page, data.actorId);
+            const beforeCount = await getChatMessageCount(page);
             await clickGadgetRollButton(page, 'Laser Rifle');
 
             const rollOpen = await isRollDialogOpen(page);
             expect(rollOpen).toBe(true);
 
-            await submitRollDialog(page);
-            await page.waitForTimeout(1500);
+            await submitRollDialog(page, beforeCount);
 
             const header = await getLatestChatHeader(page);
             expect(header).not.toBeNull();
@@ -983,7 +1002,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('EDGE: Gadget with EV but 0 AV derives AV and still rolls correctly', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'EDGE_ZeroAV', [
             { name: 'Club', av: 0, ev: 9 },
@@ -1010,7 +1029,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('EDGE: Actor with multiple gadgets shows correct rollability for each', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'EDGE_MultiGadget', [
             { name: 'Weapon A', av: 5, ev: 8 },
@@ -1038,7 +1057,7 @@ export default function gadgetRollingTests(test, expect) {
 
     test('EDGE: Selecting different picker options produces correct AV/EV', async ({ page }) => {
         await page.goto(FOUNDRY_URL);
-        await page.waitForTimeout(3000);
+        await waitForGameReady(page);
 
         const data = await createTestActor(page, TEST_ACTOR_PREFIX + 'EDGE_PickerVals', [
             {
@@ -1055,7 +1074,7 @@ export default function gadgetRollingTests(test, expect) {
             expect(await isPickerDialogOpen(page)).toBe(true);
 
             const options = await getPickerOptions(page);
-            expect(options.length).toBe(2);
+            expect(options).toHaveLength(2);
 
             // Select the power (second option)
             await selectPickerOptionAndRoll(page, 1);

@@ -70,7 +70,8 @@ export class MEGSItem extends Item {
                             system: {
                                 baseCost: item.system.baseCost || 0,
                                 text: item.system.text || '',
-                                gadgetOnly: item.system.gadgetOnly || false
+                                gadgetOnly: item.system.gadgetOnly || false,
+                                creationOnly: item.system.creationOnly || false
                             }
                         };
                     }
@@ -551,7 +552,8 @@ export class MEGSItem extends Item {
                     parent: this.id, // Set parent to this gadget's ID
                     baseCost: trait.system?.baseCost || trait.baseCost || 0, // Handle both formats
                     text: trait.system?.text || trait.text || '', // Handle both formats
-                    gadgetOnly: trait.system?.gadgetOnly || false
+                    gadgetOnly: trait.system?.gadgetOnly || false,
+                    creationOnly: trait.system?.creationOnly || false
                 }
             };
             traits.push(traitObj);

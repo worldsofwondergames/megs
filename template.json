@@ -352,7 +352,8 @@
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
             "type": "advantage",
             "img": "icons/svg/regen.svg",
-            "gadgetOnly": false
+            "gadgetOnly": false,
+            "creationOnly": false
         },
         "bonus": {
             "templates": ["baseItem", "hasParent", "modifier", "subtext", "trackOriginal"],
@@ -363,7 +364,8 @@
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
             "type": "drawback",
             "img": "icons/svg/degen.svg",
-            "gadgetOnly": false
+            "gadgetOnly": false,
+            "creationOnly": false
         },
         "gadget": {
             "templates": [

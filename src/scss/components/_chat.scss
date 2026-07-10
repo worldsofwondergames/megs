@@ -6,6 +6,7 @@ li.chat-message {
     background: $c-white !important;
     font-family: $font-primary !important;
     letter-spacing: normal !important;
+    overflow: visible !important;
 
     .message-content {
         background: $c-white !important;
@@ -78,17 +79,22 @@ li.chat-message {
         background-color: $c-darkblue !important;
         color: $c-white !important;
         padding: 5px !important;
+        overflow: visible !important;
+        position: relative;
+        z-index: 1;
 
         .message-sender {
             display: flex;
             align-items: center;
             gap: 6px;
             color: $c-white !important;
+            overflow: visible;
 
             .megs-chat-avatar {
-                width: 28px;
-                height: 28px;
-                border: 1px solid $c-white;
+                width: 42px;
+                height: 42px;
+                margin: -11px 0 -11px -5px;
+                border: 2px solid $c-darkblue;
                 border-radius: 50%;
                 object-fit: cover;
                 flex-shrink: 0;

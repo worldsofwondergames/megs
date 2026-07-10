@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- Added editable detail/subtext field on advantage and drawback item sheets, displayed in parentheses on actor traits tab and character creator (issue #209)
 - Alphabetized advantages and drawbacks on character builder sheet
 - Added post-merge hook to sync README version references automatically
 - Added post-checkout hook to auto-update system.json branch URLs on branch switch

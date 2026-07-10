@@ -150,6 +150,10 @@ export class MEGSItemSheet extends ItemSheet {
 
         context.hasActor = !!this.object.parent;
 
+        if (itemData.type === MEGS.itemTypes.advantage || itemData.type === MEGS.itemTypes.drawback) {
+            context.gadgetOnlyLocked = context.hasActor && !this.object.system.parent;
+        }
+
         // if has actor parent, store powers that actor has; otherwise, store all powers
         if (itemData.type === MEGS.itemTypes.bonus || itemData.type === MEGS.itemTypes.limitation) {
             if (context.hasActor) {

@@ -15,11 +15,11 @@ export class MegsRoll extends Roll {
         const messageData = {
             user: game.user.id,
             content: dialogHtml,
-            sound: CONFIG.sounds.dice,
         };
 
         if (!skipDSN) {
             messageData.rolls = [this];
+            messageData.sound = CONFIG.sounds.dice;
         }
 
         if (speaker) {

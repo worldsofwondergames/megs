@@ -19,7 +19,7 @@
                 </div>
             {{/if}}
 
-            <div class="resources grid grid-2col">
+            <div class="resources grid grid-3col">
 
                 <div class="resource flex-group-center">
                     <label for="system.baseCost" class="resource-label">{{localize 'MEGS.InitialBonus'}}</label>
@@ -32,6 +32,13 @@
                     <label for="system.buybackCost" class="resource-label">{{localize 'MEGS.BuybackCost'}}</label>
                     <div class="resource-content flexrow flex-center flex-between">
                         <span>{{multiply system.baseCost 5}}</span>
+                    </div>
+                </div>
+
+                <div class="resource flex-group-center">
+                    <label for="system.gadgetOnly" class="resource-label">{{localize 'MEGS.GadgetOnly'}}</label>
+                    <div class="resource-content flexrow flex-center" style="justify-content: center;">
+                        <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} />
                     </div>
                 </div>
 

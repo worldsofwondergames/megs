@@ -1,0 +1,15 @@
+<div class="megs-dialog padding-bottom-10px">
+    <form>
+        <div class="form-group">
+            <label>{{localize "MEGS.SelectGadgetAbility"}}</label>
+        </div>
+        {{#each options}}
+            <div class="form-group">
+                <label class="gadget-roll-option">
+                    <input type="radio" name="selectedOption" value="{{@index}}" {{#if this.checked}}checked{{/if}} />
+                    <span>{{this.label}}</span>
+                </label>
+            </div>
+        {{/each}}
+    </form>
+</div>

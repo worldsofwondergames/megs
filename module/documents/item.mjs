@@ -1135,7 +1135,7 @@ export class MEGSItem extends Item {
         // Initialize chat data.
         const speaker = ChatMessage.getSpeaker({ actor: this.actor });
         const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.actor.name}] ${item.name}`;
+        const label = `[${item.actor?.name || ''}] ${item.name}`;
 
         if (
             this.type === MEGS.itemTypes.skill ||
@@ -1143,6 +1143,8 @@ export class MEGSItem extends Item {
             this.type === MEGS.itemTypes.power
         ) {
             this.rollMegs();
+        } else if (this.type === MEGS.itemTypes.gadget) {
+            return this.rollGadget();
         } else if (!this.system.formula) {
             ChatMessage.create({
                 speaker: speaker,
@@ -1244,6 +1246,125 @@ export class MEGSItem extends Item {
         rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
             // no handling happens
         });
+    }
+
+    async rollGadget() {
+        const actor = this.parent;
+        const rollOptions = Utils.getGadgetRollOptions(this, actor);
+
+        if (rollOptions.length === 0) {
+            return this._postGadgetDescription(actor);
+        }
+
+        const selected = rollOptions.length === 1
+            ? rollOptions[0]
+            : await this._showGadgetPicker(rollOptions);
+        if (!selected) return;
+
+        const resolved = this._resolveGadgetOption(selected, actor);
+        if (!resolved) return;
+
+        console.info('Rolling gadget from item.rollGadget()');
+        const rollValues = new RollValues(
+            resolved.label,
+            resolved.rollType,
+            resolved.actionValue,
+            resolved.actionValue,
+            resolved.opposingValue,
+            resolved.effectValue,
+            resolved.resistanceValue,
+            '1d10 + 1d10',
+            false
+        );
+        const speaker = ChatMessage.getSpeaker({ actor });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
+        const heroPoints = actor?.system?.heroPoints?.value || 0;
+        rollTables.roll(null, heroPoints).then((response) => {});
+    }
+
+    _postGadgetDescription(actor) {
+        const speaker = ChatMessage.getSpeaker({ actor });
+        const rollMode = game.settings.get('core', 'rollMode');
+        return ChatMessage.create({
+            speaker,
+            rollMode,
+            flavor: `[${actor?.name || ''}] ${this.name}`,
+            content: this.system.description ?? '',
+        });
+    }
+
+    async _showGadgetPicker(rollOptions) {
+        const options = rollOptions.map((opt, idx) => ({
+            ...opt,
+            checked: idx === 0,
+        }));
+        const dialogHtml = await foundry.applications.handlebars.renderTemplate(
+            'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
+            { options }
+        );
+
+        return new Promise((resolve) => {
+            new Dialog({
+                title: `${this.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
+                content: dialogHtml,
+                buttons: {
+                    cancel: {
+                        label: game.i18n.localize('MEGS.Close'),
+                        callback: () => resolve(null),
+                    },
+                    roll: {
+                        label: game.i18n.localize('MEGS.Roll'),
+                        callback: (html) => {
+                            const idx = Number.parseInt(
+                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                            );
+                            resolve(rollOptions[idx]);
+                        },
+                    },
+                },
+                default: 'roll',
+                close: () => resolve(null),
+            }, { classes: ['megs', 'dialog'] }).render(true);
+        });
+    }
+
+    _resolveGadgetOption(selected, actor) {
+        const result = {
+            actionValue: 0,
+            effectValue: 0,
+            opposingValue: 0,
+            resistanceValue: 0,
+            rollType: selected.type,
+            label: (actor?.name ? actor.name + ' - ' : '') + this.name,
+        };
+        const targetActor = MegsTableRolls.getTargetActor();
+
+        if (selected.type === 'gadget-av-ev') {
+            result.actionValue = selected.av;
+            result.effectValue = selected.ev;
+            result.rollType = MEGS.itemTypes.gadget;
+        } else if (selected.type === 'power' || selected.type === 'skill') {
+            const item = actor?.items.get(selected.itemId);
+            if (!item) return null;
+            result.actionValue = selected.aps;
+            result.effectValue = selected.aps;
+            result.label += ' — ' + item.name;
+            result.rollType = selected.type === 'power' ? MEGS.itemTypes.power : MEGS.itemTypes.skill;
+            if (targetActor && selected.link) {
+                result.opposingValue = Utils.getOpposingValue(selected.link, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(selected.link, targetActor);
+            }
+        } else if (selected.type === 'attribute') {
+            result.actionValue = selected.av;
+            result.effectValue = selected.ev;
+            result.label += ' — ' + selected.label;
+            result.rollType = MEGS.rollTypes.attribute;
+            if (targetActor) {
+                result.opposingValue = Utils.getOpposingValue(selected.actionKey, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(selected.actionKey, targetActor);
+            }
+        }
+        return result;
     }
 
     /** @override */

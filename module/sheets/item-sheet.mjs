@@ -509,7 +509,7 @@ export class MEGSItemSheet extends ItemSheet {
 
         // MEGS roll
         html.on('click', '.d10.rollable', (event) => {
-            // TODO defer roll to item object
+            if (event.currentTarget.dataset.type === 'gadget-roll') return;
 
             const element = event.currentTarget;
             const dataset = element.dataset;
@@ -598,6 +598,15 @@ export class MEGSItemSheet extends ItemSheet {
             rollTables
                 .roll(event, heroPoints)
                 .then((response) => {});
+        });
+
+        // Gadget sheet roll button — uses full roll flow with picker + alwaysSubstitute
+        html.on('click', '.d10.rollable[data-type="gadget-roll"]', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (this.item.type === MEGS.itemTypes.gadget) {
+                this.item.rollGadget();
+            }
         });
 
         // Attribute and gadget AV/EV rolls
@@ -1060,6 +1069,11 @@ export class MEGSItemSheet extends ItemSheet {
         context.drawbacks = drawbacks;
         context.subskills = subskills;
         context.gadgets = gadgets;
+
+        // Compute rollability for the gadget roll button
+        const rollOptions = Utils.getGadgetRollOptions(this.object, this.object.parent);
+        context.gadgetRollable = rollOptions.length > 0;
+        context.gadgetRollTooltip = Utils.getGadgetRollTooltip(rollOptions);
     }
 
     /**

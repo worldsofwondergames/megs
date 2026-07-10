@@ -6,8 +6,20 @@
         <img class="profile-img" src="{{item.img}}" title="{{item.name}}" height="120" width="120" />
     {{/if}}
     <div class="header-fields">
-        {{!-- Item name --}}
-        {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+        <div class="resources grid grid-4col">
+            {{#if gadgetRollable}}
+                <div class="grid-span-3">
+            {{else}}
+                <div class="grid-span-4">
+            {{/if}}
+
+            {{!-- Item name --}}
+            {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+        </div>
+        {{#if gadgetRollable}}
+            <div class="d10 grid-span-1 rollable" data-type="gadget-roll" data-uuid="{{item.uuid}}" data-label="{{item.name}}" title="{{localize 'MEGS.Roll'}} {{item.name}}{{#if gadgetRollTooltip}} — {{gadgetRollTooltip}}{{/if}}">&nbsp;</div>
+        {{/if}}
+        </div>
 
         <div class="resources grid grid-3col">
 

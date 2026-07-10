@@ -3,21 +3,18 @@
         {{#if (isDivisor 3 @index)}}
             <section class="attributes grid grid-3col attributeRow">
         {{/if}}
-        <div class="attribute flex-group-center">
-            <label for="system.attributes.{{key}}.value" class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge align-left {{#if attribute.alwaysSubstitute}}italic{{/if}}" data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-type="attribute" data-value="{{attribute.value}}" data-key="{{key}}">
+        <div class="attribute flex-group-center gadget-attribute">
+            {{#if ../flags.megs.edit-mode}}
+                <input type="checkbox" class="always-substitute-checkbox" name="system.attributes.{{key}}.alwaysSubstitute" title="{{localize 'MEGS.AlwaysSubstitute'}}" {{#if attribute.alwaysSubstitute}}checked{{/if}} />
+            {{/if}}
+            <label for="system.attributes.{{key}}.value" class="resource-label {{#if (isDivisor 3 @index)}}rollable{{/if}} flexlarge {{#if attribute.alwaysSubstitute}}italic{{/if}}" data-roll="1d10 + 1d10" data-label="{{attribute.label}}" data-type="attribute" data-value="{{attribute.value}}" data-key="{{key}}">
                 {{attribute.label}}
             </label>
             {{#if ../flags.megs.edit-mode}}
-                <div class="gadget-attr-row">
-                    <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
-                        <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max="" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
-                    </div>
-                    <label class="always-substitute-label" title="{{localize 'MEGS.AlwaysSubstitute'}}">
-                        <input type="checkbox" name="system.attributes.{{key}}.alwaysSubstitute" {{#if attribute.alwaysSubstitute}}checked{{/if}} />
-                        <i>i</i>
-                    </label>
+                <div class="quantity attribute-input">
+                    <button class="minus" aria-label="Decrease" onClick="if (parseInt({{key}}Input.value) > 0)  {{key}}Input.value = parseInt({{key}}Input.value) - 1">&minus;</button>
+                    <input id="{{key}}Input" name="system.attributes.{{key}}.value" type="number" class="input-box" value="{{attribute.value}}" min="0" max="" data-dtype="Number" />
+                    <button class="plus" aria-label="Increase" onClick="{{key}}Input.value = parseInt({{key}}Input.value)+ 1 ">&plus;</button>
                 </div>
             {{else}}
                 <div>{{attribute.value}}</div>

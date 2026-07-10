@@ -38,7 +38,7 @@
                 <div class="resource flex-group-center">
                     <label for="system.gadgetOnly" class="resource-label">{{localize 'MEGS.GadgetOnly'}}</label>
                     <div class="resource-content flexrow flex-center" style="justify-content: center;">
-                        <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} />
+                        <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} {{#if gadgetOnlyLocked}}disabled{{/if}} />
                     </div>
                 </div>
 

@@ -358,6 +358,9 @@ details summary.no-arrow {
   /* Item Sheet Subskills Tab
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
+  /* Gadget Attribute Editing
+  /*------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------*/
   /* Trait Options Tab (Advantages/Drawbacks)
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
@@ -1068,6 +1071,26 @@ details summary.no-arrow {
   justify-content: center;
   align-items: center;
 }
+.megs .gadget-attr-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.megs .always-substitute-label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  font-style: italic;
+  color: #666;
+  font-size: 12px;
+}
+.megs .always-substitute-label input[type=checkbox] {
+  margin: 0;
+}
+.megs .resource-label.italic {
+  font-style: italic;
+}
 .megs .trait-options {
   padding: 8px;
   font-family: "Roboto", sans-serif;
@@ -1567,6 +1590,17 @@ details summary.no-arrow {
 }
 .megs-dialog .quantity .input-box::-webkit-inner-spin-button, .megs-dialog .quantity .input-box::-webkit-outer-spin-button {
   -webkit-appearance: none;
+  margin: 0;
+}
+
+.gadget-roll-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.gadget-roll-option input[type=radio] {
   margin: 0;
 }
 

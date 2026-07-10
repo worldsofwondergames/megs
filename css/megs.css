@@ -1083,6 +1083,9 @@ details summary.no-arrow {
 }
 .megs .trait-options .checkbox input[type=checkbox] {
   margin: 0;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 .megs .trait-options .checkbox input[type=checkbox]:disabled {
   cursor: default;

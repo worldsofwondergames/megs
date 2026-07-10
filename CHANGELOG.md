@@ -4,6 +4,11 @@
 
 ### Enhancements
 
+- Gadgets can now be rolled from the actor Gadgets tab for all rollable abilities: explicit AV/EV, child powers, child skills, and attribute pairs (issue #17)
+- Added picker dialog when a gadget has multiple rollable abilities
+- Added "Always Substitute" (italicized) checkbox per gadget attribute in edit mode; italicized attributes substitute for the actor's values when higher
+- Added gadget macro support — dragging a gadget to the hotbar now triggers the roll flow instead of just posting description text
+- Roll button tooltip on gadgets shows available roll options
 - Added token image to chat message headers and reduced timestamp font size (issue #93)
 - Added "On Creation Only" checkbox on advantage and drawback item sheets; creation-only traits are blocked from being dropped on actor sheets but allowed on the character creator (issue #3)
 - Added Options tab on advantage and drawback item sheets for Gadget Only and On Creation Only checkboxes; moved Gadget Only from header to Options tab (issue #3, #178)

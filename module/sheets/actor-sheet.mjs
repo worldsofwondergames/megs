@@ -432,7 +432,9 @@ export class MEGSActorSheet extends ActorSheet {
                 subskills.push(i);
             } else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
                 i.ownerId = this.object._id;
-                i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
+                i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
+                i.rollable = i.rollOptions.length > 0;
+                i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
                 gadgets.push(i);
             }
         });
@@ -900,11 +902,15 @@ export class MEGSActorSheet extends ActorSheet {
      * @param {Event} event   The originating click event
      * @private
      */
-    _onRoll(event) {
+    async _onRoll(event) {
         const element = event.currentTarget;
         const dataset = element.dataset;
 
-        let actionValue = Number.parseInt(dataset.value);
+        if (dataset.type === MEGS.itemTypes.gadget) {
+            return this._onGadgetRoll(event, dataset);
+        }
+
+        const actionValue = Number.parseInt(dataset.value);
         let opposingValue = 0;
         let effectValue = 0;
         let resistanceValue = 0;
@@ -935,23 +941,6 @@ export class MEGSActorSheet extends ActorSheet {
             dataset.type === MEGS.itemTypes.subskill
         ) {
             effectValue = Number.parseInt(dataset.value);
-        } else if (dataset.type === MEGS.itemTypes.gadget) {
-            // TODO clean all this up; waaaay too complex
-            actionValue = Number.parseInt(dataset.actionvalue);
-            effectValue = Number.parseInt(dataset.effectvalue);
-
-            if (effectValue === 0) {
-                // no EV specified; check attributes
-                const gadget = this._getOwnedItemById(dataset.gadgetid);
-
-                if (gadget) {
-                    const values = this._getGadgetValues(gadget, actionValue);
-                    effectValue = values.effectValue;
-                    actionValue = values.actionValue;
-                } else {
-                    console.error('No gadget with ID ' + dataset.gadgetid + ' found');
-                }
-            }
         }
 
         console.info('Rolling from actor-sheet._onRoll()');
@@ -969,6 +958,155 @@ export class MEGSActorSheet extends ActorSheet {
         const speaker = ChatMessage.getSpeaker({ actor: this.object });
         const rollTables = new MegsTableRolls(rollValues, speaker);
         rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {});
+    }
+
+    async _onGadgetRoll(event, dataset) {
+        const gadget = this._getOwnedItemById(dataset.gadgetid);
+        if (!gadget) {
+            console.error('No gadget with ID ' + dataset.gadgetid + ' found');
+            return;
+        }
+
+        const rollOptions = Utils.getGadgetRollOptions(gadget, this.actor);
+        if (rollOptions.length === 0) return;
+
+        let selected;
+        if (rollOptions.length === 1) {
+            selected = rollOptions[0];
+        } else {
+            selected = await this._showGadgetRollPicker(gadget, rollOptions);
+            if (!selected) return;
+        }
+
+        this._executeGadgetRoll(event, gadget, selected);
+    }
+
+    async _showGadgetRollPicker(gadget, rollOptions) {
+        const options = rollOptions.map((opt, idx) => ({
+            ...opt,
+            checked: idx === 0,
+        }));
+        const dialogHtml = await foundry.applications.handlebars.renderTemplate(
+            'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
+            { options }
+        );
+
+        return new Promise((resolve) => {
+            new Dialog({
+                title: `${gadget.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
+                content: dialogHtml,
+                buttons: {
+                    cancel: {
+                        label: game.i18n.localize('MEGS.Close'),
+                        callback: () => resolve(null),
+                    },
+                    roll: {
+                        label: game.i18n.localize('MEGS.Roll'),
+                        callback: (html) => {
+                            const idx = Number.parseInt(
+                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                            );
+                            resolve(rollOptions[idx]);
+                        },
+                    },
+                },
+                default: 'roll',
+                close: () => resolve(null),
+            }, { classes: ['megs', 'dialog'] }).render(true);
+        });
+    }
+
+    _executeGadgetRoll(event, gadget, option) {
+        const resolved = this._resolveGadgetOption(option, gadget);
+        if (!resolved) return;
+
+        this._applyAlwaysSubstitute(gadget, resolved.actionValue, resolved.effectValue, option, (av, ev) => {
+            resolved.actionValue = av;
+            resolved.effectValue = ev;
+        });
+
+        console.info('Rolling gadget from actor-sheet._executeGadgetRoll()');
+        const rollValues = new RollValues(
+            resolved.label,
+            resolved.rollType,
+            resolved.actionValue,
+            resolved.actionValue,
+            resolved.opposingValue,
+            resolved.effectValue,
+            resolved.resistanceValue,
+            '1d10 + 1d10',
+            false
+        );
+        const speaker = ChatMessage.getSpeaker({ actor: this.object });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
+        rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {});
+    }
+
+    _resolveGadgetOption(option, gadget) {
+        const result = {
+            actionValue: 0,
+            effectValue: 0,
+            opposingValue: 0,
+            resistanceValue: 0,
+            rollType: option.type,
+            label: this.object.name + ' - ' + gadget.name,
+        };
+        const targetActor = MegsTableRolls.getTargetActor();
+
+        if (option.type === 'gadget-av-ev') {
+            result.actionValue = option.av;
+            result.effectValue = option.ev;
+            if (result.effectValue === 0) {
+                const values = this._getGadgetValues(gadget, result.actionValue);
+                result.effectValue = values.effectValue;
+                result.actionValue = values.actionValue;
+            }
+            result.rollType = MEGS.itemTypes.gadget;
+        } else if (option.type === 'power' || option.type === 'skill') {
+            const item = this.actor.items.get(option.itemId);
+            if (!item) return null;
+            result.actionValue = option.aps;
+            result.effectValue = option.aps;
+            result.label += ' — ' + item.name;
+            result.rollType = option.type === 'power' ? MEGS.itemTypes.power : MEGS.itemTypes.skill;
+            if (targetActor && option.link) {
+                result.opposingValue = Utils.getOpposingValue(option.link, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(option.link, targetActor);
+            }
+        } else if (option.type === 'attribute') {
+            result.actionValue = option.av;
+            result.effectValue = option.ev;
+            result.label += ' — ' + option.label;
+            result.rollType = MEGS.rollTypes.attribute;
+            if (targetActor) {
+                result.opposingValue = Utils.getOpposingValue(option.actionKey, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(option.actionKey, targetActor);
+            }
+        }
+        return result;
+    }
+
+    _applyAlwaysSubstitute(gadget, actionValue, effectValue, option, callback) {
+        const attrs = gadget.system.attributes;
+        const actorAttrs = this.actor.system.attributes;
+
+        for (const pair of Utils.ATTRIBUTE_PAIRS) {
+            const gadgetAction = attrs?.[pair.action];
+            const gadgetEffect = attrs?.[pair.effect];
+
+            if (gadgetAction?.alwaysSubstitute && gadgetAction.value > 0) {
+                if (gadgetAction.value > actorAttrs[pair.action].value) {
+                    actionValue = gadgetAction.value;
+                }
+            }
+            if (gadgetEffect?.alwaysSubstitute && gadgetEffect.value > 0) {
+                if (gadgetEffect.value > actorAttrs[pair.effect].value) {
+                    effectValue = gadgetEffect.value;
+                }
+            }
+        }
+
+        callback(actionValue, effectValue);
     }
 
     /**

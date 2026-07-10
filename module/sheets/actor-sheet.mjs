@@ -997,6 +997,21 @@ export class MEGSActorSheet extends ActorSheet {
         super._onDrop(event);
     }
 
+    /** @override **/
+    async _onDropItemCreate(itemData) {
+        const items = Array.isArray(itemData) ? itemData : [itemData];
+        const blocked = items.filter(
+            (i) => (i.type === 'advantage' || i.type === 'drawback') && i.system?.gadgetOnly
+        );
+        if (blocked.length) {
+            ui.notifications.warn(game.i18n.localize('MEGS.GadgetOnlyWarning'));
+            const allowed = items.filter((i) => !blocked.includes(i));
+            if (!allowed.length) return false;
+            return super._onDropItemCreate(allowed);
+        }
+        return super._onDropItemCreate(itemData);
+    }
+
     _changeEditHeaderLink(sheetHeaderLinks) {
         const found = sheetHeaderLinks.find((element) => element.label === 'Sheet');
         found.icon = 'fas fa-file';

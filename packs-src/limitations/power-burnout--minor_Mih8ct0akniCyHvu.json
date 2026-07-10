@@ -1,12 +1,13 @@
 {
   "_id": "Mih8ct0akniCyHvu",
-  "name": "Power Burnout, Minor",
+  "name": "Power Burnout",
   "type": "limitation",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "name": "Power Burnout, Minor",
+    "name": "Power Burnout",
     "description": "",
     "factorCostMod": -1,
+    "factorCostModOptions": [-1, -2, -3],
     "text": "",
     "hasSubtext": true,
     "parent": "",

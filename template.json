@@ -292,7 +292,8 @@
                 "customLimitations": []
             },
             "modifier": {
-                "factorCostMod": 0
+                "factorCostMod": 0,
+                "factorCostModOptions": []
             },
             "hasParent": {
                 "parent": ""

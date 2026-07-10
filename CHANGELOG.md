@@ -4,6 +4,8 @@
 
 ### Enhancements
 
+- Added variable factor cost modifiers for bonuses and limitations; items with multiple allowed values display a dropdown on item sheets and the character creator Powers tab (issue #173)
+- Consolidated Power Burnout compendium entries into a single item with selectable severity (-1, -2, -3); updated Area Effect bonus with selectable FC modifier (+1 to +10) (issue #173)
 - Added token image to chat message headers and reduced timestamp font size (issue #93)
 - Added "On Creation Only" checkbox on advantage and drawback item sheets; creation-only traits are blocked from being dropped on actor sheets but allowed on the character creator (issue #3)
 - Added Options tab on advantage and drawback item sheets for Gadget Only and On Creation Only checkboxes; moved Gadget Only from header to Options tab (issue #3, #178)

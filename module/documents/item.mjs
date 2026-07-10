@@ -202,6 +202,7 @@ export class MEGSItem extends Item {
                     system: {
                         parent: this._id,
                         factorCostMod: bonus.factorCostMod || 0,
+                        factorCostModOptions: bonus.factorCostModOptions || [],
                         text: bonus.text || ''
                     }
                 });
@@ -215,6 +216,7 @@ export class MEGSItem extends Item {
                     system: {
                         parent: this._id,
                         factorCostMod: limitation.factorCostMod || 0,
+                        factorCostModOptions: limitation.factorCostModOptions || [],
                         text: limitation.text || ''
                     }
                 });

@@ -529,18 +529,13 @@ export class MegsTableRolls {
      * @returns
      */
     static _applyDiceAppearance(roll) {
-        if (roll.dice && roll.dice.length >= 2 && game.dice3d) {
-            const userAppearance = game.dice3d.constructor.APPEARANCE(game.user);
-            const base = userAppearance?.global || {};
+        if (roll.dice && roll.dice.length >= 2) {
             roll.dice[0].options.appearance = {
-                ...base,
-                colorset: 'custom',
-                diceColor: '#cc0000',
-                labelColor: '#ffffff',
-                outlineColor: '#cc0000',
-                edgeColor: '#ffffff',
+                foreground: '#ffffff',
+                background: '#cc0000',
+                outline: '#cc0000',
+                edge: '#ffffff',
             };
-            roll.dice[1].options.appearance = { ...base };
         }
     }
 

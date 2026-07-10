@@ -1641,13 +1641,25 @@ li.chat-message .message-header {
   padding: 5px !important;
 }
 li.chat-message .message-header .message-sender {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: #fff !important;
+}
+li.chat-message .message-header .message-sender .megs-chat-avatar {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 li.chat-message .message-header .message-metadata {
   color: #fff !important;
 }
 li.chat-message .message-header .message-metadata .message-timestamp {
   color: #fff !important;
+  font-size: 10px;
 }
 li.chat-message .message-header .message-metadata .message-delete {
   color: #fff !important;

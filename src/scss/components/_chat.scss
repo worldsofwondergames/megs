@@ -80,7 +80,19 @@ li.chat-message {
         padding: 5px !important;
 
         .message-sender {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             color: $c-white !important;
+
+            .megs-chat-avatar {
+                width: 28px;
+                height: 28px;
+                border: 1px solid $c-white;
+                border-radius: 50%;
+                object-fit: cover;
+                flex-shrink: 0;
+            }
         }
 
         .message-metadata {
@@ -88,6 +100,7 @@ li.chat-message {
 
             .message-timestamp {
                 color: $c-white !important;
+                font-size: 10px;
             }
 
             .message-delete {

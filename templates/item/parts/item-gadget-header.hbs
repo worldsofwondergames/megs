@@ -7,7 +7,14 @@
     {{/if}}
     <div class="header-fields">
         {{!-- Item name --}}
-        {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+        <div class="gadget-header-name">
+            {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+            {{#if gadgetRollable}}
+                <a class="gadget-roll-btn" title="{{localize 'MEGS.Roll'}} {{item.name}}{{#if gadgetRollTooltip}} — {{gadgetRollTooltip}}{{/if}}">
+                    <img src="/systems/megs/assets/images/icons/d10blue.png" class="gadget-roll-icon" alt="{{localize 'MEGS.Roll'}} {{item.name}}">
+                </a>
+            {{/if}}
+        </div>
 
         <div class="resources grid grid-3col">
 

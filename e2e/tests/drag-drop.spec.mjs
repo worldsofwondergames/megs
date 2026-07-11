@@ -228,6 +228,11 @@ test.describe('Drag & Drop (#226 cat 5)', () => {
                 { actorId, traitId },
                 { timeout: 10000 }
             );
+            const stillExists = await page.evaluate(
+                ({ actorId, traitId }) => !!game.actors.get(actorId).items.get(traitId),
+                { actorId, traitId }
+            );
+            expect(stillExists).toBe(false);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

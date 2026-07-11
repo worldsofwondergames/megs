@@ -25,9 +25,13 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
         }, { name, type });
     }
 
-    /** Open the sheet and click through every tab, asserting each becomes active. */
-    async function verifyAllTabsRender(page, actorId) {
+    /**
+     * Open the sheet and click through every tab.
+     * Returns the tabs that became active so callers can assert on them.
+     */
+    async function clickThroughAllTabs(page, actorId) {
         await openActorSheet(page, actorId);
+        const activated = [];
         for (const tab of TAB_NAMES) {
             await page.click(`.sheet.actor nav.sheet-tabs .item[data-tab="${tab}"]`);
             await page.waitForFunction(
@@ -38,7 +42,9 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
                 tab,
                 { timeout: 5000 }
             );
+            activated.push(tab);
         }
+        return activated;
     }
 
     async function getDisplayedAttributes(page) {
@@ -60,7 +66,8 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
         let actorId;
         try {
             actorId = await createHeroActor(page, prefixName('Sheet_Hero'));
-            await verifyAllTabsRender(page, actorId);
+            const activated = await clickThroughAllTabs(page, actorId);
+            expect(activated).toEqual(TAB_NAMES);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
@@ -71,7 +78,8 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
         let actorId;
         try {
             actorId = await createActorOfType(page, prefixName('Sheet_Villain'), 'villain');
-            await verifyAllTabsRender(page, actorId);
+            const activated = await clickThroughAllTabs(page, actorId);
+            expect(activated).toEqual(TAB_NAMES);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
@@ -82,7 +90,8 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
         let actorId;
         try {
             actorId = await createActorOfType(page, prefixName('Sheet_NPC'), 'npc');
-            await verifyAllTabsRender(page, actorId);
+            const activated = await clickThroughAllTabs(page, actorId);
+            expect(activated).toEqual(TAB_NAMES);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
@@ -167,6 +176,11 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
                 actorId,
                 { timeout: 5000 }
             );
+            const persisted = await page.evaluate(
+                (id) => game.actors.get(id).system.attributes.dex.value,
+                actorId
+            );
+            expect(persisted).toBe(7);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
@@ -207,7 +221,8 @@ test.describe('Actor Sheets (#226 cats 2-3)', () => {
         let actorId;
         try {
             actorId = await createActorOfType(page, prefixName('Sheet_Location'), 'location');
-            await verifyAllTabsRender(page, actorId);
+            const activated = await clickThroughAllTabs(page, actorId);
+            expect(activated).toEqual(TAB_NAMES);
 
             const attrs = await getDisplayedAttributes(page);
             for (const label of ATTRIBUTE_LABELS) {

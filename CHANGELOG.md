@@ -29,6 +29,13 @@
 - Fixed `ReferenceError` in `compare` Handlebars helper — added missing `options` parameter (issue #215)
 - Fixed trailing slash in system.json download URL that prevented Foundry from resolving the package
 
+### Testing
+
+- Added Playwright E2E test suite with 62 tests across 8 spec files covering all 1.0.1 milestone features (issue #226)
+- Configured Playwright with global setup for Foundry login, shared fixtures, and serial execution
+- Converted 3 existing ad-hoc E2E tests to Playwright: gadget rolling (#17), gadget sheet rolling (#13), power roll sources (#56)
+- Added new E2E tests for: trait subtext (#209), trait drop blocking (#178, #3), chat message formatting (#93), accordion state persistence (#67), reliability number (#8)
+
 ### Code Quality
 
 - Configured ESLint and Stylelint with project-specific rules and added lint CI workflow (issue #214)

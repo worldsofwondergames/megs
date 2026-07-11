@@ -14,6 +14,7 @@
     "description": "Unofficial Multversal Exponential Game System (MEGS) RPG Support for Foundry VTT",
     "devDependencies": {
         "@babel/preset-env": "^7.23.2",
+        "@playwright/test": "^1.61.1",
         "babel-jest": "^27.3.1",
         "eslint": "^8.57.0",
         "eslint-config-standard": "^17.1.0",
@@ -64,6 +65,7 @@
         "prepare": "git config core.hooksPath scripts/hooks",
         "setup:hooks": "git config core.hooksPath scripts/hooks",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --silent=false",
+        "test:e2e": "npx playwright test --config=playwright.config.mjs",
         "scss": "sass styles/dcc.scss styles/dcc.css"
     },
     "type": "module",

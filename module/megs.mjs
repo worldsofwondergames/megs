@@ -980,33 +980,24 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
     const reliabilityMod = getReliabilityMod(reliability);
 
-    // Debug: Show what reliability value we're reading
-    console.log(`[${gadget.name}] Reliability Index: ${systemData.reliability}, R#: ${reliability}, Mod: ${reliabilityMod}`);
-
     // Calculate attribute costs
     let attributesCost = 0;
     if (systemData.attributes) {
         for (const [key, attr] of Object.entries(systemData.attributes)) {
             if (attr.value > 0) {
                 let fc = attr.factorCost + reliabilityMod;
-                console.log(`  ${key.toUpperCase()}: base FC=${attr.factorCost}, +reliabilityMod(${reliabilityMod})`);
                 if (attr.alwaysSubstitute) {
                     fc += 2;
-                    console.log('    +2 for alwaysSubstitute');
                 }
                 if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                     fc += 2;
-                    console.log('    +2 for Hardened Defenses');
                 }
                 fc = Math.max(1, fc);
-                const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
-                console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
-                attributesCost += attrCost;
+                attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
             }
         }
     }
     if (attributesCost > 0) {
-        console.log(`  Total Attributes: ${attributesCost} HP`);
         tooltip += 'Attributes: ' + attributesCost + '\n';
         totalBeforeBonus += attributesCost;
     }
@@ -1014,9 +1005,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     // Calculate AV cost
     if (systemData.actionValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
-        const chartCost = MEGS.getAPCost(systemData.actionValue, fc) || 0;
-        const avCost = 5 + chartCost;
-        console.log(`  AV: 5 (base) + ${systemData.actionValue} APs @ FC ${fc} = ${chartCost} HP → Total: ${avCost} HP`);
+        const avCost = 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
         tooltip += `AV: ${avCost}\n`;
         totalBeforeBonus += avCost;
     }
@@ -1084,13 +1073,10 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
 
     // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
     const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
-    console.log(`  Total before bonus: ${totalBeforeBonus} HP`);
-    console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
     tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\n';
 
     // Add final cost
     const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
-    console.log(`  Final Cost: ${totalBeforeBonus} ÷ ${gadgetBonus} = ${finalCost} HP`);
     tooltip += 'Final Cost: ' + finalCost;
 
     return tooltip;
@@ -1155,9 +1141,9 @@ Handlebars.registerHelper('getGadgetAdjustedCost', function (rawCost, canBeTaken
 });
 
 /**
- * Get tooltip explaining the gadget cost calculation
+ * Get tooltip explaining how a raw cost is adjusted by the Can Be Taken Away divisor
  */
-Handlebars.registerHelper('getGadgetCostTooltip', function (rawCost, canBeTakenAway) {
+Handlebars.registerHelper('getGadgetAdjustedCostTooltip', function (rawCost, canBeTakenAway) {
     const cost = Number(rawCost) || 0;
     if (cost === 0) return '';
 

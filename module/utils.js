@@ -85,6 +85,58 @@ export class Utils {
         return effectValue;
     }
 
+    static resolveValueSource(source, power, actor, targetActor) {
+        if (!source || source === 'aps') {
+            return Number.parseInt(power.system.aps) || 0;
+        }
+        const parts = source.split(':');
+        if (parts.length === 2) {
+            const [type, attr] = parts;
+            if (type === 'char' && actor) {
+                return actor.system.attributes[attr]?.value || 0;
+            }
+            if (type === 'target' && targetActor) {
+                return targetActor.system.attributes[attr]?.value || 0;
+            }
+        }
+        return 0;
+    }
+
+    static resolvePowerRollValues(power, actor, targetActor) {
+        const aps = Number.parseInt(power.system.aps) || 0;
+        const avSource = power.system.avSource;
+        const evSource = power.system.evSource;
+        const ovSource = power.system.ovSource;
+        const rvSource = power.system.rvSource;
+
+        const av = avSource
+            ? Utils.resolveValueSource(avSource, power, actor, targetActor)
+            : aps;
+        const ev = evSource
+            ? Utils.resolveValueSource(evSource, power, actor, targetActor)
+            : aps;
+
+        let ov = 0;
+        if (ovSource) {
+            ov = Utils.resolveValueSource(ovSource, power, actor, targetActor);
+        } else if (targetActor && power.system.link) {
+            ov = Utils.getOpposingValue(power.system.link, targetActor);
+        }
+
+        let rv = 0;
+        if (rvSource) {
+            rv = Utils.resolveValueSource(rvSource, power, actor, targetActor);
+        } else if (targetActor && power.system.link) {
+            rv = Utils.getResistanceValue(power.system.link, targetActor);
+        }
+
+        return { av, ev, ov, rv };
+    }
+
+    static hasPowerSourceOverrides(power) {
+        return !!(power.system.avSource || power.system.evSource || power.system.ovSource || power.system.rvSource);
+    }
+
     static ATTRIBUTE_PAIRS = [
         { action: 'dex', effect: 'str', resistance: 'body', type: 'physical', label: 'DEX/STR' },
         { action: 'int', effect: 'will', resistance: 'mind', type: 'mental', label: 'INT/WILL' },

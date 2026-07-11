@@ -190,6 +190,111 @@
 
             </section>
 
+            {{#if flags.megs.edit-mode}}
+            <section class="attributes grid grid-2col roll-sources">
+
+                <div class="attribute flex-group-center">
+                    <label for="system.avSource" class="resource-label flexlarge align-left">{{localize 'MEGS.AVSource'}}</label>
+                    <div>
+                        <select class="resource-select" name="system.avSource" data-type="String">
+                            <option value="" {{#unless system.avSource}}selected{{/unless}}>{{localize 'MEGS.PowerAPs'}}</option>
+                            <optgroup label="{{localize 'MEGS.CharacterAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="char:{{@key}}" {{#if (compare @key "===" ../system.avSourceAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                            <optgroup label="{{localize 'MEGS.TargetAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="target:{{@key}}" {{#if (compare @key "===" ../system.avSourceTargetAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.evSource" class="resource-label flexlarge align-left">{{localize 'MEGS.EVSource'}}</label>
+                    <div>
+                        <select class="resource-select" name="system.evSource" data-type="String">
+                            <option value="" {{#unless system.evSource}}selected{{/unless}}>{{localize 'MEGS.PowerAPs'}}</option>
+                            <optgroup label="{{localize 'MEGS.CharacterAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="char:{{@key}}" {{#if (compare @key "===" ../system.evSourceAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                            <optgroup label="{{localize 'MEGS.TargetAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="target:{{@key}}" {{#if (compare @key "===" ../system.evSourceTargetAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.ovSource" class="resource-label flexlarge align-left">{{localize 'MEGS.OVSource'}}</label>
+                    <div>
+                        <select class="resource-select" name="system.ovSource" data-type="String">
+                            <option value="" {{#unless system.ovSource}}selected{{/unless}}>{{localize 'MEGS.AutomaticFromLink'}}</option>
+                            <option value="aps" {{#if (compare system.ovSource "===" "aps")}}selected{{/if}}>{{localize 'MEGS.PowerAPs'}}</option>
+                            <optgroup label="{{localize 'MEGS.CharacterAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="char:{{@key}}" {{#if (compare @key "===" ../system.ovSourceAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                            <optgroup label="{{localize 'MEGS.TargetAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="target:{{@key}}" {{#if (compare @key "===" ../system.ovSourceTargetAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.rvSource" class="resource-label flexlarge align-left">{{localize 'MEGS.RVSource'}}</label>
+                    <div>
+                        <select class="resource-select" name="system.rvSource" data-type="String">
+                            <option value="" {{#unless system.rvSource}}selected{{/unless}}>{{localize 'MEGS.AutomaticFromLink'}}</option>
+                            <option value="aps" {{#if (compare system.rvSource "===" "aps")}}selected{{/if}}>{{localize 'MEGS.PowerAPs'}}</option>
+                            <optgroup label="{{localize 'MEGS.CharacterAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="char:{{@key}}" {{#if (compare @key "===" ../system.rvSourceAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                            <optgroup label="{{localize 'MEGS.TargetAttribute'}}">
+                                {{#each system.attributesForLink}}
+                                    <option value="target:{{@key}}" {{#if (compare @key "===" ../system.rvSourceTargetAttr)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+            </section>
+            {{else}}
+                {{#if hasSourceOverrides}}
+                <section class="attributes grid grid-2col roll-sources">
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label flexlarge align-left">{{localize 'MEGS.AVSource'}}</label>
+                        <div><span>{{system.avSourceLabel}}</span></div>
+                    </div>
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label flexlarge align-left">{{localize 'MEGS.EVSource'}}</label>
+                        <div><span>{{system.evSourceLabel}}</span></div>
+                    </div>
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label flexlarge align-left">{{localize 'MEGS.OVSource'}}</label>
+                        <div><span>{{system.ovSourceLabel}}</span></div>
+                    </div>
+                    <div class="attribute flex-group-center">
+                        <label class="resource-label flexlarge align-left">{{localize 'MEGS.RVSource'}}</label>
+                        <div><span>{{system.rvSourceLabel}}</span></div>
+                    </div>
+                </section>
+                {{/if}}
+            {{/if}}
+
         </div>
 
         {{!-- Description Tab --}}

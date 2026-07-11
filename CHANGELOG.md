@@ -28,6 +28,7 @@
 - Fixed `ReferenceError` crash when selecting multiple targets — `localize()` replaced with `game.i18n.localize()` (issue #215)
 - Fixed `ReferenceError` in `compare` Handlebars helper — added missing `options` parameter (issue #215)
 - Fixed trailing slash in system.json download URL that prevented Foundry from resolving the package
+- Fixed empty gadget cost tooltip on the character creator sheet — a duplicate `getGadgetCostTooltip` Handlebars registration clobbered the cost-breakdown helper; the raw/adjusted cost helper is now registered as `getGadgetAdjustedCostTooltip` (issue #245)
 
 ### Testing
 

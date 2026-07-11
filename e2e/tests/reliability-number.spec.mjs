@@ -138,12 +138,8 @@ test.describe('Gadget Reliability Number (#8)', () => {
     });
 
     test('Gadget cost tooltip shows the cost breakdown with final cost', async ({ page }) => {
-        // Expected behavior: the character-creator gadget cost tooltip
-        // breaks down attribute/AV/EV costs and ends with "Final Cost: N".
-        // KNOWN BUG #245: a duplicate getGadgetCostTooltip registration in
-        // megs.mjs replaces the detailed breakdown helper, so the tooltip
-        // renders empty for gadget items. Remove test.fail() with #245.
-        test.fail();
+        // The character-creator gadget cost tooltip breaks down
+        // attribute/AV/EV costs and ends with "Final Cost: N".
         let actorId;
         try {
             actorId = await createHeroActor(page, prefixName('Reliability_Tooltip'));

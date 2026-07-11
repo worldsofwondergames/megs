@@ -115,11 +115,14 @@ test.describe('Trait Subtext Display (#209)', () => {
                 text: 'Gotham PD',
             });
 
-            // Ensure the item sheet opens in view mode (edit-mode off)
-            await page.evaluate(({ actorId, itemId }) => {
+            // Ensure the item sheet opens in view mode (edit-mode off).
+            // Touch item.sheet first: the MEGSItemSheet constructor resets
+            // the edit-mode flag, so the flag must be set after construction.
+            await page.evaluate(async ({ actorId, itemId }) => {
                 const actor = game.actors.get(actorId);
                 const item = actor.items.get(itemId);
-                item.setFlag('megs', 'edit-mode', false);
+                item.sheet; // eslint-disable-line no-unused-expressions
+                await item.setFlag('megs', 'edit-mode', false);
             }, { actorId, itemId });
 
             await openItemSheet(page, actorId, itemId);

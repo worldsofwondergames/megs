@@ -23,27 +23,18 @@ async function hasPowerSourceOverrides(page, actorId, powerId) {
 test.describe('Power Roll Sources (#56)', () => {
     let actorId, targetId;
 
-    test.beforeAll(async ({ browser }) => {
-        const page = await browser.newPage();
-        await page.goto('/game');
-        await page.waitForFunction(() => typeof game !== 'undefined' && game.ready === true, { timeout: 30_000 });
-
-        actorId = await createHeroActor(page, prefixName('PowerSrc_Actor'), {
+    test.beforeAll(async ({ workerPage }) => {
+        actorId = await createHeroActor(workerPage, prefixName('PowerSrc_Actor'), {
             dex: 7, str: 5, body: 4, int: 6, will: 3, mind: 3, infl: 4, aura: 2, spirit: 2
         });
-        targetId = await createTargetActor(page, prefixName('PowerSrc_Target'), {
+        targetId = await createTargetActor(workerPage, prefixName('PowerSrc_Target'), {
             dex: 8, str: 6, body: 9, int: 5, will: 4, mind: 7, infl: 3, aura: 3, spirit: 5
         });
-        await page.close();
     });
 
-    test.afterAll(async ({ browser }) => {
-        const page = await browser.newPage();
-        await page.goto('/game');
-        await page.waitForFunction(() => typeof game !== 'undefined' && game.ready === true, { timeout: 30_000 });
-        if (actorId) await deleteActor(page, actorId);
-        if (targetId) await deleteActor(page, targetId);
-        await page.close();
+    test.afterAll(async ({ workerPage }) => {
+        if (actorId) await deleteActor(workerPage, actorId);
+        if (targetId) await deleteActor(workerPage, targetId);
     });
 
     test('R1: Default power uses APs for AV/EV', async ({ page }) => {

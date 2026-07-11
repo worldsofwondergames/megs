@@ -265,7 +265,7 @@ test.describe('Gadget Sheet Rolling (#13)', () => {
                     if (d.querySelector('input[name="selectedOption"]')) return true;
                 }
                 return false;
-            }, { timeout: 5000 });
+            }, null, { timeout: 5000 });
 
             const isPicker = await isPickerDialogOpen(page);
             expect(isPicker).toBe(true);
@@ -361,7 +361,7 @@ test.describe('Gadget Sheet Rolling (#13)', () => {
                     if (d.querySelector('input[name="selectedOption"]')) return true;
                 }
                 return false;
-            }, { timeout: 5000 });
+            }, null, { timeout: 5000 });
 
             const options = await getPickerOptions(page);
             const optionTexts = options.join(' ');

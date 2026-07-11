@@ -59,7 +59,9 @@ export async function addPowerToActor(page, actorId, powerData) {
             name: powerData.name,
             type: 'power',
             system: {
-                aps: powerData.aps || 8,
+                aps: powerData.aps ?? 8,
+                baseCost: powerData.baseCost ?? 0,
+                factorCost: powerData.factorCost ?? 0,
                 link: powerData.link || 'str',
                 source: powerData.source || 'physical',
                 type: powerData.type || 'dice',
@@ -81,13 +83,48 @@ export async function addSkillToActor(page, actorId, skillData) {
             name: skillData.name,
             type: 'skill',
             system: {
-                aps: skillData.aps || 3,
+                aps: skillData.aps ?? 3,
+                baseCost: skillData.baseCost ?? 0,
+                factorCost: skillData.factorCost ?? 0,
                 link: skillData.link || 'dex',
                 parent: skillData.parent || '',
             },
         }]);
         return items[0].id;
     }, { actorId, skillData });
+}
+
+export async function addSubskillToActor(page, actorId, subskillData) {
+    return page.evaluate(async ({ actorId, subskillData }) => {
+        const actor = game.actors.get(actorId);
+        const items = await actor.createEmbeddedDocuments('Item', [{
+            name: subskillData.name,
+            type: 'subskill',
+            system: {
+                aps: subskillData.aps ?? 0,
+                parent: subskillData.parent || '',
+                linkedSkill: subskillData.linkedSkill || '',
+                isTrained: subskillData.isTrained ?? false,
+            },
+        }]);
+        return items[0].id;
+    }, { actorId, subskillData });
+}
+
+/** Add a bonus or limitation item modifying the given parent item. */
+export async function addModifierToActorItem(page, actorId, modifierData) {
+    return page.evaluate(async ({ actorId, modifierData }) => {
+        const actor = game.actors.get(actorId);
+        const items = await actor.createEmbeddedDocuments('Item', [{
+            name: modifierData.name,
+            type: modifierData.type, // 'bonus' or 'limitation'
+            system: {
+                factorCostMod: modifierData.factorCostMod ?? 0,
+                parent: modifierData.parent || '',
+            },
+        }]);
+        return items[0].id;
+    }, { actorId, modifierData });
 }
 
 export async function addTraitToActor(page, actorId, traitData) {
@@ -131,7 +168,12 @@ export async function addGadgetToActor(page, actorId, gadgetData) {
                     aura: { value: gadgetData.attrs?.aura || 0, label: 'AURA', alwaysSubstitute: false },
                     spirit: { value: gadgetData.attrs?.spirit || 0, label: 'SPIRIT', alwaysSubstitute: false },
                 },
-                settings: { hasAttributes: gadgetData.hasAttributes ?? true },
+                // hasAttributes is an object of per-category string flags;
+                // templates gate the attribute section on these, not a boolean
+                settings: {
+                    hasAttributes: gadgetData.hasAttributes
+                        ?? { physical: 'true', mental: 'true', mystical: 'true' },
+                },
             },
         }]);
         return items[0].id;
@@ -179,8 +221,17 @@ export async function openItemSheet(page, actorId, itemId) {
 }
 
 export async function closeAllWindows(page) {
-    await page.evaluate(() => {
-        Object.values(ui.windows).forEach(w => w.close());
+    const forceCloseAll = () => page.evaluate(async () => {
+        for (const w of Object.values(ui.windows)) {
+            try { await w.close({ force: true }); } catch { /* mid-render close can throw */ }
+        }
     });
-    await page.waitForFunction(() => Object.keys(ui.windows).length === 0, { timeout: 5000 });
+    await forceCloseAll();
+    try {
+        await page.waitForFunction(() => Object.keys(ui.windows).length === 0, null, { timeout: 5000 });
+    } catch {
+        // A window re-rendered while closing; one retry settles it
+        await forceCloseAll();
+        await page.waitForFunction(() => Object.keys(ui.windows).length === 0, null, { timeout: 5000 });
+    }
 }

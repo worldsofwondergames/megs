@@ -57,14 +57,14 @@
             <section class="attributes-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalAttributesCost'}}</label>
-                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.attributesCost system.canBeTakenAway}}">
+                    <span class="summary-value cost-tooltip" title="{{getGadgetAdjustedCostTooltip system.gadgetPointBudget.attributesCost system.canBeTakenAway}}">
                         {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.attributesCost system.canBeTakenAway)}} HP
                     </span>
                 </div>
                 {{#if (compare system.settings.hasAVAndEV "eq" "true")}}
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.AVEVCost'}}</label>
-                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.avEvCost system.canBeTakenAway}}">
+                    <span class="summary-value cost-tooltip" title="{{getGadgetAdjustedCostTooltip system.gadgetPointBudget.avEvCost system.canBeTakenAway}}">
                         {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.avEvCost system.canBeTakenAway)}} HP
                     </span>
                 </div>
@@ -248,7 +248,7 @@
             <section class="powers-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalPowersCost'}}</label>
-                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.powersCost system.canBeTakenAway}}">
+                    <span class="summary-value cost-tooltip" title="{{getGadgetAdjustedCostTooltip system.gadgetPointBudget.powersCost system.canBeTakenAway}}">
                         {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.powersCost system.canBeTakenAway)}} HP
                     </span>
                 </div>
@@ -320,7 +320,7 @@
             <section class="skills-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.TotalSkillsCost'}}</label>
-                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.skillsCost system.canBeTakenAway}}">
+                    <span class="summary-value cost-tooltip" title="{{getGadgetAdjustedCostTooltip system.gadgetPointBudget.skillsCost system.canBeTakenAway}}">
                         {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.skillsCost system.canBeTakenAway)}} HP
                     </span>
                 </div>
@@ -359,7 +359,7 @@
             <section class="traits-summary">
                 <div class="summary-row">
                     <label class="summary-label">{{localize 'MEGS.NetTraitsCost'}}</label>
-                    <span class="summary-value cost-tooltip" title="{{getGadgetCostTooltip system.gadgetPointBudget.traitsCost system.canBeTakenAway}}">
+                    <span class="summary-value cost-tooltip" title="{{getGadgetAdjustedCostTooltip system.gadgetPointBudget.traitsCost system.canBeTakenAway}}">
                         {{formatNumber (getGadgetAdjustedCost system.gadgetPointBudget.traitsCost system.canBeTakenAway)}} HP
                     </span>
                 </div>

@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/foundry-test.mjs';
+﻿import { test, expect } from '../fixtures/foundry-test.mjs';
 import {
     prefixName,
     createHeroActor,
@@ -15,7 +15,7 @@ test.describe('Gadget Reliability Number (#8)', () => {
         try {
             actorId = await createHeroActor(page, prefixName('Reliability_Show'));
             await addGadgetToActor(page, actorId, {
-                name: 'Batarang',
+                name: 'Throwing Blade',
                 reliability: 4, // CONFIG.reliabilityScores[4] = 7
                 attrs: { str: 5 },
             });
@@ -24,7 +24,7 @@ test.describe('Gadget Reliability Number (#8)', () => {
 
             // The getGadgetDescription helper renders "R#7" for reliability index 4
             const descriptionText = await page.evaluate(() => {
-                const descEl = document.querySelector('.sheet.actor .tab.gadgets .item-description');
+                const descEl = document.querySelector('.sheet.actor .tab.gadgets .item-row .item-description');
                 return descEl ? descEl.textContent.trim() : null;
             });
 
@@ -49,7 +49,7 @@ test.describe('Gadget Reliability Number (#8)', () => {
             await openActorSheet(page, actorId, 'gadgets');
 
             const descriptionText = await page.evaluate(() => {
-                const descEl = document.querySelector('.sheet.actor .tab.gadgets .item-description');
+                const descEl = document.querySelector('.sheet.actor .tab.gadgets .item-row .item-description');
                 return descEl ? descEl.textContent.trim() : null;
             });
 
@@ -108,55 +108,59 @@ test.describe('Gadget Reliability Number (#8)', () => {
                 attrs: { str: 8 },
             });
 
-            // Read the gadget cost tooltip to understand the cost at R#5
+            // Expected behavior (3E rules / AP Purchase Chart):
+            //   STR 8 APs @ FC 6                     = 60 HP
+            //   default gadget can be taken away     => ÷4 => 15 HP at R#5 (mod 0)
+            //   R#0 adds +3 to factor costs => FC 9  => 90 HP ÷4 => ceil => 23 HP
             const costAtR5 = await page.evaluate(({ actorId, gadgetId }) => {
-                const actor = game.actors.get(actorId);
-                const gadget = actor.items.get(gadgetId);
-                // The getGadgetCostTooltip helper calculates costs
-                // We can use the Handlebars helper directly
-                const helper = Handlebars.helpers.getGadgetCostTooltip;
-                // Build gadget context similar to how the template does
-                const gadgetData = {
-                    ...gadget,
-                    _id: gadget.id,
-                    ownerId: actorId,
-                    system: gadget.system,
-                    name: gadget.name,
-                };
-                return helper(gadgetData);
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                gadget.prepareData();
+                return gadget.system.totalCost;
             }, { actorId, gadgetId });
+            expect(costAtR5).toBe(15);
 
             // Now change reliability to index 0 (R#0, modifier +3)
             await page.evaluate(({ actorId, gadgetId }) => {
-                const actor = game.actors.get(actorId);
-                const gadget = actor.items.get(gadgetId);
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
                 return gadget.update({ 'system.reliability': 0 });
             }, { actorId, gadgetId });
 
-            // Wait for update to propagate
-            await page.waitForTimeout(500);
-
             const costAtR0 = await page.evaluate(({ actorId, gadgetId }) => {
-                const actor = game.actors.get(actorId);
-                const gadget = actor.items.get(gadgetId);
-                const helper = Handlebars.helpers.getGadgetCostTooltip;
-                const gadgetData = {
-                    ...gadget,
-                    _id: gadget.id,
-                    ownerId: actorId,
-                    system: gadget.system,
-                    name: gadget.name,
-                };
-                return helper(gadgetData);
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                gadget.prepareData();
+                return gadget.system.totalCost;
+            }, { actorId, gadgetId });
+            expect(costAtR0).toBe(23);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Gadget cost tooltip shows the cost breakdown with final cost', async ({ page }) => {
+        // Expected behavior: the character-creator gadget cost tooltip
+        // breaks down attribute/AV/EV costs and ends with "Final Cost: N".
+        // KNOWN BUG #245: a duplicate getGadgetCostTooltip registration in
+        // megs.mjs replaces the detailed breakdown helper, so the tooltip
+        // renders empty for gadget items. Remove test.fail() with #245.
+        test.fail();
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('Reliability_Tooltip'));
+            const gadgetId = await addGadgetToActor(page, actorId, {
+                name: 'Tooltip Test Gadget',
+                reliability: 3, // R#5, modifier 0
+                attrs: { str: 8 },
+            });
+
+            const tooltip = await page.evaluate(({ actorId, gadgetId }) => {
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                return Handlebars.helpers.getGadgetCostTooltip(gadget);
             }, { actorId, gadgetId });
 
-            // R#0 has modifier +3 (increasing factor costs), so the total cost
-            // should be higher than at R#5 (modifier 0)
-            // Extract "Final Cost: X" from the tooltip text
-            const finalCostR5 = parseInt(costAtR5.match(/Final Cost:\s*(\d+)/)?.[1] || '0');
-            const finalCostR0 = parseInt(costAtR0.match(/Final Cost:\s*(\d+)/)?.[1] || '0');
-
-            expect(finalCostR0).toBeGreaterThan(finalCostR5);
+            // STR 8 APs @ FC 6 = 60 HP; ÷4 (can be taken away) => 15 HP
+            expect(tooltip).toContain('Attributes: 60');
+            expect(tooltip).toMatch(/Final Cost:\s*15/);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

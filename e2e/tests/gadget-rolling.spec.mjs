@@ -1,4 +1,4 @@
-/**
+﻿/**
  * E2E tests for Issue #17: Gadgets - Rolling
  *
  * These tests verify the REQUIREMENTS for gadget rolling behavior per MEGS RPG
@@ -60,7 +60,7 @@ import {
 } from '../fixtures/roll-helpers.mjs';
 
 // ============================================================
-// Local helpers — gadget-specific, not in shared modules
+// Local helpers â€” gadget-specific, not in shared modules
 // ============================================================
 
 /**
@@ -131,7 +131,7 @@ async function getGadgetRollTooltip(page, gadgetName) {
 test.describe('Gadget Rolling (#17)', () => {
 
     // ----------------------------------------------------------
-    // R1 + R5: Rollability — what should and should not roll
+    // R1 + R5: Rollability â€” what should and should not roll
     // ----------------------------------------------------------
 
     test('R1: Gadget with explicit AV and EV shows roll button', async ({ page }) => {
@@ -362,7 +362,7 @@ test.describe('Gadget Rolling (#17)', () => {
             expect(pickerOpen).toBe(true);
 
             const options = await getPickerOptions(page);
-            // Should have: AV/EV, Flash, Thief — NOT Smoke Screen (0 AP) or Gadgetry (0 AP)
+            // Should have: AV/EV, Flash, Thief â€” NOT Smoke Screen (0 AP) or Gadgetry (0 AP)
             expect(options).toHaveLength(3);
             expect(options).toContain('Flash');
             expect(options).toContain('Thief');
@@ -453,11 +453,11 @@ test.describe('Gadget Rolling (#17)', () => {
             // Open the gadget's own item sheet
             await openItemSheet(page, actorId, gadgetId);
 
-            await page.waitForSelector('.sheet.item .always-substitute-label input[type="checkbox"]', { timeout: 5000 });
+            await page.waitForSelector('.sheet.item .always-substitute-checkbox', { timeout: 5000 });
 
             // Verify checkboxes exist for always-substitute
             const checkboxCount = await page.$$eval(
-                '.sheet.item .always-substitute-label input[type="checkbox"]',
+                '.sheet.item .always-substitute-checkbox',
                 (cbs) => cbs.length
             );
             expect(checkboxCount).toBeGreaterThan(0);
@@ -476,25 +476,25 @@ test.describe('Gadget Rolling (#17)', () => {
             // Open the gadget sheet
             await openItemSheet(page, actorId, gadgetId);
 
-            await page.waitForSelector('.sheet.item .always-substitute-label input[type="checkbox"]', { timeout: 5000 });
+            await page.waitForSelector('.sheet.item .always-substitute-checkbox', { timeout: 5000 });
 
             // Verify DEX checkbox starts unchecked
             const initialState = await page.$$eval(
-                '.sheet.item .always-substitute-label input[type="checkbox"]',
+                '.sheet.item .always-substitute-checkbox',
                 (cbs) => cbs.map(cb => cb.checked)
             );
             expect(initialState[0]).toBe(false);
 
             // Click the DEX always-substitute checkbox and wait for Foundry to persist
             await page.evaluate(() => {
-                const cbs = document.querySelectorAll('.sheet.item .always-substitute-label input[type="checkbox"]');
+                const cbs = document.querySelectorAll('.sheet.item .always-substitute-checkbox');
                 if (cbs[0]) cbs[0].click();
             });
             await page.waitForFunction(({ actorId, gadgetId }) => {
                 const actor = game.actors.get(actorId);
                 const gadget = actor?.items.get(gadgetId);
                 return gadget?.system?.attributes?.dex?.alwaysSubstitute === true;
-            }, { timeout: 5000 }, { actorId, gadgetId });
+            }, { actorId, gadgetId }, { timeout: 5000 });
 
             // Close all sheets
             await closeAllWindows(page);
@@ -510,11 +510,11 @@ test.describe('Gadget Rolling (#17)', () => {
             // Reopen the gadget sheet
             await openItemSheet(page, actorId, gadgetId);
 
-            await page.waitForSelector('.sheet.item .always-substitute-label input[type="checkbox"]', { timeout: 5000 });
+            await page.waitForSelector('.sheet.item .always-substitute-checkbox', { timeout: 5000 });
 
             // Verify the checkbox is still checked in the UI
             const afterReopen = await page.$$eval(
-                '.sheet.item .always-substitute-label input[type="checkbox"]',
+                '.sheet.item .always-substitute-checkbox',
                 (cbs) => cbs.map(cb => cb.checked)
             );
             expect(afterReopen[0]).toBe(true);
@@ -599,9 +599,9 @@ test.describe('Gadget Rolling (#17)', () => {
 
             // Wait for chat message to appear
             await page.waitForFunction(
-                (before) => document.querySelectorAll('#chat-log .chat-message').length > before,
-                { timeout: 5000 },
-                beforeCount
+                (before) => document.querySelectorAll('.chat-log .chat-message').length > before,
+                beforeCount,
+                { timeout: 5000 }
             );
 
             // No picker, no roll dialog
@@ -660,7 +660,7 @@ test.describe('Gadget Rolling (#17)', () => {
 
             const values = await getRollDialogValues(page);
             expect(values.effectValue).toBe(9);
-            // AV should be derived (not left at 0) — exact value depends on actor/gadget
+            // AV should be derived (not left at 0) â€” exact value depends on actor/gadget
             // At minimum it should be populated
             expect(values.actionValue).not.toBeNull();
 
@@ -703,7 +703,7 @@ test.describe('Gadget Rolling (#17)', () => {
         try {
             await openActorSheet(page, actorId, 'gadgets');
 
-            // First: select the power option (index 1 — powers come after AV/EV)
+            // First: select the power option (index 1 â€” powers come after AV/EV)
             await clickGadgetRollButton(page, 'Versatile Weapon');
             expect(await isPickerDialogOpen(page)).toBe(true);
 

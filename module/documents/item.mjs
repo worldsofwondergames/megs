@@ -718,12 +718,12 @@ export class MEGSItem extends Item {
         if (systemData.attributes) {
             for (const [key, attr] of Object.entries(systemData.attributes)) {
                 if (attr.value > 0) {
-                    let fc = attr.factorCost + reliabilityMod;
+                    let fc = (Number(attr.factorCost) || 0) + reliabilityMod;
                     if (attr.alwaysSubstitute) fc += 2;
                     if (key === 'body' && this._toBoolean(systemData.hasHardenedDefenses)) {
                         fc += 2;
                     }
-                    fc = Math.max(1, fc);
+                    fc = Math.min(10, Math.max(1, fc));
                     attributesCost += this._getAPCost(attr.value, fc);
                 }
             }
@@ -981,7 +981,7 @@ export class MEGSItem extends Item {
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
                         }
-                        let fc = attr.factorCost + reliabilityMod;
+                        let fc = (Number(attr.factorCost) || 0) + reliabilityMod;
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    After reliability mod: FC=${fc}`);
                         }
@@ -1002,7 +1002,7 @@ export class MEGSItem extends Item {
                             }
                         }
 
-                        fc = Math.max(1, fc); // Minimum FC of 1
+                        fc = Math.min(10, Math.max(1, fc));
                         const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);

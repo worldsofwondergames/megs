@@ -159,8 +159,8 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                     system: {
                         parent: parentGadget.id,
                         settings: { hasAVAndEV: 'true' },
-                        av: 6,
-                        ev: 8,
+                        actionValue: 6,
+                        effectValue: 8,
                     }
                 }]);
 
@@ -303,9 +303,8 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                     system: {
                         parent: parentGadget.id,
                         settings: { hasAVAndEV: 'true' },
-                        av: 4,
-                        ev: 4,
-                        canBeTakenAway: true,
+                        actionValue: 4,
+                        effectValue: 4,
                     }
                 }]);
 
@@ -324,19 +323,18 @@ test.describe('Sub-gadget display and controls (#78)', () => {
         }
     });
 
-    test('Gadget cost tooltip includes sub-gadget name and cost', async ({ page }) => {
+    test('Gadget budget includes sub-gadget entries by name', async ({ page }) => {
         let actorId;
         try {
-            actorId = await createHeroActor(page, prefixName('SubGadget_Tooltip'));
+            actorId = await createHeroActor(page, prefixName('SubGadget_Budget'));
 
-            await page.evaluate(async (actorId) => {
+            const budget = await page.evaluate(async (actorId) => {
                 const actor = game.actors.get(actorId);
 
                 const [parentGadget] = await actor.createEmbeddedDocuments('Item', [{
                     name: 'Power Armor',
                     type: 'gadget',
                     img: 'icons/svg/shield.svg',
-                    system: { canBeTakenAway: true },
                 }]);
 
                 await actor.createEmbeddedDocuments('Item', [{
@@ -346,36 +344,20 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                     system: {
                         parent: parentGadget.id,
                         settings: { hasAVAndEV: 'true' },
-                        av: 4,
-                        ev: 4,
-                        canBeTakenAway: true,
+                        actionValue: 4,
+                        effectValue: 4,
                     }
                 }]);
 
-                if (parentGadget.system.settings?.hasGadgets !== 'true') {
-                    await parentGadget.update({ 'system.settings.hasGadgets': 'true' });
-                }
+                const updated = actor.items.get(parentGadget.id);
+                return updated.system.gadgetPointBudget;
             }, actorId);
 
-            // Open the parent gadget's item sheet
-            await page.evaluate((actorId) => {
-                const actor = game.actors.get(actorId);
-                const gadget = actor.items.find(i => i.name === 'Power Armor' && !i.system.parent);
-                gadget.sheet.render(true);
-            }, actorId);
-
-            await page.waitForSelector('.sheet.item', { timeout: 10000 });
-            await page.waitForTimeout(1000);
-
-            // Read the budget tooltip from the HP Spent value
-            const tooltip = await page.evaluate(() => {
-                const sheet = document.querySelector('.sheet.item');
-                const tooltipEl = sheet?.querySelector('[title*="HP Spent"]') ||
-                    sheet?.querySelector('.resource-value[title]');
-                return tooltipEl?.getAttribute('title') || '';
-            });
-
-            expect(tooltip).toContain('Laser Cannon');
+            expect(budget.subGadgetsCost).toBeGreaterThan(0);
+            expect(budget.subGadgetEntries).toBeDefined();
+            expect(budget.subGadgetEntries.length).toBeGreaterThan(0);
+            expect(budget.subGadgetEntries[0].name).toBe('Laser Cannon');
+            expect(budget.subGadgetEntries[0].cost).toBeGreaterThan(0);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

@@ -1098,8 +1098,6 @@ export class MEGSItem extends Item {
                             item.type === MEGS.itemTypes.advantage ||
                             item.type === MEGS.itemTypes.drawback) {
                             totalCost += itemCost;
-                        } else if (item.type === MEGS.itemTypes.gadget) {
-                            totalCost += item.system.totalCost || 0;
                         }
                     }
                 });

@@ -434,7 +434,7 @@ export class MEGSActorSheet extends ActorSheet {
         // Iterate through items, allocating to containers
         context.items.forEach((i) => {
             i.img = i.img || Item.DEFAULT_ICON;
-            this._categorizeItem(i, powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets);
+            this._categorizeItem(i, { powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets });
         });
 
         // Add skills from linked gadget (for vehicles/locations)
@@ -509,7 +509,7 @@ export class MEGSActorSheet extends ActorSheet {
         await super._render(force, options);
     }
 
-    _categorizeItem(i, powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets) {
+    _categorizeItem(i, { powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets }) {
         const isChild = !!i.system.parent;
 
         if (i.type === MEGS.itemTypes.subskill) {
@@ -983,7 +983,7 @@ export class MEGSActorSheet extends ActorSheet {
         if (data.type !== 'Item') return;
 
         const droppedItem = await Item.implementation.fromDropData(data);
-        if (!droppedItem || droppedItem.type !== MEGS.itemTypes.gadget) return;
+        if (droppedItem?.type !== MEGS.itemTypes.gadget) return;
 
         const isOnActor = droppedItem.parent?.id === this.actor.id;
         if (!isOnActor) return;
@@ -1018,7 +1018,7 @@ export class MEGSActorSheet extends ActorSheet {
         if (data.type !== 'Item') return;
 
         const droppedItem = await Item.implementation.fromDropData(data);
-        if (!droppedItem || droppedItem.type !== MEGS.itemTypes.gadget) return;
+        if (droppedItem?.type !== MEGS.itemTypes.gadget) return;
 
         const isOnActor = droppedItem.parent?.id === this.actor.id;
         if (!isOnActor) return;

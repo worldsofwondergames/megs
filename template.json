@@ -342,7 +342,10 @@
             ],
             "type": "skill",
             "img": "icons/svg/light.svg",
-            "useUnskilled": true
+            "useUnskilled": true,
+            "defaultOV": 0,
+            "defaultRV": 0,
+            "defaultOVRVNote": ""
         },
         "subskill": {
             "templates": ["baseItem", "hasParent"],
@@ -350,7 +353,10 @@
             "linkedSkill": "",
             "useUnskilled": true,
             "actorId": "",
-            "isTrained": true
+            "isTrained": true,
+            "defaultOV": 0,
+            "defaultRV": 0,
+            "defaultOVRVNote": ""
         },
         "advantage": {
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],

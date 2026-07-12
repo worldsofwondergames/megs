@@ -1,5 +1,10 @@
 <div class="megs-dialog padding-bottom-10px">
     <form>
+        {{#if defaultOVRVNote}}
+        <div class="form-group ovrv-note" style="font-style: italic; font-size: 0.85em; opacity: 0.8; margin-bottom: 4px;">
+            <span>{{defaultOVRVNote}}</span>
+        </div>
+        {{/if}}
         <div class="form-group">
             <label>{{localize "MEGS.ActionValue"}}</label>
             <div class="quantity">

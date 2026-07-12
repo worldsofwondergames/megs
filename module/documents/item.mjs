@@ -1292,6 +1292,14 @@ export class MEGSItem extends Item {
             } else {
                 console.error('No linked attribute for this item');
             }
+        } else if (
+            this.type === MEGS.itemTypes.skill ||
+            this.type === MEGS.itemTypes.subskill
+        ) {
+            const defaultOV = Number.parseInt(this.system.defaultOV) || 0;
+            const defaultRV = Number.parseInt(this.system.defaultRV) || 0;
+            if (defaultOV > 0) opposingValue = defaultOV;
+            if (defaultRV > 0) resistanceValue = defaultRV;
         }
 
         let label = this.name;
@@ -1301,6 +1309,13 @@ export class MEGSItem extends Item {
 
         console.info('Rolling from item.rollMegs()');
         const isUnskilled = this.system.aps === 0;
+        let defaultOVRVNote = '';
+        if (
+            this.type === MEGS.itemTypes.skill ||
+            this.type === MEGS.itemTypes.subskill
+        ) {
+            defaultOVRVNote = this.system.defaultOVRVNote || '';
+        }
         const rollValues = new RollValues(
             label,
             this.type,
@@ -1310,7 +1325,8 @@ export class MEGSItem extends Item {
             effectValue,
             resistanceValue,
             '1d10 + 1d10',
-            isUnskilled
+            isUnskilled,
+            defaultOVRVNote
         );
         const speaker = ChatMessage.getSpeaker({ actor: this.parent });
         const rollTables = new MegsTableRolls(rollValues, speaker);

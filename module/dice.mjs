@@ -40,7 +40,8 @@ export class RollValues {
         effectValue,
         resistanceValue,
         rollFormula,
-        unskilled
+        unskilled,
+        defaultOVRVNote
     ) {
         this.label = label;
         this.type = type; // attribute, power, skill
@@ -51,6 +52,7 @@ export class RollValues {
         this.resistanceValue = resistanceValue;
         this.rollFormula = rollFormula || '1d10 + 1d10';
         this.unskilled = unskilled || false;
+        this.defaultOVRVNote = defaultOVRVNote || '';
     }
 }
 
@@ -65,6 +67,7 @@ export class MegsTableRolls {
         this.rollFormula = rollValues.rollFormula;
         this.label = rollValues.label;
         this.isUnskilled = rollValues.unskilled;
+        this.defaultOVRVNote = rollValues.defaultOVRVNote;
         this.speaker = speaker;
     }
 
@@ -109,6 +112,7 @@ export class MegsTableRolls {
                 effectValue: this.effectValue,
                 resistanceValue: this.resistanceValue,
                 isUnskilled: this.isUnskilled,
+                defaultOVRVNote: this.defaultOVRVNote,
             };
             const dialogHtml = await this._renderTemplate(template, data);
 
@@ -176,6 +180,7 @@ export class MegsTableRolls {
             effectValue: this.effectValue,
             resistanceValue: this.resistanceValue,
             isUnskilled: this.isUnskilled,
+            defaultOVRVNote: this.defaultOVRVNote,
         };
         const dialogHtml = await this._renderTemplate(template, data);
 

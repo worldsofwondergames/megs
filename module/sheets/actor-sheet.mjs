@@ -962,6 +962,17 @@ export class MEGSActorSheet extends ActorSheet {
                     console.error('No linked attribute for ' + dataset.name);
                 }
             }
+        } else if (
+            dataset.type === MEGS.itemTypes.skill ||
+            dataset.type === MEGS.itemTypes.subskill
+        ) {
+            const rollItem = dataset.itemId ? this.actor.items.get(dataset.itemId) : null;
+            if (rollItem) {
+                const defaultOV = Number.parseInt(rollItem.system.defaultOV) || 0;
+                const defaultRV = Number.parseInt(rollItem.system.defaultRV) || 0;
+                if (defaultOV > 0) opposingValue = defaultOV;
+                if (defaultRV > 0) resistanceValue = defaultRV;
+            }
         }
 
         if (dataset.type === MEGS.rollTypes.attribute) {
@@ -971,6 +982,17 @@ export class MEGSActorSheet extends ActorSheet {
             dataset.type === MEGS.itemTypes.subskill
         ) {
             effectValue = Number.parseInt(dataset.value);
+        }
+
+        let defaultOVRVNote = '';
+        if (
+            dataset.type === MEGS.itemTypes.skill ||
+            dataset.type === MEGS.itemTypes.subskill
+        ) {
+            const rollItem = dataset.itemId ? this.actor.items.get(dataset.itemId) : null;
+            if (rollItem?.system.defaultOVRVNote) {
+                defaultOVRVNote = rollItem.system.defaultOVRVNote;
+            }
         }
 
         console.info('Rolling from actor-sheet._onRoll()');
@@ -983,7 +1005,8 @@ export class MEGSActorSheet extends ActorSheet {
             effectValue,
             resistanceValue,
             dataset.roll,
-            dataset.unskilled
+            dataset.unskilled,
+            defaultOVRVNote
         );
         const speaker = ChatMessage.getSpeaker({ actor: this.object });
         const rollTables = new MegsTableRolls(rollValues, speaker);

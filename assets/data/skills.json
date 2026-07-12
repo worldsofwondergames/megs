@@ -19,19 +19,22 @@
                     "name": "Climbing",
                     "range": "normal",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV per climbing chart (p.76)"
                 },
                 {
                     "name": "Dodging",
                     "range": "normal",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "Automatic action"
                 },
                 {
                     "name": "Gymnastics",
                     "range": "normal",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV based on difficulty (p.76)"
                 }
             ],
             "useUnskilled": "true",
@@ -81,6 +84,9 @@
             "description": "<p>The Artist Skill has seven Subskills: Actor, Dancer, Musician, Painter, Photographer, Sculptor, and Writer, each of which has the potential to please an audience; these Subskills will only impress willing and interested viewers.</p>\n<p>When a Character uses Artist to perform or produce a work, OV/RVs are at 4/4 unless performed or produced for a specific person, in which case that person's INFL/SPIRIT acts as OV/RVs. If the person possesses the Artist Skill, the APs of Artist will act as OV/RV to the attempt. Multi-Attack penalties for Artist attempts are not applicable. RAPs on an Artist attempt indicate the following effects:</p>\n<table style=\"width: 100.041%;\" border=\"1\"><colgroup><col style=\"width: 16.5548%;\"><col style=\"width: 83.404%;\"></colgroup>\n<tbody>\n<tr>\n<td style=\"text-align: center;\">1-2</td>\n<td>The performance or work is accepted.</td>\n</tr>\n<tr>\n<td style=\"text-align: center;\">3-5</td>\n<td>The performance or work is well received.</td>\n</tr>\n<tr>\n<td style=\"text-align: center;\">6-9</td>\n<td>The artist receives critical acclaim (equal to a standing ovation if it is a performance).</td>\n</tr>\n<tr>\n<td style=\"text-align: center;\">10+</td>\n<td>The artist gives an immortal performance or creates a masterpiece which the audience will never forget.</td>\n</tr>\n</tbody>\n</table>\n<p>An audience which liked a Character's performance or work will be Friendly toward the Artist. Utilizing Artist in this fashion during combat will be ineffectual.</p>\n<p>A Character should remember that great works of art are not produced hourly. While no fixed time exists for the fruition of genius, a standard guideline is two months (21 APs) per major work. Saleable art works may be produced in the minimum times listed in the associated Subskills.</p>",
             "link": "infl",
             "isLinked": false,
+            "defaultOV": 4,
+            "defaultRV": 4,
+            "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person",
             "range": "self",
             "rangeAPs": 0,
             "baseCost": 5,
@@ -93,43 +99,64 @@
                     "name": "Actor",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 },
                 {
                     "name": "Dancer",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 },
                 {
                     "name": "Musician",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 },
                 {
                     "name": "Painter",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 },
                 {
                     "name": "Photographer",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 },
                 {
                     "name": "Sculptor",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 },
                 {
                     "name": "Writer",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "Or target's INFL/SPIRIT if for a specific person"
                 }
             ],
             "useUnskilled": "false",
@@ -197,25 +224,29 @@
                     "name": "Clue Analysis",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = criminal's INT/MIND or Thief APs"
                 },
                 {
                     "name": "Counterfeit Recognition",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = RAPs of Thief (Forgery)"
                 },
                 {
                     "name": "Identification Systems",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = target's Thief APs"
                 },
                 {
                     "name": "Law",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = opposing lawyer's Law APs"
                 },
                 {
                     "name": "Police Procedure",
@@ -249,13 +280,15 @@
                     "name": "Build Gadget",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "See Gadgetry rules (ch.7)"
                 },
                 {
                     "name": "Identify Gadget",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = gadget's highest AP value"
                 }
             ],
             "useUnskilled": "true",
@@ -303,25 +336,31 @@
                     "name": "First Aid",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = total damage to Current Body"
                 },
                 {
                     "name": "Forensics",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "4/4 if dead 1-6 weeks; 10/10 if > 6 weeks"
                 },
                 {
                     "name": "Medical Treatment",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = absolute value of damage sustained"
                 },
                 {
                     "name": "Surgery",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = absolute value of damage sustained; +1 CS if vital organs"
                 }
             ],
             "useUnskilled": "true",
@@ -349,25 +388,31 @@
                     "name": "Camouflage",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "Adds to Perception OV against spotting"
                 },
                 {
                     "name": "Cartography",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "4/4 unknown language; 10/10 alien map"
                 },
                 {
                     "name": "Danger Recognition",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "APs act as AV/EV vs. Surprise"
                 },
                 {
                     "name": "Demolition",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "AV = Skill APs; EV = Bomb Power APs"
                 },
                 {
                     "name": "Field Command",
@@ -379,7 +424,8 @@
                     "name": "Tracking",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = quarry's DEX/DEX (see p.79)"
                 }
             ],
             "useUnskilled": "true",
@@ -407,31 +453,36 @@
                     "name": "Create Artifact",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "See artifact creation rules (p.79)"
                 },
                 {
                     "name": "Identify Artifact",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "See artifact identification rules (p.80)"
                 },
                 {
                     "name": "Occult Knowledge",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV relative to obscurity (GM discretion)"
                 },
                 {
                     "name": "Premonition",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "See premonition rules (p.81)"
                 },
                 {
                     "name": "Ritual Magic",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "See ritual magic rules (p.80)"
                 }
             ],
             "useUnskilled": "false",
@@ -493,37 +544,47 @@
                     "name": "Escape Artist",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV per escape chart (p.82)"
                 },
                 {
                     "name": "Forgery",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 4,
+                    "defaultRV": 4,
+                    "defaultOVRVNote": "4/4 signature; 8/8 counterfeiting; artwork = Artist APs"
                 },
                 {
                     "name": "Locks and Safes",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = Gadgetry APs of locksmith (see p.82)"
                 },
                 {
                     "name": "Pickpocketing",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV = target's DEX/INT"
                 },
                 {
                     "name": "Security Systems",
                     "range": "self",
                     "useUnskilled": false,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOV": 5,
+                    "defaultRV": 5,
+                    "defaultOVRVNote": "5/5 standard; 15/15+ complex; or creator's Gadgetry/Thief"
                 },
                 {
                     "name": "Stealth",
                     "range": "self",
                     "useUnskilled": true,
-                    "type": "dice"
+                    "type": "dice",
+                    "defaultOVRVNote": "OV/RV vs. Perception (see modifiers p.82)"
                 }
             ],
             "useUnskilled": "true",

@@ -580,6 +580,17 @@ export class MEGSItemSheet extends ItemSheet {
             ) {
                 actionValue = Number.parseInt(dataset.value);
                 effectValue = Number.parseInt(dataset.value);
+
+                if (!targetActor) {
+                    let sourceItem = this.object;
+                    if (dataset.type === MEGS.itemTypes.subskill && dataset.subskillId && this.object.parent) {
+                        sourceItem = this.object.parent.items.get(dataset.subskillId) || this.object;
+                    }
+                    const defaultOV = Number.parseInt(sourceItem.system.defaultOV) || 0;
+                    const defaultRV = Number.parseInt(sourceItem.system.defaultRV) || 0;
+                    if (defaultOV > 0) opposingValue = defaultOV;
+                    if (defaultRV > 0) resistanceValue = defaultRV;
+                }
             }
 
             // values of powers on gadget sheets
@@ -598,6 +609,19 @@ export class MEGSItemSheet extends ItemSheet {
                 label = this.object.parent.name + ' - ' + label;
             }
 
+            let defaultOVRVNote = '';
+            if (dataset.type === MEGS.itemTypes.subskill && dataset.subskillId && this.object.parent) {
+                const subskillItem = this.object.parent.items.get(dataset.subskillId);
+                if (subskillItem) {
+                    defaultOVRVNote = subskillItem.system.defaultOVRVNote || '';
+                }
+            } else if (
+                dataset.type === MEGS.itemTypes.skill ||
+                dataset.type === MEGS.itemTypes.subskill
+            ) {
+                defaultOVRVNote = this.object.system.defaultOVRVNote || '';
+            }
+
             const rollValues = new RollValues(
                 label,
                 dataset.type,
@@ -607,7 +631,8 @@ export class MEGSItemSheet extends ItemSheet {
                 effectValue,
                 resistanceValue,
                 dataset.roll,
-                dataset.unskilled
+                dataset.unskilled,
+                defaultOVRVNote
             );
 
             // Create speaker - use parent actor if owned, otherwise use gadget name as alias

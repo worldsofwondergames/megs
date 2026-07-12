@@ -1085,12 +1085,14 @@ export class MEGSItem extends Item {
                             console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
                         }
 
-                        // Add all child items (drawbacks are negative, so they reduce cost automatically)
                         if (item.type === MEGS.itemTypes.power ||
                             item.type === MEGS.itemTypes.skill ||
                             item.type === MEGS.itemTypes.advantage ||
                             item.type === MEGS.itemTypes.drawback) {
                             totalCost += itemCost;
+                        } else if (item.type === MEGS.itemTypes.gadget) {
+                            const subGadgetCost = item.system.totalCost || 0;
+                            totalCost += subGadgetCost;
                         }
                     }
                 });

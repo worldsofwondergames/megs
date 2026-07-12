@@ -4,6 +4,9 @@
 
 ### Enhancements
 
+- Skill and subskill item sheets now have editable Default OV, Default RV, and OV/RV Note fields on the Characteristics tab — when rolling without a target token, these values pre-populate the roll dialog instead of defaulting to 0/0 (issue #148)
+- Skills data includes default OV/RV values and rule-reference notes from the rulebook for all applicable subskills (Artist 4/4, Forensics 4/4, Forgery 4/4, Cartography 4/4, Security Systems 5/5, and context-dependent notes for Detective, Medicine, Military Science, Occultist, and Thief subskills) (issue #148)
+- OV/RV Note is displayed as a hint in the roll dialog to remind the GM of the correct values for context-dependent checks (issue #148)
 - Power item sheets now have configurable AV/EV/OV/RV sources — each value can be set to Power APs, a character attribute, or a target attribute (issue #56)
 - Gadget item sheets now have a d10 roll button in the header that triggers the full gadget roll flow, matching the power sheet visual pattern (issue #13)
 - Gadgets can now be rolled from the actor Gadgets tab for all rollable abilities: explicit AV/EV, child powers, child skills, and attribute pairs (issue #17)

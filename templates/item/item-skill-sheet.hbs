@@ -131,6 +131,41 @@
 
             </section>
 
+            <section class="attributes grid grid-3col" style="margin-top: 8px;">
+                <div class="attribute flex-group-center">
+                    <label for="system.defaultOV" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultOV'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <input name="system.defaultOV" type="number" value="{{system.defaultOV}}" min="0" data-dtype="Number" />
+                        {{else}}
+                            {{system.defaultOV}}
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center">
+                    <label for="system.defaultRV" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultRV'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <input name="system.defaultRV" type="number" value="{{system.defaultRV}}" min="0" data-dtype="Number" />
+                        {{else}}
+                            {{system.defaultRV}}
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="attribute flex-group-center grid-span-3">
+                    <label for="system.defaultOVRVNote" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultOVRVNote'}}</label>
+                    <div style="flex: 2;">
+                        {{#if flags.megs.edit-mode}}
+                            <input name="system.defaultOVRVNote" type="text" value="{{system.defaultOVRVNote}}" />
+                        {{else}}
+                            {{system.defaultOVRVNote}}
+                        {{/if}}
+                    </div>
+                </div>
+            </section>
+
         </div>
 
         {{!-- Description Tab --}}
@@ -169,7 +204,7 @@
                             {{#if subskill.isRollable}}
                                 <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{subskill.name}}
               {{#if isUnskilled}}Unskilled{{/if}}
-              ' data-label="{{subskill.name}}" data-roll="1d10 + 1d10" data-value="{{subskill.effectiveAPs}}" data-type="subskill" {{#if subskill.isUnskilled}} data-unskilled="true" {{/if}}>
+              ' data-label="{{subskill.name}}" data-roll="1d10 + 1d10" data-value="{{subskill.effectiveAPs}}" data-type="subskill" data-subskill-id="{{subskill._id}}" {{#if subskill.isUnskilled}} data-unskilled="true" {{/if}}>
                                     {{#if (compare subskill.system.type '===' 'auto')}}
                                         <img src="/systems/megs/assets/images/icons/d10grey.svg" class="svg-icon" />
                                     {{else}}

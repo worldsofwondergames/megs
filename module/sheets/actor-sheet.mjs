@@ -976,6 +976,11 @@ export class MEGSActorSheet extends ActorSheet {
 
         const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
 
+        const targetGadget = this.actor.items.get(targetGadgetId);
+        if (targetGadget && targetGadget.system.settings?.hasGadgets !== 'true') {
+            updates.push({ _id: targetGadgetId, 'system.settings.hasGadgets': 'true' });
+        }
+
         const childGadgets = this.actor.items.filter(
             i => i.type === MEGS.itemTypes.gadget && i.system.parent === droppedItem.id
         );

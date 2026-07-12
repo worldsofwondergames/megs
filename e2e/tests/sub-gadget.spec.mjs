@@ -26,6 +26,10 @@ async function createActorWithSubGadget(page, actorName) {
             system: { parent: parentGadget.id }
         }]);
 
+        if (parentGadget.system.settings?.hasGadgets !== 'true') {
+            await parentGadget.update({ 'system.settings.hasGadgets': 'true' });
+        }
+
         return { parentId: parentGadget.id, subGadgetId: subGadget.id };
     }, actorId);
 
@@ -159,6 +163,10 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                         ev: 8,
                     }
                 }]);
+
+                if (parentGadget.system.settings?.hasGadgets !== 'true') {
+                    await parentGadget.update({ 'system.settings.hasGadgets': 'true' });
+                }
 
                 return { parentId: parentGadget.id, subGadgetId: subGadget.id };
             }, actorId);

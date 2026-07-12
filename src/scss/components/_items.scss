@@ -265,10 +265,11 @@ li.directory-item img[src*='assets/images/icons'] {
 }
 
 /*------------------------------------------------------------------------*/
-/* Actor Sheet Gadgets Tab Drop Target
+/* Gadgets Tab Drop Target (actor and gadget sheets)
 /*------------------------------------------------------------------------*/
 
-&.sheet .tab.gadgets .items-list {
+&.sheet.actor .tab.gadgets .items-list,
+&.sheet.item .tab.gadgets .items-list {
     .item-row.drop-target,
     .sub-gadget-row.drop-target {
         background-color: #d4edff;

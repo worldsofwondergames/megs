@@ -283,3 +283,68 @@ describe('Base Cost Only Powers', () => {
         expect(power.system.totalCost).toBe(80);
     });
 });
+
+describe('Gadget Attribute FC Clamping', () => {
+    test('FC is clamped to max 10 when reliability + hardened defenses exceeds limit', () => {
+        const gadget = new MEGSItem({
+            name: 'Over-FC Device',
+            type: 'gadget',
+            system: {
+                attributes: {
+                    body: { value: 2, factorCost: 6 }
+                },
+                reliability: 0, // R# 0, +3 to FC
+                hasHardenedDefenses: true, // +2 to BODY FC
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Body FC: 6 + 3 (R#0) + 2 (Hardened) = 11, clamped to 10
+        // 2 APs @ FC 10 = 10, ÷4 = 3
+        expect(gadget.system.totalCost).toBe(3);
+    });
+
+    test('string factorCost is coerced to number', () => {
+        const gadget = new MEGSItem({
+            name: 'String FC Device',
+            type: 'gadget',
+            system: {
+                attributes: {
+                    body: { value: 2, factorCost: '6' }
+                },
+                reliability: 3, // R# 5, no modifier
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Body FC: 6 + 0 = 6; 2 APs @ FC 6 = 6, ÷4 = 2
+        expect(gadget.system.totalCost).toBe(2);
+    });
+
+    test('gadgetPointBudget attributesCost matches individual calculation', () => {
+        const gadget = new MEGSItem({
+            name: 'Budget Test',
+            type: 'gadget',
+            system: {
+                attributes: {
+                    body: { value: 2, factorCost: 6 },
+                    dex: { value: 3, factorCost: 7 }
+                },
+                reliability: 3, // R# 5, no modifier
+                canBeTakenAway: true,
+                creationBudget: { base: 100 }
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Body: 2 APs @ FC 6 = 6
+        // Dex: 3 APs @ FC 7 = 14
+        // Total attributes = 20
+        expect(gadget.system.gadgetPointBudget.attributesCost).toBe(20);
+    });
+});

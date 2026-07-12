@@ -355,7 +355,7 @@ details summary.no-arrow {
   /* Actor Sheet Powers Tab Accordion Styles
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
-  /* Actor Sheet Gadgets Tab Drop Target
+  /* Gadgets Tab Drop Target (actor and gadget sheets)
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
   /* Item Sheet Subskills Tab
@@ -1070,8 +1070,9 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .power-modifier-row:active {
   cursor: grabbing;
 }
-.megs.sheet .tab.gadgets .items-list .item-row.drop-target,
-.megs.sheet .tab.gadgets .items-list .sub-gadget-row.drop-target {
+.megs.sheet.actor .tab.gadgets .items-list .item-row.drop-target,
+.megs.sheet.actor .tab.gadgets .items-list .sub-gadget-row.drop-target, .megs.sheet.item .tab.gadgets .items-list .item-row.drop-target,
+.megs.sheet.item .tab.gadgets .items-list .sub-gadget-row.drop-target {
   background-color: #d4edff;
   border: 2px dashed #06c;
   box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);

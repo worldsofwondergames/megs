@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- Sub-gadgets now appear indented under their parent gadget on the actor Gadgets tab instead of being hidden (issue #78)
 - Power item sheets now have configurable AV/EV/OV/RV sources — each value can be set to Power APs, a character attribute, or a target attribute (issue #56)
 - Gadget item sheets now have a d10 roll button in the header that triggers the full gadget roll flow, matching the power sheet visual pattern (issue #13)
 - Gadgets can now be rolled from the actor Gadgets tab for all rollable abilities: explicit AV/EV, child powers, child skills, and attribute pairs (issue #17)

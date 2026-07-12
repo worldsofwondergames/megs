@@ -420,6 +420,7 @@ export class MEGSActorSheet extends ActorSheet {
         const drawbacks = [];
         const subskills = [];
         const gadgets = [];
+        const subGadgets = [];
 
         // TODO delete this by 1.0
         context.items = context.items.filter(
@@ -457,7 +458,14 @@ export class MEGSActorSheet extends ActorSheet {
                 i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
                 i.rollable = i.rollOptions.length > 0;
                 i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
+                i.subGadgets = [];
                 gadgets.push(i);
+            } else if (i.type === MEGS.itemTypes.gadget && i.system.parent) {
+                i.ownerId = this.object._id;
+                i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
+                i.rollable = i.rollOptions.length > 0;
+                i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
+                subGadgets.push(i);
             }
         });
 
@@ -490,7 +498,7 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         // sort alphabetically
-        const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
+        const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets];
         arrays.forEach((element) => {
             element.sort(function (a, b) {
                 const textA = a.name.toUpperCase();
@@ -503,6 +511,13 @@ export class MEGSActorSheet extends ActorSheet {
             const result = skills.find(({ _id }) => _id === element.system.parent);
             if (result) {
                 result.subskills.push(element);
+            }
+        });
+
+        subGadgets.forEach((element) => {
+            const result = gadgets.find(({ _id }) => _id === element.system.parent);
+            if (result) {
+                result.subGadgets.push(element);
             }
         });
 

@@ -798,9 +798,9 @@ export class MEGSItem extends Item {
                         if (cost > 0) cost = -cost;
                         drawbacksCost += cost;
                     } else if (item.type === MEGS.itemTypes.gadget) {
-                        item.prepareData();
-                        subGadgetsCost += item.system.totalCost || 0;
-                        subGadgetEntries.push({ name: item.name, cost: item.system.totalCost || 0 });
+                        const cost = item.system.totalCost || 0;
+                        subGadgetsCost += cost;
+                        subGadgetEntries.push({ name: item.name, cost: cost });
                     }
                 }
             });
@@ -1099,7 +1099,6 @@ export class MEGSItem extends Item {
                             item.type === MEGS.itemTypes.drawback) {
                             totalCost += itemCost;
                         } else if (item.type === MEGS.itemTypes.gadget) {
-                            item.prepareData();
                             totalCost += item.system.totalCost || 0;
                         }
                     }

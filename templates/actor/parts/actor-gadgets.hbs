@@ -100,6 +100,51 @@
                     {{/if}}
                 </div>
             </li>
+            {{#each subGadget.subGadgets as |nestedGadget|}}
+                <li class='item flexrow item-row sub-gadget-row' data-item-id='{{nestedGadget._id}}' data-parent-id='{{subGadget._id}}' style='padding-left: 48px;'>
+
+                    <div class='item-name'>
+                        <div class='item-image'>
+                            <a class="item-control item-edit">
+                                <img src='{{nestedGadget.img}}' title='{{nestedGadget.name}}' width='24' height='24' />
+                            </a>
+                        </div>
+                        <a class='item-control item-edit
+                    {{#if (compare nestedGadget.system.canBeTakenAway "===" "false")}}
+                    capitalize
+                    {{/if}}
+                  ' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            {{nestedGadget.name}}
+                        </a>
+                        {{#if (compare nestedGadget.system.quantity ">" 1)}}
+                            <span style="font-weight: normal">&nbsp;x{{nestedGadget.system.quantity}}</span>
+                        {{/if}}
+                    </div>
+
+                    <div class="item-description">
+                        {{getGadgetDescription nestedGadget}}
+                    </div>
+
+                    <div class='item-controls'>
+
+                        {{#if nestedGadget.rollable}}
+                            <a class="item-control d10 rollable" title="Roll {{nestedGadget.name}}{{#if nestedGadget.rollTooltip}} — {{nestedGadget.rollTooltip}}{{/if}}" data-label="{{nestedGadget.name}}" data-roll="1d10 + 1d10" data-gadgetid="{{nestedGadget._id}}" data-type="gadget">
+                                <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="Roll {{nestedGadget.name}}">
+                            </a>
+                        {{/if}}
+
+                        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=' Item'}}'>
+                            <i class='fas fa-edit'></i>
+                        </a>
+
+                        {{#if ../../../../flags.megs.edit-mode}}
+                            <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=' Item'}}'>
+                                <i class='fas fa-trash'></i>
+                            </a>
+                        {{/if}}
+                    </div>
+                </li>
+            {{/each}}
         {{/each}}
     {{/each}}
     <!-- TODO add omni-gadget row after, one for each type (A, AB, ABC, ABCD, B, C, etc.) with increment/decrement -->

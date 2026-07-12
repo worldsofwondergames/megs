@@ -47,6 +47,8 @@
 - Removed E2E workarounds that constructed a sheet before setting the edit-mode flag, and awaited `setFlag` calls that were previously fire-and-forget (issue #243)
 - Added unit tests for `MEGS.getAPCost` edge inputs: empty string, numeric string, NaN, null, undefined, negative, and boundary values (issue #244)
 - Removed `test.fail()` markers from accordion E2E tests now that #242 is fixed (issue #242)
+- Added unit tests for sub-gadget collection and nesting in `_prepareItems` (issue #78)
+- Added Playwright E2E tests for sub-gadget display, edit, delete, roll, parenting, and detaching (issue #78)
 
 ### Code Quality
 

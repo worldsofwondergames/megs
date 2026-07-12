@@ -208,6 +208,10 @@ class ActorSheet {
     constructor(data, options) {
         if (data) {
             Object.assign(this, data);
+            // Foundry's DocumentSheet exposes the document as `object`, with
+            // `actor` as an alias. Sheet code relies on both.
+            this.object = data;
+            this.actor = data;
         } else {
             this._id = 1;
             this.name = 'Anonymous Hero';
@@ -229,6 +233,10 @@ class ItemSheet {
     constructor(data, options) {
         if (data) {
             Object.assign(this, data);
+            // Foundry's DocumentSheet exposes the document as `object`, with
+            // `item` as an alias. Sheet code relies on both.
+            this.object = data;
+            this.item = data;
         } else {
             this._id = 1;
         }

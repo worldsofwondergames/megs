@@ -72,10 +72,10 @@ test.describe('Gadget Reliability Number (#8)', () => {
             });
 
             // Set gadget item to edit mode so the dropdown renders
-            await page.evaluate(({ actorId, gadgetId }) => {
+            await page.evaluate(async ({ actorId, gadgetId }) => {
                 const actor = game.actors.get(actorId);
                 const gadget = actor.items.get(gadgetId);
-                gadget.setFlag('megs', 'edit-mode', true);
+                await gadget.setFlag('megs', 'edit-mode', true);
             }, { actorId, gadgetId });
 
             await openItemSheet(page, actorId, gadgetId);

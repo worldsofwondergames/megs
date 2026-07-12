@@ -136,10 +136,10 @@ test.describe('Trait Drop Blocking (#178 + #3)', () => {
             });
 
             // Ensure edit mode is on for the item
-            await page.evaluate(({ actorId, itemId }) => {
+            await page.evaluate(async ({ actorId, itemId }) => {
                 const actor = game.actors.get(actorId);
                 const item = actor.items.get(itemId);
-                item.setFlag('megs', 'edit-mode', true);
+                await item.setFlag('megs', 'edit-mode', true);
             }, { actorId, itemId });
 
             await openItemSheet(page, actorId, itemId);

@@ -9,14 +9,31 @@ import { Utils } from '../utils.js';
  * @extends {ItemSheet}
  */
 export class MEGSItemSheet extends ItemSheet {
-    /** @override */
-    constructor(object, options) {
-        super(object, options);
-        // default to uneditable if user is not owner or from a compendium
-        if (this.object) {
-            const isUnlocked = this.object.isOwner && !this.object._stats.compendiumSource;
-            this.object.setFlag('megs', 'edit-mode', isUnlocked);
+    /**
+     * Lock state for an item that has no stored edit-mode flag: unlocked for an
+     * owner, locked for a non-owner or a compendium item.
+     * @returns {boolean}
+     */
+    get defaultEditMode() {
+        if (!this.object) {
+            return false;
         }
+        return Boolean(this.object.isOwner) && !this.object._stats?.compendiumSource;
+    }
+
+    /**
+     * The effective edit-mode state: the stored flag when the user has set one,
+     * otherwise the ownership-derived default. Derived on read rather than
+     * written on construction, because writing the flag races the render that
+     * reads it (issue #243).
+     * @returns {boolean}
+     */
+    get isEditMode() {
+        const storedFlag = this.object?.getFlag('megs', 'edit-mode');
+        if (storedFlag === undefined || storedFlag === null) {
+            return this.defaultEditMode;
+        }
+        return storedFlag === true;
     }
 
     /** @override */
@@ -59,7 +76,11 @@ export class MEGSItemSheet extends ItemSheet {
 
         // Add the item's data to context.data for easier access, as well as flags.
         context.system = itemData.system;
-        context.flags = itemData.flags;
+        context.flags = itemData.flags ?? {};
+
+        // Templates read flags.megs.edit-mode directly. itemData is a clone, so
+        // surface the effective state here without writing it to the document.
+        context.flags.megs = { ...context.flags.megs, 'edit-mode': this.isEditMode };
 
         if (itemData.type === MEGS.itemTypes.power) {
             this._prepareModifiers(context);
@@ -246,8 +267,8 @@ export class MEGSItemSheet extends ItemSheet {
         // Initialize subskill checkbox states based on skill APs
         if (this.object.type === 'skill') {
             const skillAps = this.object.system.aps || 0;
-            // Check the custom edit-mode flag (not Foundry's isEditable)
-            const isEditMode = this.object.getFlag('megs', 'edit-mode') === true;
+            // Check the custom edit-mode state (not Foundry's isEditable)
+            const isEditMode = this.isEditMode;
             const checkboxes = html.find('.subskills input[type="checkbox"][name^="items."]');
 
             checkboxes.each(function () {
@@ -1499,9 +1520,10 @@ export class MEGSItemSheet extends ItemSheet {
         }
     }
 
-    _toggleEditMode(_e) {
-        const currentValue = this.object.getFlag('megs', 'edit-mode');
-        this.object.setFlag('megs', 'edit-mode', !currentValue);
+    async _toggleEditMode(_e) {
+        // Negate the effective state, not the stored flag: an unset flag would
+        // give !undefined === true and leave an unlocked sheet unlocked.
+        await this.object.setFlag('megs', 'edit-mode', !this.isEditMode);
         this.render(false);
     }
 }

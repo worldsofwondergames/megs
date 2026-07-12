@@ -483,7 +483,8 @@ export class MEGSActorSheet extends ActorSheet {
         });
 
         subGadgets.forEach((element) => {
-            const result = gadgets.find(({ _id }) => _id === element.system.parent);
+            const result = gadgets.find(({ _id }) => _id === element.system.parent) ||
+                subGadgets.find(({ _id }) => _id === element.system.parent);
             if (result) {
                 result.subGadgets.push(element);
             }
@@ -518,6 +519,7 @@ export class MEGSActorSheet extends ActorSheet {
 
         if (isChild && i.type === MEGS.itemTypes.gadget) {
             this._prepareGadgetItem(i);
+            i.subGadgets = [];
             subGadgets.push(i);
             return;
         }

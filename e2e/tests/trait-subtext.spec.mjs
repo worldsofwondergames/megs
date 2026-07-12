@@ -116,12 +116,9 @@ test.describe('Trait Subtext Display (#209)', () => {
             });
 
             // Ensure the item sheet opens in view mode (edit-mode off).
-            // Touch item.sheet first: the MEGSItemSheet constructor resets
-            // the edit-mode flag, so the flag must be set after construction.
             await page.evaluate(async ({ actorId, itemId }) => {
                 const actor = game.actors.get(actorId);
                 const item = actor.items.get(itemId);
-                item.sheet; // eslint-disable-line no-unused-expressions
                 await item.setFlag('megs', 'edit-mode', false);
             }, { actorId, itemId });
 
@@ -153,10 +150,10 @@ test.describe('Trait Subtext Display (#209)', () => {
             });
 
             // Set edit mode on the item
-            await page.evaluate(({ actorId, itemId }) => {
+            await page.evaluate(async ({ actorId, itemId }) => {
                 const actor = game.actors.get(actorId);
                 const item = actor.items.get(itemId);
-                item.setFlag('megs', 'edit-mode', true);
+                await item.setFlag('megs', 'edit-mode', true);
             }, { actorId, itemId });
 
             await openItemSheet(page, actorId, itemId);

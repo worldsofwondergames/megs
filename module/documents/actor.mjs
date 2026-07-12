@@ -264,9 +264,7 @@ export class MEGSActor extends Actor {
                 const budget = parent.system.gadgetPointBudget;
                 budget.subGadgetsCost = subGadgetsCost;
                 budget.subGadgetEntries = subGadgetEntries;
-                budget.totalBeforeBonus = (budget.totalBeforeBonus || 0) + subGadgetsCost;
-                const gadgetBonus = parent.system.canBeTakenAway ? 4 : 2;
-                budget.totalSpent = Math.ceil(budget.totalBeforeBonus / gadgetBonus);
+                budget.totalSpent = (budget.totalSpent || 0) + subGadgetsCost;
                 budget.remaining = (budget.base || 0) - budget.totalSpent;
             }
         }

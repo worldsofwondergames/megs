@@ -236,3 +236,55 @@ describe('Character Budget Calculations', () => {
         expect(actor.system.heroPointBudget.remaining).toBe(372);
     });
 });
+
+// --- motivations (issue #243) -------------------------------------------------
+// An undefined motivation list makes the sheet's {{selectOptions}} throw
+// "Cannot convert undefined or null to object", which takes down the entire
+// sheet render. Every type whose sheet shows the motivation select needs one.
+describe('motivations', () => {
+    const buildActor = (type) => {
+        const actor = new MEGSActor({ system: { attributes: {} } });
+        actor.type = type;
+        actor.items = [];
+        return actor;
+    };
+
+    beforeEach(() => {
+        CONFIG.motivations = {
+            hero: ['Upholding the Good', 'Seeking Justice'],
+            villain: ['Power Lust', 'Mercenary'],
+            antihero: ['Unwanted Power', 'Thrill of Adventure'],
+        };
+    });
+
+    test('hero gets its own motivations plus antihero', () => {
+        const actor = buildActor(MEGS.characterTypes.hero);
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        expect(actor.system.motivations).toContain('Upholding the Good');
+        expect(actor.system.motivations).toContain('Unwanted Power');
+        expect(actor.system.motivations).not.toContain('Power Lust');
+    });
+
+    test('villain gets its own motivations plus antihero', () => {
+        const actor = buildActor(MEGS.characterTypes.villain);
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        expect(actor.system.motivations).toContain('Power Lust');
+        expect(actor.system.motivations).toContain('Thrill of Adventure');
+        expect(actor.system.motivations).not.toContain('Upholding the Good');
+    });
+
+    test('npc gets the full motivation list and is never undefined', () => {
+        const actor = buildActor(MEGS.characterTypes.npc);
+        actor.prepareBaseData();
+        actor.prepareDerivedData();
+
+        expect(actor.system.motivations).toBeDefined();
+        expect(actor.system.motivations).toContain('Upholding the Good');
+        expect(actor.system.motivations).toContain('Power Lust');
+        expect(actor.system.motivations).toContain('Unwanted Power');
+    });
+});

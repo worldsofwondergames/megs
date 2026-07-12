@@ -152,7 +152,11 @@ export class MEGSActor extends Actor {
         // Calculate Hero Point budget and spending
         this._calculateHeroPointBudget();
 
-        if (this.type === MEGS.characterTypes.hero || this.type === MEGS.characterTypes.villain) {
+        if (
+            this.type === MEGS.characterTypes.hero ||
+            this.type === MEGS.characterTypes.villain ||
+            this.type === MEGS.characterTypes.npc
+        ) {
             const merge = (a, b, predicate = (a, b) => a === b) => {
                 const c = [...a]; // copy to avoid side effects
                 // add all items from B to copy C if they're not already present
@@ -161,10 +165,16 @@ export class MEGSActor extends Actor {
                 );
                 return c;
             };
-            this.system.motivations = merge(
-                CONFIG.motivations[this.type],
-                CONFIG.motivations.antihero
-            );
+            // NPCs may be aligned either way, so they get every motivation; heroes
+            // and villains get their own list plus the antihero motivations. This
+            // must be defined for every type whose sheet renders the motivation
+            // select -- selectOptions throws on an undefined choice list, which
+            // takes down the whole sheet render.
+            const base =
+                this.type === MEGS.characterTypes.npc
+                    ? merge(CONFIG.motivations.hero, CONFIG.motivations.villain)
+                    : CONFIG.motivations[this.type];
+            this.system.motivations = merge(base, CONFIG.motivations.antihero);
         }
     }
 

@@ -190,6 +190,24 @@ describe('_prepareItems sub-gadget nesting', () => {
         expect(topLevelNames).not.toContain('Grapple Gun');
     });
 
+    test('nested sub-gadgets appear under their parent sub-gadget', () => {
+        const sheet = buildSheet();
+        const context = {
+            items: [
+                makeItem({ _id: 'g1', name: 'Batsuit', type: 'gadget' }),
+                makeItem({ _id: 'g2', name: 'Grapple Gun', type: 'gadget', system: { parent: 'g1' } }),
+                makeItem({ _id: 'g3', name: 'Grapple Hook', type: 'gadget', system: { parent: 'g2' } }),
+            ],
+            system: {},
+        };
+        sheet._prepareItems(context);
+        expect(context.gadgets).toHaveLength(1);
+        expect(context.gadgets[0].subGadgets).toHaveLength(1);
+        expect(context.gadgets[0].subGadgets[0].name).toBe('Grapple Gun');
+        expect(context.gadgets[0].subGadgets[0].subGadgets).toHaveLength(1);
+        expect(context.gadgets[0].subGadgets[0].subGadgets[0].name).toBe('Grapple Hook');
+    });
+
     test('orphaned sub-gadgets (parent not found) are not shown', () => {
         const sheet = buildSheet();
         const context = {

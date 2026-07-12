@@ -434,39 +434,7 @@ export class MEGSActorSheet extends ActorSheet {
         // Iterate through items, allocating to containers
         context.items.forEach((i) => {
             i.img = i.img || Item.DEFAULT_ICON;
-
-            if (i.type === MEGS.itemTypes.power && !i.system.parent) {
-                powers.push(i);
-            } else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
-                i.subskills = [];
-                if (i.system.aps === 0) {
-                    i.unskilled = true;
-                    i.linkedAPs = this.object.system.attributes[i.system.link].value;
-                } else {
-                    i.unskilled = false;
-                }
-                i.subskills = [];
-                skills.push(i);
-            } else if (i.type === MEGS.itemTypes.advantage && !i.system.parent) {
-                advantages.push(i);
-            } else if (i.type === MEGS.itemTypes.drawback && !i.system.parent) {
-                drawbacks.push(i);
-            } else if (i.type === MEGS.itemTypes.subskill) {
-                subskills.push(i);
-            } else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
-                i.ownerId = this.object._id;
-                i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
-                i.rollable = i.rollOptions.length > 0;
-                i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
-                i.subGadgets = [];
-                gadgets.push(i);
-            } else if (i.type === MEGS.itemTypes.gadget && i.system.parent) {
-                i.ownerId = this.object._id;
-                i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
-                i.rollable = i.rollOptions.length > 0;
-                i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
-                subGadgets.push(i);
-            }
+            this._categorizeItem(i, powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets);
         });
 
         // Add skills from linked gadget (for vehicles/locations)
@@ -538,6 +506,53 @@ export class MEGSActorSheet extends ActorSheet {
             this._saveAccordionState(this.element);
         }
         await super._render(force, options);
+    }
+
+    _categorizeItem(i, powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets) {
+        const isChild = !!i.system.parent;
+
+        if (i.type === MEGS.itemTypes.subskill) {
+            subskills.push(i);
+            return;
+        }
+
+        if (isChild && i.type === MEGS.itemTypes.gadget) {
+            this._prepareGadgetItem(i);
+            subGadgets.push(i);
+            return;
+        }
+
+        if (isChild) return;
+
+        switch (i.type) {
+        case MEGS.itemTypes.power:
+            powers.push(i);
+            break;
+        case MEGS.itemTypes.skill:
+            i.subskills = [];
+            i.unskilled = i.system.aps === 0;
+            i.linkedAPs = i.unskilled ? this.object.system.attributes[i.system.link].value : 0;
+            skills.push(i);
+            break;
+        case MEGS.itemTypes.advantage:
+            advantages.push(i);
+            break;
+        case MEGS.itemTypes.drawback:
+            drawbacks.push(i);
+            break;
+        case MEGS.itemTypes.gadget:
+            this._prepareGadgetItem(i);
+            i.subGadgets = [];
+            gadgets.push(i);
+            break;
+        }
+    }
+
+    _prepareGadgetItem(i) {
+        i.ownerId = this.object._id;
+        i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
+        i.rollable = i.rollOptions.length > 0;
+        i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
     }
 
     /** @override */

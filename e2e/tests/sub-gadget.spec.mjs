@@ -363,4 +363,131 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             if (actorId) await deleteActor(page, actorId);
         }
     });
+
+    test('Actor HP budget includes sub-gadget cost through parent gadget', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('SubGadget_ActorHP'));
+
+            const result = await page.evaluate(async (actorId) => {
+                const actor = game.actors.get(actorId);
+
+                // Create parent gadget only, record HP spent
+                const [parentGadget] = await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Power Armor',
+                    type: 'gadget',
+                    img: 'icons/svg/shield.svg',
+                }]);
+                const hpSpentBefore = actor.system.heroPointBudget.totalSpent;
+
+                // Add a sub-gadget with AV/EV cost
+                await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Laser Cannon',
+                    type: 'gadget',
+                    img: 'icons/svg/target.svg',
+                    system: {
+                        parent: parentGadget.id,
+                        settings: { hasAVAndEV: 'true' },
+                        actionValue: 4,
+                        effectValue: 4,
+                    }
+                }]);
+                const hpSpentAfter = actor.system.heroPointBudget.totalSpent;
+
+                return { hpSpentBefore, hpSpentAfter };
+            }, actorId);
+
+            expect(result.hpSpentAfter).toBeGreaterThan(result.hpSpentBefore);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Gadget attribute costs persist after rename', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('SubGadget_Rename'));
+
+            const result = await page.evaluate(async (actorId) => {
+                const actor = game.actors.get(actorId);
+
+                const [gadget] = await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Test Gadget',
+                    type: 'gadget',
+                    img: 'icons/svg/shield.svg',
+                    system: {
+                        attributes: {
+                            body: { value: 3, factorCost: 6 }
+                        }
+                    }
+                }]);
+
+                const costBefore = actor.items.get(gadget.id).system.totalCost;
+
+                await actor.items.get(gadget.id).update({ name: 'Renamed Gadget' });
+
+                const costAfter = actor.items.get(gadget.id).system.totalCost;
+
+                return { costBefore, costAfter };
+            }, actorId);
+
+            expect(result.costBefore).toBeGreaterThan(0);
+            expect(result.costAfter).toBe(result.costBefore);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Gadget budget includes sub-gadget cost in totalBeforeBonus', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('SubGadget_BudgetMatch'));
+
+            const result = await page.evaluate(async (actorId) => {
+                const actor = game.actors.get(actorId);
+
+                const [parentGadget] = await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Batsuit',
+                    type: 'gadget',
+                    img: 'icons/svg/shield.svg',
+                    system: {
+                        settings: { hasAVAndEV: 'true' },
+                        actionValue: 3,
+                        effectValue: 3,
+                    }
+                }]);
+
+                const budgetWithoutChild = { ...actor.items.get(parentGadget.id).system.gadgetPointBudget };
+
+                await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Grapple Gun',
+                    type: 'gadget',
+                    img: 'icons/svg/target.svg',
+                    system: {
+                        parent: parentGadget.id,
+                        settings: { hasAVAndEV: 'true' },
+                        actionValue: 2,
+                        effectValue: 2,
+                    }
+                }]);
+
+                const budgetWithChild = actor.items.get(parentGadget.id).system.gadgetPointBudget;
+                return {
+                    totalBeforeBefore: budgetWithoutChild.totalBeforeBonus,
+                    totalBeforeAfter: budgetWithChild.totalBeforeBonus,
+                    subGadgetsCost: budgetWithChild.subGadgetsCost,
+                    totalSpent: budgetWithChild.totalSpent,
+                };
+            }, actorId);
+
+            expect(result.subGadgetsCost).toBeGreaterThan(0);
+            expect(result.totalBeforeAfter).toBeGreaterThan(result.totalBeforeBefore);
+            expect(result.totalSpent).toBeGreaterThan(0);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
 });

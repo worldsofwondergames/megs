@@ -201,29 +201,17 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 });
 
 Handlebars.registerHelper('getAttributeCost', function (aps, factorCost) {
-    // Validate inputs before calling getAPCost
     if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
         return 0;
     }
-
-    // Ensure aps and factorCost are valid numbers (not undefined/null)
-    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
-    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
-
-    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+    return CONFIG.MEGS.getAPCost(Number(aps) || 0, Number(factorCost) || 0) || 0;
 });
 
 Handlebars.registerHelper('getAPCost', function (aps, factorCost) {
-    // Validate inputs before calling getAPCost
     if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
         return 0;
     }
-
-    // Ensure aps and factorCost are valid numbers (not undefined/null)
-    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
-    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
-
-    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+    return CONFIG.MEGS.getAPCost(Number(aps) || 0, Number(factorCost) || 0) || 0;
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
@@ -1083,6 +1071,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
 });
 
 Handlebars.registerHelper('getGadgetAttributeCost', function (aps, baseFc, reliabilityIndex, hasHardenedDefenses, attrKey) {
+    aps = Number(aps) || 0;
     if (aps === 0) return 0;
 
     const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };

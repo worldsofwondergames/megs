@@ -440,7 +440,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
         }
     });
 
-    test('Gadget budget includes sub-gadget cost in totalBeforeBonus', async ({ page }) => {
+    test('Gadget budget totalSpent includes sub-gadget cost added 1:1', async ({ page }) => {
         let actorId;
         try {
             actorId = await createHeroActor(page, prefixName('SubGadget_BudgetMatch'));
@@ -475,16 +475,16 @@ test.describe('Sub-gadget display and controls (#78)', () => {
 
                 const budgetWithChild = actor.items.get(parentGadget.id).system.gadgetPointBudget;
                 return {
-                    totalBeforeBefore: budgetWithoutChild.totalBeforeBonus,
-                    totalBeforeAfter: budgetWithChild.totalBeforeBonus,
+                    totalSpentBefore: budgetWithoutChild.totalSpent,
+                    totalSpentAfter: budgetWithChild.totalSpent,
                     subGadgetsCost: budgetWithChild.subGadgetsCost,
-                    totalSpent: budgetWithChild.totalSpent,
+                    totalBeforeBonusUnchanged: budgetWithoutChild.totalBeforeBonus === budgetWithChild.totalBeforeBonus,
                 };
             }, actorId);
 
             expect(result.subGadgetsCost).toBeGreaterThan(0);
-            expect(result.totalBeforeAfter).toBeGreaterThan(result.totalBeforeBefore);
-            expect(result.totalSpent).toBeGreaterThan(0);
+            expect(result.totalSpentAfter).toBe(result.totalSpentBefore + result.subGadgetsCost);
+            expect(result.totalBeforeBonusUnchanged).toBe(true);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

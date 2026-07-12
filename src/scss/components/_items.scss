@@ -265,6 +265,19 @@ li.directory-item img[src*='assets/images/icons'] {
 }
 
 /*------------------------------------------------------------------------*/
+/* Actor Sheet Gadgets Tab Drop Target
+/*------------------------------------------------------------------------*/
+
+&.sheet .tab.gadgets .items-list {
+    .item-row.drop-target,
+    .sub-gadget-row.drop-target {
+        background-color: #d4edff;
+        border: 2px dashed #06c;
+        box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
+    }
+}
+
+/*------------------------------------------------------------------------*/
 /* Item Sheet Subskills Tab
 /*------------------------------------------------------------------------*/
 

@@ -121,40 +121,43 @@
 
             </section>
 
-            <section class="attributes grid grid-3col" style="margin-top: 8px;">
-                <div class="attribute flex-group-center">
-                    <label for="system.defaultOV" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultOV'}}</label>
-                    <div>
-                        {{#if flags.megs.edit-mode}}
-                            <input name="system.defaultOV" type="number" value="{{system.defaultOV}}" min="0" data-dtype="Number" />
-                        {{else}}
-                            {{system.defaultOV}}
-                        {{/if}}
+            <details>
+                <summary class="item-summary">{{localize 'MEGS.DefaultOVRV'}}</summary>
+                <section class="attributes grid grid-3col">
+                    <div class="attribute flex-group-center">
+                        <label for="system.defaultOV" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultOV'}}</label>
+                        <div>
+                            {{#if flags.megs.edit-mode}}
+                                <input name="system.defaultOV" type="number" value="{{system.defaultOV}}" min="0" data-dtype="Number" />
+                            {{else}}
+                                {{system.defaultOV}}
+                            {{/if}}
+                        </div>
                     </div>
-                </div>
 
-                <div class="attribute flex-group-center">
-                    <label for="system.defaultRV" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultRV'}}</label>
-                    <div>
-                        {{#if flags.megs.edit-mode}}
-                            <input name="system.defaultRV" type="number" value="{{system.defaultRV}}" min="0" data-dtype="Number" />
-                        {{else}}
-                            {{system.defaultRV}}
-                        {{/if}}
+                    <div class="attribute flex-group-center">
+                        <label for="system.defaultRV" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultRV'}}</label>
+                        <div>
+                            {{#if flags.megs.edit-mode}}
+                                <input name="system.defaultRV" type="number" value="{{system.defaultRV}}" min="0" data-dtype="Number" />
+                            {{else}}
+                                {{system.defaultRV}}
+                            {{/if}}
+                        </div>
                     </div>
-                </div>
 
-                <div class="attribute flex-group-center grid-span-3">
-                    <label for="system.defaultOVRVNote" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultOVRVNote'}}</label>
-                    <div style="flex: 2;">
-                        {{#if flags.megs.edit-mode}}
-                            <input name="system.defaultOVRVNote" type="text" value="{{system.defaultOVRVNote}}" />
-                        {{else}}
-                            {{system.defaultOVRVNote}}
-                        {{/if}}
+                    <div class="attribute flex-group-center grid-span-3">
+                        <label for="system.defaultOVRVNote" class="resource-label flexlarge align-left">{{localize 'MEGS.DefaultOVRVNote'}}</label>
+                        <div>
+                            {{#if flags.megs.edit-mode}}
+                                <input name="system.defaultOVRVNote" type="text" value="{{system.defaultOVRVNote}}" />
+                            {{else}}
+                                {{system.defaultOVRVNote}}
+                            {{/if}}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </details>
 
         </div>
 

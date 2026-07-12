@@ -29,6 +29,9 @@
 - Fixed `ReferenceError` in `compare` Handlebars helper — added missing `options` parameter (issue #215)
 - Fixed trailing slash in system.json download URL that prevented Foundry from resolving the package
 - Fixed empty gadget cost tooltip on the character creator sheet — a duplicate `getGadgetCostTooltip` Handlebars registration clobbered the cost-breakdown helper; the raw/adjusted cost helper is now registered as `getGadgetAdjustedCostTooltip` (issue #245)
+- Fixed item and actor sheets overwriting the edit-mode flag on every open — the sheet constructors wrote the flag with an un-awaited `setFlag` that raced the first render; the lock state is now derived at render time, so edit/view mode persists per document and no longer flips back to edit mode when a sheet is reopened (issue #243)
+- Fixed the edit-mode toggle negating the stored flag rather than the effective state, and no longer writing the flag for non-owners or compendium documents (issue #243)
+- Fixed the NPC sheet failing to render in edit mode — NPCs had no `system.motivations`, so the motivation `selectOptions` threw `Cannot convert undefined or null to object` and took down the entire sheet render; NPCs now receive the full motivation list (hero, villain, and antihero). This was masked by the edit-mode flag race, which left the first render in view mode (issue #243)
 
 ### Testing
 
@@ -36,6 +39,8 @@
 - Configured Playwright with global setup for Foundry login, shared fixtures, and serial execution
 - Converted 3 existing ad-hoc E2E tests to Playwright: gadget rolling (#17), gadget sheet rolling (#13), power roll sources (#56)
 - Added new E2E tests for: trait subtext (#209), trait drop blocking (#178, #3), chat message formatting (#93), accordion state persistence (#67), reliability number (#8)
+- Fixed the `ItemSheet`/`ActorSheet` Jest mocks not setting `this.object`, which left the sheet constructors' flag-writing branch as dead code in every unit test and hid issue #243; added unit coverage for edit-mode derivation and toggling (issue #243)
+- Removed E2E workarounds that constructed a sheet before setting the edit-mode flag, and awaited `setFlag` calls that were previously fire-and-forget (issue #243)
 
 ### Code Quality
 

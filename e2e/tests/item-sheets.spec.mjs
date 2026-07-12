@@ -32,7 +32,6 @@ test.describe('Item Sheets (#226 cat 4)', () => {
     async function setViewMode(page, actorId, itemId) {
         await page.evaluate(async ({ actorId, itemId }) => {
             const item = game.actors.get(actorId).items.get(itemId);
-            item.sheet; // eslint-disable-line no-unused-expressions -- construct first; constructor resets the flag
             await item.setFlag('megs', 'edit-mode', false);
         }, { actorId, itemId });
     }
@@ -226,6 +225,41 @@ test.describe('Item Sheets (#226 cat 4)', () => {
                     { timeout: 5000 }
                 );
             }
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Edit-mode flag set before the sheet is opened survives construction (#243)', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('ItemSheet_EditModeFlag'));
+            const itemId = await addTraitToActor(page, actorId, {
+                name: 'Connections',
+                type: 'advantage',
+                baseCost: 5,
+            });
+
+            // Lock the item without ever constructing its sheet. The sheet used to
+            // overwrite this flag from its constructor, forcing edit mode back on.
+            await page.evaluate(async ({ actorId, itemId }) => {
+                const item = game.actors.get(actorId).items.get(itemId);
+                await item.setFlag('megs', 'edit-mode', false);
+            }, { actorId, itemId });
+
+            await openItemSheet(page, actorId, itemId);
+
+            const storedFlag = await page.evaluate(({ actorId, itemId }) => {
+                return game.actors.get(actorId).items.get(itemId).getFlag('megs', 'edit-mode');
+            }, { actorId, itemId });
+            expect(storedFlag).toBe(false);
+
+            // View mode renders the locked header rather than an editable name input.
+            const isLocked = await page.evaluate(
+                () => !!document.querySelector('.sheet.item h1.charname.isLocked')
+            );
+            expect(isLocked).toBe(true);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

@@ -1091,8 +1091,8 @@ export class MEGSItem extends Item {
                             item.type === MEGS.itemTypes.drawback) {
                             totalCost += itemCost;
                         } else if (item.type === MEGS.itemTypes.gadget) {
-                            const subGadgetCost = item.system.totalCost || 0;
-                            totalCost += subGadgetCost;
+                            item.prepareData();
+                            totalCost += item.system.totalCost || 0;
                         }
                     }
                 });

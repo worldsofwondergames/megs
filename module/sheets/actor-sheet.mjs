@@ -590,6 +590,9 @@ export class MEGSActorSheet extends ActorSheet {
         // Enable power row drop zones for bonuses/limitations
         this._enablePowerRowDropZones(html);
 
+        // Enable gadget row drop zones for re-parenting
+        this._enableGadgetDropZones(html);
+
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
             const itemId = $(ev.currentTarget).data('itemId');
@@ -926,6 +929,82 @@ export class MEGSActorSheet extends ActorSheet {
             await this.actor.createEmbeddedDocuments('Item', [itemData]);
             ui.notifications.info(`${droppedItem.name} added to power.`);
         }
+    }
+
+    _enableGadgetDropZones(html) {
+        const gadgetRows = html.find('.tab.gadgets .item-row');
+        gadgetRows.each((i, row) => {
+            row.addEventListener('dragover', this._onGadgetDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnGadget.bind(this));
+        });
+
+        const gadgetTab = html.find('.tab.gadgets .items-list')[0];
+        if (gadgetTab) {
+            gadgetTab.addEventListener('dragover', (ev) => {
+                ev.preventDefault();
+            });
+            gadgetTab.addEventListener('drop', this._onDropOnGadgetTab.bind(this));
+        }
+    }
+
+    _onGadgetDragOver(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.classList.add('drop-target');
+    }
+
+    async _onDropOnGadget(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.classList.remove('drop-target');
+
+        const targetGadgetId = event.currentTarget.dataset.itemId;
+        if (!targetGadgetId) return;
+
+        const data = TextEditor.getDragEventData(event);
+        if (data.type !== 'Item') return;
+
+        const droppedItem = await Item.implementation.fromDropData(data);
+        if (!droppedItem || droppedItem.type !== MEGS.itemTypes.gadget) return;
+
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+        if (!isOnActor) return;
+
+        if (droppedItem.id === targetGadgetId) return;
+        if (droppedItem.system.parent === targetGadgetId) return;
+
+        const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
+
+        const childGadgets = this.actor.items.filter(
+            i => i.type === MEGS.itemTypes.gadget && i.system.parent === droppedItem.id
+        );
+        for (const child of childGadgets) {
+            updates.push({ _id: child.id, 'system.parent': droppedItem.id });
+        }
+
+        await this.actor.updateEmbeddedDocuments('Item', updates);
+        this.render(false);
+    }
+
+    async _onDropOnGadgetTab(event) {
+        event.preventDefault();
+
+        if (event.target.closest('.item-row')) return;
+
+        const data = TextEditor.getDragEventData(event);
+        if (data.type !== 'Item') return;
+
+        const droppedItem = await Item.implementation.fromDropData(data);
+        if (!droppedItem || droppedItem.type !== MEGS.itemTypes.gadget) return;
+
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+        if (!isOnActor) return;
+
+        if (!droppedItem.system.parent) return;
+
+        await droppedItem.update({ 'system.parent': '' });
+        this.render(false);
     }
 
     /**

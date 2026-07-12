@@ -1046,6 +1046,11 @@ export class MEGSItemSheet extends ItemSheet {
                 } else if (i.type === MEGS.itemTypes.drawback) {
                     drawbacks.push(i);
                 } else if (i.type === MEGS.itemTypes.gadget) {
+                    i.ownerId = context.document.parent?._id;
+                    i.rollOptions = Utils.getGadgetRollOptions(i, context.document.parent);
+                    i.rollable = i.rollOptions?.length > 0;
+                    i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
+                    i.subGadgets = [];
                     gadgets.push(i);
                 }
             }

@@ -242,6 +242,32 @@ export class MEGSActor extends Actor {
                 systemData.totalCost = systemData.baseCost + apCost;
             }
         });
+
+        // Aggregate sub-gadget costs into parent gadgets (bottom-up).
+        // All items have their individual totalCost computed by now.
+        const gadgets = this.items.filter(i => i.type === MEGS.itemTypes.gadget);
+        for (const parent of gadgets) {
+            const children = gadgets.filter(g => g.system.parent === parent._id);
+            if (children.length === 0) continue;
+
+            let subGadgetsCost = 0;
+            const subGadgetEntries = [];
+            for (const child of children) {
+                const cost = child.system.totalCost || 0;
+                subGadgetsCost += cost;
+                subGadgetEntries.push({ name: child.name, cost });
+            }
+
+            parent.system.totalCost = (parent.system.totalCost || 0) + subGadgetsCost;
+
+            if (parent.system.gadgetPointBudget) {
+                const budget = parent.system.gadgetPointBudget;
+                budget.subGadgetsCost = subGadgetsCost;
+                budget.subGadgetEntries = subGadgetEntries;
+                budget.totalSpent = (budget.totalSpent || 0) + subGadgetsCost;
+                budget.remaining = (budget.base || 0) - budget.totalSpent;
+            }
+        }
     }
 
     /**

@@ -11,9 +11,6 @@ import {
 
 test.describe('Accordion State Persistence (#67)', () => {
     test('Expanded skill row stays expanded after re-render', async ({ page }) => {
-        // KNOWN BUG #242: accordion state is lost on re-renders that don't go
-        // through the instrumented handlers. Remove this once #242 is fixed.
-        test.fail();
         let actorId;
         try {
             actorId = await createHeroActor(page, prefixName('Accordion_Expand'));
@@ -116,9 +113,6 @@ test.describe('Accordion State Persistence (#67)', () => {
     });
 
     test('Mixed accordion states survive re-render independently', async ({ page }) => {
-        // KNOWN BUG #242: accordion state is lost on re-renders that don't go
-        // through the instrumented handlers. Remove this once #242 is fixed.
-        test.fail();
         let actorId;
         try {
             actorId = await createHeroActor(page, prefixName('Accordion_Mixed'));

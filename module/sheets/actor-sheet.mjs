@@ -518,6 +518,14 @@ export class MEGSActorSheet extends ActorSheet {
     /* -------------------------------------------- */
 
     /** @override */
+    async _render(force, options) {
+        if (this.element?.length > 0) {
+            this._saveAccordionState(this.element);
+        }
+        await super._render(force, options);
+    }
+
+    /** @override */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -572,9 +580,6 @@ export class MEGSActorSheet extends ActorSheet {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item && item.type === 'subskill') {
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
                 await item.update({ 'system.isTrained': ev.currentTarget.checked });
                 this.render(false);
             }
@@ -653,9 +658,6 @@ export class MEGSActorSheet extends ActorSheet {
             return;
         }
 
-        // Save accordion state before render
-        this._saveAccordionState(html);
-
         await item.update({ 'system.aps': newValue });
         this.render(false);
     }
@@ -716,10 +718,6 @@ export class MEGSActorSheet extends ActorSheet {
         });
 
         if (!confirmed) return;
-
-        // Save accordion state before deletion
-        const html = $(event.currentTarget).closest('.sheet');
-        this._saveAccordionState(html);
 
         // If deleting a power or skill, also delete all associated bonuses/limitations
         if (item.type === 'power' || item.type === 'skill') {
@@ -894,10 +892,6 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Check if item already belongs to this actor
         const isOnActor = droppedItem.parent?.id === this.actor.id;
-
-        // Save accordion state before re-render
-        const html = $(event.currentTarget).closest('.sheet');
-        this._saveAccordionState(html);
 
         if (isOnActor) {
             // Item is already on this actor - update its parent (move it)
@@ -1163,15 +1157,6 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /** @override **/
-    async _onDrop(event) {
-        // Save accordion state before any drop operation
-        const html = $(event.currentTarget).closest('.sheet');
-        this._saveAccordionState(html);
-
-        super._onDrop(event);
-    }
-
-    /** @override **/
     async _onDropItemCreate(itemData) {
         const items = Array.isArray(itemData) ? itemData : [itemData];
         const isTrait = (i) => i.type === 'advantage' || i.type === 'drawback';
@@ -1229,11 +1214,6 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     async _toggleEditMode(event) {
-        // Save accordion state before toggling edit mode
-        if (this.element && this.element.length > 0) {
-            this._saveAccordionState(this.element);
-        }
-
         // Negate the effective state, not the stored flag: an unset flag would
         // give !undefined === true and leave an unlocked sheet unlocked.
         await this.actor.setFlag('megs', 'edit-mode', !this.isEditMode);

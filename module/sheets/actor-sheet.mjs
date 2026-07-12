@@ -7,13 +7,31 @@ import { Utils } from '../utils.js';
  * @extends {ActorSheet}
  */
 export class MEGSActorSheet extends ActorSheet {
-    /** @override */
-    constructor(object, options) {
-        super(object, options);
-        if (this.actor) {
-            const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
-            this.actor.setFlag('megs', 'edit-mode', isUnlocked);
+    /**
+     * Lock state for an actor that has no stored edit-mode flag: unlocked for an
+     * owner, locked for a non-owner or a compendium actor.
+     * @returns {boolean}
+     */
+    get defaultEditMode() {
+        if (!this.actor) {
+            return false;
         }
+        return Boolean(this.actor.isOwner) && !this.actor._stats?.compendiumSource;
+    }
+
+    /**
+     * The effective edit-mode state: the stored flag when the user has set one,
+     * otherwise the ownership-derived default. Derived on read rather than
+     * written on construction, because writing the flag races the render that
+     * reads it (issue #243).
+     * @returns {boolean}
+     */
+    get isEditMode() {
+        const storedFlag = this.actor?.getFlag('megs', 'edit-mode');
+        if (storedFlag === undefined || storedFlag === null) {
+            return this.defaultEditMode;
+        }
+        return storedFlag === true;
     }
 
     /** @override */
@@ -53,7 +71,11 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = actorData.system;
-        context.flags = actorData.flags;
+        context.flags = actorData.flags ?? {};
+
+        // Templates read flags.megs.edit-mode directly. actorData is a clone, so
+        // surface the effective state here without writing it to the document.
+        context.flags.megs = { ...context.flags.megs, 'edit-mode': this.isEditMode };
 
         // Prepare character data and items for hero, villain, and npc types.
         if (actorData.type === MEGS.characterTypes.hero ||
@@ -1206,14 +1228,15 @@ export class MEGSActorSheet extends ActorSheet {
         }
     }
 
-    _toggleEditMode(event) {
+    async _toggleEditMode(event) {
         // Save accordion state before toggling edit mode
         if (this.element && this.element.length > 0) {
             this._saveAccordionState(this.element);
         }
 
-        const currentValue = this.actor.getFlag('megs', 'edit-mode');
-        this.actor.setFlag('megs', 'edit-mode', !currentValue);
+        // Negate the effective state, not the stored flag: an unset flag would
+        // give !undefined === true and leave an unlocked sheet unlocked.
+        await this.actor.setFlag('megs', 'edit-mode', !this.isEditMode);
         this.render(false);
     }
 

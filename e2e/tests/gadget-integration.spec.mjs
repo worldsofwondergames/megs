@@ -108,7 +108,6 @@ test.describe('Gadget Integration (#226 cat 9)', () => {
             // Open in view mode; attribute labels localize to full names
             await page.evaluate(async ({ actorId, itemId }) => {
                 const item = game.actors.get(actorId).items.get(itemId);
-                item.sheet; // eslint-disable-line no-unused-expressions -- construct first; constructor resets the flag
                 await item.setFlag('megs', 'edit-mode', false);
             }, { actorId, itemId: gadgetId });
             await openItemSheet(page, actorId, gadgetId);

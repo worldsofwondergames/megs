@@ -31,6 +31,7 @@
 - Fixed empty gadget cost tooltip on the character creator sheet — a duplicate `getGadgetCostTooltip` Handlebars registration clobbered the cost-breakdown helper; the raw/adjusted cost helper is now registered as `getGadgetAdjustedCostTooltip` (issue #245)
 - Fixed item and actor sheets overwriting the edit-mode flag on every open — the sheet constructors wrote the flag with an un-awaited `setFlag` that raced the first render; the lock state is now derived at render time, so edit/view mode persists per document and no longer flips back to edit mode when a sheet is reopened (issue #243)
 - Fixed the edit-mode toggle negating the stored flag rather than the effective state, and no longer writing the flag for non-owners or compendium documents (issue #243)
+- Fixed the NPC sheet failing to render in edit mode — NPCs had no `system.motivations`, so the motivation `selectOptions` threw `Cannot convert undefined or null to object` and took down the entire sheet render; NPCs now receive the full motivation list (hero, villain, and antihero). This was masked by the edit-mode flag race, which left the first render in view mode (issue #243)
 
 ### Testing
 

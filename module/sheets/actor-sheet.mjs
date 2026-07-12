@@ -420,6 +420,7 @@ export class MEGSActorSheet extends ActorSheet {
         const drawbacks = [];
         const subskills = [];
         const gadgets = [];
+        const subGadgets = [];
 
         // TODO delete this by 1.0
         context.items = context.items.filter(
@@ -433,32 +434,7 @@ export class MEGSActorSheet extends ActorSheet {
         // Iterate through items, allocating to containers
         context.items.forEach((i) => {
             i.img = i.img || Item.DEFAULT_ICON;
-
-            if (i.type === MEGS.itemTypes.power && !i.system.parent) {
-                powers.push(i);
-            } else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
-                i.subskills = [];
-                if (i.system.aps === 0) {
-                    i.unskilled = true;
-                    i.linkedAPs = this.object.system.attributes[i.system.link].value;
-                } else {
-                    i.unskilled = false;
-                }
-                i.subskills = [];
-                skills.push(i);
-            } else if (i.type === MEGS.itemTypes.advantage && !i.system.parent) {
-                advantages.push(i);
-            } else if (i.type === MEGS.itemTypes.drawback && !i.system.parent) {
-                drawbacks.push(i);
-            } else if (i.type === MEGS.itemTypes.subskill) {
-                subskills.push(i);
-            } else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
-                i.ownerId = this.object._id;
-                i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
-                i.rollable = i.rollOptions.length > 0;
-                i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
-                gadgets.push(i);
-            }
+            this._categorizeItem(i, powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets);
         });
 
         // Add skills from linked gadget (for vehicles/locations)
@@ -490,7 +466,7 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         // sort alphabetically
-        const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
+        const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets];
         arrays.forEach((element) => {
             element.sort(function (a, b) {
                 const textA = a.name.toUpperCase();
@@ -503,6 +479,14 @@ export class MEGSActorSheet extends ActorSheet {
             const result = skills.find(({ _id }) => _id === element.system.parent);
             if (result) {
                 result.subskills.push(element);
+            }
+        });
+
+        subGadgets.forEach((element) => {
+            const result = gadgets.find(({ _id }) => _id === element.system.parent) ||
+                subGadgets.find(({ _id }) => _id === element.system.parent);
+            if (result) {
+                result.subGadgets.push(element);
             }
         });
 
@@ -523,6 +507,54 @@ export class MEGSActorSheet extends ActorSheet {
             this._saveAccordionState(this.element);
         }
         await super._render(force, options);
+    }
+
+    _categorizeItem(i, powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets) {
+        const isChild = !!i.system.parent;
+
+        if (i.type === MEGS.itemTypes.subskill) {
+            subskills.push(i);
+            return;
+        }
+
+        if (isChild && i.type === MEGS.itemTypes.gadget) {
+            this._prepareGadgetItem(i);
+            i.subGadgets = [];
+            subGadgets.push(i);
+            return;
+        }
+
+        if (isChild) return;
+
+        switch (i.type) {
+        case MEGS.itemTypes.power:
+            powers.push(i);
+            break;
+        case MEGS.itemTypes.skill:
+            i.subskills = [];
+            i.unskilled = i.system.aps === 0;
+            i.linkedAPs = i.unskilled ? this.object.system.attributes[i.system.link].value : 0;
+            skills.push(i);
+            break;
+        case MEGS.itemTypes.advantage:
+            advantages.push(i);
+            break;
+        case MEGS.itemTypes.drawback:
+            drawbacks.push(i);
+            break;
+        case MEGS.itemTypes.gadget:
+            this._prepareGadgetItem(i);
+            i.subGadgets = [];
+            gadgets.push(i);
+            break;
+        }
+    }
+
+    _prepareGadgetItem(i) {
+        i.ownerId = this.object._id;
+        i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
+        i.rollable = i.rollOptions.length > 0;
+        i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
     }
 
     /** @override */
@@ -574,6 +606,9 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Enable power row drop zones for bonuses/limitations
         this._enablePowerRowDropZones(html);
+
+        // Enable gadget row drop zones for re-parenting
+        this._enableGadgetDropZones(html);
 
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
@@ -911,6 +946,87 @@ export class MEGSActorSheet extends ActorSheet {
             await this.actor.createEmbeddedDocuments('Item', [itemData]);
             ui.notifications.info(`${droppedItem.name} added to power.`);
         }
+    }
+
+    _enableGadgetDropZones(html) {
+        const gadgetRows = html.find('.tab.gadgets .item-row');
+        gadgetRows.each((i, row) => {
+            row.addEventListener('dragover', this._onGadgetDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnGadget.bind(this));
+        });
+
+        const gadgetTab = html.find('.tab.gadgets .items-list')[0];
+        if (gadgetTab) {
+            gadgetTab.addEventListener('dragover', (ev) => {
+                ev.preventDefault();
+            });
+            gadgetTab.addEventListener('drop', this._onDropOnGadgetTab.bind(this));
+        }
+    }
+
+    _onGadgetDragOver(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.classList.add('drop-target');
+    }
+
+    async _onDropOnGadget(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.classList.remove('drop-target');
+
+        const targetGadgetId = event.currentTarget.dataset.itemId;
+        if (!targetGadgetId) return;
+
+        const data = TextEditor.getDragEventData(event);
+        if (data.type !== 'Item') return;
+
+        const droppedItem = await Item.implementation.fromDropData(data);
+        if (!droppedItem || droppedItem.type !== MEGS.itemTypes.gadget) return;
+
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+        if (!isOnActor) return;
+
+        if (droppedItem.id === targetGadgetId) return;
+        if (droppedItem.system.parent === targetGadgetId) return;
+
+        const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
+
+        const targetGadget = this.actor.items.get(targetGadgetId);
+        if (targetGadget && targetGadget.system.settings?.hasGadgets !== 'true') {
+            updates.push({ _id: targetGadgetId, 'system.settings.hasGadgets': 'true' });
+        }
+
+        const childGadgets = this.actor.items.filter(
+            i => i.type === MEGS.itemTypes.gadget && i.system.parent === droppedItem.id
+        );
+        for (const child of childGadgets) {
+            updates.push({ _id: child.id, 'system.parent': droppedItem.id });
+        }
+
+        await this.actor.updateEmbeddedDocuments('Item', updates);
+        this.render(false);
+    }
+
+    async _onDropOnGadgetTab(event) {
+        event.preventDefault();
+
+        if (event.target.closest('.item-row')) return;
+
+        const data = TextEditor.getDragEventData(event);
+        if (data.type !== 'Item') return;
+
+        const droppedItem = await Item.implementation.fromDropData(data);
+        if (!droppedItem || droppedItem.type !== MEGS.itemTypes.gadget) return;
+
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+        if (!isOnActor) return;
+
+        if (!droppedItem.system.parent) return;
+
+        await droppedItem.update({ 'system.parent': '' });
+        this.render(false);
     }
 
     /**

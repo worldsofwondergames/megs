@@ -278,4 +278,107 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             if (actorId) await deleteActor(page, actorId);
         }
     });
+
+    test('Parent gadget totalCost includes sub-gadget cost', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('SubGadget_Cost'));
+
+            const costs = await page.evaluate(async (actorId) => {
+                const actor = game.actors.get(actorId);
+
+                const [parentGadget] = await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Power Armor',
+                    type: 'gadget',
+                    img: 'icons/svg/shield.svg',
+                    system: { canBeTakenAway: true },
+                }]);
+
+                const parentCostBefore = parentGadget.system.totalCost || 0;
+
+                const [subGadget] = await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Laser Cannon',
+                    type: 'gadget',
+                    img: 'icons/svg/target.svg',
+                    system: {
+                        parent: parentGadget.id,
+                        settings: { hasAVAndEV: 'true' },
+                        av: 4,
+                        ev: 4,
+                        canBeTakenAway: true,
+                    }
+                }]);
+
+                const updatedParent = actor.items.get(parentGadget.id);
+                const subGadgetCost = actor.items.get(subGadget.id).system.totalCost || 0;
+                const parentCostAfter = updatedParent.system.totalCost || 0;
+
+                return { parentCostBefore, parentCostAfter, subGadgetCost };
+            }, actorId);
+
+            expect(costs.subGadgetCost).toBeGreaterThan(0);
+            expect(costs.parentCostAfter).toBeGreaterThan(costs.parentCostBefore);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Gadget cost tooltip includes sub-gadget name and cost', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('SubGadget_Tooltip'));
+
+            await page.evaluate(async (actorId) => {
+                const actor = game.actors.get(actorId);
+
+                const [parentGadget] = await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Power Armor',
+                    type: 'gadget',
+                    img: 'icons/svg/shield.svg',
+                    system: { canBeTakenAway: true },
+                }]);
+
+                await actor.createEmbeddedDocuments('Item', [{
+                    name: 'Laser Cannon',
+                    type: 'gadget',
+                    img: 'icons/svg/target.svg',
+                    system: {
+                        parent: parentGadget.id,
+                        settings: { hasAVAndEV: 'true' },
+                        av: 4,
+                        ev: 4,
+                        canBeTakenAway: true,
+                    }
+                }]);
+
+                if (parentGadget.system.settings?.hasGadgets !== 'true') {
+                    await parentGadget.update({ 'system.settings.hasGadgets': 'true' });
+                }
+            }, actorId);
+
+            // Open the parent gadget's item sheet
+            await page.evaluate((actorId) => {
+                const actor = game.actors.get(actorId);
+                const gadget = actor.items.find(i => i.name === 'Power Armor' && !i.system.parent);
+                gadget.sheet.render(true);
+            }, actorId);
+
+            await page.waitForSelector('.sheet.item', { timeout: 10000 });
+            await page.waitForTimeout(1000);
+
+            // Read the budget tooltip from the HP Spent value
+            const tooltip = await page.evaluate(() => {
+                const sheet = document.querySelector('.sheet.item');
+                const tooltipEl = sheet?.querySelector('[title*="HP Spent"]') ||
+                    sheet?.querySelector('.resource-value[title]');
+                return tooltipEl?.getAttribute('title') || '';
+            });
+
+            expect(tooltip).toContain('Laser Cannon');
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
 });

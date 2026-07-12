@@ -745,6 +745,8 @@ export class MEGSItem extends Item {
         let skillsCost = 0;
         let advantagesCost = 0;
         let drawbacksCost = 0;
+        let subGadgetsCost = 0;
+        const subGadgetEntries = [];
 
         if (this.parent && this.parent.items) {
             // Owned gadget - use embedded items
@@ -795,6 +797,10 @@ export class MEGSItem extends Item {
                         let cost = item.system.totalCost || item.system.baseCost || 0;
                         if (cost > 0) cost = -cost;
                         drawbacksCost += cost;
+                    } else if (item.type === MEGS.itemTypes.gadget) {
+                        item.prepareData();
+                        subGadgetsCost += item.system.totalCost || 0;
+                        subGadgetEntries.push({ name: item.name, cost: item.system.totalCost || 0 });
                     }
                 }
             });
@@ -816,7 +822,7 @@ export class MEGSItem extends Item {
         }
 
         const traitsCost = advantagesCost + drawbacksCost;
-        const totalBeforeBonus = attributesCost + avEvCost + powersCost + skillsCost + traitsCost;
+        const totalBeforeBonus = attributesCost + avEvCost + powersCost + skillsCost + traitsCost + subGadgetsCost;
 
         // Apply gadget bonus (÷4 if can be taken away, ÷2 if cannot)
         // Round each category individually, then sum for total (matching displayed values)
@@ -853,7 +859,9 @@ export class MEGSItem extends Item {
             skillsCost: skillsCost,
             advantagesCost: advantagesCost,
             drawbacksCost: drawbacksCost,
-            traitsCost: traitsCost
+            traitsCost: traitsCost,
+            subGadgetsCost: subGadgetsCost,
+            subGadgetEntries: subGadgetEntries
         };
     }
 

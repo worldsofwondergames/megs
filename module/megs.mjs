@@ -973,14 +973,14 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (systemData.attributes) {
         for (const [key, attr] of Object.entries(systemData.attributes)) {
             if (attr.value > 0) {
-                let fc = attr.factorCost + reliabilityMod;
+                let fc = (Number(attr.factorCost) || 0) + reliabilityMod;
                 if (attr.alwaysSubstitute) {
                     fc += 2;
                 }
                 if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                     fc += 2;
                 }
-                fc = Math.max(1, fc);
+                fc = Math.min(10, Math.max(1, fc));
                 attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
             }
         }
@@ -1084,15 +1084,16 @@ Handlebars.registerHelper('getGadgetAttributeCost', function (aps, baseFc, relia
     aps = Number(aps) || 0;
     if (aps === 0) return 0;
 
+    baseFc = Number(baseFc) || 0;
     const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
-    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+    const reliability = CONFIG.reliabilityScores?.[Number(reliabilityIndex)] ?? 5;
     const reliabilityMod = table[reliability] ?? 0;
 
     let fc = baseFc + reliabilityMod;
     if (attrKey === 'body' && (hasHardenedDefenses === true || hasHardenedDefenses === 'true')) {
         fc += 2;
     }
-    fc = Math.max(1, fc);
+    fc = Math.min(10, Math.max(1, fc));
 
     return MEGS.getAPCost(aps, fc) || 0;
 });
@@ -1283,6 +1284,17 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
 /* -------------------------------------------- */
 
 Hooks.once('ready', async function () {
+    // Re-prepare gadget items now that CONFIG.apCostChart is guaranteed loaded
+    if (CONFIG.apCostChart?.chart) {
+        for (const actor of game.actors) {
+            for (const item of actor.items) {
+                if (item.type === 'gadget') {
+                    item.prepareDerivedData();
+                }
+            }
+        }
+    }
+
     // Log compendium pack loading information only if debug logging is enabled
     if (game.settings.get('megs', 'debugLogging')) {
         console.log('[MEGS] ===========================================');

@@ -853,7 +853,9 @@ export class MEGSItem extends Item {
             skillsCost: skillsCost,
             advantagesCost: advantagesCost,
             drawbacksCost: drawbacksCost,
-            traitsCost: traitsCost
+            traitsCost: traitsCost,
+            subGadgetsCost: 0,
+            subGadgetEntries: []
         };
     }
 
@@ -1085,7 +1087,6 @@ export class MEGSItem extends Item {
                             console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
                         }
 
-                        // Add all child items (drawbacks are negative, so they reduce cost automatically)
                         if (item.type === MEGS.itemTypes.power ||
                             item.type === MEGS.itemTypes.skill ||
                             item.type === MEGS.itemTypes.advantage ||

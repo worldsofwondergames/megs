@@ -147,9 +147,6 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item && item.type === 'subskill') {
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
                 await item.update({ 'system.isTrained': ev.currentTarget.checked });
                 this.render(false);
             }

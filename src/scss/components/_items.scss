@@ -37,6 +37,13 @@
         color: $c-darkblue;
     }
 
+    .item-row.drop-target,
+    .sub-gadget-row.drop-target {
+        background-color: #d4edff;
+        border: 2px dashed #06c;
+        box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
+    }
+
     > li.item-row:nth-of-type(odd) {
         background: $c-lightblue;
     }
@@ -261,20 +268,6 @@ li.directory-item img[src*='assets/images/icons'] {
         &:active {
             cursor: grabbing;
         }
-    }
-}
-
-/*------------------------------------------------------------------------*/
-/* Gadgets Tab Drop Target (actor and gadget sheets)
-/*------------------------------------------------------------------------*/
-
-&.sheet.actor .tab.gadgets .items-list,
-&.sheet.item .tab.gadgets .items-list {
-    .item-row.drop-target,
-    .sub-gadget-row.drop-target {
-        background-color: #d4edff;
-        border: 2px dashed #06c;
-        box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
     }
 }
 

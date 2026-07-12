@@ -37,7 +37,6 @@ async function createActorWithSubGadget(page, actorName) {
 }
 
 test.describe('Sub-gadget display and controls (#78)', () => {
-
     test('Sub-gadget appears indented under parent on Gadgets tab', async ({ page }) => {
         let actorId;
         try {
@@ -45,7 +44,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             actorId = result.actorId;
 
             await openActorSheet(page, actorId, 'gadgets');
-            await page.waitForTimeout(500);
+            await page.waitForSelector(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`, { timeout: 5000 });
 
             const subRow = await page.$(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`);
             expect(subRow).not.toBeNull();
@@ -68,7 +67,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             actorId = result.actorId;
 
             await openActorSheet(page, actorId, 'gadgets');
-            await page.waitForTimeout(500);
+            await page.waitForSelector(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`, { timeout: 5000 });
 
             await page.evaluate((subGadgetId) => {
                 const row = document.querySelector(`.sub-gadget-row[data-item-id="${subGadgetId}"]`);
@@ -76,7 +75,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                 if (editBtn) editBtn.click();
             }, result.subGadgetId);
 
-            await page.waitForTimeout(1000);
+            await page.waitForSelector('.sheet.item', { timeout: 5000 });
 
             const sheetTitle = await page.evaluate(() => {
                 const itemSheet = document.querySelector('.sheet.item');
@@ -102,7 +101,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             actorId = result.actorId;
 
             await openActorSheet(page, actorId, 'gadgets');
-            await page.waitForTimeout(500);
+            await page.waitForSelector(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`, { timeout: 5000 });
 
             let subRow = await page.$(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`);
             expect(subRow).not.toBeNull();
@@ -125,7 +124,11 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                 if (buttons.length > 0) buttons[0].click();
             });
 
-            await page.waitForTimeout(1500);
+            await page.waitForFunction(
+                (id) => !document.querySelector(`.sub-gadget-row[data-item-id="${id}"]`),
+                { timeout: 5000 },
+                result.subGadgetId
+            );
 
             subRow = await page.$(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`);
             expect(subRow).toBeNull();
@@ -172,7 +175,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             }, actorId);
 
             await openActorSheet(page, actorId, 'gadgets');
-            await page.waitForTimeout(500);
+            await page.waitForSelector(`.sub-gadget-row[data-item-id="${ids.subGadgetId}"]`, { timeout: 5000 });
 
             const hasRollBtn = await page.evaluate((subGadgetId) => {
                 const row = document.querySelector(`.sub-gadget-row[data-item-id="${subGadgetId}"]`);
@@ -221,7 +224,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             }, actorId);
 
             await openActorSheet(page, actorId, 'gadgets');
-            await page.waitForTimeout(500);
+            await page.waitForSelector('.tab.gadgets .item-row', { timeout: 5000 });
 
             // Programmatically set parent to simulate the drop
             const result = await page.evaluate(async (actorId) => {
@@ -233,7 +236,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                 return { parentId: batsuit.id, childId: grapple.id };
             }, actorId);
 
-            await page.waitForTimeout(1000);
+            await page.waitForSelector(`.sub-gadget-row[data-item-id="${result.childId}"]`, { timeout: 5000 });
 
             const subRow = await page.$(`.sub-gadget-row[data-item-id="${result.childId}"]`);
             expect(subRow).not.toBeNull();
@@ -250,7 +253,7 @@ test.describe('Sub-gadget display and controls (#78)', () => {
             actorId = result.actorId;
 
             await openActorSheet(page, actorId, 'gadgets');
-            await page.waitForTimeout(500);
+            await page.waitForSelector(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`, { timeout: 5000 });
 
             // Verify it's a sub-gadget first
             let subRow = await page.$(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`);
@@ -264,7 +267,11 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                 actor.sheet.render(false);
             }, { actorId, subGadgetId: result.subGadgetId });
 
-            await page.waitForTimeout(1000);
+            await page.waitForFunction(
+                (id) => !document.querySelector(`.sub-gadget-row[data-item-id="${id}"]`),
+                { timeout: 5000 },
+                result.subGadgetId
+            );
 
             // Should no longer be a sub-gadget row
             subRow = await page.$(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`);

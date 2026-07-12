@@ -246,11 +246,28 @@ export class MEGSActor extends Actor {
         // Aggregate sub-gadget costs into parent gadgets (bottom-up).
         // All items have their individual totalCost computed by now.
         const gadgets = this.items.filter(i => i.type === MEGS.itemTypes.gadget);
-        const childGadgets = gadgets.filter(g => g.system.parent);
-        for (const child of childGadgets) {
-            const parent = gadgets.find(g => g._id === child.system.parent);
-            if (parent) {
-                parent.system.totalCost = (parent.system.totalCost || 0) + (child.system.totalCost || 0);
+        for (const parent of gadgets) {
+            const children = gadgets.filter(g => g.system.parent === parent._id);
+            if (children.length === 0) continue;
+
+            let subGadgetsCost = 0;
+            const subGadgetEntries = [];
+            for (const child of children) {
+                const cost = child.system.totalCost || 0;
+                subGadgetsCost += cost;
+                subGadgetEntries.push({ name: child.name, cost });
+            }
+
+            parent.system.totalCost = (parent.system.totalCost || 0) + subGadgetsCost;
+
+            if (parent.system.gadgetPointBudget) {
+                const budget = parent.system.gadgetPointBudget;
+                budget.subGadgetsCost = subGadgetsCost;
+                budget.subGadgetEntries = subGadgetEntries;
+                budget.totalBeforeBonus = (budget.totalBeforeBonus || 0) + subGadgetsCost;
+                const gadgetBonus = parent.system.canBeTakenAway ? 4 : 2;
+                budget.totalSpent = Math.ceil(budget.totalBeforeBonus / gadgetBonus);
+                budget.remaining = (budget.base || 0) - budget.totalSpent;
             }
         }
     }

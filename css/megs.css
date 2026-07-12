@@ -1055,7 +1055,8 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .toggle-icon:hover {
   color: #000;
 }
-.megs.sheet.actor .tab.powers .items-list .power-row.drop-target {
+.megs.sheet.actor .tab.powers .items-list .power-row.drop-target,
+.megs.sheet.actor .tab.powers .items-list .item-row.drop-target {
   background-color: #d4edff;
   border: 2px dashed #06c;
   box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
@@ -1772,3 +1773,5 @@ li.chat-message .tooltip .tooltiptext .init-table .value {
   font-weight: bold;
   white-space: nowrap;
 }
+
+/*# sourceMappingURL=megs.css.map */

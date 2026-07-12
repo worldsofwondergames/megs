@@ -273,7 +273,7 @@ export class MEGSActor extends Actor {
         }
 
         // Calculate HP spent on wealth (FC 2)
-        const wealthCost = MEGS.getAPCost(this.system.wealth ?? 0, 2) || 0;
+        const wealthCost = MEGS.getAPCost(Number(this.system.wealth) || 0, 2) || 0;
 
         // Calculate HP spent on items (powers, skills, advantages, gadgets, drawbacks)
         let itemsCost = 0;

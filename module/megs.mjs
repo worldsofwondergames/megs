@@ -1116,6 +1116,13 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
     if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
     if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
     if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    if (budget.subGadgetEntries) {
+        for (const entry of budget.subGadgetEntries) {
+            if (entry.cost !== 0) {
+                tooltip += `${entry.name}: ${entry.cost} HP\n`;
+            }
+        }
+    }
     tooltip += '─────────────────\n';
     tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
     // Determine gadget bonus from the actual division

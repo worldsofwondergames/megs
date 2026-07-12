@@ -890,6 +890,12 @@ details summary.no-arrow {
   font-family: "Roboto", sans-serif;
   color: #1f5079;
 }
+.megs .items-list .item-row.drop-target,
+.megs .items-list .sub-gadget-row.drop-target {
+  background-color: #d4edff;
+  border: 2px dashed #06c;
+  box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
+}
 .megs .items-list > li.item-row:nth-of-type(odd) {
   background: #ddebf6;
 }
@@ -1055,7 +1061,8 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .toggle-icon:hover {
   color: #000;
 }
-.megs.sheet.actor .tab.powers .items-list .power-row.drop-target {
+.megs.sheet.actor .tab.powers .items-list .power-row.drop-target,
+.megs.sheet.actor .tab.powers .items-list .item-row.drop-target {
   background-color: #d4edff;
   border: 2px dashed #06c;
   box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);

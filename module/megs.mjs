@@ -1022,17 +1022,23 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         let skillsCost = 0;
         let advantagesCost = 0;
         let drawbacksCost = 0;
+        const subGadgetEntries = [];
 
         owner.items.forEach(item => {
-            if (item.system.parent === gadget._id && item.system.totalCost) {
-                if (item.type === MEGS.itemTypes.power) {
+            if (item.system.parent === gadget._id) {
+                if (item.type === MEGS.itemTypes.power && item.system.totalCost) {
                     powersCost += item.system.totalCost;
-                } else if (item.type === MEGS.itemTypes.skill) {
+                } else if (item.type === MEGS.itemTypes.skill && item.system.totalCost) {
                     skillsCost += item.system.totalCost;
-                } else if (item.type === MEGS.itemTypes.advantage) {
+                } else if (item.type === MEGS.itemTypes.advantage && item.system.totalCost) {
                     advantagesCost += item.system.totalCost;
-                } else if (item.type === MEGS.itemTypes.drawback) {
+                } else if (item.type === MEGS.itemTypes.drawback && item.system.totalCost) {
                     drawbacksCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.gadget) {
+                    const cost = item.system.totalCost || 0;
+                    if (cost !== 0) {
+                        subGadgetEntries.push({ name: item.name, cost: cost });
+                    }
                 }
             }
         });
@@ -1052,6 +1058,10 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         if (drawbacksCost > 0) {
             tooltip += 'Drawbacks: -' + drawbacksCost + '\n';
             totalBeforeBonus -= drawbacksCost;
+        }
+        for (const entry of subGadgetEntries) {
+            tooltip += entry.name + ': ' + entry.cost + '\n';
+            totalBeforeBonus += entry.cost;
         }
     }
 
@@ -1108,9 +1118,19 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
     if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
     tooltip += '─────────────────\n';
     tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
-    // Determine gadget bonus from the actual division
-    const gadgetBonus = totalBeforeBonus > 0 && total > 0 ? Math.round(totalBeforeBonus / total) : 4;
+    const subGadgetsCost = budget.subGadgetsCost || 0;
+    const ownCost = total - subGadgetsCost;
+    const gadgetBonus = totalBeforeBonus > 0 && ownCost > 0
+        ? Math.round(totalBeforeBonus / ownCost)
+        : 4;
     tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
+    if (budget.subGadgetEntries) {
+        for (const entry of budget.subGadgetEntries) {
+            if (entry.cost !== 0) {
+                tooltip += `${entry.name}: +${entry.cost} HP\n`;
+            }
+        }
+    }
     tooltip += '─────────────────\n';
     tooltip += `Total: ${total} HP`;
 

@@ -58,6 +58,9 @@
 - Replaced 12 direct `.hasOwnProperty()` calls with `Object.hasOwn()` across actor, item, and item-sheet modules (issue #217)
 - Cleaned up 249 lint findings across 16 files — `prefer-const`, `quotes`, `indent`, brace-style, unused variables/imports, URL quoting, hex shorthand (issue #218)
 - Replaced 37 global `parseInt()` calls with `Number.parseInt()` across 6 modules for consistency (issue #218)
+- Replaced 10 fixed `waitForTimeout` calls in sub-gadget E2E tests with condition-based waits (`waitForSelector`, `waitForFunction`) for less flaky, faster tests (issue #256)
+- Refactored `_categorizeItem` to accept a destructured object instead of 8 positional parameters (issue #256)
+- Replaced 2 `!x || x.prop` null checks with optional chaining (`x?.prop`) in gadget drop handlers (issue #256)
 
 ## 1.0.0 (February 1, 2026)
 

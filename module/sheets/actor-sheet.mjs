@@ -991,6 +991,34 @@ export class MEGSActorSheet extends ActorSheet {
         if (droppedItem.id === targetGadgetId) return;
         if (droppedItem.system.parent === targetGadgetId) return;
 
+        // Stackable sub-gadget check
+        if (droppedItem.system.isStackable === true || droppedItem.system.isStackable === 'true') {
+            const match = this.actor.items.find(
+                (existing) => existing.type === MEGS.itemTypes.gadget &&
+                    existing.name === droppedItem.name &&
+                    existing.id !== droppedItem.id &&
+                    existing.system.parent === targetGadgetId &&
+                    (existing.system.isStackable === true || existing.system.isStackable === 'true')
+            );
+            if (match) {
+                const droppedQuantity = droppedItem.system.quantity || 1;
+                const newQuantity = (match.system.quantity || 1) + droppedQuantity;
+                await match.update({ 'system.quantity': newQuantity });
+                // Remove the dropped item since it was merged
+                if (isOnActor) {
+                    await droppedItem.delete();
+                }
+                ui.notifications.info(
+                    game.i18n.format('MEGS.StackableQuantityIncreased', {
+                        name: match.name,
+                        quantity: newQuantity,
+                    })
+                );
+                this.render(false);
+                return;
+            }
+        }
+
         const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
 
         const targetGadget = this.actor.items.get(targetGadgetId);
@@ -1286,12 +1314,42 @@ export class MEGSActorSheet extends ActorSheet {
             ui.notifications.warn(game.i18n.localize('MEGS.CreationOnlyWarning'));
         }
         const blocked = [...new Set([...gadgetBlocked, ...creationBlocked])];
-        if (blocked.length) {
-            const allowed = items.filter((i) => !blocked.includes(i));
-            if (!allowed.length) return false;
-            return super._onDropItemCreate(allowed);
+        const allowed = blocked.length ? items.filter((i) => !blocked.includes(i)) : items;
+        if (!allowed.length) return false;
+
+        // Stackable gadget check: find matching stackable gadgets and increment quantity
+        const stackable = [];
+        const remaining = [];
+        for (const item of allowed) {
+            if (item.type === MEGS.itemTypes.gadget &&
+                (item.system?.isStackable === true || item.system?.isStackable === 'true')) {
+                const match = this.actor.items.find(
+                    (existing) => existing.type === MEGS.itemTypes.gadget &&
+                        existing.name === item.name &&
+                        !existing.system.parent &&
+                        (existing.system.isStackable === true || existing.system.isStackable === 'true')
+                );
+                if (match) {
+                    stackable.push({ match, droppedQuantity: item.system?.quantity || 1 });
+                    continue;
+                }
+            }
+            remaining.push(item);
         }
-        return super._onDropItemCreate(itemData);
+
+        for (const { match, droppedQuantity } of stackable) {
+            const newQuantity = (match.system.quantity || 1) + droppedQuantity;
+            await match.update({ 'system.quantity': newQuantity });
+            ui.notifications.info(
+                game.i18n.format('MEGS.StackableQuantityIncreased', {
+                    name: match.name,
+                    quantity: newQuantity,
+                })
+            );
+        }
+
+        if (!remaining.length) return !!stackable.length;
+        return super._onDropItemCreate(remaining.length === 1 ? remaining[0] : remaining);
     }
 
     _changeEditHeaderLink(sheetHeaderLinks) {

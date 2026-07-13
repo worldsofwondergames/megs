@@ -104,6 +104,7 @@
         "IsCarried": "Está sendo tranportado?",
         "IsLinked": "Está vinculado?",
         "IsOmniGadget": "Está Omni-Equipamento?",
+        "IsStackable": "É Empilhável?",
         "ItalicizedAttributesText": "Atributos em Itálico (Um Omni-Gadget que permite Atributos em Itálico também deve ter a capacidade de imitar Atributos - A e/ou B).",
         "Item": "Item",
         "Limitation": "Limitação",
@@ -185,7 +186,8 @@
         "HasMysticalAttributesHint": "Possui Atributos Místicos (INFL, AURA, ESPÍRITO)",
         "HasActionValueAndEffectValue": "Possui Valor de Ação e Valor de Efeito",
         "OnlyBonusesAndLimitationsCanBeDropped": "Apenas Bônus e Limitações podem ser soltos em Poderes.",
-        "ModifiersOnlyForOwnedGadgets": "Modificadores só podem ser adicionados a poderes em equipamentos pertencentes a um personagem."
+        "ModifiersOnlyForOwnedGadgets": "Modificadores só podem ser adicionados a poderes em equipamentos pertencentes a um personagem.",
+        "StackableQuantityIncreased": "{name} quantidade aumentou para {quantity}"
     },
 
     "TYPES": {

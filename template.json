@@ -382,6 +382,7 @@
             ],
             "img": "systems/megs/assets/images/icons/gadget.png",
             "quantity": 1,
+            "isStackable": false,
             "actionValue": 0,
             "effectValue": 0,
             "reliability": 0,

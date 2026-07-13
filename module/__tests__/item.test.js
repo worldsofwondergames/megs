@@ -284,6 +284,71 @@ describe('Base Cost Only Powers', () => {
     });
 });
 
+describe('Omni-Gadget Cost Calculation', () => {
+    test('omni-gadget with no attributes has zero cost', () => {
+        const gadget = new MEGSItem({
+            name: 'Omni Widget',
+            type: 'gadget',
+            system: {
+                isOmni: 'true',
+                aps: 10,
+                omniClasses: { a: 'true', b: 'true', c: 'false', d: 'false' },
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        expect(gadget.system.totalCost).toBe(0);
+    });
+
+    test('omni-gadget with BODY attribute still costs HP', () => {
+        const gadget = new MEGSItem({
+            name: 'Omni Armor',
+            type: 'gadget',
+            system: {
+                isOmni: 'true',
+                aps: 8,
+                omniClasses: { a: 'true', b: 'false', c: 'false', d: 'false' },
+                attributes: {
+                    body: { value: 5, factorCost: 6 }
+                },
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // BODY: 5 APs @ FC 6 = 22, ÷4 = 5.5 = 6
+        expect(gadget.system.totalCost).toBe(6);
+    });
+
+    test('omni-gadget with all four classes stores data correctly', () => {
+        const gadget = new MEGSItem({
+            name: 'Full Omni',
+            type: 'gadget',
+            system: {
+                isOmni: 'true',
+                aps: 15,
+                omniClasses: { a: 'true', b: 'true', c: 'true', d: 'true' },
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        expect(gadget.system.isOmni).toBe('true');
+        expect(gadget.system.aps).toBe(15);
+        expect(gadget.system.omniClasses.a).toBe('true');
+        expect(gadget.system.omniClasses.b).toBe('true');
+        expect(gadget.system.omniClasses.c).toBe('true');
+        expect(gadget.system.omniClasses.d).toBe('true');
+    });
+});
+
 describe('Gadget Attribute FC Clamping', () => {
     test('FC is clamped to max 10 when reliability + hardened defenses exceeds limit', () => {
         const gadget = new MEGSItem({

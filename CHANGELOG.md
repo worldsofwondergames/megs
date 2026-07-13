@@ -50,6 +50,8 @@
 - Removed `test.fail()` markers from accordion E2E tests now that #242 is fixed (issue #242)
 - Added unit tests for sub-gadget collection and nesting in `_prepareItems` (issue #78)
 - Added Playwright E2E tests for sub-gadget display, edit, delete, roll, parenting, and detaching (issue #78)
+- Added unit tests for omni-gadget cost calculation and data model (issue #254)
+- Added Playwright E2E tests for omni-gadget workflow: class checkboxes, tab visibility, data persistence, and actor Gadgets tab description (issue #254)
 
 ### Code Quality
 
@@ -61,6 +63,7 @@
 - Replaced 10 fixed `waitForTimeout` calls in sub-gadget E2E tests with condition-based waits (`waitForSelector`, `waitForFunction`) for less flaky, faster tests (issue #256)
 - Refactored `_categorizeItem` to accept a destructured object instead of 8 positional parameters (issue #256)
 - Replaced 2 `!x || x.prop` null checks with optional chaining (`x?.prop`) in gadget drop handlers (issue #256)
+- Removed obsolete TODO for omni-gadget rows on actor Gadgets tab — omni-gadget configuration is already handled by the gadget item sheet (issue #254)
 
 ## 1.0.0 (February 1, 2026)
 

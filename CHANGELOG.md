@@ -36,6 +36,7 @@
 - Fixed the edit-mode toggle negating the stored flag rather than the effective state, and no longer writing the flag for non-owners or compendium documents (issue #243)
 - Fixed the NPC sheet failing to render in edit mode — NPCs had no `system.motivations`, so the motivation `selectOptions` threw `Cannot convert undefined or null to object` and took down the entire sheet render; NPCs now receive the full motivation list (hero, villain, and antihero). This was masked by the edit-mode flag race, which left the first render in view mode (issue #243)
 - Fixed `getAPCost` accepting empty strings, NaN, and other non-numeric values — inputs are now coerced via `Number()` so form-cleared fields and unset data properties return 0 instead of falling through to a spurious console warning (issue #244)
+- Fixed `getGadgetDescription` treating string `"false"` as truthy for omni-gadget class flags, causing all four classes to display regardless of selection; also localized the "APs" label in omni-gadget descriptions (issue #254)
 - Fixed accordion expanded state lost on re-renders not triggered by instrumented handlers — accordion state is now saved in the `_render` lifecycle override before the DOM is replaced, so expanded rows survive any re-render source (programmatic, multiplayer, token bar changes) (issue #242)
 
 ### Testing

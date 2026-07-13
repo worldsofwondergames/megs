@@ -243,12 +243,12 @@ test.describe('Gadget Integration (#226 cat 9)', () => {
                     d: gadget.system.omniClasses.d,
                 };
             }, { actorId, gadgetId });
-            expect(stored.isOmni).toBeTruthy();
+            expect(stored.isOmni).toBe('true');
             expect(stored.aps).toBe(12);
-            expect(stored.a).toBeTruthy();
-            expect(stored.b).toBeTruthy();
-            expect(stored.c).toBeFalsy();
-            expect(stored.d).toBeFalsy();
+            expect(stored.a).toBe('true');
+            expect(stored.b).toBe('true');
+            expect(stored.c).toBe('false');
+            expect(stored.d).toBe('false');
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
@@ -276,10 +276,10 @@ test.describe('Gadget Integration (#226 cat 9)', () => {
 
             await openActorSheet(page, actorId, 'gadgets');
             const descText = await page.evaluate(() => {
-                const row = document.querySelector('.sheet.actor .tab.gadgets .item-description');
+                const row = document.querySelector('.sheet.actor .tab.gadgets .item-row .item-description');
                 return row ? row.textContent.trim() : '';
             });
-            expect(descText).toContain('10 AP');
+            expect(descText).toContain('10 APs');
             expect(descText).toContain('A');
             expect(descText).toContain('Physical Attributes');
             expect(descText).toContain('B');

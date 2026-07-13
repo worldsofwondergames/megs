@@ -36,6 +36,7 @@
 - Fixed the edit-mode toggle negating the stored flag rather than the effective state, and no longer writing the flag for non-owners or compendium documents (issue #243)
 - Fixed the NPC sheet failing to render in edit mode — NPCs had no `system.motivations`, so the motivation `selectOptions` threw `Cannot convert undefined or null to object` and took down the entire sheet render; NPCs now receive the full motivation list (hero, villain, and antihero). This was masked by the edit-mode flag race, which left the first render in view mode (issue #243)
 - Fixed `getAPCost` accepting empty strings, NaN, and other non-numeric values — inputs are now coerced via `Number()` so form-cleared fields and unset data properties return 0 instead of falling through to a spurious console warning (issue #244)
+- Fixed `getGadgetDescription` treating string `"false"` as truthy for omni-gadget class flags, causing all four classes to display regardless of selection; also localized the "APs" label in omni-gadget descriptions (issue #254)
 - Fixed accordion expanded state lost on re-renders not triggered by instrumented handlers — accordion state is now saved in the `_render` lifecycle override before the DOM is replaced, so expanded rows survive any re-render source (programmatic, multiplayer, token bar changes) (issue #242)
 
 ### Testing
@@ -50,6 +51,8 @@
 - Removed `test.fail()` markers from accordion E2E tests now that #242 is fixed (issue #242)
 - Added unit tests for sub-gadget collection and nesting in `_prepareItems` (issue #78)
 - Added Playwright E2E tests for sub-gadget display, edit, delete, roll, parenting, and detaching (issue #78)
+- Added unit tests for omni-gadget cost calculation and data model (issue #254)
+- Added Playwright E2E tests for omni-gadget workflow: class checkboxes, tab visibility, data persistence, and actor Gadgets tab description (issue #254)
 
 ### Code Quality
 
@@ -61,6 +64,7 @@
 - Replaced 10 fixed `waitForTimeout` calls in sub-gadget E2E tests with condition-based waits (`waitForSelector`, `waitForFunction`) for less flaky, faster tests (issue #256)
 - Refactored `_categorizeItem` to accept a destructured object instead of 8 positional parameters (issue #256)
 - Replaced 2 `!x || x.prop` null checks with optional chaining (`x?.prop`) in gadget drop handlers (issue #256)
+- Removed obsolete TODO for omni-gadget rows on actor Gadgets tab — omni-gadget configuration is already handled by the gadget item sheet (issue #254)
 
 ## 1.0.0 (February 1, 2026)
 

@@ -838,10 +838,10 @@ Handlebars.registerHelper('getTotalCostTooltip', function (power, items) {
 Handlebars.registerHelper('getGadgetDescription', function (gadget) {
     let description = '';
 
-    if (gadget.system.isOmni) {
-        description = gadget.system.aps + ' AP ';
+    if (gadget.system.isOmni === true || gadget.system.isOmni === 'true') {
+        description = gadget.system.aps + ' ' + game.i18n.localize('MEGS.APs') + ' ';
         Object.keys(gadget.system.omniClasses).forEach((key) => {
-            if (gadget.system.omniClasses[key]) {
+            if (gadget.system.omniClasses[key] === true || gadget.system.omniClasses[key] === 'true') {
                 description += key.toUpperCase();
                 description += ' (' + MEGS.omniRanges[key.toUpperCase()] + ')';
             }

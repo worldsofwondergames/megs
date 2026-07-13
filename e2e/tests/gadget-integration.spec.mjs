@@ -291,4 +291,135 @@ test.describe('Gadget Integration (#226 cat 9)', () => {
             if (actorId) await deleteActor(page, actorId);
         }
     });
+
+    test('Stackable checkbox appears on gadget Settings tab and persists', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('GadgetInt_Stackable'));
+            const gadgetId = await addGadgetToActor(page, actorId, {
+                name: 'Batarang', av: 0, ev: 0,
+            });
+            await page.evaluate(async ({ actorId, gadgetId }) => {
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                await gadget.update({ 'system.isStackable': 'true' });
+            }, { actorId, gadgetId });
+
+            const stored = await page.evaluate(({ actorId, gadgetId }) => {
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                return gadget.system.isStackable;
+            }, { actorId, gadgetId });
+            expect(stored).toBe('true');
+
+            // The Settings tab is reached via the gear header button (megs-open-settings),
+            // not a nav tab link - see item-sheet.mjs _openSettings().
+            await openItemSheet(page, actorId, gadgetId);
+            await page.click('.sheet.item .header-button.megs-open-settings');
+            const checked = await page.evaluate(() => {
+                const cb = document.querySelector('.sheet.item #system\\.isStackable');
+                return cb ? cb.checked : null;
+            });
+            expect(checked).toBe(true);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Dropping a stackable gadget onto actor increments quantity instead of creating duplicate', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('GadgetInt_StackDrop'));
+            const gadgetId = await addGadgetToActor(page, actorId, {
+                name: 'Throwing Star', av: 0, ev: 0,
+            });
+            await page.evaluate(async ({ actorId, gadgetId }) => {
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                await gadget.update({ 'system.isStackable': 'true', 'system.quantity': 1 });
+            }, { actorId, gadgetId });
+
+            // Simulate dropping a second stackable gadget with the same name
+            const result = await page.evaluate(async ({ actorId }) => {
+                const actor = game.actors.get(actorId);
+                const itemData = {
+                    name: 'Throwing Star',
+                    type: 'gadget',
+                    system: { isStackable: 'true', quantity: 1 },
+                };
+                await actor.sheet._onDropItemCreate([itemData]);
+                const gadgets = actor.items.filter(i => i.type === 'gadget' && i.name === 'Throwing Star');
+                return {
+                    count: gadgets.length,
+                    quantity: gadgets[0]?.system.quantity,
+                };
+            }, { actorId });
+
+            expect(result.count).toBe(1);
+            expect(result.quantity).toBe(2);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Non-stackable gadget creates separate item even with same name', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('GadgetInt_NoStack'));
+            await addGadgetToActor(page, actorId, {
+                name: 'Grapple Gun', av: 0, ev: 0,
+            });
+
+            const result = await page.evaluate(async ({ actorId }) => {
+                const actor = game.actors.get(actorId);
+                const itemData = {
+                    name: 'Grapple Gun',
+                    type: 'gadget',
+                    system: { quantity: 1 },
+                };
+                await actor.sheet._onDropItemCreate([itemData]);
+                const gadgets = actor.items.filter(i => i.type === 'gadget' && i.name === 'Grapple Gun');
+                return { count: gadgets.length };
+            }, { actorId });
+
+            expect(result.count).toBe(2);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Dropping stackable gadget with quantity > 1 adds full quantity', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('GadgetInt_StackMulti'));
+            const gadgetId = await addGadgetToActor(page, actorId, {
+                name: 'Smoke Pellet', av: 0, ev: 0,
+            });
+            await page.evaluate(async ({ actorId, gadgetId }) => {
+                const gadget = game.actors.get(actorId).items.get(gadgetId);
+                await gadget.update({ 'system.isStackable': 'true', 'system.quantity': 3 });
+            }, { actorId, gadgetId });
+
+            const result = await page.evaluate(async ({ actorId }) => {
+                const actor = game.actors.get(actorId);
+                const itemData = {
+                    name: 'Smoke Pellet',
+                    type: 'gadget',
+                    system: { isStackable: 'true', quantity: 5 },
+                };
+                await actor.sheet._onDropItemCreate([itemData]);
+                const gadgets = actor.items.filter(i => i.type === 'gadget' && i.name === 'Smoke Pellet');
+                return {
+                    count: gadgets.length,
+                    quantity: gadgets[0]?.system.quantity,
+                };
+            }, { actorId });
+
+            expect(result.count).toBe(1);
+            expect(result.quantity).toBe(8);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
 });

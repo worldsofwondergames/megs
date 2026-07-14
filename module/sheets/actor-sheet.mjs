@@ -971,6 +971,46 @@ export class MEGSActorSheet extends ActorSheet {
         event.currentTarget.classList.add('drop-target');
     }
 
+    _isStackable(item) {
+        return item?.system?.isStackable === true || item?.system?.isStackable === 'true';
+    }
+
+    _findStackableMatch(droppedItem, parentId, excludeId) {
+        const matchesParent = parentId
+            ? (p) => p === parentId
+            : (p) => !p;
+        return this.actor.items.find(
+            (existing) => existing.type === MEGS.itemTypes.gadget &&
+                existing.name === droppedItem.name &&
+                existing.id !== excludeId &&
+                matchesParent(existing.system.parent) &&
+                this._isStackable(existing)
+        );
+    }
+
+    async _stackOnto(target, droppedItem, isOnActor) {
+        const droppedQuantity = droppedItem.system.quantity || 1;
+        const newQuantity = (target.system.quantity || 1) + droppedQuantity;
+        await target.update({ 'system.quantity': newQuantity });
+        if (isOnActor) {
+            await droppedItem.delete();
+        }
+        ui.notifications.info(
+            game.i18n.format('MEGS.StackableQuantityIncreased', {
+                name: target.name,
+                quantity: newQuantity,
+            })
+        );
+        this.render(false);
+    }
+
+    async _ensureHasGadgets(gadgetId) {
+        const gadget = this.actor.items.get(gadgetId);
+        if (gadget && gadget.system.settings?.hasGadgets !== 'true') {
+            await gadget.update({ 'system.settings.hasGadgets': 'true' });
+        }
+    }
+
     async _onDropOnGadget(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -986,17 +1026,32 @@ export class MEGSActorSheet extends ActorSheet {
         if (droppedItem?.type !== MEGS.itemTypes.gadget) return;
 
         const isOnActor = droppedItem.parent?.id === this.actor.id;
-        if (!isOnActor) return;
 
-        if (droppedItem.id === targetGadgetId) return;
-        if (droppedItem.system.parent === targetGadgetId) return;
+        if (isOnActor && droppedItem.id === targetGadgetId) return;
+        if (isOnActor && droppedItem.system.parent === targetGadgetId) return;
+
+        if (this._isStackable(droppedItem)) {
+            const targetGadget = this.actor.items.get(targetGadgetId);
+            if (targetGadget && targetGadget.name === droppedItem.name && this._isStackable(targetGadget)) {
+                return this._stackOnto(targetGadget, droppedItem, isOnActor);
+            }
+            const subMatch = this._findStackableMatch(droppedItem, targetGadgetId, droppedItem.id);
+            if (subMatch) {
+                return this._stackOnto(subMatch, droppedItem, isOnActor);
+            }
+        }
+
+        if (!isOnActor) {
+            const itemData = droppedItem.toObject();
+            itemData.system.parent = targetGadgetId;
+            await this._ensureHasGadgets(targetGadgetId);
+            await this.actor.createEmbeddedDocuments('Item', [itemData]);
+            this.render(false);
+            return;
+        }
 
         const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
-
-        const targetGadget = this.actor.items.get(targetGadgetId);
-        if (targetGadget && targetGadget.system.settings?.hasGadgets !== 'true') {
-            updates.push({ _id: targetGadgetId, 'system.settings.hasGadgets': 'true' });
-        }
+        await this._ensureHasGadgets(targetGadgetId);
 
         const childGadgets = this.actor.items.filter(
             i => i.type === MEGS.itemTypes.gadget && i.system.parent === droppedItem.id
@@ -1272,9 +1327,7 @@ export class MEGSActorSheet extends ActorSheet {
         return ownedItem;
     }
 
-    /** @override **/
-    async _onDropItemCreate(itemData) {
-        const items = Array.isArray(itemData) ? itemData : [itemData];
+    _filterBlockedTraits(items) {
         const isTrait = (i) => i.type === 'advantage' || i.type === 'drawback';
         const gadgetBlocked = items.filter((i) => isTrait(i) && i.system?.gadgetOnly);
         const isCharacterCreator = this.constructor.name === 'MEGSCharacterBuilderSheet';
@@ -1286,12 +1339,41 @@ export class MEGSActorSheet extends ActorSheet {
             ui.notifications.warn(game.i18n.localize('MEGS.CreationOnlyWarning'));
         }
         const blocked = [...new Set([...gadgetBlocked, ...creationBlocked])];
-        if (blocked.length) {
-            const allowed = items.filter((i) => !blocked.includes(i));
-            if (!allowed.length) return false;
-            return super._onDropItemCreate(allowed);
+        return blocked.length ? items.filter((i) => !blocked.includes(i)) : items;
+    }
+
+    /** @override **/
+    async _onDropItemCreate(itemData) {
+        const items = Array.isArray(itemData) ? itemData : [itemData];
+        const allowed = this._filterBlockedTraits(items);
+        if (!allowed.length) return false;
+
+        const stackable = [];
+        const remaining = [];
+        for (const item of allowed) {
+            const match = this._isStackable(item)
+                ? this._findStackableMatch(item, '', null)
+                : null;
+            if (match) {
+                stackable.push({ match, droppedQuantity: item.system?.quantity || 1 });
+            } else {
+                remaining.push(item);
+            }
         }
-        return super._onDropItemCreate(itemData);
+
+        for (const { match, droppedQuantity } of stackable) {
+            const newQuantity = (match.system.quantity || 1) + droppedQuantity;
+            await match.update({ 'system.quantity': newQuantity });
+            ui.notifications.info(
+                game.i18n.format('MEGS.StackableQuantityIncreased', {
+                    name: match.name,
+                    quantity: newQuantity,
+                })
+            );
+        }
+
+        if (!remaining.length) return !!stackable.length;
+        return super._onDropItemCreate(remaining.length === 1 ? remaining[0] : remaining);
     }
 
     _changeEditHeaderLink(sheetHeaderLinks) {

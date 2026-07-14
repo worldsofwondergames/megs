@@ -254,6 +254,15 @@ export class MEGSItemSheet extends ItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
 
+        if (this._settingsTabActive) {
+            html.find('.tab[data-tab="settings"]').addClass('active');
+            html.find('.tab').not('[data-tab="settings"]').removeClass('active');
+        }
+
+        html.find('nav.sheet-tabs .item').on('click', () => {
+            this._settingsTabActive = false;
+        });
+
         // Double-click TinyMCE editor content to activate editing
         html.on('dblclick', '.editor-content', (ev) => {
             // Find the associated edit button and click it
@@ -1512,8 +1521,7 @@ export class MEGSItemSheet extends ItemSheet {
 
     _openSettings(e) {
         e.preventDefault();
-        // Find and activate the settings tab
-        // Manually activate the settings tab content
+        this._settingsTabActive = true;
         this.element.find('.tab[data-tab="settings"]').addClass('active');
         this.element.find('.tab').not('[data-tab="settings"]').removeClass('active');
     }

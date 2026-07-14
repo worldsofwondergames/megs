@@ -154,7 +154,7 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Actor Sheet Skills Tab Accordion Styles
 /*------------------------------------------------------------------------*/
 
-&.sheet.actor .tab.skills .items-list {
+@at-root .megs.sheet.actor .tab.skills .items-list {
     .skill-row {
         background-color: #e8f4f8;
         min-height: 31px;
@@ -210,7 +210,7 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Actor Sheet Powers Tab Accordion Styles
 /*------------------------------------------------------------------------*/
 
-&.sheet.actor .tab.powers .items-list {
+@at-root .megs.sheet.actor .tab.powers .items-list {
     .power-row {
         background-color: #f0f8ff;
         min-height: 31px;
@@ -275,7 +275,7 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Item Sheet Subskills Tab
 /*------------------------------------------------------------------------*/
 
-&.sheet.item .tab.subskills .items-list {
+@at-root .megs.sheet.item .tab.subskills .items-list {
     .item-trained {
         display: flex;
         justify-content: center;

@@ -122,7 +122,7 @@ MEGS.getAPCost = function (aps, factorCost) {
     aps = Number(aps);
     factorCost = Number(factorCost);
 
-    if (isNaN(aps) || aps < 0 || isNaN(factorCost) || factorCost < 1 || factorCost > 10) {
+    if (Number.isNaN(aps) || aps < 0 || Number.isNaN(factorCost) || factorCost < 1 || factorCost > 10) {
         if (game.settings.get('megs', 'debugLogging')) {
             console.warn(`Invalid AP cost lookup: ${aps} APs at FC ${factorCost}`);
         }

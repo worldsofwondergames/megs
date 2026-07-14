@@ -41,6 +41,8 @@ import {
     getPickerOptions,
     getChatMessageCount,
     getLatestChatMessage,
+    queueDice,
+    restoreDice,
 } from '../fixtures/roll-helpers.mjs';
 
 // ============================================================
@@ -316,6 +318,8 @@ test.describe('Gadget Sheet Rolling (#13)', () => {
                 hasAVAndEV: 'true',
             });
 
+            await queueDice(page, [6, 3]);
+
             await openGadgetSheet(page, actorId, gadgetId);
             const beforeCount = await getChatMessageCount(page);
 
@@ -327,6 +331,7 @@ test.describe('Gadget Sheet Rolling (#13)', () => {
             expect(msg).not.toBeNull();
             expect(msg.header).toContain('TestRifle');
         } finally {
+            await restoreDice(page);
             await closeAllWindows(page);
             await deleteActor(page, actorId);
         }

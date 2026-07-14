@@ -11,6 +11,8 @@ import {
     getLatestChatMessage,
     waitForRollDialog,
     submitRollDialog,
+    queueDice,
+    restoreDice,
 } from '../fixtures/roll-helpers.mjs';
 
 test.describe('Chat Message Formatting (#93)', () => {
@@ -25,7 +27,8 @@ test.describe('Chat Message Formatting (#93)', () => {
                 source: 'physical',
             });
 
-            // Trigger a roll via the item's roll() method
+            await queueDice(page, [5, 3]);
+
             await page.evaluate((id) => {
                 const actor = game.actors.get(id);
                 const power = actor.items.find(i => i.type === 'power' && i.name === 'Flame Project');
@@ -41,6 +44,7 @@ test.describe('Chat Message Formatting (#93)', () => {
             expect(msg).not.toBeNull();
             expect(msg.html).toContain('megs-chat-avatar');
         } finally {
+            await restoreDice(page);
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
         }
@@ -57,6 +61,8 @@ test.describe('Chat Message Formatting (#93)', () => {
                 source: 'physical',
             });
 
+            await queueDice(page, [6, 4]);
+
             await page.evaluate((id) => {
                 const actor = game.actors.get(id);
                 const power = actor.items.find(i => i.type === 'power' && i.name === 'Heat Vision');
@@ -72,6 +78,7 @@ test.describe('Chat Message Formatting (#93)', () => {
             expect(msg).not.toBeNull();
             expect(msg.html).toContain('<details');
         } finally {
+            await restoreDice(page);
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
         }
@@ -88,6 +95,8 @@ test.describe('Chat Message Formatting (#93)', () => {
                 source: 'physical',
             });
 
+            await queueDice(page, [7, 2]);
+
             await page.evaluate((id) => {
                 const actor = game.actors.get(id);
                 const power = actor.items.find(i => i.type === 'power' && i.name === 'Super Breath');
@@ -102,11 +111,10 @@ test.describe('Chat Message Formatting (#93)', () => {
             const msg = await getLatestChatMessage(page);
             expect(msg).not.toBeNull();
 
-            // The rollResult.hbs template always adds either 'success' or 'failure' class
-            // to the chat-result div within the summary
             const hasResultStyling = msg.html.includes('success') || msg.html.includes('failure');
             expect(hasResultStyling).toBe(true);
         } finally {
+            await restoreDice(page);
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
         }
@@ -123,6 +131,8 @@ test.describe('Chat Message Formatting (#93)', () => {
                 source: 'physical',
             });
 
+            await queueDice(page, [4, 8]);
+
             await page.evaluate((id) => {
                 const actor = game.actors.get(id);
                 const power = actor.items.find(i => i.type === 'power' && i.name === 'Lightning');
@@ -137,15 +147,11 @@ test.describe('Chat Message Formatting (#93)', () => {
             const msg = await getLatestChatMessage(page);
             expect(msg).not.toBeNull();
 
-            // Verify the megs-chat-roll wrapper from rollResult.hbs
             expect(msg.html).toContain('megs-chat-roll');
-
-            // Verify the dice display elements exist
             expect(msg.html).toContain('d10');
-
-            // Verify the chat-result summary section exists
             expect(msg.html).toContain('chat-result');
         } finally {
+            await restoreDice(page);
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);
         }

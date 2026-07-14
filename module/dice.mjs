@@ -374,7 +374,7 @@ export class MegsTableRolls {
         });
         resultData.rollTotal = avRollTotal;
 
-        if (Number.parseInt(dice[dice.length - 2]) === 1 && Number.parseInt(dice[dice.length - 1]) === 1) {
+        if (Number.parseInt(dice.at(-2)) === 1 && Number.parseInt(dice.at(-1)) === 1) {
             // dice are both 1s
             resultData.result = game.i18n.localize('MEGS.Double1s');
             await this._showRollResultInChat(resultData, avRoll, ShowResultCall.DOUBLE_1S);
@@ -582,12 +582,7 @@ export class MegsTableRolls {
             dice.push(die1);
             dice.push(die2);
 
-            if (die1 === 1 && die2 === 1) {
-                if (hadDoubles && game.dice3d) {
-                    await game.dice3d.showForRoll(currentRoll, game.user, true);
-                }
-                stopRolling = true;
-            } else if (die1 === die2) {
+            if (die1 === die2 && die1 !== 1) {
                 hadDoubles = true;
                 if (game.dice3d) {
                     await game.dice3d.showForRoll(currentRoll, game.user, true);

@@ -1024,6 +1024,7 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
   color: #000;
 }
+
 .megs.sheet.actor .tab.powers .items-list .power-row {
   background-color: #f0f8ff;
   min-height: 31px;
@@ -1073,11 +1074,13 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .power-modifier-row:active {
   cursor: grabbing;
 }
+
 .megs.sheet.item .tab.subskills .items-list .item-trained {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .megs .gadget-attribute {
   position: relative;
 }
@@ -1779,3 +1782,5 @@ li.chat-message .tooltip .tooltiptext .init-table .value {
   font-weight: bold;
   white-space: nowrap;
 }
+
+/*# sourceMappingURL=megs.css.map */

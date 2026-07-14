@@ -1084,6 +1084,43 @@ export class MEGSActorSheet extends ActorSheet {
         this.render(false);
     }
 
+    _resolveRollValues(dataset, targetActor) {
+        if (dataset.type === MEGS.itemTypes.power && dataset.itemId) {
+            const powerItem = this.actor.items.get(dataset.itemId);
+            if (powerItem && Utils.hasPowerSourceOverrides(powerItem)) {
+                return Utils.resolvePowerRollValues(powerItem, this.actor, targetActor);
+            }
+        }
+
+        const actionValue = Number.parseInt(dataset.value);
+        let opposingValue = 0;
+        let resistanceValue = 0;
+
+        if (targetActor) {
+            let attrKey;
+            if (dataset.type === MEGS.rollTypes.attribute) {
+                attrKey = dataset.key;
+            } else if (dataset.type === MEGS.itemTypes.skill || dataset.type === MEGS.itemTypes.power) {
+                attrKey = dataset.link;
+            }
+            if (attrKey) {
+                opposingValue = targetActor.system.attributes[attrKey].value;
+                resistanceValue = Utils.getResistanceValue(attrKey, targetActor);
+            } else if (dataset.type === MEGS.itemTypes.skill) {
+                console.error('No linked attribute for ' + dataset.name);
+            }
+        }
+
+        let effectValue;
+        if (dataset.type === MEGS.rollTypes.attribute) {
+            effectValue = Utils.getEffectValue(dataset.key, this.actor);
+        } else {
+            effectValue = Number.parseInt(dataset.value);
+        }
+
+        return { av: actionValue, ov: opposingValue, ev: effectValue, rv: resistanceValue };
+    }
+
     /**
      * Handle clickable rolls.
      * @param {Event} event   The originating click event
@@ -1097,62 +1134,18 @@ export class MEGSActorSheet extends ActorSheet {
             return this._onGadgetRoll(event, dataset);
         }
 
-        let actionValue = Number.parseInt(dataset.value);
-        let opposingValue = 0;
-        let effectValue = 0;
-        let resistanceValue = 0;
-
         const targetActor = MegsTableRolls.getTargetActor();
-
-        if (dataset.type === MEGS.itemTypes.power && dataset.itemId) {
-            const powerItem = this.actor.items.get(dataset.itemId);
-            if (powerItem && Utils.hasPowerSourceOverrides(powerItem)) {
-                const resolved = Utils.resolvePowerRollValues(powerItem, this.actor, targetActor);
-                actionValue = resolved.av;
-                effectValue = resolved.ev;
-                opposingValue = resolved.ov;
-                resistanceValue = resolved.rv;
-            } else {
-                effectValue = Number.parseInt(dataset.value);
-                if (targetActor && dataset.link) {
-                    opposingValue = targetActor.system.attributes[dataset.link].value;
-                    resistanceValue = Utils.getResistanceValue(dataset.link, targetActor);
-                }
-            }
-        } else if (targetActor) {
-            if (dataset.type === MEGS.rollTypes.attribute) {
-                opposingValue = targetActor.system.attributes[dataset.key].value;
-                resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
-            } else if (
-                dataset.type === MEGS.itemTypes.skill
-            ) {
-                if (dataset.link) {
-                    opposingValue = targetActor.system.attributes[dataset.link].value;
-                    resistanceValue = Utils.getResistanceValue(dataset.link, targetActor);
-                } else {
-                    console.error('No linked attribute for ' + dataset.name);
-                }
-            }
-        }
-
-        if (dataset.type === MEGS.rollTypes.attribute) {
-            effectValue = Utils.getEffectValue(dataset.key, this.actor);
-        } else if (
-            dataset.type === MEGS.itemTypes.skill ||
-            dataset.type === MEGS.itemTypes.subskill
-        ) {
-            effectValue = Number.parseInt(dataset.value);
-        }
+        const resolved = this._resolveRollValues(dataset, targetActor);
 
         console.info('Rolling from actor-sheet._onRoll()');
         const rollValues = new RollValues(
             this.object.name + ' - ' + dataset.label,
             dataset.type,
             dataset.value,
-            actionValue,
-            opposingValue,
-            effectValue,
-            resistanceValue,
+            resolved.av,
+            resolved.ov,
+            resolved.ev,
+            resolved.rv,
             dataset.roll,
             dataset.unskilled
         );

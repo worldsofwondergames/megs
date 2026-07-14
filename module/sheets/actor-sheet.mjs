@@ -971,6 +971,46 @@ export class MEGSActorSheet extends ActorSheet {
         event.currentTarget.classList.add('drop-target');
     }
 
+    _isStackable(item) {
+        return item?.system?.isStackable === true || item?.system?.isStackable === 'true';
+    }
+
+    _findStackableMatch(droppedItem, parentId, excludeId) {
+        const matchesParent = parentId
+            ? (p) => p === parentId
+            : (p) => !p;
+        return this.actor.items.find(
+            (existing) => existing.type === MEGS.itemTypes.gadget &&
+                existing.name === droppedItem.name &&
+                existing.id !== excludeId &&
+                matchesParent(existing.system.parent) &&
+                this._isStackable(existing)
+        );
+    }
+
+    async _stackOnto(target, droppedItem, isOnActor) {
+        const droppedQuantity = droppedItem.system.quantity || 1;
+        const newQuantity = (target.system.quantity || 1) + droppedQuantity;
+        await target.update({ 'system.quantity': newQuantity });
+        if (isOnActor) {
+            await droppedItem.delete();
+        }
+        ui.notifications.info(
+            game.i18n.format('MEGS.StackableQuantityIncreased', {
+                name: target.name,
+                quantity: newQuantity,
+            })
+        );
+        this.render(false);
+    }
+
+    async _ensureHasGadgets(gadgetId) {
+        const gadget = this.actor.items.get(gadgetId);
+        if (gadget && gadget.system.settings?.hasGadgets !== 'true') {
+            await gadget.update({ 'system.settings.hasGadgets': 'true' });
+        }
+    }
+
     async _onDropOnGadget(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -990,75 +1030,28 @@ export class MEGSActorSheet extends ActorSheet {
         if (isOnActor && droppedItem.id === targetGadgetId) return;
         if (isOnActor && droppedItem.system.parent === targetGadgetId) return;
 
-        // Stackable check: match by name against the target gadget itself
-        // (for top-level stacking onto a matching stackable row)
-        if (droppedItem.system.isStackable === true || droppedItem.system.isStackable === 'true') {
+        if (this._isStackable(droppedItem)) {
             const targetGadget = this.actor.items.get(targetGadgetId);
-            if (targetGadget &&
-                targetGadget.name === droppedItem.name &&
-                (targetGadget.system.isStackable === true || targetGadget.system.isStackable === 'true')) {
-                const droppedQuantity = droppedItem.system.quantity || 1;
-                const newQuantity = (targetGadget.system.quantity || 1) + droppedQuantity;
-                await targetGadget.update({ 'system.quantity': newQuantity });
-                if (isOnActor) {
-                    await droppedItem.delete();
-                }
-                ui.notifications.info(
-                    game.i18n.format('MEGS.StackableQuantityIncreased', {
-                        name: targetGadget.name,
-                        quantity: newQuantity,
-                    })
-                );
-                this.render(false);
-                return;
+            if (targetGadget && targetGadget.name === droppedItem.name && this._isStackable(targetGadget)) {
+                return this._stackOnto(targetGadget, droppedItem, isOnActor);
             }
-
-            // Stackable check: match by name against sub-gadgets of the target
-            const subMatch = this.actor.items.find(
-                (existing) => existing.type === MEGS.itemTypes.gadget &&
-                    existing.name === droppedItem.name &&
-                    existing.id !== droppedItem.id &&
-                    existing.system.parent === targetGadgetId &&
-                    (existing.system.isStackable === true || existing.system.isStackable === 'true')
-            );
+            const subMatch = this._findStackableMatch(droppedItem, targetGadgetId, droppedItem.id);
             if (subMatch) {
-                const droppedQuantity = droppedItem.system.quantity || 1;
-                const newQuantity = (subMatch.system.quantity || 1) + droppedQuantity;
-                await subMatch.update({ 'system.quantity': newQuantity });
-                if (isOnActor) {
-                    await droppedItem.delete();
-                }
-                ui.notifications.info(
-                    game.i18n.format('MEGS.StackableQuantityIncreased', {
-                        name: subMatch.name,
-                        quantity: newQuantity,
-                    })
-                );
-                this.render(false);
-                return;
+                return this._stackOnto(subMatch, droppedItem, isOnActor);
             }
         }
 
-        // External item dropped onto a gadget → create as sub-gadget
         if (!isOnActor) {
             const itemData = droppedItem.toObject();
             itemData.system.parent = targetGadgetId;
-            const targetGadget = this.actor.items.get(targetGadgetId);
-            if (targetGadget && targetGadget.system.settings?.hasGadgets !== 'true') {
-                await targetGadget.update({ 'system.settings.hasGadgets': 'true' });
-            }
+            await this._ensureHasGadgets(targetGadgetId);
             await this.actor.createEmbeddedDocuments('Item', [itemData]);
             this.render(false);
             return;
         }
 
-        // Re-parent an existing actor gadget
         const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
-
-        const targetGadget = this.actor.items.get(targetGadgetId);
-        if (targetGadget && targetGadget.system.settings?.hasGadgets !== 'true') {
-            updates.push({ _id: targetGadgetId, 'system.settings.hasGadgets': 'true' });
-        }
+        await this._ensureHasGadgets(targetGadgetId);
 
         const childGadgets = this.actor.items.filter(
             i => i.type === MEGS.itemTypes.gadget && i.system.parent === droppedItem.id
@@ -1334,9 +1327,7 @@ export class MEGSActorSheet extends ActorSheet {
         return ownedItem;
     }
 
-    /** @override **/
-    async _onDropItemCreate(itemData) {
-        const items = Array.isArray(itemData) ? itemData : [itemData];
+    _filterBlockedTraits(items) {
         const isTrait = (i) => i.type === 'advantage' || i.type === 'drawback';
         const gadgetBlocked = items.filter((i) => isTrait(i) && i.system?.gadgetOnly);
         const isCharacterCreator = this.constructor.name === 'MEGSCharacterBuilderSheet';
@@ -1348,27 +1339,26 @@ export class MEGSActorSheet extends ActorSheet {
             ui.notifications.warn(game.i18n.localize('MEGS.CreationOnlyWarning'));
         }
         const blocked = [...new Set([...gadgetBlocked, ...creationBlocked])];
-        const allowed = blocked.length ? items.filter((i) => !blocked.includes(i)) : items;
+        return blocked.length ? items.filter((i) => !blocked.includes(i)) : items;
+    }
+
+    /** @override **/
+    async _onDropItemCreate(itemData) {
+        const items = Array.isArray(itemData) ? itemData : [itemData];
+        const allowed = this._filterBlockedTraits(items);
         if (!allowed.length) return false;
 
-        // Stackable gadget check: find matching stackable gadgets and increment quantity
         const stackable = [];
         const remaining = [];
         for (const item of allowed) {
-            if (item.type === MEGS.itemTypes.gadget &&
-                (item.system?.isStackable === true || item.system?.isStackable === 'true')) {
-                const match = this.actor.items.find(
-                    (existing) => existing.type === MEGS.itemTypes.gadget &&
-                        existing.name === item.name &&
-                        !existing.system.parent &&
-                        (existing.system.isStackable === true || existing.system.isStackable === 'true')
-                );
-                if (match) {
-                    stackable.push({ match, droppedQuantity: item.system?.quantity || 1 });
-                    continue;
-                }
+            const match = this._isStackable(item)
+                ? this._findStackableMatch(item, '', null)
+                : null;
+            if (match) {
+                stackable.push({ match, droppedQuantity: item.system?.quantity || 1 });
+            } else {
+                remaining.push(item);
             }
-            remaining.push(item);
         }
 
         for (const { match, droppedQuantity } of stackable) {

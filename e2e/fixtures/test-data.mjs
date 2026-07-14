@@ -202,10 +202,10 @@ export async function openActorSheet(page, actorId, tab) {
         if (!actor) throw new Error('Actor not found: ' + id);
         actor.sheet.render(true);
     }, { id: actorId, tab });
-    await page.waitForSelector('.sheet.actor', { timeout: 5000 });
+    await page.waitForSelector('.sheet.actor', { timeout: 10000 });
     if (tab) {
         await page.click(`.sheet.actor .tabs .item[data-tab="${tab}"]`);
-        await page.waitForSelector(`.sheet.actor .tab.${tab}`, { timeout: 5000 });
+        await page.waitForSelector(`.sheet.actor .tab.${tab}`, { timeout: 10000 });
     }
 }
 

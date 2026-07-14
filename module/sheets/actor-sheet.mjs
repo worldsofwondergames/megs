@@ -986,31 +986,51 @@ export class MEGSActorSheet extends ActorSheet {
         if (droppedItem?.type !== MEGS.itemTypes.gadget) return;
 
         const isOnActor = droppedItem.parent?.id === this.actor.id;
-        if (!isOnActor) return;
 
-        if (droppedItem.id === targetGadgetId) return;
-        if (droppedItem.system.parent === targetGadgetId) return;
+        if (isOnActor && droppedItem.id === targetGadgetId) return;
+        if (isOnActor && droppedItem.system.parent === targetGadgetId) return;
 
-        // Stackable sub-gadget check
+        // Stackable check: match by name against the target gadget itself
+        // (for top-level stacking onto a matching stackable row)
         if (droppedItem.system.isStackable === true || droppedItem.system.isStackable === 'true') {
-            const match = this.actor.items.find(
+            const targetGadget = this.actor.items.get(targetGadgetId);
+            if (targetGadget &&
+                targetGadget.name === droppedItem.name &&
+                (targetGadget.system.isStackable === true || targetGadget.system.isStackable === 'true')) {
+                const droppedQuantity = droppedItem.system.quantity || 1;
+                const newQuantity = (targetGadget.system.quantity || 1) + droppedQuantity;
+                await targetGadget.update({ 'system.quantity': newQuantity });
+                if (isOnActor) {
+                    await droppedItem.delete();
+                }
+                ui.notifications.info(
+                    game.i18n.format('MEGS.StackableQuantityIncreased', {
+                        name: targetGadget.name,
+                        quantity: newQuantity,
+                    })
+                );
+                this.render(false);
+                return;
+            }
+
+            // Stackable check: match by name against sub-gadgets of the target
+            const subMatch = this.actor.items.find(
                 (existing) => existing.type === MEGS.itemTypes.gadget &&
                     existing.name === droppedItem.name &&
                     existing.id !== droppedItem.id &&
                     existing.system.parent === targetGadgetId &&
                     (existing.system.isStackable === true || existing.system.isStackable === 'true')
             );
-            if (match) {
+            if (subMatch) {
                 const droppedQuantity = droppedItem.system.quantity || 1;
-                const newQuantity = (match.system.quantity || 1) + droppedQuantity;
-                await match.update({ 'system.quantity': newQuantity });
-                // Remove the dropped item since it was merged
+                const newQuantity = (subMatch.system.quantity || 1) + droppedQuantity;
+                await subMatch.update({ 'system.quantity': newQuantity });
                 if (isOnActor) {
                     await droppedItem.delete();
                 }
                 ui.notifications.info(
                     game.i18n.format('MEGS.StackableQuantityIncreased', {
-                        name: match.name,
+                        name: subMatch.name,
                         quantity: newQuantity,
                     })
                 );
@@ -1019,6 +1039,20 @@ export class MEGSActorSheet extends ActorSheet {
             }
         }
 
+        // External item dropped onto a gadget → create as sub-gadget
+        if (!isOnActor) {
+            const itemData = droppedItem.toObject();
+            itemData.system.parent = targetGadgetId;
+            const targetGadget = this.actor.items.get(targetGadgetId);
+            if (targetGadget && targetGadget.system.settings?.hasGadgets !== 'true') {
+                await targetGadget.update({ 'system.settings.hasGadgets': 'true' });
+            }
+            await this.actor.createEmbeddedDocuments('Item', [itemData]);
+            this.render(false);
+            return;
+        }
+
+        // Re-parent an existing actor gadget
         const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
 
         const targetGadget = this.actor.items.get(targetGadgetId);

@@ -1,6 +1,6 @@
 import { chromium } from '@playwright/test';
-import { mkdirSync } from 'fs';
-import { dirname } from 'path';
+import { mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 const AUTH_FILE = './e2e/.auth/state.json';
 const WORLD_ID = 'megs-test-world';

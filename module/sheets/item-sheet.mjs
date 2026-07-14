@@ -123,9 +123,9 @@ export class MEGSItemSheet extends ItemSheet {
             // Always display parent skill's APs
             const actor = game.actors.get(context.document.system.actorId);
             if (actor) {
-                const skill = actor.items.filter((obj) => {
+                const skill = actor.items.find((obj) => {
                     return obj._id === context.document.system.parent;
-                })[0];
+                });
                 if (skill) {
                     // Always use parent skill APs for display
                     context.parentSkillAPs = skill.system.aps || 0;
@@ -232,9 +232,9 @@ export class MEGSItemSheet extends ItemSheet {
         // only subskills with dice or both types for parent skill + rollable are rollable
         if (itemData.type === MEGS.itemTypes.subskill) {
             const actor = game.actors.get(itemData.system.actorId);
-            const skill = actor.items.filter((obj) => {
+            const skill = actor.items.find((obj) => {
                 return obj._id === itemData.system.parent;
-            })[0];
+            });
 
             const isDice = skill.system.type === MEGS.powerTypes.dice.toLowerCase();
             const isBoth = skill.system.type === MEGS.powerTypes.both.toLowerCase();

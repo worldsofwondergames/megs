@@ -1,4 +1,5 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base } from '@playwright/test';
+export { expect } from '@playwright/test';
 
 export const test = base.extend({
     // Worker-scoped: one browser context and page shared by every test in the
@@ -31,4 +32,4 @@ export const test = base.extend({
     },
 });
 
-export { expect };
+

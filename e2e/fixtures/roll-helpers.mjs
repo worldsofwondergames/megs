@@ -109,7 +109,7 @@ export async function queueDice(page, values) {
         window._e2eDiceQueue = vals.slice();
         DieCls.prototype.randomFace = function () {
             const q = window._e2eDiceQueue;
-            if (q && q.length) return q.shift();
+            if (q?.length) return q.shift();
             return window._e2eDice.origRandomFace.call(this);
         };
         if (game.dice3d) {
@@ -210,9 +210,9 @@ export async function parseLatestRollMessage(page) {
         const msg = msgs[msgs.length - 1];
         const text = msg.textContent;
 
-        const difficultyMatch = text.match(/Difficulty:\s*(\d+)/);
-        const totalMatch = text.match(/=\s*(\d+)/);
-        const evResultMatch = text.match(/Effect table result:\s*([^\n]+)/);
+        const difficultyMatch = /Difficulty:\s*(\d+)/.exec(text);
+        const totalMatch = /=\s*(\d+)/.exec(text);
+        const evResultMatch = /Effect table result:\s*([^\n]+)/.exec(text);
         const dice = [...msg.querySelectorAll('.d10')].map(d => Number.parseInt(d.textContent.trim()));
 
         const summaryResult = msg.querySelector('summary .chat-result');

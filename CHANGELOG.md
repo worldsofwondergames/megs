@@ -24,6 +24,7 @@
 - Added post-checkout hook to auto-update system.json branch URLs on branch switch
 - Added GitHub Action to sync system.json URLs on push to non-main branches
 - Added GitHub Action to auto-close linked issues when PRs are merged to any branch
+- Gadgets can now be marked as "Stackable" on the Settings tab; dropping a stackable gadget onto a character or parent gadget that already has a matching stackable gadget by name increments the existing gadget's quantity instead of creating a duplicate (issue #179)
 
 ### Bug Fixes
 
@@ -53,6 +54,8 @@
 - Added Playwright E2E tests for sub-gadget display, edit, delete, roll, parenting, and detaching (issue #78)
 - Added unit tests for omni-gadget cost calculation and data model (issue #254)
 - Added Playwright E2E tests for omni-gadget workflow: class checkboxes, tab visibility, data persistence, and actor Gadgets tab description (issue #254)
+- Added unit tests for stackable gadget data model (issue #179)
+- Added Playwright E2E tests for stackable gadget drop behavior: quantity increment, non-stackable separation, multi-quantity stacking (issue #179)
 
 ### Code Quality
 

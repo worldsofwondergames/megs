@@ -413,3 +413,59 @@ describe('Gadget Attribute FC Clamping', () => {
         expect(gadget.system.gadgetPointBudget.attributesCost).toBe(20);
     });
 });
+
+describe('Stackable Gadget Data Model', () => {
+    test('stackable flag defaults to false in gadget data', () => {
+        const gadget = new MEGSItem({
+            name: 'Test Gadget',
+            type: 'gadget',
+            system: {
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        expect(gadget.system.isStackable).toBeFalsy();
+    });
+
+    test('stackable gadget retains flag through prepareDerivedData', () => {
+        const gadget = new MEGSItem({
+            name: 'Batarang',
+            type: 'gadget',
+            system: {
+                isStackable: 'true',
+                quantity: 3,
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        expect(gadget.system.isStackable).toBe('true');
+        expect(gadget.system.quantity).toBe(3);
+    });
+
+    test('stackable gadget cost calculation is unaffected by stackable flag', () => {
+        const gadget = new MEGSItem({
+            name: 'Stackable Device',
+            type: 'gadget',
+            system: {
+                isStackable: 'true',
+                quantity: 5,
+                attributes: {
+                    body: { value: 4, factorCost: 6 }
+                },
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Cost should be same as non-stackable: 4 APs @ FC 6 = 18, ÷4 = 5
+        expect(gadget.system.totalCost).toBe(5);
+    });
+});

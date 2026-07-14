@@ -222,3 +222,107 @@ describe('_prepareItems sub-gadget nesting', () => {
         expect(context.gadgets[0].subGadgets).toHaveLength(0);
     });
 });
+
+// --- stackable gadget helpers (#179) -----------------------------------------
+
+describe('_isStackable', () => {
+    const sheet = new MEGSActorSheet(actor);
+
+    test('returns true for boolean true', () => {
+        expect(sheet._isStackable({ system: { isStackable: true } })).toBe(true);
+    });
+
+    test('returns true for string "true"', () => {
+        expect(sheet._isStackable({ system: { isStackable: 'true' } })).toBe(true);
+    });
+
+    test('returns false for boolean false', () => {
+        expect(sheet._isStackable({ system: { isStackable: false } })).toBe(false);
+    });
+
+    test('returns false for string "false"', () => {
+        expect(sheet._isStackable({ system: { isStackable: 'false' } })).toBe(false);
+    });
+
+    test('returns false for undefined', () => {
+        expect(sheet._isStackable({ system: {} })).toBe(false);
+    });
+
+    test('returns false for null item', () => {
+        expect(sheet._isStackable(null)).toBe(false);
+    });
+});
+
+describe('_findStackableMatch', () => {
+    function buildSheetWithItems(items) {
+        const doc = mockDocument();
+        const sheet = new MEGSActorSheet(doc, {});
+        sheet.actor = {
+            items: {
+                find: (fn) => items.find(fn),
+            },
+        };
+        return sheet;
+    }
+
+    function gadgetItem({ id, name, parent = '', isStackable = 'true' }) {
+        return {
+            id,
+            type: 'gadget',
+            name,
+            system: { parent, isStackable },
+        };
+    }
+
+    test('finds a matching top-level stackable gadget', () => {
+        const sheet = buildSheetWithItems([
+            gadgetItem({ id: 'g1', name: 'Batarang' }),
+        ]);
+        const dropped = { name: 'Batarang', system: { isStackable: 'true' } };
+        const match = sheet._findStackableMatch(dropped, '', null);
+        expect(match).toBeTruthy();
+        expect(match.id).toBe('g1');
+    });
+
+    test('does not match a gadget with a different name', () => {
+        const sheet = buildSheetWithItems([
+            gadgetItem({ id: 'g1', name: 'Grapple Gun' }),
+        ]);
+        const dropped = { name: 'Batarang', system: { isStackable: 'true' } };
+        expect(sheet._findStackableMatch(dropped, '', null)).toBeUndefined();
+    });
+
+    test('does not match a non-stackable gadget', () => {
+        const sheet = buildSheetWithItems([
+            gadgetItem({ id: 'g1', name: 'Batarang', isStackable: 'false' }),
+        ]);
+        const dropped = { name: 'Batarang', system: { isStackable: 'true' } };
+        expect(sheet._findStackableMatch(dropped, '', null)).toBeUndefined();
+    });
+
+    test('excludes a gadget by ID', () => {
+        const sheet = buildSheetWithItems([
+            gadgetItem({ id: 'g1', name: 'Batarang' }),
+        ]);
+        const dropped = { name: 'Batarang', system: { isStackable: 'true' } };
+        expect(sheet._findStackableMatch(dropped, '', 'g1')).toBeUndefined();
+    });
+
+    test('finds a matching sub-gadget by parent ID', () => {
+        const sheet = buildSheetWithItems([
+            gadgetItem({ id: 'g2', name: 'Batarang', parent: 'g1' }),
+        ]);
+        const dropped = { name: 'Batarang', system: { isStackable: 'true' } };
+        const match = sheet._findStackableMatch(dropped, 'g1', null);
+        expect(match).toBeTruthy();
+        expect(match.id).toBe('g2');
+    });
+
+    test('does not match sub-gadget when looking for top-level', () => {
+        const sheet = buildSheetWithItems([
+            gadgetItem({ id: 'g2', name: 'Batarang', parent: 'g1' }),
+        ]);
+        const dropped = { name: 'Batarang', system: { isStackable: 'true' } };
+        expect(sheet._findStackableMatch(dropped, '', null)).toBeUndefined();
+    });
+});

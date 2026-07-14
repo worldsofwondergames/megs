@@ -1,6 +1,6 @@
 import { HandleRollDialog, NoDialog, YesDialog } from '../__mocks__/foundry.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs';
-import { log, error } from 'console'; // jest overrides console; use these instead
+
 import { jest } from '@jest/globals';
 
 CONFIG.combatManeuvers = {
@@ -34,13 +34,20 @@ beforeAll(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-test('_handleRoll', () => {
-    // TODO
+test('_handleRoll warns when more than one target is selected', async () => {
+    game.user.targets = new Set([1, 2]);
+
+    const values = new RollValues('Test', 'attribute', 0, 4, 4, 4, 4, '7 + 3', false);
+    const dice = new MegsTableRolls(values);
+
+    await dice._handleRoll(10);
+
+    expect(global.uiNotificationsWarnMock).toHaveBeenCalled();
+
+    game.user.targets = new Set();
 });
 
-test('_handleTargetedRolls', () => {
-    // TODO
-});
+test.todo('_handleTargetedRolls shows dialog with pre-filled values');
 
 test('_handleRolls should return 0 result APs for simplest fail path', () => {
     global.Dialog = HandleRollDialog;
@@ -109,115 +116,6 @@ test('_handleRolls should return 0 result APs for simplest fail path', () => {
 //         expect(response).toEqual(1);
 //     });
 // });
-
-test('_handleRolls should return correct result for Critical Blow', () => {
-    global.Dialog = HandleRollDialog;
-    global.rollIndex = 0;
-    const values = {
-        label: 'Critical Blow',
-        type: 'attribute',
-        valueOrAps: 0,
-        // actionValue: 10,
-        // opposingValue: 7,
-        effectValue: 0,
-        resistanceValue: 0,
-        //    rollFormula: "7 + 8",
-        unskilled: false,
-    };
-
-    /*Whenever a Player declares that his Character is attempting
-    a Criticul Blow, his adversary receives +2 Column Shifts to the
-    Opposing Value.
-    
-    If the attack succeeds, however, the defender receives -3 Column Shifts to his Resistance Value.
-    
-    Example: A character with 11 DEX and 8 STR attacks a character with 7 DEX and 8 BODY with a Critical Blow.
-  */
-
-    let av = 1;
-    let ov = 1;
-
-    // test action table
-    //  for (let av = 1; av < 61; av++){
-    //    for (let ov = 0; ov < 61; ov++) {
-    for (let dice1 = 1; dice1 < 11; dice1++) {
-        for (let dice2 = 1; dice2 < 11; dice2++) {
-            values.actionValue = av;
-            values.opposingValue = ov;
-            values.rollFormula = dice1 + ' + ' + dice2;
-            const dice = new MegsTableRolls(values);
-
-            dice._rollDice = async function () {
-                return [dice1, dice2];
-            };
-
-            dice._showRollResultInChat = async function (data, roll, callingPoint) {
-                // expect(data.result).toEqual("Success: 1 RAPs!");
-                // expect(data.success).toBe(true);
-                // expect(data.evResult).toEqual(1);
-                error(
-                    'av = ' +
-                        av +
-                        ' | ov = ' +
-                        ov +
-                        'dice 1 = ' +
-                        dice1 +
-                        ' | dice 2 = ' +
-                        dice2 +
-                        ' | result = ' +
-                        JSON.stringify(data)
-                );
-            };
-
-            // async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV,
-            //      combatManeuverKey, resultColumnShifts, isUnskilled) {
-            dice._handleRolls(0, 0, 0, 0, 0, 0, 'Critical Blow', 0, false).then((response) => {
-                //expect(response).toEqual(1);
-                // just returns dice or NaN
-            });
-        }
-    }
-
-    //    }
-    //  }
-});
-
-// test('_handleRolls should return 1 result APs for CM Multi-Attack vs 2', () => {
-//     global.Dialog = HandleRollDialog;
-//     global.rollIndex = 0;
-//     const values = {
-//         label: 'Test',
-//         type: 'attribute',
-//         valueOrAps: 0,
-//         actionValue: 10,
-//         opposingValue: 7,
-//         effectValue: 4,
-//         resistanceValue: 8,
-//         rollFormula: '7 + 8',
-//         unskilled: false,
-//     };
-
-//     const dice = new MegsTableRolls(values);
-//     (0,
-//         (dice._rollDice = async function () {
-//             return [7, 4];
-//         }));
-
-//     dice._showRollResultInChat = async function (data, roll, callingPoint) {
-//         expect(data.result).toEqual('Success: 1 RAPs!');
-//         expect(data.success).toBe(true);
-//         expect(data.evResult).toEqual(1);
-//     };
-
-//     //  async _handleRolls(currentHeroPoints, maxHpToSpend, hpSpentAV, hpSpentEV, hpSpentOV, hpSpentRV,
-//     // combatManeuverKey, resultColumnShifts, isUnskilled) {
-//     dice._handleRolls(0, 0, 0, 0, 0, 0, 'Multi-Attack vs 2', 0, false).then((response) => {
-//         expect(response).toEqual(1);
-//     });
-// });
-
-// TODO test for APs beyond A - ex: av = 7, ov = 4, 10 + 10 + 9 + 8 = 8 column shifts, ev = 4, rv = 4, pretty sure should be 10
-// _handleRolls -> refactor out of this
 
 test('_rollDice should return if dice do not match', () => {
     const values = {
@@ -536,7 +434,19 @@ test('_rollDice should not roll again if have matching dice on first roll and us
 */
 
 test('_getActionTableDifficulty returns the correct difficulty number', () => {
-    // TODO
+    const values = new RollValues('Test', 0, 0, 0, 0, 0, 0, '1d10 + 1d10');
+    const dice = new MegsTableRolls(values);
+    const actionTable = CONFIG.tables.actionTable;
+
+    const avIdx = dice._getRangeIndex(8);
+    const ovIdx = dice._getRangeIndex(8);
+    expect(dice._getActionTableDifficulty(8, 8, 0)).toBe(actionTable[avIdx][ovIdx]);
+
+    expect(dice._getActionTableDifficulty(8, 8, -2)).toBe(actionTable[avIdx][ovIdx + 2]);
+
+    const easyDifficulty = dice._getActionTableDifficulty(20, 5, 0);
+    const hardDifficulty = dice._getActionTableDifficulty(5, 20, 0);
+    expect(easyDifficulty).toBeLessThan(hardDifficulty);
 });
 
 test('_getColumnShifts returns the correct number of column shifts', () => {

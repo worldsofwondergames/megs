@@ -1283,6 +1283,60 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
+async function _verifyCompendiumPacks() {
+    console.log('[MEGS] ===========================================');
+    console.log('[MEGS] Compendium Pack Verification Starting...');
+    console.log('[MEGS] ===========================================');
+
+    try {
+        console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
+
+        const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
+        console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
+
+        if (megsPacks.length === 0) {
+            console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
+            game.packs.forEach(pack => {
+                console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
+            });
+        }
+
+        for (const pack of megsPacks) {
+            console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
+            console.log(`[MEGS]   Collection: ${pack.collection}`);
+            console.log(`[MEGS]   Path: ${pack.metadata.path}`);
+            console.log(`[MEGS]   Type: ${pack.metadata.type}`);
+            console.log(`[MEGS]   Locked: ${pack.locked}`);
+
+            try {
+                console.log('[MEGS]   Attempting to get index...');
+                const index = await pack.getIndex();
+                console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
+
+                if (index.size > 0) {
+                    const sampleItems = Array.from(index.values()).slice(0, 3);
+                    console.log('[MEGS]   Sample items:');
+                    sampleItems.forEach(item => {
+                        console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
+                    });
+                } else {
+                    console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
+                }
+            } catch (error) {
+                console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
+                console.error('[MEGS]   Error details:', error.message, error.stack);
+            }
+        }
+
+        console.log('[MEGS] ===========================================');
+        console.log('[MEGS] Compendium Pack Verification Complete');
+        console.log('[MEGS] ===========================================');
+    } catch (error) {
+        console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
+        console.error('[MEGS] Error details:', error.message, error.stack);
+    }
+}
+
 Hooks.once('ready', async function () {
     // Re-prepare gadget items now that CONFIG.apCostChart is guaranteed loaded
     if (CONFIG.apCostChart?.chart) {
@@ -1295,64 +1349,8 @@ Hooks.once('ready', async function () {
         }
     }
 
-    // Log compendium pack loading information only if debug logging is enabled
     if (game.settings.get('megs', 'debugLogging')) {
-        console.log('[MEGS] ===========================================');
-        console.log('[MEGS] Compendium Pack Verification Starting...');
-        console.log('[MEGS] ===========================================');
-
-        try {
-            // Log all available packs first
-            console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
-
-            // Get all compendium packs for the MEGS system
-            const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
-            console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
-
-            if (megsPacks.length === 0) {
-                console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
-                game.packs.forEach(pack => {
-                    console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
-                });
-            }
-
-            // Check each pack
-            for (const pack of megsPacks) {
-                console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
-                console.log(`[MEGS]   Collection: ${pack.collection}`);
-                console.log(`[MEGS]   Path: ${pack.metadata.path}`);
-                console.log(`[MEGS]   Type: ${pack.metadata.type}`);
-                console.log(`[MEGS]   Locked: ${pack.locked}`);
-
-                try {
-                    // Get the index (this doesn't load all items, just the index)
-                    console.log('[MEGS]   Attempting to get index...');
-                    const index = await pack.getIndex();
-                    console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
-
-                    if (index.size > 0) {
-                        // Show first 3 items as sample
-                        const sampleItems = Array.from(index.values()).slice(0, 3);
-                        console.log('[MEGS]   Sample items:');
-                        sampleItems.forEach(item => {
-                            console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
-                        });
-                    } else {
-                        console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
-                    }
-                } catch (error) {
-                    console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
-                    console.error('[MEGS]   Error details:', error.message, error.stack);
-                }
-            }
-
-            console.log('[MEGS] ===========================================');
-            console.log('[MEGS] Compendium Pack Verification Complete');
-            console.log('[MEGS] ===========================================');
-        } catch (error) {
-            console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
-            console.error('[MEGS] Error details:', error.message, error.stack);
-        }
+        await _verifyCompendiumPacks();
     }
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to

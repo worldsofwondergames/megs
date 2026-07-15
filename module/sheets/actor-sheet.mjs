@@ -1,5 +1,4 @@
 import { MEGS } from '../helpers/config.mjs';
-import { prepareActiveEffectCategories } from '../helpers/effects.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs';
 import { Utils } from '../utils.js';
 
@@ -8,18 +7,36 @@ import { Utils } from '../utils.js';
  * @extends {ActorSheet}
  */
 export class MEGSActorSheet extends ActorSheet {
-    /** @override */
-    constructor(object, options) {
-        super(object, options);
-        if (this.actor) {
-            const isUnlocked = this.actor.isOwner && !this.actor._stats.compendiumSource;
-            this.actor.setFlag('megs', 'edit-mode', isUnlocked);
+    /**
+     * Lock state for an actor that has no stored edit-mode flag: unlocked for an
+     * owner, locked for a non-owner or a compendium actor.
+     * @returns {boolean}
+     */
+    get defaultEditMode() {
+        if (!this.actor) {
+            return false;
         }
+        return Boolean(this.actor.isOwner) && !this.actor._stats?.compendiumSource;
+    }
+
+    /**
+     * The effective edit-mode state: the stored flag when the user has set one,
+     * otherwise the ownership-derived default. Derived on read rather than
+     * written on construction, because writing the flag races the render that
+     * reads it (issue #243).
+     * @returns {boolean}
+     */
+    get isEditMode() {
+        const storedFlag = this.actor?.getFlag('megs', 'edit-mode');
+        if (storedFlag === undefined || storedFlag === null) {
+            return this.defaultEditMode;
+        }
+        return storedFlag === true;
     }
 
     /** @override */
     static get defaultOptions() {
-        let newOptions = super.defaultOptions;
+        const newOptions = super.defaultOptions;
         newOptions.classes = ['megs', 'sheet', 'actor'];
         newOptions.width = 667;
         newOptions.height = 600;
@@ -54,7 +71,11 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = actorData.system;
-        context.flags = actorData.flags;
+        context.flags = actorData.flags ?? {};
+
+        // Templates read flags.megs.edit-mode directly. actorData is a clone, so
+        // surface the effective state here without writing it to the document.
+        context.flags.megs = { ...context.flags.megs, 'edit-mode': this.isEditMode };
 
         // Prepare character data and items for hero, villain, and npc types.
         if (actorData.type === MEGS.characterTypes.hero ||
@@ -226,7 +247,7 @@ export class MEGSActorSheet extends ActorSheet {
      */
     _prepareCharacterData(context) {
         // Handle attribute scores.
-        for (let [k, v] of Object.entries(context.system.attributes)) {
+        for (const [k, v] of Object.entries(context.system.attributes)) {
             v.label = game.i18n.localize(CONFIG.MEGS.attributes[k]) ?? k;
         }
 
@@ -399,6 +420,7 @@ export class MEGSActorSheet extends ActorSheet {
         const drawbacks = [];
         const subskills = [];
         const gadgets = [];
+        const subGadgets = [];
 
         // TODO delete this by 1.0
         context.items = context.items.filter(
@@ -412,41 +434,7 @@ export class MEGSActorSheet extends ActorSheet {
         // Iterate through items, allocating to containers
         context.items.forEach((i) => {
             i.img = i.img || Item.DEFAULT_ICON;
-
-            // Append to powers
-            if (i.type === MEGS.itemTypes.power && !i.system.parent) {
-                powers.push(i);
-            }
-            // Append to skills.
-            else if (i.type === MEGS.itemTypes.skill && !i.system.parent) {
-                i.subskills = [];
-                if (i.system.aps === 0) {
-                    i.unskilled = true;
-                    i.linkedAPs = this.object.system.attributes[i.system.link].value;
-                } else {
-                    i.unskilled = false;
-                }
-                i.subskills = [];
-                skills.push(i);
-            }
-            // Append to advantages.
-            else if (i.type === MEGS.itemTypes.advantage && !i.system.parent) {
-                advantages.push(i);
-            }
-            // Append to drawbacks.
-            else if (i.type === MEGS.itemTypes.drawback && !i.system.parent) {
-                drawbacks.push(i);
-            }
-            // Append to subskills.
-            else if (i.type === MEGS.itemTypes.subskill) {
-                subskills.push(i);
-            }
-            // Append to gadgets; do not show if gadget is owned by another gadget
-            else if (i.type === MEGS.itemTypes.gadget && !i.system.parent) {
-                i.ownerId = this.object._id;
-                i.rollable = i.system.effectValue > 0 || i.system.actionValue > 0;
-                gadgets.push(i);
-            }
+            this._categorizeItem(i, { powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets });
         });
 
         // Add skills from linked gadget (for vehicles/locations)
@@ -478,11 +466,11 @@ export class MEGSActorSheet extends ActorSheet {
         }
 
         // sort alphabetically
-        const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets];
+        const arrays = [powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets];
         arrays.forEach((element) => {
             element.sort(function (a, b) {
-                let textA = a.name.toUpperCase();
-                let textB = b.name.toUpperCase();
+                const textA = a.name.toUpperCase();
+                const textB = b.name.toUpperCase();
                 return textA < textB ? -1 : textA > textB ? 1 : 0;
             });
         });
@@ -491,6 +479,14 @@ export class MEGSActorSheet extends ActorSheet {
             const result = skills.find(({ _id }) => _id === element.system.parent);
             if (result) {
                 result.subskills.push(element);
+            }
+        });
+
+        subGadgets.forEach((element) => {
+            const result = gadgets.find(({ _id }) => _id === element.system.parent) ||
+                subGadgets.find(({ _id }) => _id === element.system.parent);
+            if (result) {
+                result.subGadgets.push(element);
             }
         });
 
@@ -504,6 +500,62 @@ export class MEGSActorSheet extends ActorSheet {
     }
 
     /* -------------------------------------------- */
+
+    /** @override */
+    async _render(force, options) {
+        if (this.element?.length > 0) {
+            this._saveAccordionState(this.element);
+        }
+        await super._render(force, options);
+    }
+
+    _categorizeItem(i, { powers, skills, advantages, drawbacks, subskills, gadgets, subGadgets }) {
+        const isChild = !!i.system.parent;
+
+        if (i.type === MEGS.itemTypes.subskill) {
+            subskills.push(i);
+            return;
+        }
+
+        if (isChild && i.type === MEGS.itemTypes.gadget) {
+            this._prepareGadgetItem(i);
+            i.subGadgets = [];
+            subGadgets.push(i);
+            return;
+        }
+
+        if (isChild) return;
+
+        switch (i.type) {
+        case MEGS.itemTypes.power:
+            powers.push(i);
+            break;
+        case MEGS.itemTypes.skill:
+            i.subskills = [];
+            i.unskilled = i.system.aps === 0;
+            i.linkedAPs = i.unskilled ? this.object.system.attributes[i.system.link].value : 0;
+            skills.push(i);
+            break;
+        case MEGS.itemTypes.advantage:
+            advantages.push(i);
+            break;
+        case MEGS.itemTypes.drawback:
+            drawbacks.push(i);
+            break;
+        case MEGS.itemTypes.gadget:
+            this._prepareGadgetItem(i);
+            i.subGadgets = [];
+            gadgets.push(i);
+            break;
+        }
+    }
+
+    _prepareGadgetItem(i) {
+        i.ownerId = this.object._id;
+        i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
+        i.rollable = i.rollOptions.length > 0;
+        i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
+    }
 
     /** @override */
     activateListeners(html) {
@@ -555,14 +607,14 @@ export class MEGSActorSheet extends ActorSheet {
         // Enable power row drop zones for bonuses/limitations
         this._enablePowerRowDropZones(html);
 
+        // Enable gadget row drop zones for re-parenting
+        this._enableGadgetDropZones(html);
+
         // Subskill isTrained checkbox
         html.on('change', '.subskill-checkbox', async (ev) => {
             const itemId = $(ev.currentTarget).data('itemId');
             const item = this.actor.items.get(itemId);
             if (item && item.type === 'subskill') {
-                // Save accordion state before render
-                this._saveAccordionState(html);
-
                 await item.update({ 'system.isTrained': ev.currentTarget.checked });
                 this.render(false);
             }
@@ -573,7 +625,7 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Drag events for macros.
         if (this.actor.isOwner) {
-            let handler = (ev) => this._onDragStart(ev);
+            const handler = (ev) => this._onDragStart(ev);
             html.find('li.item').each((i, li) => {
                 if (li.classList.contains('inventory-header')) return;
                 li.setAttribute('draggable', true);
@@ -611,7 +663,7 @@ export class MEGSActorSheet extends ActorSheet {
             system: data,
         };
         // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system['type'];
+        delete itemData.system.type;
 
         // Finally, create the item!
         return await Item.create(itemData, { parent: this.actor });
@@ -640,9 +692,6 @@ export class MEGSActorSheet extends ActorSheet {
         if (newValue < 0) {
             return;
         }
-
-        // Save accordion state before render
-        this._saveAccordionState(html);
 
         await item.update({ 'system.aps': newValue });
         this.render(false);
@@ -696,7 +745,7 @@ export class MEGSActorSheet extends ActorSheet {
         const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
         const confirmed = await Dialog.confirm({
             title: `Delete ${type}: ${item.name}`,
-            content: `<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>`,
+            content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
             defaultYes: false,
             options: {
                 classes: ['megs', 'dialog']
@@ -704,10 +753,6 @@ export class MEGSActorSheet extends ActorSheet {
         });
 
         if (!confirmed) return;
-
-        // Save accordion state before deletion
-        const html = $(event.currentTarget).closest('.sheet');
-        this._saveAccordionState(html);
 
         // If deleting a power or skill, also delete all associated bonuses/limitations
         if (item.type === 'power' || item.type === 'skill') {
@@ -883,10 +928,6 @@ export class MEGSActorSheet extends ActorSheet {
         // Check if item already belongs to this actor
         const isOnActor = droppedItem.parent?.id === this.actor.id;
 
-        // Save accordion state before re-render
-        const html = $(event.currentTarget).closest('.sheet');
-        this._saveAccordionState(html);
-
         if (isOnActor) {
             // Item is already on this actor - update its parent (move it)
 
@@ -907,80 +948,359 @@ export class MEGSActorSheet extends ActorSheet {
         }
     }
 
+    _enableGadgetDropZones(html) {
+        const gadgetRows = html.find('.tab.gadgets .item-row');
+        gadgetRows.each((i, row) => {
+            row.addEventListener('dragover', this._onGadgetDragOver.bind(this));
+            row.addEventListener('dragleave', this._onDragLeave.bind(this));
+            row.addEventListener('drop', this._onDropOnGadget.bind(this));
+        });
+
+        const gadgetTab = html.find('.tab.gadgets .items-list')[0];
+        if (gadgetTab) {
+            gadgetTab.addEventListener('dragover', (ev) => {
+                ev.preventDefault();
+            });
+            gadgetTab.addEventListener('drop', this._onDropOnGadgetTab.bind(this));
+        }
+    }
+
+    _onGadgetDragOver(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.classList.add('drop-target');
+    }
+
+    _isStackable(item) {
+        return item?.system?.isStackable === true || item?.system?.isStackable === 'true';
+    }
+
+    _findStackableMatch(droppedItem, parentId, excludeId) {
+        const matchesParent = parentId
+            ? (p) => p === parentId
+            : (p) => !p;
+        return this.actor.items.find(
+            (existing) => existing.type === MEGS.itemTypes.gadget &&
+                existing.name === droppedItem.name &&
+                existing.id !== excludeId &&
+                matchesParent(existing.system.parent) &&
+                this._isStackable(existing)
+        );
+    }
+
+    async _stackOnto(target, droppedItem, isOnActor) {
+        const droppedQuantity = droppedItem.system.quantity || 1;
+        const newQuantity = (target.system.quantity || 1) + droppedQuantity;
+        await target.update({ 'system.quantity': newQuantity });
+        if (isOnActor) {
+            await droppedItem.delete();
+        }
+        ui.notifications.info(
+            game.i18n.format('MEGS.StackableQuantityIncreased', {
+                name: target.name,
+                quantity: newQuantity,
+            })
+        );
+        this.render(false);
+    }
+
+    async _ensureHasGadgets(gadgetId) {
+        const gadget = this.actor.items.get(gadgetId);
+        if (gadget && gadget.system.settings?.hasGadgets !== 'true') {
+            await gadget.update({ 'system.settings.hasGadgets': 'true' });
+        }
+    }
+
+    async _onDropOnGadget(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.currentTarget.classList.remove('drop-target');
+
+        const targetGadgetId = event.currentTarget.dataset.itemId;
+        if (!targetGadgetId) return;
+
+        const data = TextEditor.getDragEventData(event);
+        if (data.type !== 'Item') return;
+
+        const droppedItem = await Item.implementation.fromDropData(data);
+        if (droppedItem?.type !== MEGS.itemTypes.gadget) return;
+
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+
+        if (isOnActor && droppedItem.id === targetGadgetId) return;
+        if (isOnActor && droppedItem.system.parent === targetGadgetId) return;
+
+        if (this._isStackable(droppedItem)) {
+            const targetGadget = this.actor.items.get(targetGadgetId);
+            if (targetGadget && targetGadget.name === droppedItem.name && this._isStackable(targetGadget)) {
+                return this._stackOnto(targetGadget, droppedItem, isOnActor);
+            }
+            const subMatch = this._findStackableMatch(droppedItem, targetGadgetId, droppedItem.id);
+            if (subMatch) {
+                return this._stackOnto(subMatch, droppedItem, isOnActor);
+            }
+        }
+
+        if (!isOnActor) {
+            const itemData = droppedItem.toObject();
+            itemData.system.parent = targetGadgetId;
+            await this._ensureHasGadgets(targetGadgetId);
+            await this.actor.createEmbeddedDocuments('Item', [itemData]);
+            this.render(false);
+            return;
+        }
+
+        const updates = [{ _id: droppedItem.id, 'system.parent': targetGadgetId }];
+        await this._ensureHasGadgets(targetGadgetId);
+
+        const childGadgets = this.actor.items.filter(
+            i => i.type === MEGS.itemTypes.gadget && i.system.parent === droppedItem.id
+        );
+        for (const child of childGadgets) {
+            updates.push({ _id: child.id, 'system.parent': droppedItem.id });
+        }
+
+        await this.actor.updateEmbeddedDocuments('Item', updates);
+        this.render(false);
+    }
+
+    async _onDropOnGadgetTab(event) {
+        event.preventDefault();
+
+        if (event.target.closest('.item-row')) return;
+
+        const data = TextEditor.getDragEventData(event);
+        if (data.type !== 'Item') return;
+
+        const droppedItem = await Item.implementation.fromDropData(data);
+        if (droppedItem?.type !== MEGS.itemTypes.gadget) return;
+
+        const isOnActor = droppedItem.parent?.id === this.actor.id;
+        if (!isOnActor) return;
+
+        if (!droppedItem.system.parent) return;
+
+        await droppedItem.update({ 'system.parent': '' });
+        this.render(false);
+    }
+
+    _resolveRollValues(dataset, targetActor) {
+        if (dataset.type === MEGS.itemTypes.power && dataset.itemId) {
+            const powerItem = this.actor.items.get(dataset.itemId);
+            if (powerItem && Utils.hasPowerSourceOverrides(powerItem)) {
+                return Utils.resolvePowerRollValues(powerItem, this.actor, targetActor);
+            }
+        }
+
+        const actionValue = Number.parseInt(dataset.value);
+        let opposingValue = 0;
+        let resistanceValue = 0;
+
+        if (targetActor) {
+            let attrKey;
+            if (dataset.type === MEGS.rollTypes.attribute) {
+                attrKey = dataset.key;
+            } else if (dataset.type === MEGS.itemTypes.skill || dataset.type === MEGS.itemTypes.power) {
+                attrKey = dataset.link;
+            }
+            if (attrKey) {
+                opposingValue = targetActor.system.attributes[attrKey].value;
+                resistanceValue = Utils.getResistanceValue(attrKey, targetActor);
+            } else if (dataset.type === MEGS.itemTypes.skill) {
+                console.error('No linked attribute for ' + dataset.name);
+            }
+        }
+
+        let effectValue;
+        if (dataset.type === MEGS.rollTypes.attribute) {
+            effectValue = Utils.getEffectValue(dataset.key, this.actor);
+        } else {
+            effectValue = Number.parseInt(dataset.value);
+        }
+
+        return { av: actionValue, ov: opposingValue, ev: effectValue, rv: resistanceValue };
+    }
+
     /**
      * Handle clickable rolls.
      * @param {Event} event   The originating click event
      * @private
      */
-    _onRoll(event) {
+    async _onRoll(event) {
         const element = event.currentTarget;
         const dataset = element.dataset;
 
-        let actionValue = parseInt(dataset.value);
-        let opposingValue = 0;
-        let effectValue = 0;
-        let resistanceValue = 0;
-
-        let targetActor = MegsTableRolls.getTargetActor();
-        if (targetActor) {
-            if (dataset.type === MEGS.rollTypes.attribute) {
-                opposingValue = targetActor.system.attributes[dataset.key].value;
-                resistanceValue = Utils.getResistanceValue(dataset.key, targetActor);
-            } else if (
-                dataset.type === MEGS.itemTypes.power ||
-                dataset.type === MEGS.itemTypes.skill
-            ) {
-                if (dataset.link) {
-                    opposingValue = targetActor.system.attributes[dataset.link].value;
-                    resistanceValue = Utils.getResistanceValue(dataset.link, targetActor);
-                } else {
-                    console.error('No linked attribute for ' + dataset.name);
-                }
-            }
+        if (dataset.type === MEGS.itemTypes.gadget) {
+            return this._onGadgetRoll(event, dataset);
         }
 
-        if (dataset.type === MEGS.rollTypes.attribute) {
-            effectValue = Utils.getEffectValue(dataset.key, this.actor);
-        } else if (
-            dataset.type === MEGS.itemTypes.power ||
-            dataset.type === MEGS.itemTypes.skill ||
-            dataset.type === MEGS.itemTypes.subskill
-        ) {
-            effectValue = parseInt(dataset.value);
-        } else if (dataset.type === MEGS.itemTypes.gadget) {
-            // TODO clean all this up; waaaay too complex
-            actionValue = parseInt(dataset.actionvalue);
-            effectValue = parseInt(dataset.effectvalue);
-
-            if (effectValue === 0) {
-                // no EV specified; check attributes
-                const gadget = this._getOwnedItemById(dataset.gadgetid);
-
-                if (gadget) {
-                    const values = this._getGadgetValues(gadget, actionValue);
-                    effectValue = values.effectValue;
-                    actionValue = values.actionValue;
-                } else {
-                    console.error('No gadget with ID ' + dataset.gadgetid + ' found');
-                }
-            }
-        }
+        const targetActor = MegsTableRolls.getTargetActor();
+        const resolved = this._resolveRollValues(dataset, targetActor);
 
         console.info('Rolling from actor-sheet._onRoll()');
         const rollValues = new RollValues(
             this.object.name + ' - ' + dataset.label,
             dataset.type,
             dataset.value,
-            actionValue,
-            opposingValue,
-            effectValue,
-            resistanceValue,
+            resolved.av,
+            resolved.ov,
+            resolved.ev,
+            resolved.rv,
             dataset.roll,
             dataset.unskilled
         );
         const speaker = ChatMessage.getSpeaker({ actor: this.object });
         const rollTables = new MegsTableRolls(rollValues, speaker);
         rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {});
+    }
+
+    async _onGadgetRoll(event, dataset) {
+        const gadget = this._getOwnedItemById(dataset.gadgetid);
+        if (!gadget) {
+            console.error('No gadget with ID ' + dataset.gadgetid + ' found');
+            return;
+        }
+
+        const rollOptions = Utils.getGadgetRollOptions(gadget, this.actor);
+        if (rollOptions.length === 0) return;
+
+        let selected;
+        if (rollOptions.length === 1) {
+            selected = rollOptions[0];
+        } else {
+            selected = await this._showGadgetRollPicker(gadget, rollOptions);
+            if (!selected) return;
+        }
+
+        this._executeGadgetRoll(event, gadget, selected);
+    }
+
+    async _showGadgetRollPicker(gadget, rollOptions) {
+        const options = rollOptions.map((opt, idx) => ({
+            ...opt,
+            checked: idx === 0,
+        }));
+        const dialogHtml = await foundry.applications.handlebars.renderTemplate(
+            'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
+            { options }
+        );
+
+        return new Promise((resolve) => {
+            new Dialog({
+                title: `${gadget.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
+                content: dialogHtml,
+                buttons: {
+                    cancel: {
+                        label: game.i18n.localize('MEGS.Close'),
+                        callback: () => resolve(null),
+                    },
+                    roll: {
+                        label: game.i18n.localize('MEGS.Roll'),
+                        callback: (html) => {
+                            const idx = Number.parseInt(
+                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                            );
+                            resolve(rollOptions[idx]);
+                        },
+                    },
+                },
+                default: 'roll',
+                close: () => resolve(null),
+            }, { classes: ['megs', 'dialog'] }).render(true);
+        });
+    }
+
+    _executeGadgetRoll(event, gadget, option) {
+        const resolved = this._resolveGadgetOption(option, gadget);
+        if (!resolved) return;
+
+        this._applyAlwaysSubstitute(gadget, resolved.actionValue, resolved.effectValue, option, (av, ev) => {
+            resolved.actionValue = av;
+            resolved.effectValue = ev;
+        });
+
+        console.info('Rolling gadget from actor-sheet._executeGadgetRoll()');
+        const rollValues = new RollValues(
+            resolved.label,
+            resolved.rollType,
+            resolved.actionValue,
+            resolved.actionValue,
+            resolved.opposingValue,
+            resolved.effectValue,
+            resolved.resistanceValue,
+            '1d10 + 1d10',
+            false
+        );
+        const speaker = ChatMessage.getSpeaker({ actor: this.object });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
+        rollTables.roll(event, this.object.system.heroPoints.value).then((response) => {});
+    }
+
+    _resolveGadgetOption(option, gadget) {
+        const result = {
+            actionValue: 0,
+            effectValue: 0,
+            opposingValue: 0,
+            resistanceValue: 0,
+            rollType: option.type,
+            label: this.object.name + ' - ' + gadget.name,
+        };
+        const targetActor = MegsTableRolls.getTargetActor();
+
+        if (option.type === 'gadget-av-ev') {
+            result.actionValue = option.av;
+            result.effectValue = option.ev;
+            if (result.effectValue === 0) {
+                const values = this._getGadgetValues(gadget, result.actionValue);
+                result.effectValue = values.effectValue;
+                result.actionValue = values.actionValue;
+            }
+            result.rollType = MEGS.itemTypes.gadget;
+        } else if (option.type === 'power' || option.type === 'skill') {
+            const item = this.actor.items.get(option.itemId);
+            if (!item) return null;
+            result.actionValue = option.aps;
+            result.effectValue = option.aps;
+            result.label += ' — ' + item.name;
+            result.rollType = option.type === 'power' ? MEGS.itemTypes.power : MEGS.itemTypes.skill;
+            if (targetActor && option.link) {
+                result.opposingValue = Utils.getOpposingValue(option.link, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(option.link, targetActor);
+            }
+        } else if (option.type === 'attribute') {
+            result.actionValue = option.av;
+            result.effectValue = option.ev;
+            result.label += ' — ' + option.label;
+            result.rollType = MEGS.rollTypes.attribute;
+            if (targetActor) {
+                result.opposingValue = Utils.getOpposingValue(option.actionKey, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(option.actionKey, targetActor);
+            }
+        }
+        return result;
+    }
+
+    _applyAlwaysSubstitute(gadget, actionValue, effectValue, option, callback) {
+        const attrs = gadget.system.attributes;
+        const actorAttrs = this.actor.system.attributes;
+
+        for (const pair of Utils.ATTRIBUTE_PAIRS) {
+            const gadgetAction = attrs?.[pair.action];
+            const gadgetEffect = attrs?.[pair.effect];
+
+            if (gadgetAction?.alwaysSubstitute && gadgetAction.value > 0) {
+                if (gadgetAction.value > actorAttrs[pair.action].value) {
+                    actionValue = gadgetAction.value;
+                }
+            }
+            if (gadgetEffect?.alwaysSubstitute && gadgetEffect.value > 0) {
+                if (gadgetEffect.value > actorAttrs[pair.effect].value) {
+                    effectValue = gadgetEffect.value;
+                }
+            }
+        }
+
+        callback(actionValue, effectValue);
     }
 
     /**
@@ -991,7 +1311,7 @@ export class MEGSActorSheet extends ActorSheet {
     _getOwnedItemById(id) {
         let ownedItem;
         const items = this.object.collections.items;
-        for (let i of items) {
+        for (const i of items) {
             if (i._id === id) {
                 ownedItem = i;
                 break;
@@ -1000,13 +1320,53 @@ export class MEGSActorSheet extends ActorSheet {
         return ownedItem;
     }
 
-    /** @override **/
-    async _onDrop(event) {
-        // Save accordion state before any drop operation
-        const html = $(event.currentTarget).closest('.sheet');
-        this._saveAccordionState(html);
+    _filterBlockedTraits(items) {
+        const isTrait = (i) => i.type === 'advantage' || i.type === 'drawback';
+        const gadgetBlocked = items.filter((i) => isTrait(i) && i.system?.gadgetOnly);
+        const isCharacterCreator = this.constructor.name === 'MEGSCharacterBuilderSheet';
+        const creationBlocked = isCharacterCreator ? [] : items.filter((i) => isTrait(i) && i.system?.creationOnly);
+        if (gadgetBlocked.length) {
+            ui.notifications.warn(game.i18n.localize('MEGS.GadgetOnlyWarning'));
+        }
+        if (creationBlocked.length) {
+            ui.notifications.warn(game.i18n.localize('MEGS.CreationOnlyWarning'));
+        }
+        const blocked = [...new Set([...gadgetBlocked, ...creationBlocked])];
+        return blocked.length ? items.filter((i) => !blocked.includes(i)) : items;
+    }
 
-        super._onDrop(event);
+    /** @override **/
+    async _onDropItemCreate(itemData) {
+        const items = Array.isArray(itemData) ? itemData : [itemData];
+        const allowed = this._filterBlockedTraits(items);
+        if (!allowed.length) return false;
+
+        const stackable = [];
+        const remaining = [];
+        for (const item of allowed) {
+            const match = this._isStackable(item)
+                ? this._findStackableMatch(item, '', null)
+                : null;
+            if (match) {
+                stackable.push({ match, droppedQuantity: item.system?.quantity || 1 });
+            } else {
+                remaining.push(item);
+            }
+        }
+
+        for (const { match, droppedQuantity } of stackable) {
+            const newQuantity = (match.system.quantity || 1) + droppedQuantity;
+            await match.update({ 'system.quantity': newQuantity });
+            ui.notifications.info(
+                game.i18n.format('MEGS.StackableQuantityIncreased', {
+                    name: match.name,
+                    quantity: newQuantity,
+                })
+            );
+        }
+
+        if (!remaining.length) return !!stackable.length;
+        return super._onDropItemCreate(remaining.length === 1 ? remaining[0] : remaining);
     }
 
     _changeEditHeaderLink(sheetHeaderLinks) {
@@ -1044,14 +1404,10 @@ export class MEGSActorSheet extends ActorSheet {
         }
     }
 
-    _toggleEditMode(event) {
-        // Save accordion state before toggling edit mode
-        if (this.element && this.element.length > 0) {
-            this._saveAccordionState(this.element);
-        }
-
-        const currentValue = this.actor.getFlag('megs', 'edit-mode');
-        this.actor.setFlag('megs', 'edit-mode', !currentValue);
+    async _toggleEditMode(event) {
+        // Negate the effective state, not the stored flag: an unset flag would
+        // give !undefined === true and leave an unlocked sheet unlocked.
+        await this.actor.setFlag('megs', 'edit-mode', !this.isEditMode);
         this.render(false);
     }
 

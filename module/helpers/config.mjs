@@ -118,17 +118,17 @@ MEGS.yesNoOptions = {
  * @param {number} factorCost - The Factor Cost (FC) of the ability (1-10)
  * @returns {number} The Hero Point cost, or 0 if invalid parameters
  */
-MEGS.getAPCost = function(aps, factorCost) {
-    // Validate inputs - 0 APs is valid (costs 0), but FC must be 1-10
-    if (aps === null || aps === undefined || aps < 0 ||
-        factorCost === null || factorCost === undefined || factorCost < 1 || factorCost > 10) {
+MEGS.getAPCost = function (aps, factorCost) {
+    aps = Number(aps);
+    factorCost = Number(factorCost);
+
+    if (Number.isNaN(aps) || aps < 0 || Number.isNaN(factorCost) || factorCost < 1 || factorCost > 10) {
         if (game.settings.get('megs', 'debugLogging')) {
             console.warn(`Invalid AP cost lookup: ${aps} APs at FC ${factorCost}`);
         }
         return 0;
     }
 
-    // 0 APs always costs 0 HP
     if (aps === 0) {
         return 0;
     }

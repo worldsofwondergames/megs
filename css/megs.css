@@ -358,6 +358,12 @@ details summary.no-arrow {
   /* Item Sheet Subskills Tab
   /*------------------------------------------------------------------------*/
   /*------------------------------------------------------------------------*/
+  /* Gadget Attribute Editing
+  /*------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------*/
+  /* Trait Options Tab (Advantages/Drawbacks)
+  /*------------------------------------------------------------------------*/
+  /*------------------------------------------------------------------------*/
   /* Character Creator / Character Builder Styles
   /*------------------------------------------------------------------------*/
   /* Attribute Cost Display */
@@ -451,10 +457,10 @@ details summary.no-arrow {
   margin-top: 5px;
 }
 .megs .sheet-header h1.charname button.isLocked {
-  background-image: url(/systems/megs/assets/images/icons/locked.png);
+  background-image: url("/systems/megs/assets/images/icons/locked.png");
 }
 .megs .sheet-header h1.charname button.isUnlocked {
-  background-image: url(/systems/megs/assets/images/icons/unlocked.png);
+  background-image: url("/systems/megs/assets/images/icons/unlocked.png");
 }
 .megs .sheet-header .attribute-container {
   display: inline-block;
@@ -468,7 +474,7 @@ details summary.no-arrow {
   vertical-align: bottom;
   border: none;
   cursor: pointer;
-  background-image: url(/systems/megs/assets/images/icons/reset.png);
+  background-image: url("/systems/megs/assets/images/icons/reset.png");
   background-size: 30px auto;
   background-color: #fff;
 }
@@ -496,7 +502,7 @@ details summary.no-arrow {
 }
 .megs .sheet-header .header-fields .grid .d10 {
   display: inline-block;
-  background-image: url(/systems/megs/assets/images/icons/2d10-blue.png);
+  background-image: url("/systems/megs/assets/images/icons/2d10-blue.png");
   margin-right: 1px;
   background-repeat: no-repeat;
   background-size: 45px 45px;
@@ -509,13 +515,13 @@ details summary.no-arrow {
   transition: 0.2s background linear;
 }
 .megs .sheet-header .header-fields .grid .d10.unskilled {
-  background-image: url(/systems/megs/assets/images/icons/2d10-blue-2.png);
+  background-image: url("/systems/megs/assets/images/icons/2d10-blue-2.png");
 }
 .megs .sheet-header .header-fields .grid .d10.unskilled:hover {
-  background-image: url(/systems/megs/assets/images/icons/2d10-white-2.png);
+  background-image: url("/systems/megs/assets/images/icons/2d10-white-2.png");
 }
 .megs .sheet-header .header-fields .grid .d10:hover {
-  background-image: url(/systems/megs/assets/images/icons/2d10-white.png);
+  background-image: url("/systems/megs/assets/images/icons/2d10-white.png");
   background-color: #1f5079;
   background-size: 50px 50px;
   transition: 0.2s background linear;
@@ -848,7 +854,7 @@ details summary.no-arrow {
   width: 25%;
 }
 .megs .factor-cost-tooltip {
-  cursor: help;
+  cursor: pointer;
   white-space: pre-line;
 }
 .megs .resource-label {
@@ -883,6 +889,12 @@ details summary.no-arrow {
 .megs .items-list .item-row {
   font-family: "Roboto", sans-serif;
   color: #1f5079;
+}
+.megs .items-list .item-row.drop-target,
+.megs .items-list .sub-gadget-row.drop-target {
+  background-color: #d4edff;
+  border: 2px dashed #06c;
+  box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
 }
 .megs .items-list > li.item-row:nth-of-type(odd) {
   background: #ddebf6;
@@ -1012,6 +1024,7 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.skills .items-list .toggle-icon:hover {
   color: #000;
 }
+
 .megs.sheet.actor .tab.powers .items-list .power-row {
   background-color: #f0f8ff;
   min-height: 31px;
@@ -1049,9 +1062,10 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .toggle-icon:hover {
   color: #000;
 }
-.megs.sheet.actor .tab.powers .items-list .power-row.drop-target {
+.megs.sheet.actor .tab.powers .items-list .power-row.drop-target,
+.megs.sheet.actor .tab.powers .items-list .item-row.drop-target {
   background-color: #d4edff;
-  border: 2px dashed #0066cc;
+  border: 2px dashed #06c;
   box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
 }
 .megs.sheet.actor .tab.powers .items-list .power-modifier-row {
@@ -1060,10 +1074,48 @@ details summary.no-arrow {
 .megs.sheet.actor .tab.powers .items-list .power-modifier-row:active {
   cursor: grabbing;
 }
+
 .megs.sheet.item .tab.subskills .items-list .item-trained {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.megs .gadget-attribute {
+  position: relative;
+}
+.megs .always-substitute-checkbox {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  margin: 0;
+  cursor: pointer;
+}
+.megs .resource-label.italic {
+  font-style: italic;
+}
+.megs .trait-options {
+  padding: 8px;
+  font-family: "Roboto", sans-serif;
+}
+.megs .trait-options .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #1f5079;
+  font-size: 14px;
+  line-height: 1;
+}
+.megs .trait-options .checkbox input[type=checkbox] {
+  margin: 0;
+  flex-shrink: 0;
+  top: 0;
+}
+.megs .trait-options .checkbox input[type=checkbox]:disabled {
+  cursor: default;
 }
 .megs .effects .item .effect-source,
 .megs .effects .item .effect-duration,
@@ -1089,7 +1141,7 @@ details summary.no-arrow {
   text-align: center;
 }
 .megs .hp-spent-tooltip {
-  cursor: help;
+  cursor: pointer;
 }
 .megs .attributes-summary {
   margin-bottom: 10px;
@@ -1176,7 +1228,7 @@ details summary.no-arrow {
   flex: 0 0 30px; /* Fixed width just for trash icon */
 }
 .megs .character-creator .tab.gadgets .gadget-cost-tooltip {
-  cursor: help;
+  cursor: pointer;
 }
 .megs .character-creator .tab.traits .grid-2col-header {
   display: flex;
@@ -1240,145 +1292,6 @@ details summary.no-arrow {
   justify-content: center;
   align-items: center;
 }
-/*------------------------------------------------------------------------*/
-/* Gadget Builder - Powers Tab
-/*------------------------------------------------------------------------*/
-.megs .gadget-builder .tab.powers .items-list .item-row {
-  min-height: 40px;
-}
-.megs .gadget-builder .tab.powers .items-list .item-name {
-  flex: 3;
-}
-.megs .gadget-builder .tab.powers .items-list .item-linked {
-  flex: 0 0 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.megs .gadget-builder .tab.powers .items-list .item-base-cost,
-.megs .gadget-builder .tab.powers .items-list .item-factor-cost,
-.megs .gadget-builder .tab.powers .items-list .item-total-cost {
-  flex: 1;
-  text-align: center;
-}
-.megs .gadget-builder .tab.powers .items-list .item-aps {
-  flex: 1.15;
-}
-.megs .gadget-builder .tab.powers .items-list .item-controls {
-  flex: 0 0 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.megs .gadget-builder .tab.powers .items-list .modifier-row {
-  background: rgba(0, 0, 0, 0.02);
-  font-size: 0.9em;
-}
-.megs .gadget-builder .tab.powers .items-list .modifier-name {
-  margin-left: 25px;
-  padding-left: 0;
-  font-style: italic;
-  color: #666;
-}
-/*------------------------------------------------------------------------*/
-/* Gadget Builder - Attributes Tab
-/*------------------------------------------------------------------------*/
-.megs .gadget-builder .tab.attributes .grid-4col {
-  grid-template-columns: 40px repeat(3, 1fr);
-}
-.megs .gadget-builder .tab.attributes .attribute-toggle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.megs .gadget-builder .tab.attributes .attribute-toggle input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-.megs .gadget-builder .tab.attributes .attributeRow.disabled-row {
-  opacity: 0.5;
-  background-color: #e0e0e0;
-}
-.megs .gadget-builder .tab.attributes .attributeRow.disabled-row .attribute-minus,
-.megs .gadget-builder .tab.attributes .attributeRow.disabled-row .attribute-plus {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.megs .gadget-builder .tab.attributes .av-ev-header input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
-  vertical-align: middle;
-  cursor: pointer;
-}
-.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row {
-  opacity: 0.5;
-  background-color: #e0e0e0;
-}
-.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .av-minus,
-.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .av-plus,
-.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .ev-minus,
-.megs .gadget-builder .tab.attributes .av-ev-section.disabled-row .ev-plus {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.megs .gadget-builder .cost-tooltip {
-  cursor: help;
-  border-bottom: 1px dotted #1f5079;
-}
-/*------------------------------------------------------------------------*/
-/* Gadget Builder - Skills Tab
-/*------------------------------------------------------------------------*/
-.megs .gadget-builder .tab.skills .items-list .item-row {
-  min-height: 40px;
-}
-.megs .gadget-builder .tab.skills .items-list .item-name {
-  flex: 3;
-}
-.megs .gadget-builder .tab.skills .items-list .item-aps {
-  flex: 1.15;
-}
-.megs .gadget-builder .tab.skills .items-list .item-total-cost {
-  flex: 1;
-  text-align: center;
-}
-.megs .gadget-builder .tab.skills .items-list .item-controls {
-  flex: 0 0 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-/*------------------------------------------------------------------------*/
-/* Gadget Builder - Section Headers
-/*------------------------------------------------------------------------*/
-.megs .gadget-builder h3.section-header {
-  font-family: "DecoturaICG", sans-serif;
-  font-weight: normal;
-  font-size: 24px;
-  letter-spacing: 0.1em;
-  color: #fff;
-  margin: 9px 0 3px 0;
-  padding: 3px 0 3px 5px;
-  background-color: #1f5079;
-}
-/*------------------------------------------------------------------------*/
-/* Gadget Builder - Settings Tab
-/*------------------------------------------------------------------------*/
-.megs .gadget-builder .tab.settings {
-  font-family: "Roboto", sans-serif;
-}
-.megs .gadget-builder .tab.settings .form-group {
-  margin-bottom: 10px;
-}
-.megs .gadget-builder .tab.settings .form-group label {
-  font-size: 14px;
-}
-.megs .gadget-builder .tab.settings .form-group .hint {
-  font-size: 12px;
-  color: #666;
-  margin-left: 20px;
-}
 .megs .megs.character-creator .tab.powers .items-list .modifier-row {
   background: rgba(0, 0, 0, 0.02);
   font-size: 0.9em;
@@ -1390,10 +1303,10 @@ details summary.no-arrow {
   color: #666;
 }
 .megs .character-creator .items-list .factor-cost-calculated {
-  cursor: help;
+  cursor: pointer;
 }
 .megs .character-creator .items-list .total-cost-calculated {
-  cursor: help;
+  cursor: pointer;
 }
 .megs .character-creator .tab.skills .items-list {
   /* Skills table background colors */
@@ -1589,7 +1502,7 @@ details summary.no-arrow {
   border-color: #5fa2d9;
 }
 .megs.dialog .dialog-buttons button:active {
-  background-color: #153550;
+  background-color: #153550; /* stylelint-disable-line scss/no-global-function-names */
 }
 
 .megs-dialog {
@@ -1683,6 +1596,27 @@ details summary.no-arrow {
   margin: 0;
 }
 
+.gadget-picker-dialog {
+  padding: 8px 4px;
+}
+.gadget-picker-dialog .gadget-picker-heading {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.gadget-roll-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 3px 0;
+}
+.gadget-roll-option input[type=radio] {
+  margin: 0;
+}
+
 /*------------------------------------------------------------------------*/
 /* Chat Messages
 /*------------------------------------------------------------------------*/
@@ -1690,6 +1624,7 @@ li.chat-message {
   background: #fff !important;
   font-family: "Roboto", sans-serif !important;
   letter-spacing: normal !important;
+  overflow: visible !important;
   /* Tooltip styles for chat messages */
   /* Initiative/Column Shift Table in tooltip */
 }
@@ -1739,7 +1674,7 @@ li.chat-message .chat-result.failure:hover {
 }
 li.chat-message .chat-result .d10 {
   display: inline-block;
-  background-image: url(/icons/svg/d10-grey.svg);
+  background-image: url("/icons/svg/d10-grey.svg");
   min-width: 24px;
   line-height: 24px;
   margin-right: 1px;
@@ -1752,15 +1687,32 @@ li.chat-message .message-header {
   background-color: #1f5079 !important;
   color: #fff !important;
   padding: 5px !important;
+  overflow: visible !important;
+  position: relative;
+  z-index: 1;
 }
 li.chat-message .message-header .message-sender {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: #fff !important;
+  overflow: visible;
+}
+li.chat-message .message-header .message-sender .megs-chat-avatar {
+  width: 42px;
+  height: 42px;
+  margin: -11px 0 -11px -5px;
+  border: 2px solid #1f5079;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 li.chat-message .message-header .message-metadata {
   color: #fff !important;
 }
 li.chat-message .message-header .message-metadata .message-timestamp {
   color: #fff !important;
+  font-size: 10px;
 }
 li.chat-message .message-header .message-metadata .message-delete {
   color: #fff !important;
@@ -1830,3 +1782,5 @@ li.chat-message .tooltip .tooltiptext .init-table .value {
   font-weight: bold;
   white-space: nowrap;
 }
+
+/*# sourceMappingURL=megs.css.map */

@@ -324,7 +324,11 @@
             "type": "power",
             "img": "systems/megs/assets/images/icons/power.png",
             "source": "",
-            "activateFree": false
+            "activateFree": false,
+            "avSource": "",
+            "evSource": "",
+            "ovSource": "",
+            "rvSource": ""
         },
         "skill": {
             "templates": [
@@ -351,7 +355,9 @@
         "advantage": {
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
             "type": "advantage",
-            "img": "icons/svg/regen.svg"
+            "img": "icons/svg/regen.svg",
+            "gadgetOnly": false,
+            "creationOnly": false
         },
         "bonus": {
             "templates": ["baseItem", "hasParent", "modifier", "subtext", "trackOriginal"],
@@ -361,7 +367,9 @@
         "drawback": {
             "templates": ["baseItem", "hasParent", "purchasable", "subtext", "trackOriginal"],
             "type": "drawback",
-            "img": "icons/svg/degen.svg"
+            "img": "icons/svg/degen.svg",
+            "gadgetOnly": false,
+            "creationOnly": false
         },
         "gadget": {
             "templates": [
@@ -374,6 +382,7 @@
             ],
             "img": "systems/megs/assets/images/icons/gadget.png",
             "quantity": 1,
+            "isStackable": false,
             "actionValue": 0,
             "effectValue": 0,
             "reliability": 0,

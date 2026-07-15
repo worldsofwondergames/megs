@@ -1,4 +1,3 @@
-/* global jest */
 /* eslint-env jest */
 import { MEGS } from '../helpers/config.mjs';
 import { jest } from '@jest/globals';
@@ -209,6 +208,10 @@ class ActorSheet {
     constructor(data, options) {
         if (data) {
             Object.assign(this, data);
+            // Foundry's DocumentSheet exposes the document as `object`, with
+            // `actor` as an alias. Sheet code relies on both.
+            this.object = data;
+            this.actor = data;
         } else {
             this._id = 1;
             this.name = 'Anonymous Hero';
@@ -230,6 +233,10 @@ class ItemSheet {
     constructor(data, options) {
         if (data) {
             Object.assign(this, data);
+            // Foundry's DocumentSheet exposes the document as `object`, with
+            // `item` as an alias. Sheet code relies on both.
+            this.object = data;
+            this.item = data;
         } else {
             this._id = 1;
         }
@@ -463,10 +470,8 @@ global.mergeObject = function (
     if (!inplace && _d === 0) original = global.duplicate(original);
 
     // Enforce object expansion at depth 0
-    if (_d === 0 && Object.keys(original).some((k) => /\./.test(k)))
-        original = global.expandObject(original);
-    if (_d === 0 && Object.keys(other).some((k) => /\./.test(k)))
-        other = global.expandObject(other);
+    if (_d === 0 && Object.keys(original).some((k) => /\./.test(k))) { original = global.expandObject(original); }
+    if (_d === 0 && Object.keys(other).some((k) => /\./.test(k))) { other = global.expandObject(other); }
 
     // Iterate over the other object
     for (let [k, v] of Object.entries(other)) {
@@ -541,11 +546,11 @@ global.renderTemplate = async function (template, data) {};
  * Foundry namespaced APIs (V13+)
  */
 global.foundry = {
-  applications: {
-    handlebars: {
-      renderTemplate: async function(template, data) {  }
+    applications: {
+        handlebars: {
+            renderTemplate: async function (template, data) { }
+        }
     }
-  }
 };
 
 /**

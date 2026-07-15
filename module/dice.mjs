@@ -11,13 +11,16 @@ export const ShowResultCall = Object.freeze({
 const COLUMN_SHIFT_THRESHOLD = 11;
 
 export class MegsRoll extends Roll {
-    async toMessage(dialogHtml = {}, { rollMode, create = true, speaker = null } = {}) {
+    async toMessage(dialogHtml = {}, { rollMode, create = true, speaker = null, skipDSN = false } = {}) {
         const messageData = {
             user: game.user.id,
-            rolls: [this],
             content: dialogHtml,
-            sound: CONFIG.sounds.dice,
         };
+
+        if (!skipDSN) {
+            messageData.rolls = [this];
+            messageData.sound = CONFIG.sounds.dice;
+        }
 
         if (speaker) {
             messageData.speaker = speaker;
@@ -46,7 +49,7 @@ export class RollValues {
         this.opposingValue = opposingValue;
         this.effectValue = effectValue;
         this.resistanceValue = resistanceValue;
-        this.rollFormula = rollFormula ? rollFormula : '1d10 + 1d10';
+        this.rollFormula = rollFormula || '1d10 + 1d10';
         this.unskilled = unskilled || false;
     }
 }
@@ -147,7 +150,7 @@ export class MegsTableRolls {
                 classes: ['megs', 'dialog']
             }).render(true);
         } else if (game.user.targets.size > 1) {
-            ui.notifications.warn(localize('MEGS.ErrorMessages.OnlyOneTarget'));
+            ui.notifications.warn(game.i18n.localize('MEGS.ErrorMessages.OnlyOneTarget'));
         } else {
             // use target token for OV and RV values
             await this._handleTargetedRolls(label);
@@ -267,8 +270,8 @@ export class MegsTableRolls {
         }
         if (combatManeuverKey) {
             const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-            ovColumnShifts += parseInt(combatManeuver.ovShifts);
-            rvColumnShifts += parseInt(combatManeuver.rvShifts);
+            ovColumnShifts += Number.parseInt(combatManeuver.ovShifts);
+            rvColumnShifts += Number.parseInt(combatManeuver.rvShifts);
         }
         if (resultColumnShifts) {
             rvColumnShifts += resultColumnShifts;
@@ -277,7 +280,7 @@ export class MegsTableRolls {
         /**********************************
          * ACTION TABLE
          **********************************/
-        const avAdjusted = parseInt(this.actionValue) + parseInt(hpSpentAV);
+        const avAdjusted = Number.parseInt(this.actionValue) + Number.parseInt(hpSpentAV);
 
         let avInfo = '';
         // Only show tooltip if there's additional information beyond base value
@@ -340,9 +343,10 @@ export class MegsTableRolls {
 
         // Execute the roll
         await avRoll.evaluate();
+        MegsTableRolls._applyDiceAppearance(avRoll);
 
         let dice = [];
-        let resultData = {
+        const resultData = {
             result: '',
             actionValue: avAdjusted,
             actionValueInfo: avInfo,
@@ -366,11 +370,11 @@ export class MegsTableRolls {
 
         let avRollTotal = 0;
         dice.forEach((die) => {
-            avRollTotal = avRollTotal + parseInt(die);
+            avRollTotal = avRollTotal + Number.parseInt(die);
         });
         resultData.rollTotal = avRollTotal;
 
-        if (parseInt(dice[dice.length - 2]) === 1 && parseInt(dice[dice.length - 1]) === 1) {
+        if (Number.parseInt(dice.at(-2)) === 1 && Number.parseInt(dice.at(-1)) === 1) {
             // dice are both 1s
             resultData.result = game.i18n.localize('MEGS.Double1s');
             await this._showRollResultInChat(resultData, avRoll, ShowResultCall.DOUBLE_1S);
@@ -419,7 +423,7 @@ export class MegsTableRolls {
             // Show combat maneuver contribution
             if (combatManeuverKey) {
                 const combatManeuver = CONFIG.combatManeuvers[combatManeuverKey];
-                const maneuverShifts = parseInt(combatManeuver.rvShifts);
+                const maneuverShifts = Number.parseInt(combatManeuver.rvShifts);
                 if (maneuverShifts !== 0) {
                     shiftExplanation +=
                         '    <tr>' +
@@ -454,8 +458,6 @@ export class MegsTableRolls {
         /**********************************
          * RESULT TABLE
          **********************************/
-        const resultTable = CONFIG.tables.resultTable;
-
         // get effect value column  index
         const evAdjusted = this.effectValue + hpSpentEV;
         const evIndex = this._getRangeIndex(evAdjusted);
@@ -469,7 +471,7 @@ export class MegsTableRolls {
         // apply shifts
         // Column Shifts on the Result Table are made to the left, decreasing numbers in the Resistance Value row,
         // but increasing the number of Result APs within the Table itself
-        let shiftedRvIndex = rvIndex - columnShifts;
+        const shiftedRvIndex = rvIndex - columnShifts;
         if (shiftedRvIndex <= 0) {
             // calculate column shifts that push past the 0 column
             // If the result is in the +1 Column, add 1 AP to your Result APs for every time you shift into this Column.
@@ -526,28 +528,39 @@ export class MegsTableRolls {
      * @param {Roll} initialRoll - The initial roll object to extract dice from
      * @returns
      */
+    static _applyDiceAppearance(roll) {
+        if (roll.dice && roll.dice.length >= 2) {
+            roll.dice[0].options.appearance = {
+                foreground: '#ffffff',
+                background: '#cc0000',
+                outline: '#cc0000',
+                edge: '#ffffff',
+            };
+        }
+    }
+
     async _rollDice(data, initialRoll) {
-        let dice = [];
+        const dice = [];
         let stopRolling = false;
+        let hadDoubles = false;
         if (data) {
             if (data.columnShifts) {
-                data['isOneColumnShift'] = data.columnShifts === 1;
+                data.isOneColumnShift = data.columnShifts === 1;
             } else {
                 data.columnShifts = 0;
-                data['isOneColumnShift'] = false;
+                data.isOneColumnShift = false;
             }
         }
 
         // Use the initial roll if provided and valid, otherwise create a new one
         let currentRoll;
-        let isFirstRoll = true;
         if (initialRoll && (initialRoll.terms || initialRoll.result)) {
             currentRoll = initialRoll;
         } else {
-            // Fallback: create new roll (for tests or when initialRoll is not provided)
             currentRoll = new Roll(this.rollFormula, {});
             await currentRoll.evaluate();
         }
+        MegsTableRolls._applyDiceAppearance(currentRoll);
 
         while (!stopRolling) {
             // Extract dice values from the roll object
@@ -555,16 +568,13 @@ export class MegsTableRolls {
             let die1, die2;
 
             if (currentRoll.terms && currentRoll.terms.length >= 3) {
-                // Real Foundry Roll structure: terms[0] is first die, terms[2] is second die
                 die1 = currentRoll.terms[0].results[0].result;
                 die2 = currentRoll.terms[2].results[0].result;
             } else if (currentRoll.result && typeof currentRoll.result === 'string') {
-                // Fallback for mocks or legacy: parse the result string
                 const rolledDice = currentRoll.result.split(' + ');
-                die1 = parseInt(rolledDice[0]);
-                die2 = parseInt(rolledDice[1]);
+                die1 = Number.parseInt(rolledDice[0]);
+                die2 = Number.parseInt(rolledDice[1]);
             } else {
-                // Ultimate fallback: use mock dice values or defaults
                 die1 = (currentRoll.dice && currentRoll.dice[0] && currentRoll.dice[0].results) ? currentRoll.dice[0].results[0] : 1;
                 die2 = (currentRoll.dice && currentRoll.dice[1] && currentRoll.dice[1].results) ? currentRoll.dice[1].results[0] : 1;
             }
@@ -572,15 +582,9 @@ export class MegsTableRolls {
             dice.push(die1);
             dice.push(die2);
 
-            if (die1 === 1 && die2 === 1) {
-                // dice are both 1s
-                stopRolling = true;
-            } else if (die1 === die2) {
-                // dice match but are not 1s
-                // Show the Dice So Nice animation if available before prompting
-                // For first roll, DSN animation already triggered by evaluate(), but we need to wait for it
-                // For subsequent rolls, we need to explicitly show the animation
-                if (game.dice3d && !isFirstRoll) {
+            if (die1 === die2 && die1 !== 1) {
+                hadDoubles = true;
+                if (game.dice3d) {
                     await game.dice3d.showForRoll(currentRoll, game.user, true);
                 }
 
@@ -594,18 +598,23 @@ export class MegsTableRolls {
                     }
                 });
                 if (confirmed) {
-                    // Create and evaluate a new roll for subsequent pairs
                     currentRoll = new Roll(this.rollFormula, {});
                     await currentRoll.evaluate();
-                    isFirstRoll = false;
+                    MegsTableRolls._applyDiceAppearance(currentRoll);
                     stopRolling = false;
                 } else {
                     stopRolling = true;
                 }
             } else {
-                // dice do not match
+                if (hadDoubles && game.dice3d) {
+                    await game.dice3d.showForRoll(currentRoll, game.user, true);
+                }
                 stopRolling = true;
             }
+        }
+
+        if (data) {
+            data.hadDoubles = hadDoubles;
         }
 
         return dice;
@@ -631,7 +640,7 @@ export class MegsTableRolls {
         }
 
         const dialogHtml = await this._renderTemplate(rollChatTemplate, data);
-        await roll.toMessage(dialogHtml, { speaker });
+        await roll.toMessage(dialogHtml, { speaker, skipDSN: !!data.hadDoubles });
     }
 
     /**
@@ -680,6 +689,7 @@ export class MegsTableRolls {
      */
     static getTargetActor() {
         let targetActor;
+        // eslint-disable-next-line no-unreachable-loop -- Set has no direct way to grab the first entry
         for (const value of game.user.targets) {
             targetActor = game.actors.get(value.document.actorId);
             break;
@@ -694,16 +704,16 @@ export class MegsTableRolls {
      */
     _processOpposingValuesEntry(form) {
         return {
-            actionValue: parseInt(form.actionValue?.value) || 0,
-            effectValue: parseInt(form.effectValue?.value) || 0,
-            opposingValue: parseInt(form.opposingValue?.value) || 0,
-            resistanceValue: parseInt(form.resistanceValue?.value) || 0,
-            hpSpentAV: parseInt(form.hpSpentAV.value) || 0,
-            hpSpentEV: parseInt(form.hpSpentEV.value) || 0,
-            hpSpentRV: parseInt(form.hpSpentRV.value) || 0,
-            hpSpentOV: parseInt(form.hpSpentOV.value) || 0,
+            actionValue: Number.parseInt(form.actionValue?.value) || 0,
+            effectValue: Number.parseInt(form.effectValue?.value) || 0,
+            opposingValue: Number.parseInt(form.opposingValue?.value) || 0,
+            resistanceValue: Number.parseInt(form.resistanceValue?.value) || 0,
+            hpSpentAV: Number.parseInt(form.hpSpentAV.value) || 0,
+            hpSpentEV: Number.parseInt(form.hpSpentEV.value) || 0,
+            hpSpentRV: Number.parseInt(form.hpSpentRV.value) || 0,
+            hpSpentOV: Number.parseInt(form.hpSpentOV.value) || 0,
             combatManeuver: form.combatManeuver.value,
-            resultColumnShifts: parseInt(form.resultColumnShiftsInput.value) || 0,
+            resultColumnShifts: Number.parseInt(form.resultColumnShiftsInput.value) || 0,
             isUnskilled: (form.isUnskilled && form.isUnskilled.checked) || false,
         };
     }

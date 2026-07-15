@@ -8,11 +8,6 @@ import { Utils } from '../utils.js';
  */
 export class MEGSItem extends Item {
     /** @override */
-    constructor(data, context) {
-        super(data, context);
-    }
-
-    /** @override */
     toObject(source = true) {
         const data = super.toObject(source);
 
@@ -35,6 +30,10 @@ export class MEGSItem extends Item {
                 const powerRanges = {};
                 const powerIsLinked = {};
                 const powerLinks = {};
+                const powerAvSources = {};
+                const powerEvSources = {};
+                const powerOvSources = {};
+                const powerRvSources = {};
                 const traitData = {};
 
                 // Get all child items
@@ -43,7 +42,7 @@ export class MEGSItem extends Item {
                     console.log(`[MEGS] Found ${childItems.length} child items to serialize`);
                 }
 
-                for (let item of childItems) {
+                for (const item of childItems) {
                     if (item.type === MEGS.itemTypes.skill) {
                         skillData[item.name] = item.system.aps;
                         skillBaseCosts[item.name] = item.system.baseCost || 0;
@@ -63,6 +62,10 @@ export class MEGSItem extends Item {
                         powerRanges[item.name] = item.system.range || '';
                         powerIsLinked[item.name] = item.system.isLinked || false;
                         powerLinks[item.name] = item.system.link || '';
+                        powerAvSources[item.name] = item.system.avSource || '';
+                        powerEvSources[item.name] = item.system.evSource || '';
+                        powerOvSources[item.name] = item.system.ovSource || '';
+                        powerRvSources[item.name] = item.system.rvSource || '';
                     } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`[MEGS] Serializing trait: ${item.name}`);
@@ -74,7 +77,9 @@ export class MEGSItem extends Item {
                             img: item.img,
                             system: {
                                 baseCost: item.system.baseCost || 0,
-                                text: item.system.text || ''
+                                text: item.system.text || '',
+                                gadgetOnly: item.system.gadgetOnly || false,
+                                creationOnly: item.system.creationOnly || false
                             }
                         };
                     }
@@ -100,6 +105,10 @@ export class MEGSItem extends Item {
                     powerRanges: powerRanges,
                     powerIsLinked: powerIsLinked,
                     powerLinks: powerLinks,
+                    powerAvSources: powerAvSources,
+                    powerEvSources: powerEvSources,
+                    powerOvSources: powerOvSources,
+                    powerRvSources: powerRvSources,
                     traitData: traitData
                 };
 
@@ -115,15 +124,19 @@ export class MEGSItem extends Item {
                 data.system.powerRanges = powerRanges;
                 data.system.powerIsLinked = powerIsLinked;
                 data.system.powerLinks = powerLinks;
+                data.system.powerAvSources = powerAvSources;
+                data.system.powerEvSources = powerEvSources;
+                data.system.powerOvSources = powerOvSources;
+                data.system.powerRvSources = powerRvSources;
                 data.system.traitData = traitData;
             } else {
                 // Standalone gadget - ensure virtual data is preserved during drag
                 if (game.settings.get('megs', 'debugLogging')) {
                     console.log(`[MEGS] toObject() called for standalone gadget ${this.name}`);
-                    console.log(`[MEGS] Preserving powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
-                    console.log(`[MEGS] Preserving skillData:`, Object.keys(this.system.skillData || {}).length);
-                    console.log(`[MEGS] powerAPs data:`, this.system.powerAPs);
-                    console.log(`[MEGS] skillData data:`, this.system.skillData);
+                    console.log('[MEGS] Preserving powerAPs:', Object.keys(this.system.powerAPs || {}).length);
+                    console.log('[MEGS] Preserving skillData:', Object.keys(this.system.skillData || {}).length);
+                    console.log('[MEGS] powerAPs data:', this.system.powerAPs);
+                    console.log('[MEGS] skillData data:', this.system.skillData);
                 }
 
                 // Store in FLAGS during drag - Foundry strips system data when creating on actors
@@ -140,6 +153,10 @@ export class MEGSItem extends Item {
                     powerRanges: this.system.powerRanges || {},
                     powerIsLinked: this.system.powerIsLinked || {},
                     powerLinks: this.system.powerLinks || {},
+                    powerAvSources: this.system.powerAvSources || {},
+                    powerEvSources: this.system.powerEvSources || {},
+                    powerOvSources: this.system.powerOvSources || {},
+                    powerRvSources: this.system.powerRvSources || {},
                     traitData: this.system.traitData || {}
                 };
 
@@ -153,6 +170,10 @@ export class MEGSItem extends Item {
                 data.system.powerRanges = this.system.powerRanges || {};
                 data.system.powerIsLinked = this.system.powerIsLinked || {};
                 data.system.powerLinks = this.system.powerLinks || {};
+                data.system.powerAvSources = this.system.powerAvSources || {};
+                data.system.powerEvSources = this.system.powerEvSources || {};
+                data.system.powerOvSources = this.system.powerOvSources || {};
+                data.system.powerRvSources = this.system.powerRvSources || {};
                 data.system.traitData = this.system.traitData || {};
             }
         }
@@ -168,9 +189,9 @@ export class MEGSItem extends Item {
         if (this.type === MEGS.itemTypes.gadget && data.flags?.megs?._transferData) {
             const transferData = data.flags.megs._transferData;
             if (game.settings.get('megs', 'debugLogging')) {
-                console.log(`[MEGS] _preCreate: Found transfer data in creation data`);
-                console.log(`[MEGS] _preCreate powerAPs:`, transferData.powerAPs);
-                console.log(`[MEGS] _preCreate skillData:`, transferData.skillData);
+                console.log('[MEGS] _preCreate: Found transfer data in creation data');
+                console.log('[MEGS] _preCreate powerAPs:', transferData.powerAPs);
+                console.log('[MEGS] _preCreate skillData:', transferData.skillData);
             }
 
             // Store in a global temporary cache that _onCreate can access
@@ -180,7 +201,7 @@ export class MEGSItem extends Item {
             globalThis.MEGS_TRANSFER_CACHE[cacheKey] = transferData;
 
             if (game.settings.get('megs', 'debugLogging')) {
-                console.log(`[MEGS] _preCreate: Stored data in global cache with item ID:`, cacheKey);
+                console.log('[MEGS] _preCreate: Stored data in global cache with item ID:', cacheKey);
             }
         }
     }
@@ -250,24 +271,24 @@ export class MEGSItem extends Item {
                 const cached = globalThis.MEGS_TRANSFER_CACHE[cacheKey];
                 transferData = cached.transferData;
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`[MEGS] Retrieved transfer data from global cache using options key:`, cacheKey);
-                    console.log(`[MEGS] Cache powerAPs:`, transferData.powerAPs);
-                    console.log(`[MEGS] Cache skillData:`, transferData.skillData);
+                    console.log('[MEGS] Retrieved transfer data from global cache using options key:', cacheKey);
+                    console.log('[MEGS] Cache powerAPs:', transferData.powerAPs);
+                    console.log('[MEGS] Cache skillData:', transferData.skillData);
                 }
                 // Clean up the cache
                 delete globalThis.MEGS_TRANSFER_CACHE[cacheKey];
             } else {
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`[MEGS] No cache key in options. Key:`, cacheKey);
-                    console.log(`[MEGS] Global cache keys:`, Object.keys(globalThis.MEGS_TRANSFER_CACHE || {}));
+                    console.log('[MEGS] No cache key in options. Key:', cacheKey);
+                    console.log('[MEGS] Global cache keys:', Object.keys(globalThis.MEGS_TRANSFER_CACHE || {}));
                 }
             }
 
             if (transferData) {
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`[MEGS] Found transfer data in flags, restoring to system`);
-                    console.log(`[MEGS] - powerAPs:`, Object.keys(transferData.powerAPs || {}).length);
-                    console.log(`[MEGS] - skillData:`, Object.keys(transferData.skillData || {}).length);
+                    console.log('[MEGS] Found transfer data in flags, restoring to system');
+                    console.log('[MEGS] - powerAPs:', Object.keys(transferData.powerAPs || {}).length);
+                    console.log('[MEGS] - skillData:', Object.keys(transferData.skillData || {}).length);
                 }
 
                 // Update system fields with transfer data
@@ -281,6 +302,10 @@ export class MEGSItem extends Item {
                 this.system.powerRanges = transferData.powerRanges || {};
                 this.system.powerIsLinked = transferData.powerIsLinked || {};
                 this.system.powerLinks = transferData.powerLinks || {};
+                this.system.powerAvSources = transferData.powerAvSources || {};
+                this.system.powerEvSources = transferData.powerEvSources || {};
+                this.system.powerOvSources = transferData.powerOvSources || {};
+                this.system.powerRvSources = transferData.powerRvSources || {};
                 this.system.traitData = transferData.traitData || {};
 
                 // Persist to database and remove transfer flag
@@ -294,17 +319,21 @@ export class MEGSItem extends Item {
                     'system.powerRanges': this.system.powerRanges,
                     'system.powerIsLinked': this.system.powerIsLinked,
                     'system.powerLinks': this.system.powerLinks,
+                    'system.powerAvSources': this.system.powerAvSources,
+                    'system.powerEvSources': this.system.powerEvSources,
+                    'system.powerOvSources': this.system.powerOvSources,
+                    'system.powerRvSources': this.system.powerRvSources,
                     'system.traitData': this.system.traitData,
-                    'flags.megs.-=_transferData': null  // Remove transfer flag
+                    'flags.megs.-=_transferData': null // Remove transfer flag
                 });
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`[MEGS] Transfer complete, data restored to system`);
+                    console.log('[MEGS] Transfer complete, data restored to system');
                 }
             }
 
             if (game.settings.get('megs', 'debugLogging')) {
-                console.log(`[MEGS] powerAPs keys:`, Object.keys(this.system.powerAPs || {}));
-                console.log(`[MEGS] skillData keys:`, Object.keys(this.system.skillData || {}));
+                console.log('[MEGS] powerAPs keys:', Object.keys(this.system.powerAPs || {}));
+                console.log('[MEGS] skillData keys:', Object.keys(this.system.skillData || {}));
             }
 
             // Gadget owned by actor - create actual skill, power, and trait items
@@ -320,8 +349,8 @@ export class MEGSItem extends Item {
         } else {
             if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] Standalone gadget ${this.name} (${this.id}) created`);
-                console.log(`[MEGS] Existing powerAPs:`, Object.keys(this.system.powerAPs || {}).length);
-                console.log(`[MEGS] Existing skillData:`, Object.keys(this.system.skillData || {}).length);
+                console.log('[MEGS] Existing powerAPs:', Object.keys(this.system.powerAPs || {}).length);
+                console.log('[MEGS] Existing skillData:', Object.keys(this.system.skillData || {}).length);
             }
 
             // Standalone gadget - initialize skillData only if not already populated
@@ -331,12 +360,12 @@ export class MEGSItem extends Item {
 
             if (!hasPowerData && !hasSkillData) {
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`[MEGS] No existing data found, initializing with defaults`);
+                    console.log('[MEGS] No existing data found, initializing with defaults');
                 }
                 await this._initializeSkillData();
             } else {
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`[MEGS] Existing data found (from toObject), persisting to database`);
+                    console.log('[MEGS] Existing data found (from toObject), persisting to database');
                 }
                 // Data came from toObject() but needs to be explicitly saved
                 await this.update({
@@ -349,6 +378,10 @@ export class MEGSItem extends Item {
                     'system.powerRanges': this.system.powerRanges || {},
                     'system.powerIsLinked': this.system.powerIsLinked || {},
                     'system.powerLinks': this.system.powerLinks || {},
+                    'system.powerAvSources': this.system.powerAvSources || {},
+                    'system.powerEvSources': this.system.powerEvSources || {},
+                    'system.powerOvSources': this.system.powerOvSources || {},
+                    'system.powerRvSources': this.system.powerRvSources || {},
                     'system.traitData': this.system.traitData || {}
                 });
             }
@@ -401,13 +434,13 @@ export class MEGSItem extends Item {
         const skillData = {};
         const subskillData = {};
 
-        for (let skill of skillsJson) {
+        for (const skill of skillsJson) {
             // Initialize skill with 0 APs
             skillData[skill.name] = 0;
 
             // Initialize subskills with 0 APs
             if (skill.system.subskills) {
-                for (let subskill of skill.system.subskills) {
+                for (const subskill of skill.system.subskills) {
                     subskillData[subskill.name] = 0;
                 }
             }
@@ -427,10 +460,10 @@ export class MEGSItem extends Item {
         const subskillData = this.system.subskillData || {};
         const subskillTrainingData = this.system.subskillTrainingData || {};
 
-        let skills = [];
-        let subskills = [];
+        const skills = [];
+        const subskills = [];
 
-        for (let i of skillsJson) {
+        for (const i of skillsJson) {
             const skillImg = i.img
                 ? 'systems/megs/assets/images/icons/skillls/' + i.img
                 : 'systems/megs/assets/images/icons/skillls/skill.png';
@@ -447,7 +480,7 @@ export class MEGSItem extends Item {
             skills.push(item);
 
             if (i.system.subskills) {
-                for (let j of i.system.subskills) {
+                for (const j of i.system.subskills) {
                     const subskillObj = {
                         name: j.name,
                         type: 'subskill',
@@ -475,12 +508,12 @@ export class MEGSItem extends Item {
         const createdSkills = await this.parent.createEmbeddedDocuments('Item', skills);
 
         // Now link subskills to their parent skills
-        let skillMap = {};
+        const skillMap = {};
         createdSkills.forEach((skill) => {
             skillMap[skill.name] = skill.id;
         });
 
-        for (let i of subskills) {
+        for (const i of subskills) {
             i.system.parent = skillMap[i.system.linkedSkill];
         }
 
@@ -496,6 +529,10 @@ export class MEGSItem extends Item {
         const powerRanges = this.system.powerRanges || {};
         const powerIsLinked = this.system.powerIsLinked || {};
         const powerLinks = this.system.powerLinks || {};
+        const powerAvSources = this.system.powerAvSources || {};
+        const powerEvSources = this.system.powerEvSources || {};
+        const powerOvSources = this.system.powerOvSources || {};
+        const powerRvSources = this.system.powerRvSources || {};
 
         if (game.settings.get('megs', 'debugLogging')) {
             console.log(`[MEGS] _addPowersToGadget called for ${this.name}, found ${Object.keys(powerAPs).length} powers`);
@@ -504,10 +541,10 @@ export class MEGSItem extends Item {
         // If no powers to add, return early
         if (Object.keys(powerAPs).length === 0) return;
 
-        let powers = [];
+        const powers = [];
 
         // Iterate over power names
-        for (let powerName in powerAPs) {
+        for (const powerName in powerAPs) {
             if (game.settings.get('megs', 'debugLogging')) {
                 console.log(`[MEGS] Adding power: ${powerName}`);
             }
@@ -516,13 +553,17 @@ export class MEGSItem extends Item {
                 type: 'power',
                 img: 'systems/megs/assets/images/icons/power.png',
                 system: {
-                    parent: this.id,  // Set parent to this gadget's ID
+                    parent: this.id,
                     aps: powerAPs[powerName] || 0,
                     baseCost: powerBaseCosts[powerName] || 0,
                     factorCost: powerFactorCosts[powerName] || 0,
                     range: powerRanges[powerName] || '',
                     isLinked: powerIsLinked[powerName] || false,
-                    link: powerLinks[powerName] || ''
+                    link: powerLinks[powerName] || '',
+                    avSource: powerAvSources[powerName] || '',
+                    evSource: powerEvSources[powerName] || '',
+                    ovSource: powerOvSources[powerName] || '',
+                    rvSource: powerRvSources[powerName] || ''
                 }
             };
             powers.push(powerObj);
@@ -542,19 +583,21 @@ export class MEGSItem extends Item {
         // If no traits to add, return early
         if (Object.keys(traitData).length === 0) return;
 
-        let traits = [];
+        const traits = [];
 
         // Iterate over trait keys (keys may include timestamp for uniqueness)
-        for (let traitKey in traitData) {
+        for (const traitKey in traitData) {
             const trait = traitData[traitKey];
             const traitObj = {
-                name: trait.name || traitKey,  // Use trait.name if available, fallback to key
+                name: trait.name || traitKey, // Use trait.name if available, fallback to key
                 type: trait.type || 'advantage',
                 img: 'icons/svg/item-bag.svg',
                 system: {
-                    parent: this.id,  // Set parent to this gadget's ID
-                    baseCost: trait.system?.baseCost || trait.baseCost || 0,  // Handle both formats
-                    text: trait.system?.text || trait.text || ''  // Handle both formats
+                    parent: this.id, // Set parent to this gadget's ID
+                    baseCost: trait.system?.baseCost || trait.baseCost || 0, // Handle both formats
+                    text: trait.system?.text || trait.text || '', // Handle both formats
+                    gadgetOnly: trait.system?.gadgetOnly || false,
+                    creationOnly: trait.system?.creationOnly || false
                 }
             };
             traits.push(traitObj);
@@ -612,6 +655,37 @@ export class MEGSItem extends Item {
         return result;
     }
 
+    _prepareSourceFields(systemData) {
+        const sourceFields = ['avSource', 'evSource', 'ovSource', 'rvSource'];
+        for (const field of sourceFields) {
+            const value = systemData[field] || '';
+            const parts = value.split(':');
+            const prefix = field.replace('Source', 'Source');
+            if (parts.length === 2 && parts[0] === 'char') {
+                systemData[`${prefix}Attr`] = parts[1];
+                systemData[`${prefix}TargetAttr`] = '';
+                const attrLabel = systemData.attributesForLink[parts[1]] || parts[1];
+                systemData[`${prefix}Label`] = `${game.i18n.localize('MEGS.CharacterAttribute')}: ${attrLabel}`;
+            } else if (parts.length === 2 && parts[0] === 'target') {
+                systemData[`${prefix}Attr`] = '';
+                systemData[`${prefix}TargetAttr`] = parts[1];
+                const attrLabel = systemData.attributesForLink[parts[1]] || parts[1];
+                systemData[`${prefix}Label`] = `${game.i18n.localize('MEGS.TargetAttribute')}: ${attrLabel}`;
+            } else if (value === 'aps') {
+                systemData[`${prefix}Attr`] = '';
+                systemData[`${prefix}TargetAttr`] = '';
+                systemData[`${prefix}Label`] = game.i18n.localize('MEGS.PowerAPs');
+            } else {
+                systemData[`${prefix}Attr`] = '';
+                systemData[`${prefix}TargetAttr`] = '';
+                const isOvRv = field === 'ovSource' || field === 'rvSource';
+                systemData[`${prefix}Label`] = isOvRv
+                    ? game.i18n.localize('MEGS.AutomaticFromLink')
+                    : game.i18n.localize('MEGS.PowerAPs');
+            }
+        }
+    }
+
     _getReliabilityModifier(reliability) {
         const reliabilityTable = {
             0: 3,
@@ -644,12 +718,12 @@ export class MEGSItem extends Item {
         if (systemData.attributes) {
             for (const [key, attr] of Object.entries(systemData.attributes)) {
                 if (attr.value > 0) {
-                    let fc = attr.factorCost + reliabilityMod;
+                    let fc = (Number(attr.factorCost) || 0) + reliabilityMod;
                     if (attr.alwaysSubstitute) fc += 2;
                     if (key === 'body' && this._toBoolean(systemData.hasHardenedDefenses)) {
                         fc += 2;
                     }
-                    fc = Math.max(1, fc);
+                    fc = Math.min(10, Math.max(1, fc));
                     attributesCost += this._getAPCost(attr.value, fc);
                 }
             }
@@ -779,7 +853,9 @@ export class MEGSItem extends Item {
             skillsCost: skillsCost,
             advantagesCost: advantagesCost,
             drawbacksCost: drawbacksCost,
-            traitsCost: traitsCost
+            traitsCost: traitsCost,
+            subGadgetsCost: 0,
+            subGadgetEntries: []
         };
     }
 
@@ -844,7 +920,6 @@ export class MEGSItem extends Item {
         super.prepareData();
     }
 
-
     /**
      * @override
      * Augment the item source data with additional dynamic data. Typically,
@@ -876,6 +951,10 @@ export class MEGSItem extends Item {
             systemData.attributesForLink[key] = game.i18n.localize(value);
         }
 
+        if (this.type === MEGS.itemTypes.power) {
+            this._prepareSourceFields(systemData);
+        }
+
         // Subskills don't have costs - skip all cost calculations
         if (this.type === MEGS.itemTypes.subskill) {
             return;
@@ -902,7 +981,7 @@ export class MEGSItem extends Item {
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`  ${key.toUpperCase()}: value=${attr.value}, base FC=${attr.factorCost}`);
                         }
-                        let fc = attr.factorCost + reliabilityMod;
+                        let fc = (Number(attr.factorCost) || 0) + reliabilityMod;
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    After reliability mod: FC=${fc}`);
                         }
@@ -923,7 +1002,7 @@ export class MEGSItem extends Item {
                             }
                         }
 
-                        fc = Math.max(1, fc); // Minimum FC of 1
+                        fc = Math.min(10, Math.max(1, fc));
                         const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
                         if (game.settings.get('megs', 'debugLogging')) {
                             console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
@@ -978,7 +1057,7 @@ export class MEGSItem extends Item {
                             if (item.system.factorCost === undefined || item.system.factorCost === null || item.system.factorCost === 0) {
                                 if (game.settings.get('megs', 'debugLogging')) {
                                     console.error(`  ❌ ${item.name} has invalid factorCost: ${item.system.factorCost} (APs: ${item.system.aps})`);
-                                    console.log(`     Full system data:`, item.system);
+                                    console.log('     Full system data:', item.system);
                                 }
                             }
 
@@ -1008,7 +1087,6 @@ export class MEGSItem extends Item {
                             console.log(`    Found child: ${item.name} (${item.type}) - calculated cost: ${itemCost}`);
                         }
 
-                        // Add all child items (drawbacks are negative, so they reduce cost automatically)
                         if (item.type === MEGS.itemTypes.power ||
                             item.type === MEGS.itemTypes.skill ||
                             item.type === MEGS.itemTypes.advantage ||
@@ -1022,7 +1100,7 @@ export class MEGSItem extends Item {
                 }
             } else {
                 if (game.settings.get('megs', 'debugLogging')) {
-                    console.log(`  Cannot check child items - parent or parent.items not available`);
+                    console.log('  Cannot check child items - parent or parent.items not available');
                 }
             }
 
@@ -1042,10 +1120,8 @@ export class MEGSItem extends Item {
 
             // Calculate gadget point budget for gadget builder
             this._calculateGadgetPointBudget();
-        }
-        // Calculate total cost for powers, skills, advantages, drawbacks (but not gadgets or subskills)
-        else if (systemData.hasOwnProperty('baseCost')) {
-            if (systemData.hasOwnProperty('factorCost') && systemData.hasOwnProperty('aps')) {
+        } else if (Object.hasOwn(systemData, 'baseCost')) {
+            if (Object.hasOwn(systemData, 'factorCost') && Object.hasOwn(systemData, 'aps')) {
                 // Subskills don't have costs - skip validation and calculation for them
                 // Only validate factorCost for actual powers and skills
                 if (this.type !== MEGS.itemTypes.subskill &&
@@ -1139,7 +1215,7 @@ export class MEGSItem extends Item {
         // Initialize chat data.
         const speaker = ChatMessage.getSpeaker({ actor: this.actor });
         const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.actor.name}] ${item.name}`;
+        const label = `[${item.actor?.name || ''}] ${item.name}`;
 
         if (
             this.type === MEGS.itemTypes.skill ||
@@ -1147,19 +1223,16 @@ export class MEGSItem extends Item {
             this.type === MEGS.itemTypes.power
         ) {
             this.rollMegs();
-        }
-
-        // If there's no roll data, send a chat message.
-        else if (!this.system.formula) {
+        } else if (this.type === MEGS.itemTypes.gadget) {
+            return this.rollGadget();
+        } else if (!this.system.formula) {
             ChatMessage.create({
                 speaker: speaker,
                 rollMode: rollMode,
                 flavor: label,
                 content: item.system.description ?? '',
             });
-        }
-        // Otherwise, create a roll and send a chat message from it.
-        else {
+        } else {
             // Retrieve roll data.
             const rollData = this.getRollData();
 
@@ -1180,17 +1253,20 @@ export class MEGSItem extends Item {
      *
      */
     rollMegs() {
-        // for powers, AV and EV are typically APs of power
-        let actionValue = parseInt(this.system.aps);
-        let effectValue = parseInt(this.system.aps);
+        let actionValue = Number.parseInt(this.system.aps);
+        let effectValue = Number.parseInt(this.system.aps);
         let opposingValue = 0;
         let resistanceValue = 0;
 
-        let targetActor = MegsTableRolls.getTargetActor();
+        const targetActor = MegsTableRolls.getTargetActor();
 
-        if (targetActor) {
-            let key;
-
+        if (this.type === MEGS.itemTypes.power && Utils.hasPowerSourceOverrides(this)) {
+            const resolved = Utils.resolvePowerRollValues(this, this.parent, targetActor);
+            actionValue = resolved.av;
+            effectValue = resolved.ev;
+            opposingValue = resolved.ov;
+            resistanceValue = resolved.rv;
+        } else if (targetActor) {
             if (this.system.link) {
                 let linkedType = this.system[this.system.link];
                 if (!linkedType && this.parent) {
@@ -1198,15 +1274,13 @@ export class MEGSItem extends Item {
                 }
 
                 if (linkedType) {
-                    // Physical powers - OV and RV are DEX and BODY
+                    let key;
                     if (linkedType.type === MEGS.powerSources.physical.toLowerCase()) {
                         key = MEGS.attributeAbbreviations.str;
                     }
-                    // Mental powers - OV and RV are INT and MIND
                     if (linkedType.type === MEGS.powerSources.mental.toLowerCase()) {
                         key = MEGS.attributeAbbreviations.int;
                     }
-                    // Mystical powers - OV and RV are INFL and SPIRIT
                     if (linkedType.type === MEGS.powerSources.mystical.toLowerCase()) {
                         key = MEGS.attributeAbbreviations.infl;
                     }
@@ -1219,15 +1293,6 @@ export class MEGSItem extends Item {
             } else {
                 console.error('No linked attribute for this item');
             }
-        }
-
-        if (this.type === MEGS.itemTypes.power) {
-            // TODO physical powers should have AV of DEX, mental INT, mystical INFL - optional rule
-        }
-
-        // values of skills and subskills
-        if (this.type === MEGS.itemTypes.skill || this.type === MEGS.itemTypes.subskill) {
-            // TDOO anything skill-specific
         }
 
         let label = this.name;
@@ -1253,6 +1318,125 @@ export class MEGSItem extends Item {
         rollTables.roll(null, this.parent.system.heroPoints.value).then((response) => {
             // no handling happens
         });
+    }
+
+    async rollGadget() {
+        const actor = this.parent;
+        const rollOptions = Utils.getGadgetRollOptions(this, actor);
+
+        if (rollOptions.length === 0) {
+            return this._postGadgetDescription(actor);
+        }
+
+        const selected = rollOptions.length === 1
+            ? rollOptions[0]
+            : await this._showGadgetPicker(rollOptions);
+        if (!selected) return;
+
+        const resolved = this._resolveGadgetOption(selected, actor);
+        if (!resolved) return;
+
+        console.info('Rolling gadget from item.rollGadget()');
+        const rollValues = new RollValues(
+            resolved.label,
+            resolved.rollType,
+            resolved.actionValue,
+            resolved.actionValue,
+            resolved.opposingValue,
+            resolved.effectValue,
+            resolved.resistanceValue,
+            '1d10 + 1d10',
+            false
+        );
+        const speaker = ChatMessage.getSpeaker({ actor });
+        const rollTables = new MegsTableRolls(rollValues, speaker);
+        const heroPoints = actor?.system?.heroPoints?.value || 0;
+        rollTables.roll(null, heroPoints).then((response) => {});
+    }
+
+    _postGadgetDescription(actor) {
+        const speaker = ChatMessage.getSpeaker({ actor });
+        const rollMode = game.settings.get('core', 'rollMode');
+        return ChatMessage.create({
+            speaker,
+            rollMode,
+            flavor: `[${actor?.name || ''}] ${this.name}`,
+            content: this.system.description ?? '',
+        });
+    }
+
+    async _showGadgetPicker(rollOptions) {
+        const options = rollOptions.map((opt, idx) => ({
+            ...opt,
+            checked: idx === 0,
+        }));
+        const dialogHtml = await foundry.applications.handlebars.renderTemplate(
+            'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
+            { options }
+        );
+
+        return new Promise((resolve) => {
+            new Dialog({
+                title: `${this.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
+                content: dialogHtml,
+                buttons: {
+                    cancel: {
+                        label: game.i18n.localize('MEGS.Close'),
+                        callback: () => resolve(null),
+                    },
+                    roll: {
+                        label: game.i18n.localize('MEGS.Roll'),
+                        callback: (html) => {
+                            const idx = Number.parseInt(
+                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                            );
+                            resolve(rollOptions[idx]);
+                        },
+                    },
+                },
+                default: 'roll',
+                close: () => resolve(null),
+            }, { classes: ['megs', 'dialog'] }).render(true);
+        });
+    }
+
+    _resolveGadgetOption(selected, actor) {
+        const result = {
+            actionValue: 0,
+            effectValue: 0,
+            opposingValue: 0,
+            resistanceValue: 0,
+            rollType: selected.type,
+            label: (actor?.name ? actor.name + ' - ' : '') + this.name,
+        };
+        const targetActor = MegsTableRolls.getTargetActor();
+
+        if (selected.type === 'gadget-av-ev') {
+            result.actionValue = selected.av;
+            result.effectValue = selected.ev;
+            result.rollType = MEGS.itemTypes.gadget;
+        } else if (selected.type === 'power' || selected.type === 'skill') {
+            const item = actor?.items.get(selected.itemId);
+            if (!item) return null;
+            result.actionValue = selected.aps;
+            result.effectValue = selected.aps;
+            result.label += ' — ' + item.name;
+            result.rollType = selected.type === 'power' ? MEGS.itemTypes.power : MEGS.itemTypes.skill;
+            if (targetActor && selected.link) {
+                result.opposingValue = Utils.getOpposingValue(selected.link, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(selected.link, targetActor);
+            }
+        } else if (selected.type === 'attribute') {
+            result.actionValue = selected.av;
+            result.effectValue = selected.ev;
+            result.label += ' — ' + selected.label;
+            result.rollType = MEGS.rollTypes.attribute;
+            if (targetActor) {
+                result.opposingValue = Utils.getOpposingValue(selected.actionKey, targetActor);
+                result.resistanceValue = Utils.getResistanceValue(selected.actionKey, targetActor);
+            }
+        }
+        return result;
     }
 
     /** @override */

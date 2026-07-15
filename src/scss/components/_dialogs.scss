@@ -45,7 +45,7 @@
             }
 
             &:active {
-                background-color: darken($c-darkblue, 10%);
+                background-color: darken($c-darkblue, 10%); /* stylelint-disable-line scss/no-global-function-names */
             }
         }
     }
@@ -157,5 +157,28 @@
             -webkit-appearance: none;
             margin: 0;
         }
+    }
+}
+
+.gadget-picker-dialog {
+    padding: 8px 4px;
+
+    .gadget-picker-heading {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 6px;
+        display: block;
+    }
+}
+
+.gadget-roll-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 3px 0;
+
+    input[type='radio'] {
+        margin: 0;
     }
 }

@@ -283,3 +283,189 @@ describe('Base Cost Only Powers', () => {
         expect(power.system.totalCost).toBe(80);
     });
 });
+
+describe('Omni-Gadget Cost Calculation', () => {
+    test('omni-gadget with no attributes has zero cost', () => {
+        const gadget = new MEGSItem({
+            name: 'Omni Widget',
+            type: 'gadget',
+            system: {
+                isOmni: 'true',
+                aps: 10,
+                omniClasses: { a: 'true', b: 'true', c: 'false', d: 'false' },
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        expect(gadget.system.totalCost).toBe(0);
+    });
+
+    test('omni-gadget with BODY attribute still costs HP', () => {
+        const gadget = new MEGSItem({
+            name: 'Omni Armor',
+            type: 'gadget',
+            system: {
+                isOmni: 'true',
+                aps: 8,
+                omniClasses: { a: 'true', b: 'false', c: 'false', d: 'false' },
+                attributes: {
+                    body: { value: 5, factorCost: 6 }
+                },
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // BODY: 5 APs @ FC 6 = 22, ÷4 = 5.5 = 6
+        expect(gadget.system.totalCost).toBe(6);
+    });
+
+    test('omni-gadget with all four classes stores data correctly', () => {
+        const gadget = new MEGSItem({
+            name: 'Full Omni',
+            type: 'gadget',
+            system: {
+                isOmni: 'true',
+                aps: 15,
+                omniClasses: { a: 'true', b: 'true', c: 'true', d: 'true' },
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        expect(gadget.system.isOmni).toBe('true');
+        expect(gadget.system.aps).toBe(15);
+        expect(gadget.system.omniClasses.a).toBe('true');
+        expect(gadget.system.omniClasses.b).toBe('true');
+        expect(gadget.system.omniClasses.c).toBe('true');
+        expect(gadget.system.omniClasses.d).toBe('true');
+    });
+});
+
+describe('Gadget Attribute FC Clamping', () => {
+    test('FC is clamped to max 10 when reliability + hardened defenses exceeds limit', () => {
+        const gadget = new MEGSItem({
+            name: 'Over-FC Device',
+            type: 'gadget',
+            system: {
+                attributes: {
+                    body: { value: 2, factorCost: 6 }
+                },
+                reliability: 0, // R# 0, +3 to FC
+                hasHardenedDefenses: true, // +2 to BODY FC
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Body FC: 6 + 3 (R#0) + 2 (Hardened) = 11, clamped to 10
+        // 2 APs @ FC 10 = 10, ÷4 = 3
+        expect(gadget.system.totalCost).toBe(3);
+    });
+
+    test('string factorCost is coerced to number', () => {
+        const gadget = new MEGSItem({
+            name: 'String FC Device',
+            type: 'gadget',
+            system: {
+                attributes: {
+                    body: { value: 2, factorCost: '6' }
+                },
+                reliability: 3, // R# 5, no modifier
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Body FC: 6 + 0 = 6; 2 APs @ FC 6 = 6, ÷4 = 2
+        expect(gadget.system.totalCost).toBe(2);
+    });
+
+    test('gadgetPointBudget attributesCost matches individual calculation', () => {
+        const gadget = new MEGSItem({
+            name: 'Budget Test',
+            type: 'gadget',
+            system: {
+                attributes: {
+                    body: { value: 2, factorCost: 6 },
+                    dex: { value: 3, factorCost: 7 }
+                },
+                reliability: 3, // R# 5, no modifier
+                canBeTakenAway: true,
+                creationBudget: { base: 100 }
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Body: 2 APs @ FC 6 = 6
+        // Dex: 3 APs @ FC 7 = 14
+        // Total attributes = 20
+        expect(gadget.system.gadgetPointBudget.attributesCost).toBe(20);
+    });
+});
+
+describe('Stackable Gadget Data Model', () => {
+    test('stackable flag defaults to false in gadget data', () => {
+        const gadget = new MEGSItem({
+            name: 'Test Gadget',
+            type: 'gadget',
+            system: {
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        expect(gadget.system.isStackable).toBeFalsy();
+    });
+
+    test('stackable gadget retains flag through prepareDerivedData', () => {
+        const gadget = new MEGSItem({
+            name: 'Batarang',
+            type: 'gadget',
+            system: {
+                isStackable: 'true',
+                quantity: 3,
+                attributes: {},
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        expect(gadget.system.isStackable).toBe('true');
+        expect(gadget.system.quantity).toBe(3);
+    });
+
+    test('stackable gadget cost calculation is unaffected by stackable flag', () => {
+        const gadget = new MEGSItem({
+            name: 'Stackable Device',
+            type: 'gadget',
+            system: {
+                isStackable: 'true',
+                quantity: 5,
+                attributes: {
+                    body: { value: 4, factorCost: 6 }
+                },
+                reliability: 3,
+                canBeTakenAway: true
+            }
+        });
+
+        gadget.prepareDerivedData();
+
+        // Cost should be same as non-stackable: 4 APs @ FC 6 = 18, ÷4 = 5
+        expect(gadget.system.totalCost).toBe(5);
+    });
+});

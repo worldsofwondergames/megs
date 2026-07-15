@@ -23,5 +23,18 @@ megs.iml
 # Temporary extraction directory
 /temp/
 
+# One-off utility scripts (keep hooks, build/extract compendiums)
+scripts/*
+!scripts/hooks/
+!scripts/build-compendiums.mjs
+!scripts/extract-compendiums.mjs
+
+# Playwright
+e2e/.auth/
+test-results/
+playwright-report/
+e2e-*.log
+e2e/debug-*.png
+
 # Claude Code
 .claude/

@@ -8,7 +8,21 @@
         <div class="header-fields">
 
             {{!-- Item name --}}
-            {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+            {{#if flags.megs.edit-mode}}
+                {{> "systems/megs/templates/item/parts/item-header-name.hbs"}}
+                {{#if system.hasSubtext}}
+                    <div class="resource flex-group-center">
+                        <label for="system.text" class="resource-label">{{localize 'MEGS.Detail'}}</label>
+                        <div class="resource-content flexrow flex-center flex-between">
+                            <input type="text" name="system.text" value="{{system.text}}" />
+                        </div>
+                    </div>
+                {{/if}}
+            {{else}}
+                <h1 class="charname isLocked">
+                    <div name="name">{{item.name}}{{#if system.text}} ({{system.text}}){{/if}}</div>
+                </h1>
+            {{/if}}
 
             <div class="resources grid grid-2col">
 
@@ -39,6 +53,7 @@
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
         <a class="item" data-tab="description">{{localize 'MEGS.Description'}}</a>
+        <a class="item" data-tab="options">{{localize 'MEGS.Options'}}</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -48,12 +63,25 @@
         <div class="tab" data-group="primary" data-tab="description">
 
             {{#if flags.megs.edit-mode}}
-                {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
                 {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
             {{else}}
                 <div class="description-text">{{{enrichedDescription}}}</div>
             {{/if}}
 
+        </div>
+
+        {{!-- Options Tab --}}
+        <div class="tab" data-group="primary" data-tab="options">
+            <div class="trait-options">
+                <label class="checkbox">
+                    <input type="checkbox" name="system.gadgetOnly" {{checked system.gadgetOnly}} {{#unless flags.megs.edit-mode}}disabled{{/unless}} {{#if gadgetOnlyLocked}}disabled{{/if}} />
+                    {{localize 'MEGS.GadgetOnly'}}
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" name="system.creationOnly" {{checked system.creationOnly}} {{#unless flags.megs.edit-mode}}disabled{{/unless}} />
+                    {{localize 'MEGS.CreationOnly'}}
+                </label>
+            </div>
         </div>
     </section>
 </form>

@@ -63,6 +63,7 @@
         "Cost": "Custo",
         "Current": "Atual",
         "Description": "Descrição",
+        "Detail": "Detalhe",
         "Difficulty": "Dificuldade",
         "Double1s": "Duplo 1s: Falha automática!",
         "Drawbacks": "Desvantagens",
@@ -73,6 +74,10 @@
         "EffectValue": "Valor de Efeito",
         "Factor": "Fator",
         "FactorCostMod": "Modificador do fator de custo",
+        "CreationOnly": "Apenas na Criação",
+        "CreationOnlyWarning": "Este traço só pode ser adicionado durante a criação do personagem.",
+        "GadgetOnly": "Apenas Equipamento",
+        "GadgetOnlyWarning": "Este traço só pode ser adicionado a equipamentos, não diretamente a personagens.",
         "Gadgets": "Equipamentos",
         "HasAVAndEV": "Possui AV e EV?",
         "HasGadgets": "Possui equipamentos?",
@@ -99,6 +104,7 @@
         "IsCarried": "Está sendo tranportado?",
         "IsLinked": "Está vinculado?",
         "IsOmniGadget": "Está Omni-Equipamento?",
+        "IsStackable": "É Empilhável?",
         "ItalicizedAttributesText": "Atributos em Itálico (Um Omni-Gadget que permite Atributos em Itálico também deve ter a capacidade de imitar Atributos - A e/ou B).",
         "Item": "Item",
         "Limitation": "Limitação",
@@ -110,6 +116,7 @@
         "Location": "Localização",
         "MentalAttributes": "Atributos Mentais",
         "Modifiers": "Modificadores",
+        "Options": "Opções",
         "Motivation": "Motivação",
         "Name": "Nome",
         "No": "Não",
@@ -179,7 +186,8 @@
         "HasMysticalAttributesHint": "Possui Atributos Místicos (INFL, AURA, ESPÍRITO)",
         "HasActionValueAndEffectValue": "Possui Valor de Ação e Valor de Efeito",
         "OnlyBonusesAndLimitationsCanBeDropped": "Apenas Bônus e Limitações podem ser soltos em Poderes.",
-        "ModifiersOnlyForOwnedGadgets": "Modificadores só podem ser adicionados a poderes em equipamentos pertencentes a um personagem."
+        "ModifiersOnlyForOwnedGadgets": "Modificadores só podem ser adicionados a poderes em equipamentos pertencentes a um personagem.",
+        "StackableQuantityIncreased": "{name} quantidade aumentou para {quantity}"
     },
 
     "TYPES": {

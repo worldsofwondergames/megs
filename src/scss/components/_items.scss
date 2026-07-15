@@ -37,6 +37,13 @@
         color: $c-darkblue;
     }
 
+    .item-row.drop-target,
+    .sub-gadget-row.drop-target {
+        background-color: #d4edff;
+        border: 2px dashed #06c;
+        box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
+    }
+
     > li.item-row:nth-of-type(odd) {
         background: $c-lightblue;
     }
@@ -147,7 +154,7 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Actor Sheet Skills Tab Accordion Styles
 /*------------------------------------------------------------------------*/
 
-&.sheet.actor .tab.skills .items-list {
+@at-root .megs.sheet.actor .tab.skills .items-list {
     .skill-row {
         background-color: #e8f4f8;
         min-height: 31px;
@@ -203,7 +210,7 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Actor Sheet Powers Tab Accordion Styles
 /*------------------------------------------------------------------------*/
 
-&.sheet.actor .tab.powers .items-list {
+@at-root .megs.sheet.actor .tab.powers .items-list {
     .power-row {
         background-color: #f0f8ff;
         min-height: 31px;
@@ -248,9 +255,10 @@ li.directory-item img[src*='assets/images/icons'] {
         }
     }
 
-    .power-row.drop-target {
+    .power-row.drop-target,
+    .item-row.drop-target {
         background-color: #d4edff;
-        border: 2px dashed #0066cc;
+        border: 2px dashed #06c;
         box-shadow: inset 0 0 8px rgba(0, 102, 204, 0.3);
     }
 
@@ -267,10 +275,61 @@ li.directory-item img[src*='assets/images/icons'] {
 /* Item Sheet Subskills Tab
 /*------------------------------------------------------------------------*/
 
-&.sheet.item .tab.subskills .items-list {
+@at-root .megs.sheet.item .tab.subskills .items-list {
     .item-trained {
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+}
+
+/*------------------------------------------------------------------------*/
+/* Gadget Attribute Editing
+/*------------------------------------------------------------------------*/
+
+.gadget-attribute {
+    position: relative;
+}
+
+.always-substitute-checkbox {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.resource-label.italic {
+    font-style: italic;
+}
+
+/*------------------------------------------------------------------------*/
+/* Trait Options Tab (Advantages/Drawbacks)
+/*------------------------------------------------------------------------*/
+
+.trait-options {
+    padding: 8px;
+    font-family: $font-primary;
+
+    .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        color: $c-darkblue;
+        font-size: 14px;
+        line-height: 1;
+
+        input[type='checkbox'] {
+            margin: 0;
+            flex-shrink: 0;
+            top: 0;
+        }
+
+        input[type='checkbox']:disabled {
+            cursor: default;
+        }
     }
 }

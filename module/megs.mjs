@@ -44,12 +44,42 @@ Hooks.once('init', function () {
     // Register custom Roll class
     CONFIG.Dice.rolls.push(MegsRoll);
 
+    Hooks.on('renderChatMessage', (message, html) => {
+        const { scene: sceneId, token: tokenId, actor: actorId } = message.speaker;
+        const actor = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.actor
+            ?? game.actors?.get(actorId);
+        if (!actor) return;
+
+        const tokenImg = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.texture.src
+            ?? actor.prototypeToken?.texture?.src
+            ?? actor.img;
+        if (!tokenImg) return;
+
+        const header = html[0]?.querySelector?.('.message-header') ?? html.querySelector?.('.message-header');
+        if (!header) return;
+
+        const sender = header.querySelector('.message-sender');
+        if (!sender || sender.querySelector('.megs-chat-avatar')) return;
+
+        const tokenName = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.name
+            ?? actor.prototypeToken?.name;
+        if (tokenName && tokenName !== actor.name) {
+            sender.textContent = sender.textContent.replace(actor.name, tokenName);
+        }
+
+        const img = document.createElement('img');
+        img.classList.add('megs-chat-avatar');
+        img.src = tokenImg;
+        img.alt = tokenName || actor.name;
+        sender.prepend(img);
+    });
+
     // Load MEGS tables
     _loadData('systems/megs/assets/data/tables.json').then((data) => {
         if (data) {
             CONFIG.tables = data;
         } else {
-            console.error(`[MEGS] Failed to set CONFIG.tables - data is null/undefined`);
+            console.error('[MEGS] Failed to set CONFIG.tables - data is null/undefined');
         }
     });
 
@@ -68,11 +98,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.combatManeuvers = data;
             } else {
-                console.error(`[MEGS] Failed to load combat maneuvers`);
+                console.error('[MEGS] Failed to load combat maneuvers');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading combat maneuvers:`, error);
+            console.error('[MEGS] Error loading combat maneuvers:', error);
         });
 
     _loadData('systems/megs/assets/data/motivations.json')
@@ -80,11 +110,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.motivations = data;
             } else {
-                console.error(`[MEGS] Failed to load motivations`);
+                console.error('[MEGS] Failed to load motivations');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading motivations:`, error);
+            console.error('[MEGS] Error loading motivations:', error);
         });
 
     _loadData('systems/megs/assets/data/skills.json')
@@ -92,11 +122,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.skills = data;
             } else {
-                console.error(`[MEGS] Failed to load skills`);
+                console.error('[MEGS] Failed to load skills');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading skills:`, error);
+            console.error('[MEGS] Error loading skills:', error);
         });
 
     _loadData('systems/megs/assets/data/apCostChart.json')
@@ -104,11 +134,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.apCostChart = data;
             } else {
-                console.error(`[MEGS] Failed to load AP cost chart`);
+                console.error('[MEGS] Failed to load AP cost chart');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading AP cost chart:`, error);
+            console.error('[MEGS] Error loading AP cost chart:', error);
         });
 
     _loadData('systems/megs/assets/data/wealth.json')
@@ -116,11 +146,11 @@ Hooks.once('init', function () {
             if (data) {
                 CONFIG.wealth = data;
             } else {
-                console.error(`[MEGS] Failed to load wealth`);
+                console.error('[MEGS] Failed to load wealth');
             }
         })
         .catch((error) => {
-            console.error(`[MEGS] Error loading wealth:`, error);
+            console.error('[MEGS] Error loading wealth:', error);
         });
 
     // Active Effects are never copied to the Actor,
@@ -171,29 +201,17 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 });
 
 Handlebars.registerHelper('getAttributeCost', function (aps, factorCost) {
-    // Validate inputs before calling getAPCost
     if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
         return 0;
     }
-
-    // Ensure aps and factorCost are valid numbers (not undefined/null)
-    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
-    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
-
-    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+    return CONFIG.MEGS.getAPCost(Number(aps) || 0, Number(factorCost) || 0) || 0;
 });
 
 Handlebars.registerHelper('getAPCost', function (aps, factorCost) {
-    // Validate inputs before calling getAPCost
     if (!CONFIG.MEGS || !CONFIG.MEGS.getAPCost) {
         return 0;
     }
-
-    // Ensure aps and factorCost are valid numbers (not undefined/null)
-    const validAPs = (aps !== undefined && aps !== null) ? aps : 0;
-    const validFC = (factorCost !== undefined && factorCost !== null) ? factorCost : 0;
-
-    return CONFIG.MEGS.getAPCost(validAPs, validFC) || 0;
+    return CONFIG.MEGS.getAPCost(Number(aps) || 0, Number(factorCost) || 0) || 0;
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
@@ -217,32 +235,32 @@ Handlebars.registerHelper('isDivisor', function (num1, num2) {
     return num1 !== 0 && num2 % num1 === 0;
 });
 
-Handlebars.registerHelper('compare', function (v1, operator, v2) {
+Handlebars.registerHelper('compare', function (v1, operator, v2, options) {
     switch (operator) {
-        case 'eq':
-            return v1 === v2;
-        case '==':
-            return v1 == v2;
-        case '===':
-            return v1 === v2;
-        case '!=':
-            return v1 != v2;
-        case '!==':
-            return v1 !== v2;
-        case '<':
-            return v1 < v2;
-        case '<=':
-            return v1 <= v2;
-        case '>':
-            return v1 > v2;
-        case '>=':
-            return v1 >= v2;
-        case '&&':
-            return v1 && v2;
-        case '||':
-            return v1 || v2;
-        default:
-            return options.inverse(this);
+    case 'eq':
+        return v1 === v2;
+    case '==':
+        return v1 == v2; // eslint-disable-line eqeqeq -- '==' is the operator being tested
+    case '===':
+        return v1 === v2;
+    case '!=':
+        return v1 != v2; // eslint-disable-line eqeqeq -- '!=' is the operator being tested
+    case '!==':
+        return v1 !== v2;
+    case '<':
+        return v1 < v2;
+    case '<=':
+        return v1 <= v2;
+    case '>':
+        return v1 > v2;
+    case '>=':
+        return v1 >= v2;
+    case '&&':
+        return v1 && v2;
+    case '||':
+        return v1 || v2;
+    default:
+        return options.inverse(this);
     }
 });
 
@@ -254,7 +272,7 @@ Handlebars.registerHelper('trueFalseToYesNo', function (str) {
 // skill-related
 /* -------------------------------------------- */
 Handlebars.registerHelper('getSelectedSkillRange', function (skillName) {
-    for (let i of game.items) {
+    for (const i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
             if (i.name === skillName) {
                 return i.system.range;
@@ -265,7 +283,7 @@ Handlebars.registerHelper('getSelectedSkillRange', function (skillName) {
 });
 
 Handlebars.registerHelper('getSelectedSkillType', function (skillName) {
-    for (let i of game.items) {
+    for (const i of game.items) {
         if (i.type === MEGS.itemTypes.skill) {
             if (i.name === skillName) {
                 return i.system.type;
@@ -277,7 +295,7 @@ Handlebars.registerHelper('getSelectedSkillType', function (skillName) {
 
 Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
     if (game.items) {
-        for (let i of game.items) {
+        for (const i of game.items) {
             if (i.type === MEGS.itemTypes.skill) {
                 if (i.name === skillName) {
                     return game.i18n.localize(CONFIG.MEGS.attributes[i.system.link.toLowerCase()]);
@@ -285,7 +303,7 @@ Handlebars.registerHelper('getSelectedSkillLink', function (skillName) {
             }
         }
     } else {
-        console.error(`Returned undefined for game.items!`);
+        console.error('Returned undefined for game.items!');
     }
     return 'N/A';
 });
@@ -565,7 +583,7 @@ Handlebars.registerHelper('getSkillEffectiveFactorCost', function (skill, items)
     // Calculate effective Factor Cost for a skill
     // FC = Base FC - (number of unchecked subskills) - (linking bonus)
     // Minimum FC is always 1
-    let baseFc = skill.system.factorCost || 0;
+    const baseFc = skill.system.factorCost || 0;
     let effectiveFc = baseFc;
 
     // Apply linking reduction (-2, minimum 1)
@@ -713,7 +731,7 @@ Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
     tooltip += `Advantages: ${advantages} HP\n`;
     tooltip += `Drawbacks: ${drawbacks} HP\n`;
     tooltip += `Gadgets: ${gadgets} HP\n`;
-    tooltip += `─────────────────\n`;
+    tooltip += '─────────────────\n';
     tooltip += `Total: ${total} HP`;
 
     return tooltip;
@@ -721,7 +739,7 @@ Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
 
 Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
     // Calculate the effective Factor Cost including linking and modifiers
-    let baseFc = power.system.factorCost || 0;
+    const baseFc = power.system.factorCost || 0;
     let effectiveFc = baseFc;
 
     // Apply linking reduction (-2, minimum 1)
@@ -820,10 +838,10 @@ Handlebars.registerHelper('getTotalCostTooltip', function (power, items) {
 Handlebars.registerHelper('getGadgetDescription', function (gadget) {
     let description = '';
 
-    if (gadget.system.isOmni) {
-        description = gadget.system.aps + ' AP ';
+    if (gadget.system.isOmni === true || gadget.system.isOmni === 'true') {
+        description = gadget.system.aps + ' ' + game.i18n.localize('MEGS.APs') + ' ';
         Object.keys(gadget.system.omniClasses).forEach((key) => {
-            if (gadget.system.omniClasses[key]) {
+            if (gadget.system.omniClasses[key] === true || gadget.system.omniClasses[key] === 'true') {
                 description += key.toUpperCase();
                 description += ' (' + MEGS.omniRanges[key.toUpperCase()] + ')';
             }
@@ -832,7 +850,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
     }
 
     // attributes first
-    for (let attributeName in gadget.system.attributes) {
+    for (const attributeName in gadget.system.attributes) {
         if (Object.prototype.hasOwnProperty.call(gadget.system.attributes, attributeName)) {
             const attribute = gadget.system.attributes[attributeName];
             if (attribute.value > 0) {
@@ -853,7 +871,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
 
     if (owner && owner.items) {
         // powers
-        for (let i of owner.items) {
+        for (const i of owner.items) {
             if (i.type === MEGS.itemTypes.power && i.system.parent === gadget._id) {
                 if (description) {
                     description += ', ';
@@ -863,7 +881,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         }
 
         // skills
-        for (let i of owner.items) {
+        for (const i of owner.items) {
             if (
                 i.type === MEGS.itemTypes.skill &&
                 i.system.parent === gadget._id &&
@@ -950,33 +968,24 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
     const reliabilityMod = getReliabilityMod(reliability);
 
-    // Debug: Show what reliability value we're reading
-    console.log(`[${gadget.name}] Reliability Index: ${systemData.reliability}, R#: ${reliability}, Mod: ${reliabilityMod}`);
-
     // Calculate attribute costs
     let attributesCost = 0;
     if (systemData.attributes) {
         for (const [key, attr] of Object.entries(systemData.attributes)) {
             if (attr.value > 0) {
-                let fc = attr.factorCost + reliabilityMod;
-                console.log(`  ${key.toUpperCase()}: base FC=${attr.factorCost}, +reliabilityMod(${reliabilityMod})`);
+                let fc = (Number(attr.factorCost) || 0) + reliabilityMod;
                 if (attr.alwaysSubstitute) {
                     fc += 2;
-                    console.log(`    +2 for alwaysSubstitute`);
                 }
                 if (key === 'body' && (systemData.hasHardenedDefenses === true || systemData.hasHardenedDefenses === 'true')) {
                     fc += 2;
-                    console.log(`    +2 for Hardened Defenses`);
                 }
-                fc = Math.max(1, fc);
-                const attrCost = MEGS.getAPCost(attr.value, fc) || 0;
-                console.log(`    Final: ${attr.value} APs @ FC ${fc} = ${attrCost} HP`);
-                attributesCost += attrCost;
+                fc = Math.min(10, Math.max(1, fc));
+                attributesCost += MEGS.getAPCost(attr.value, fc) || 0;
             }
         }
     }
     if (attributesCost > 0) {
-        console.log(`  Total Attributes: ${attributesCost} HP`);
         tooltip += 'Attributes: ' + attributesCost + '\n';
         totalBeforeBonus += attributesCost;
     }
@@ -984,9 +993,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     // Calculate AV cost
     if (systemData.actionValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
-        const chartCost = MEGS.getAPCost(systemData.actionValue, fc) || 0;
-        const avCost = 5 + chartCost;
-        console.log(`  AV: 5 (base) + ${systemData.actionValue} APs @ FC ${fc} = ${chartCost} HP → Total: ${avCost} HP`);
+        const avCost = 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
         tooltip += `AV: ${avCost}\n`;
         totalBeforeBonus += avCost;
     }
@@ -1015,17 +1022,23 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         let skillsCost = 0;
         let advantagesCost = 0;
         let drawbacksCost = 0;
+        const subGadgetEntries = [];
 
         owner.items.forEach(item => {
-            if (item.system.parent === gadget._id && item.system.totalCost) {
-                if (item.type === MEGS.itemTypes.power) {
+            if (item.system.parent === gadget._id) {
+                if (item.type === MEGS.itemTypes.power && item.system.totalCost) {
                     powersCost += item.system.totalCost;
-                } else if (item.type === MEGS.itemTypes.skill) {
+                } else if (item.type === MEGS.itemTypes.skill && item.system.totalCost) {
                     skillsCost += item.system.totalCost;
-                } else if (item.type === MEGS.itemTypes.advantage) {
+                } else if (item.type === MEGS.itemTypes.advantage && item.system.totalCost) {
                     advantagesCost += item.system.totalCost;
-                } else if (item.type === MEGS.itemTypes.drawback) {
+                } else if (item.type === MEGS.itemTypes.drawback && item.system.totalCost) {
                     drawbacksCost += item.system.totalCost;
+                } else if (item.type === MEGS.itemTypes.gadget) {
+                    const cost = item.system.totalCost || 0;
+                    if (cost !== 0) {
+                        subGadgetEntries.push({ name: item.name, cost: cost });
+                    }
                 }
             }
         });
@@ -1046,6 +1059,10 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
             tooltip += 'Drawbacks: -' + drawbacksCost + '\n';
             totalBeforeBonus -= drawbacksCost;
         }
+        for (const entry of subGadgetEntries) {
+            tooltip += entry.name + ': ' + entry.cost + '\n';
+            totalBeforeBonus += entry.cost;
+        }
     }
 
     // Add total before bonus
@@ -1054,30 +1071,29 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
 
     // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
     const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
-    console.log(`  Total before bonus: ${totalBeforeBonus} HP`);
-    console.log(`  Gadget Bonus: ÷${gadgetBonus}`);
     tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\n';
 
     // Add final cost
     const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
-    console.log(`  Final Cost: ${totalBeforeBonus} ÷ ${gadgetBonus} = ${finalCost} HP`);
     tooltip += 'Final Cost: ' + finalCost;
 
     return tooltip;
 });
 
 Handlebars.registerHelper('getGadgetAttributeCost', function (aps, baseFc, reliabilityIndex, hasHardenedDefenses, attrKey) {
+    aps = Number(aps) || 0;
     if (aps === 0) return 0;
 
+    baseFc = Number(baseFc) || 0;
     const table = { 0: 3, 2: 2, 3: 1, 5: 0, 7: -1, 9: -2, 11: -3 };
-    const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+    const reliability = CONFIG.reliabilityScores?.[Number(reliabilityIndex)] ?? 5;
     const reliabilityMod = table[reliability] ?? 0;
 
     let fc = baseFc + reliabilityMod;
     if (attrKey === 'body' && (hasHardenedDefenses === true || hasHardenedDefenses === 'true')) {
         fc += 2;
     }
-    fc = Math.max(1, fc);
+    fc = Math.min(10, Math.max(1, fc));
 
     return MEGS.getAPCost(aps, fc) || 0;
 });
@@ -1101,12 +1117,22 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
     if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
     if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
     if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
-    tooltip += `─────────────────\n`;
+    tooltip += '─────────────────\n';
     tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
-    // Determine gadget bonus from the actual division
-    const gadgetBonus = totalBeforeBonus > 0 && total > 0 ? Math.round(totalBeforeBonus / total) : 4;
+    const subGadgetsCost = budget.subGadgetsCost || 0;
+    const ownCost = total - subGadgetsCost;
+    const gadgetBonus = totalBeforeBonus > 0 && ownCost > 0
+        ? Math.round(totalBeforeBonus / ownCost)
+        : 4;
     tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
-    tooltip += `─────────────────\n`;
+    if (budget.subGadgetEntries) {
+        for (const entry of budget.subGadgetEntries) {
+            if (entry.cost !== 0) {
+                tooltip += `${entry.name}: +${entry.cost} HP\n`;
+            }
+        }
+    }
+    tooltip += '─────────────────\n';
     tooltip += `Total: ${total} HP`;
 
     return tooltip;
@@ -1125,9 +1151,9 @@ Handlebars.registerHelper('getGadgetAdjustedCost', function (rawCost, canBeTaken
 });
 
 /**
- * Get tooltip explaining the gadget cost calculation
+ * Get tooltip explaining how a raw cost is adjusted by the Can Be Taken Away divisor
  */
-Handlebars.registerHelper('getGadgetCostTooltip', function (rawCost, canBeTakenAway) {
+Handlebars.registerHelper('getGadgetAdjustedCostTooltip', function (rawCost, canBeTakenAway) {
     const cost = Number(rawCost) || 0;
     if (cost === 0) return '';
 
@@ -1257,70 +1283,79 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once('ready', async function () {
-    // Log compendium pack loading information only if debug logging is enabled
-    if (game.settings.get('megs', 'debugLogging')) {
-        console.log('[MEGS] ===========================================');
-        console.log('[MEGS] Compendium Pack Verification Starting...');
-        console.log('[MEGS] ===========================================');
+async function _verifyCompendiumPacks() {
+    console.log('[MEGS] ===========================================');
+    console.log('[MEGS] Compendium Pack Verification Starting...');
+    console.log('[MEGS] ===========================================');
 
-        try {
-            // Log all available packs first
-            console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
+    try {
+        console.log(`[MEGS] Total packs in game.packs: ${game.packs.size}`);
 
-            // Get all compendium packs for the MEGS system
-            const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
-            console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
+        const megsPacks = game.packs.filter(pack => pack.metadata.system === 'megs');
+        console.log(`[MEGS] Found ${megsPacks.length} MEGS compendium packs`);
 
-            if (megsPacks.length === 0) {
-                console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
-                game.packs.forEach(pack => {
-                    console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
-                });
+        if (megsPacks.length === 0) {
+            console.error('[MEGS] NO MEGS PACKS FOUND! Listing all available packs:');
+            game.packs.forEach(pack => {
+                console.log(`[MEGS]   - ${pack.collection} (system: ${pack.metadata.system})`);
+            });
+        }
+
+        for (const pack of megsPacks) {
+            console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
+            console.log(`[MEGS]   Collection: ${pack.collection}`);
+            console.log(`[MEGS]   Path: ${pack.metadata.path}`);
+            console.log(`[MEGS]   Type: ${pack.metadata.type}`);
+            console.log(`[MEGS]   Locked: ${pack.locked}`);
+
+            try {
+                console.log('[MEGS]   Attempting to get index...');
+                const index = await pack.getIndex();
+                console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
+
+                if (index.size > 0) {
+                    const sampleItems = Array.from(index.values()).slice(0, 3);
+                    console.log('[MEGS]   Sample items:');
+                    sampleItems.forEach(item => {
+                        console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
+                    });
+                } else {
+                    console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
+                }
+            } catch (error) {
+                console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
+                console.error('[MEGS]   Error details:', error.message, error.stack);
             }
+        }
 
-            // Check each pack
-            for (const pack of megsPacks) {
-                console.log(`[MEGS] --- Pack: ${pack.metadata.label} (${pack.metadata.name}) ---`);
-                console.log(`[MEGS]   Collection: ${pack.collection}`);
-                console.log(`[MEGS]   Path: ${pack.metadata.path}`);
-                console.log(`[MEGS]   Type: ${pack.metadata.type}`);
-                console.log(`[MEGS]   Locked: ${pack.locked}`);
+        console.log('[MEGS] ===========================================');
+        console.log('[MEGS] Compendium Pack Verification Complete');
+        console.log('[MEGS] ===========================================');
+    } catch (error) {
+        console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
+        console.error('[MEGS] Error details:', error.message, error.stack);
+    }
+}
 
-                try {
-                    // Get the index (this doesn't load all items, just the index)
-                    console.log(`[MEGS]   Attempting to get index...`);
-                    const index = await pack.getIndex();
-                    console.log(`[MEGS]   Index retrieved. Items in index: ${index.size}`);
-
-                    if (index.size > 0) {
-                        // Show first 3 items as sample
-                        const sampleItems = Array.from(index.values()).slice(0, 3);
-                        console.log(`[MEGS]   Sample items:`);
-                        sampleItems.forEach(item => {
-                            console.log(`[MEGS]     - ${item.name} (${item._id}, type: ${item.type})`);
-                        });
-                    } else {
-                        console.error(`[MEGS]   *** ERROR: Pack "${pack.metadata.label}" has NO ITEMS in index! ***`);
-                    }
-                } catch (error) {
-                    console.error(`[MEGS]   *** ERROR loading pack "${pack.metadata.label}":`, error);
-                    console.error(`[MEGS]   Error details:`, error.message, error.stack);
+Hooks.once('ready', async function () {
+    // Re-prepare gadget items now that CONFIG.apCostChart is guaranteed loaded
+    if (CONFIG.apCostChart?.chart) {
+        for (const actor of game.actors) {
+            for (const item of actor.items) {
+                if (item.type === 'gadget') {
+                    item.prepareDerivedData();
                 }
             }
-
-            console.log('[MEGS] ===========================================');
-            console.log('[MEGS] Compendium Pack Verification Complete');
-            console.log('[MEGS] ===========================================');
-        } catch (error) {
-            console.error('[MEGS] CRITICAL ERROR during compendium verification:', error);
-            console.error('[MEGS] Error details:', error.message, error.stack);
         }
+    }
+
+    if (game.settings.get('megs', 'debugLogging')) {
+        await _verifyCompendiumPacks();
     }
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {
-        let item = fromUuidSync(data.uuid);
+        const item = fromUuidSync(data.uuid);
         if (item && item.system) {
             createMegsMacro(item, slot);
             return false;
@@ -1463,10 +1498,11 @@ function rollItemMacro(uuid) {
     const actorId = uuid.match(/^Actor\.([A-Za-z0-9]+)\.Item\..+/)[1];
     const actor = game.actors.get(actorId);
     const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
-    if (!item)
+    if (!item) {
         return ui.notifications.warn(
             `Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`
         );
+    }
 
     // Trigger the item roll
     return item.roll();

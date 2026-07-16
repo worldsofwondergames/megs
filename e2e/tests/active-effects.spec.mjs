@@ -69,11 +69,14 @@ test.describe('Active Effects (#226 cat 10)', () => {
             actorId = await createHeroActor(page, prefixName('AE_Categories'));
             const categories = await page.evaluate(async (id) => {
                 const actor = game.actors.get(id);
-                const [temporary, passive, inactive] = await actor.createEmbeddedDocuments('ActiveEffect', [
+                const effects = await actor.createEmbeddedDocuments('ActiveEffect', [
                     { name: 'Stunned', img: 'icons/svg/daze.svg', duration: { rounds: 2 } },
                     { name: 'Tough', img: 'icons/svg/shield.svg' },
                     { name: 'Dormant', img: 'icons/svg/sleep.svg', disabled: true },
                 ]);
+                const temporary = effects.find(e => e.name === 'Stunned');
+                const passive = effects.find(e => e.name === 'Tough');
+                const inactive = effects.find(e => e.name === 'Dormant');
                 return {
                     temporaryIsTemporary: temporary.isTemporary,
                     passiveIsTemporary: passive.isTemporary,

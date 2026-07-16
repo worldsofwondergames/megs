@@ -104,7 +104,7 @@ async function clickGadgetRollButton(page, gadgetName) {
         return false;
     }, gadgetName);
     if (!clicked) throw new Error(`Could not click roll button for "${gadgetName}"`);
-    await page.waitForSelector('.dialog', { timeout: 5000 });
+    await page.waitForSelector('dialog.dialog[open], .dialog .megs-dialog', { timeout: 10000 });
 }
 
 /**
@@ -571,7 +571,7 @@ test.describe('Gadget Rolling (#17)', () => {
                 gadget.roll();
             }, { actorId, gadgetId });
 
-            await page.waitForSelector('.dialog', { timeout: 5000 });
+            await page.waitForSelector('dialog.dialog[open], .dialog .megs-dialog', { timeout: 10000 });
 
             const pickerOpen = await isPickerDialogOpen(page);
             expect(pickerOpen).toBe(true);

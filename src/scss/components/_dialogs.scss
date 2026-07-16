@@ -19,7 +19,8 @@
         font-family: $font-primary;
     }
 
-    .dialog-buttons {
+    .dialog-buttons,
+    .form-footer {
         position: sticky;
         bottom: 0;
         background-color: $c-lightblue;
@@ -150,6 +151,8 @@
         padding: 8px 4px;
         font-size: 14px;
         outline: none;
+        background-color: $c-white;
+        color: $c-darkblue;
 
         // Hide the number input spin buttons
         &::-webkit-inner-spin-button,

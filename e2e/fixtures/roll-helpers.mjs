@@ -28,7 +28,7 @@ export async function closeRollDialog(page) {
         const closeBtn = dialog?.querySelector('button[data-action="close"]');
         if (closeBtn) {
             const form = closeBtn.closest('form');
-            if (form) { form.requestSubmit(closeBtn); return; }
+            if (form && closeBtn.type === 'submit') { form.requestSubmit(closeBtn); return; }
         }
         for (const btn of document.querySelectorAll('.dialog button')) {
             if (btn.textContent.includes('Close')) { btn.click(); return; }
@@ -47,7 +47,7 @@ export async function submitRollDialog(page, beforeCount) {
         const submitBtn = dialog?.querySelector('button[data-action="submit"]');
         if (submitBtn) {
             const form = submitBtn.closest('form');
-            if (form) { form.requestSubmit(submitBtn); return; }
+            if (form && submitBtn.type === 'submit') { form.requestSubmit(submitBtn); return; }
         }
         for (const btn of document.querySelectorAll('.dialog button')) {
             const text = btn.textContent.trim();
@@ -85,7 +85,7 @@ export async function selectPickerOptionAndRoll(page, index) {
         const rollBtn = dialog?.querySelector('button[data-action="roll"]');
         if (rollBtn) {
             const form = rollBtn.closest('form');
-            if (form) { form.requestSubmit(rollBtn); return; }
+            if (form && rollBtn.type === 'submit') { form.requestSubmit(rollBtn); return; }
         }
         for (const btn of dialog.querySelectorAll('button')) {
             if (btn.textContent.trim().includes('Roll')) { btn.click(); return; }
@@ -100,7 +100,7 @@ export async function cancelPickerDialog(page) {
         const cancelBtn = dialog?.querySelector('button[data-action="cancel"], button[data-action="close"]');
         if (cancelBtn) {
             const form = cancelBtn.closest('form');
-            if (form) { form.requestSubmit(cancelBtn); return; }
+            if (form && cancelBtn.type === 'submit') { form.requestSubmit(cancelBtn); return; }
             cancelBtn.click();
             return;
         }
@@ -192,7 +192,7 @@ export async function clickRollDialogSubmit(page) {
         const submitBtn = dialog?.querySelector('button[data-action="submit"]');
         if (submitBtn) {
             const form = submitBtn.closest('form');
-            if (form) { form.requestSubmit(submitBtn); return; }
+            if (form && submitBtn.type === 'submit') { form.requestSubmit(submitBtn); return; }
         }
         for (const btn of document.querySelectorAll('.dialog button')) {
             const text = btn.textContent.trim();
@@ -224,7 +224,7 @@ export async function answerDoublesPrompt(page, continueRolling) {
         const actionBtn = dialog.querySelector(`button[data-action="${action}"]`);
         if (actionBtn) {
             const form = actionBtn.closest('form');
-            if (form) { form.requestSubmit(actionBtn); return; }
+            if (form && actionBtn.type === 'submit') { form.requestSubmit(actionBtn); return; }
             actionBtn.click();
             return;
         }

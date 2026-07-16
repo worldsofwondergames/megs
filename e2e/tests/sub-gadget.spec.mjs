@@ -112,9 +112,17 @@ test.describe('Sub-gadget display and controls (#78)', () => {
                 if (deleteBtn) deleteBtn.click();
             }, result.subGadgetId);
 
-            await page.waitForSelector('.dialog .dialog-buttons', { timeout: 5000 });
+            await page.waitForSelector('.dialog .form-footer, .dialog .dialog-buttons', { timeout: 5000 });
             await page.evaluate(() => {
-                const buttons = document.querySelectorAll('.dialog .dialog-buttons button');
+                const dialog = document.querySelector('dialog.dialog, .dialog');
+                const yesBtn = dialog?.querySelector('button[data-action="yes"]');
+                if (yesBtn) {
+                    const form = yesBtn.closest('form');
+                    if (form && yesBtn.type === 'submit') { form.requestSubmit(yesBtn); return; }
+                    yesBtn.click();
+                    return;
+                }
+                const buttons = dialog?.querySelectorAll('.form-footer button, .dialog-buttons button') ?? [];
                 for (const btn of buttons) {
                     if (btn.textContent.trim().match(/yes|delete|ok/i)) {
                         btn.click();

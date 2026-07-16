@@ -171,7 +171,7 @@ export default class MEGSCombat extends Combat {
                     default: true,
                     callback: (event, button, dialog) => {
                         const response = this._processHeroPointsEntry(
-                            dialog.querySelector('form')
+                            button.form
                         );
                         return response.hpSpentInitiative;
                     },

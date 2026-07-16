@@ -1375,28 +1375,29 @@ export class MEGSItem extends Item {
             { options }
         );
 
-        return new Promise((resolve) => {
-            new Dialog({
-                title: `${this.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
-                content: dialogHtml,
-                buttons: {
-                    cancel: {
-                        label: game.i18n.localize('MEGS.Close'),
-                        callback: () => resolve(null),
-                    },
-                    roll: {
-                        label: game.i18n.localize('MEGS.Roll'),
-                        callback: (html) => {
-                            const idx = Number.parseInt(
-                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
-                            );
-                            resolve(rollOptions[idx]);
-                        },
+        return foundry.applications.api.DialogV2.wait({
+            window: { title: `${this.name} — ${game.i18n.localize('MEGS.GadgetRoll')}` },
+            classes: ['megs', 'dialog'],
+            content: dialogHtml,
+            buttons: [
+                {
+                    action: 'roll',
+                    label: game.i18n.localize('MEGS.Roll'),
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        const idx = Number.parseInt(
+                            dialog.querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                        );
+                        return rollOptions[idx];
                     },
                 },
-                default: 'roll',
-                close: () => resolve(null),
-            }, { classes: ['megs', 'dialog'] }).render(true);
+                {
+                    action: 'cancel',
+                    label: game.i18n.localize('MEGS.Close'),
+                    callback: () => null,
+                },
+            ],
+            rejectClose: false,
         });
     }
 

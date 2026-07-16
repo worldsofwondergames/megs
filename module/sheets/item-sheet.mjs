@@ -339,7 +339,7 @@ export class MEGSItemSheet extends ItemSheet {
                 // Check if this is a virtual power
                 if (itemId.startsWith('virtual-power-')) {
                     const powerName = itemId.replace('virtual-power-', '');
-                    const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
+                    const powerAPs = foundry.utils.deepClone(this.object.system.powerAPs || {});
 
                     if (Object.hasOwn(powerAPs, powerName)) {
                         powerAPs[powerName] = (powerAPs[powerName] || 0) + 1;
@@ -348,8 +348,8 @@ export class MEGSItemSheet extends ItemSheet {
                     }
                 } else {
                     // Update virtual skill in skillData or subskillData
-                    const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
-                    const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+                    const skillData = foundry.utils.deepClone(this.object.system.skillData || {});
+                    const subskillData = foundry.utils.deepClone(this.object.system.subskillData || {});
 
                     if (Object.hasOwn(skillData, skillName)) {
                         skillData[skillName] = (skillData[skillName] || 0) + 1;
@@ -382,7 +382,7 @@ export class MEGSItemSheet extends ItemSheet {
                 // Check if this is a virtual power
                 if (itemId.startsWith('virtual-power-')) {
                     const powerName = itemId.replace('virtual-power-', '');
-                    const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
+                    const powerAPs = foundry.utils.deepClone(this.object.system.powerAPs || {});
 
                     if (Object.hasOwn(powerAPs, powerName) && (powerAPs[powerName] || 0) > 0) {
                         powerAPs[powerName] = (powerAPs[powerName] || 0) - 1;
@@ -391,8 +391,8 @@ export class MEGSItemSheet extends ItemSheet {
                     }
                 } else {
                     // Update virtual skill in skillData or subskillData
-                    const skillData = foundry.utils.duplicate(this.object.system.skillData || {});
-                    const subskillData = foundry.utils.duplicate(this.object.system.subskillData || {});
+                    const skillData = foundry.utils.deepClone(this.object.system.skillData || {});
+                    const subskillData = foundry.utils.deepClone(this.object.system.subskillData || {});
 
                     if (Object.hasOwn(skillData, skillName) && (skillData[skillName] || 0) > 0) {
                         skillData[skillName] = (skillData[skillName] || 0) - 1;
@@ -482,13 +482,12 @@ export class MEGSItemSheet extends ItemSheet {
             }
 
             const typeDisplay = typeof itemType === 'string' ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : 'Item';
-            const confirmed = await Dialog.confirm({
-                title: `Delete ${typeDisplay}: ${itemName}`,
+            const confirmed = await foundry.applications.api.DialogV2.confirm({
+                window: { title: `Delete ${typeDisplay}: ${itemName}` },
                 content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
-                defaultYes: false,
-                options: {
-                    classes: ['megs', 'dialog']
-                }
+                classes: ['megs', 'dialog'],
+                rejectClose: false,
+                no: { default: true },
             });
 
             if (!confirmed) return;
@@ -497,7 +496,7 @@ export class MEGSItemSheet extends ItemSheet {
                 // Standalone power/skill - delete virtual modifier from flattened array
                 const index = Number.parseInt(itemId.split('-')[2]);
                 const arrayKey = isVirtualBonus ? 'bonuses' : 'limitations';
-                const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+                const modifiers = foundry.utils.deepClone(this.object.system[arrayKey] || []);
 
                 // Remove the modifier at the index
                 modifiers.splice(index, 1);
@@ -1128,7 +1127,7 @@ export class MEGSItemSheet extends ItemSheet {
         // Get the type of item to create.
         const type = header.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.deepClone(header.dataset);
         // Initialize a default name.
         const name = `New ${type.capitalize()}`;
         // Prepare the item object.
@@ -1167,7 +1166,7 @@ export class MEGSItemSheet extends ItemSheet {
      * @private
      */
     async _onCreateTraitOnStandaloneGadget(itemData) {
-        const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+        const traitData = foundry.utils.deepClone(this.object.system.traitData || {});
 
         // Create a unique key using timestamp to avoid collisions
         const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
@@ -1339,7 +1338,7 @@ export class MEGSItemSheet extends ItemSheet {
      * @private
      */
     async _onDropTraitToStandaloneGadget(itemData) {
-        const traitData = foundry.utils.duplicate(this.object.system.traitData || {});
+        const traitData = foundry.utils.deepClone(this.object.system.traitData || {});
 
         // Store the complete item data using a unique key (name + type + timestamp)
         const key = `${itemData.name}-${itemData.type}-${Date.now()}`;
@@ -1364,12 +1363,12 @@ export class MEGSItemSheet extends ItemSheet {
      */
     async _onDropPowerToStandaloneGadget(itemData) {
         // Duplicate all flattened power fields
-        const powerAPs = foundry.utils.duplicate(this.object.system.powerAPs || {});
-        const powerBaseCosts = foundry.utils.duplicate(this.object.system.powerBaseCosts || {});
-        const powerFactorCosts = foundry.utils.duplicate(this.object.system.powerFactorCosts || {});
-        const powerRanges = foundry.utils.duplicate(this.object.system.powerRanges || {});
-        const powerIsLinked = foundry.utils.duplicate(this.object.system.powerIsLinked || {});
-        const powerLinks = foundry.utils.duplicate(this.object.system.powerLinks || {});
+        const powerAPs = foundry.utils.deepClone(this.object.system.powerAPs || {});
+        const powerBaseCosts = foundry.utils.deepClone(this.object.system.powerBaseCosts || {});
+        const powerFactorCosts = foundry.utils.deepClone(this.object.system.powerFactorCosts || {});
+        const powerRanges = foundry.utils.deepClone(this.object.system.powerRanges || {});
+        const powerIsLinked = foundry.utils.deepClone(this.object.system.powerIsLinked || {});
+        const powerLinks = foundry.utils.deepClone(this.object.system.powerLinks || {});
 
         // Use power name as key
         const powerName = itemData.name;
@@ -1410,7 +1409,7 @@ export class MEGSItemSheet extends ItemSheet {
         const arrayKey = isBonus ? 'bonuses' : 'limitations';
 
         // Get existing array
-        const modifiers = foundry.utils.duplicate(this.object.system[arrayKey] || []);
+        const modifiers = foundry.utils.deepClone(this.object.system[arrayKey] || []);
 
         // Add new modifier data
         modifiers.push({

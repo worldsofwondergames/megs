@@ -112,43 +112,46 @@ export class MegsTableRolls {
             };
             const dialogHtml = await this._renderTemplate(template, data);
 
-            new Dialog({
-                title: label,
+            const response = await foundry.applications.api.DialogV2.wait({
+                window: { title: label },
+                classes: ['megs', 'dialog'],
                 content: dialogHtml,
-                buttons: {
-                    button2: {
-                        label: game.i18n.localize('MEGS.Close'),
-                        callback: () => {},
-                    },
-                    button1: {
+                buttons: [
+                    {
+                        action: 'submit',
                         label: game.i18n.localize('MEGS.Submit'),
-                        callback: (html) => {
-                            const response = this._processOpposingValuesEntry(
-                                html[0].querySelector('form')
-                            );
-                            this.actionValue = response.actionValue;
-                            this.effectValue = response.effectValue;
-                            this.opposingValue = response.opposingValue;
-                            this.resistanceValue = response.resistanceValue;
-                            this.isUnskilled = response.isUnskilled;
-                            this._handleRolls(
-                                currentHeroPoints,
-                                maxHpToSpend,
-                                response.hpSpentAV,
-                                response.hpSpentEV,
-                                response.hpSpentOV,
-                                response.hpSpentRV,
-                                response.combatManeuver,
-                                response.resultColumnShifts,
-                                response.isUnskilled
+                        default: true,
+                        callback: (event, button, dialog) => {
+                            return this._processOpposingValuesEntry(
+                                dialog.querySelector('form')
                             );
                         },
                     },
-                },
-                default: 'button1',
-            }, {
-                classes: ['megs', 'dialog']
-            }).render(true);
+                    {
+                        action: 'close',
+                        label: game.i18n.localize('MEGS.Close'),
+                    },
+                ],
+                rejectClose: false,
+            });
+            if (response) {
+                this.actionValue = response.actionValue;
+                this.effectValue = response.effectValue;
+                this.opposingValue = response.opposingValue;
+                this.resistanceValue = response.resistanceValue;
+                this.isUnskilled = response.isUnskilled;
+                await this._handleRolls(
+                    currentHeroPoints,
+                    maxHpToSpend,
+                    response.hpSpentAV,
+                    response.hpSpentEV,
+                    response.hpSpentOV,
+                    response.hpSpentRV,
+                    response.combatManeuver,
+                    response.resultColumnShifts,
+                    response.isUnskilled
+                );
+            }
         } else if (game.user.targets.size > 1) {
             ui.notifications.warn(game.i18n.localize('MEGS.ErrorMessages.OnlyOneTarget'));
         } else {
@@ -179,43 +182,46 @@ export class MegsTableRolls {
         };
         const dialogHtml = await this._renderTemplate(template, data);
 
-        new Dialog({
-            title: this.label,
+        const response = await foundry.applications.api.DialogV2.wait({
+            window: { title: this.label },
+            classes: ['megs', 'dialog'],
             content: dialogHtml,
-            buttons: {
-                button2: {
-                    label: 'Close',
-                    callback: () => {},
-                },
-                button1: {
-                    label: 'Submit',
-                    callback: (html) => {
-                        const response = this._processOpposingValuesEntry(
-                            html[0].querySelector('form')
-                        );
-                        this.actionValue = response.actionValue;
-                        this.effectValue = response.effectValue;
-                        this.opposingValue = response.opposingValue;
-                        this.resistanceValue = response.resistanceValue;
-                        this.isUnskilled = response.isUnskilled;
-                        this._handleRolls(
-                            currentHeroPoints,
-                            maxHpToSpend,
-                            response.hpSpentAV,
-                            response.hpSpentEV,
-                            response.hpSpentOV,
-                            response.hpSpentRV,
-                            response.combatManeuver,
-                            response.resultColumnShifts,
-                            response.isUnskilled
+            buttons: [
+                {
+                    action: 'submit',
+                    label: game.i18n.localize('MEGS.Submit'),
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        return this._processOpposingValuesEntry(
+                            dialog.querySelector('form')
                         );
                     },
                 },
-            },
-            default: 'button1',
-        }, {
-            classes: ['megs', 'dialog']
-        }).render(true);
+                {
+                    action: 'close',
+                    label: game.i18n.localize('MEGS.Close'),
+                },
+            ],
+            rejectClose: false,
+        });
+        if (response) {
+            this.actionValue = response.actionValue;
+            this.effectValue = response.effectValue;
+            this.opposingValue = response.opposingValue;
+            this.resistanceValue = response.resistanceValue;
+            this.isUnskilled = response.isUnskilled;
+            await this._handleRolls(
+                currentHeroPoints,
+                maxHpToSpend,
+                response.hpSpentAV,
+                response.hpSpentEV,
+                response.hpSpentOV,
+                response.hpSpentRV,
+                response.combatManeuver,
+                response.resultColumnShifts,
+                response.isUnskilled
+            );
+        }
     }
 
     /**
@@ -588,14 +594,11 @@ export class MegsTableRolls {
                     await game.dice3d.showForRoll(currentRoll, game.user, true);
                 }
 
-                const confirmed = await Dialog.confirm({
-                    title: game.i18n.localize('MEGS.ContinueRolling'),
+                const confirmed = await foundry.applications.api.DialogV2.confirm({
+                    window: { title: game.i18n.localize('MEGS.ContinueRolling') },
                     content: game.i18n.localize('MEGS.RolledDoublesPrompt'),
-                    yes: () => true,
-                    no: () => false,
-                    options: {
-                        classes: ['megs', 'dialog']
-                    }
+                    classes: ['megs', 'dialog'],
+                    rejectClose: false,
                 });
                 if (confirmed) {
                     currentRoll = new Roll(this.rollFormula, {});

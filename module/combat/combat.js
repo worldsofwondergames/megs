@@ -100,21 +100,18 @@ export default class MEGSCombat extends Combat {
             updates.push({ _id: id, initiative: roll.total });
 
             // Construct chat message data
-            // eslint-disable-next-line no-undef
-            const messageData = foundry.utils.mergeObject(
-                {
-                    // eslint-disable-next-line no-undef
-                    speaker: ChatMessage.getSpeaker({
-                        actor: combatant.actor,
-                        token: combatant.token,
-                        alias: combatant.name,
-                    }),
-                    // eslint-disable-next-line no-undef
-                    flavor: game.i18n.format('COMBAT.RollsInitiative', { name: combatant.name }),
-                    flags: { 'core.initiativeRoll': true },
-                },
-                messageOptions
-            );
+            const messageData = {
+                // eslint-disable-next-line no-undef
+                speaker: ChatMessage.getSpeaker({
+                    actor: combatant.actor,
+                    token: combatant.token,
+                    alias: combatant.name,
+                }),
+                // eslint-disable-next-line no-undef
+                flavor: game.i18n.format('COMBAT.RollsInitiative', { name: combatant.name }),
+                flags: { 'core.initiativeRoll': true },
+                ...messageOptions,
+            };
             const chatData = await roll.toMessage(messageData, { create: false });
 
             // If the combatant is hidden, use a private roll unless an alternative rollMode was explicitly requested
@@ -163,30 +160,31 @@ export default class MEGSCombat extends Combat {
             label = combatantName + ' - ' + game.i18n.localize('MEGS.Initiative');
         }
 
-        return await new Promise((resolve, reject) => {
-            const d = new Dialog({
-                title: label,
-                content: dialogHtml,
-                buttons: {
-                    button2: {
-                        label: game.i18n.localize('MEGS.Close'),
-                        callback: (html) => {},
-                    },
-                    button1: {
-                        label: game.i18n.localize('MEGS.Roll'),
-                        callback: (html) => {
-                            const response = this._processHeroPointsEntry(
-                                html[0].querySelector('form')
-                            );
-                            resolve(response.hpSpentInitiative);
-                        },
+        const result = await foundry.applications.api.DialogV2.wait({
+            window: { title: label },
+            classes: ['megs', 'dialog'],
+            content: dialogHtml,
+            buttons: [
+                {
+                    action: 'roll',
+                    label: game.i18n.localize('MEGS.Roll'),
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        const response = this._processHeroPointsEntry(
+                            dialog.querySelector('form')
+                        );
+                        return response.hpSpentInitiative;
                     },
                 },
-                default: 'button1',
-            }).render(true);
-        }).catch((err) => {
-            throw err;
+                {
+                    action: 'close',
+                    label: game.i18n.localize('MEGS.Close'),
+                    callback: () => 0,
+                },
+            ],
+            rejectClose: false,
         });
+        return result ?? 0;
     }
 
     /**

@@ -653,7 +653,7 @@ export class MEGSActorSheet extends ActorSheet {
         // Get the type of item to create.
         const type = header.dataset.type;
         // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
+        const data = foundry.utils.deepClone(header.dataset);
         // Initialize a default name.
         const name = `New ${type.capitalize()}`;
         // Prepare the item object.
@@ -743,13 +743,12 @@ export class MEGSActorSheet extends ActorSheet {
         if (!item) return;
 
         const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
-        const confirmed = await Dialog.confirm({
-            title: `Delete ${type}: ${item.name}`,
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: `Delete ${type}: ${item.name}` },
             content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
-            defaultYes: false,
-            options: {
-                classes: ['megs', 'dialog']
-            }
+            classes: ['megs', 'dialog'],
+            rejectClose: false,
+            no: { default: true },
         });
 
         if (!confirmed) return;
@@ -1185,28 +1184,29 @@ export class MEGSActorSheet extends ActorSheet {
             { options }
         );
 
-        return new Promise((resolve) => {
-            new Dialog({
-                title: `${gadget.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
-                content: dialogHtml,
-                buttons: {
-                    cancel: {
-                        label: game.i18n.localize('MEGS.Close'),
-                        callback: () => resolve(null),
-                    },
-                    roll: {
-                        label: game.i18n.localize('MEGS.Roll'),
-                        callback: (html) => {
-                            const idx = Number.parseInt(
-                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
-                            );
-                            resolve(rollOptions[idx]);
-                        },
+        return foundry.applications.api.DialogV2.wait({
+            window: { title: `${gadget.name} — ${game.i18n.localize('MEGS.GadgetRoll')}` },
+            classes: ['megs', 'dialog'],
+            content: dialogHtml,
+            buttons: [
+                {
+                    action: 'roll',
+                    label: game.i18n.localize('MEGS.Roll'),
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        const idx = Number.parseInt(
+                            dialog.querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                        );
+                        return rollOptions[idx];
                     },
                 },
-                default: 'roll',
-                close: () => resolve(null),
-            }, { classes: ['megs', 'dialog'] }).render(true);
+                {
+                    action: 'cancel',
+                    label: game.i18n.localize('MEGS.Close'),
+                    callback: () => null,
+                },
+            ],
+            rejectClose: false,
         });
     }
 

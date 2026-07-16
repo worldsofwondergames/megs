@@ -23,19 +23,23 @@ export async function getRollDialogValues(page) {
 }
 
 export async function closeRollDialog(page) {
-    await page.evaluate(() => {
-        const dialog = document.querySelector('dialog.dialog, .dialog');
-        const closeBtn = dialog?.querySelector('button[data-action="close"]');
-        if (closeBtn) {
-            const form = closeBtn.closest('form');
-            if (form && closeBtn.type === 'submit') { form.requestSubmit(closeBtn); return; }
-        }
-        for (const btn of document.querySelectorAll('.dialog button')) {
-            if (btn.textContent.includes('Close')) { btn.click(); return; }
-        }
-    });
+    const closeBtn = page.locator('dialog.dialog[open] footer button[data-action="close"]').first();
+    if (await closeBtn.count()) {
+        await closeBtn.click({ timeout: 3000 });
+    } else {
+        await page.evaluate(() => {
+            for (const btn of document.querySelectorAll('.dialog button')) {
+                if (btn.textContent.includes('Close')) { btn.click(); return; }
+            }
+        });
+    }
     await page.waitForFunction(
-        () => !document.querySelector('.dialog .megs-dialog #actionValue'),
+        () => {
+            const el = document.querySelector('.dialog .megs-dialog #actionValue');
+            if (!el) return true;
+            const dlg = el.closest('dialog');
+            return dlg && !dlg.open;
+        },
         null,
         { timeout: 5000 }
     );

@@ -289,26 +289,35 @@ async function _loadData(jsonPath) {
     }
 }
 
-export class YesDialog {
+export class YesDialogV2 {
     static confirm() {
-        return true;
+        return Promise.resolve(true);
+    }
+
+    static wait() {
+        return Promise.resolve(null);
     }
 }
 
-export class NoDialog {
+export class NoDialogV2 {
     static confirm() {
-        return false;
+        return Promise.resolve(false);
+    }
+
+    static wait() {
+        return Promise.resolve(null);
     }
 }
 
-export class HandleRollDialog {
+export class HandleRollDialogV2 {
     static confirm() {
-        return true;
+        return Promise.resolve(true);
+    }
+
+    static wait() {
+        return Promise.resolve(null);
     }
 }
-
-// }
-// global.Dialog = Dialog
 
 /**
  * Localization
@@ -389,11 +398,10 @@ global.ui = {
 };
 
 /**
- * Global helper functions function
+ * Foundry v14 utility functions (namespaced under foundry.utils)
  */
 
-// Foundry's implementation of getType
-global.getType = function (token) {
+function _getType(token) {
     const tof = typeof token;
     if (tof === 'object') {
         if (token === null) return 'null';
@@ -403,14 +411,11 @@ global.getType = function (token) {
         else return 'Object';
     }
     return tof;
-};
+}
 
-// Foundry's implementation of setProperty
-global.setProperty = function (object, key, value) {
+function _setProperty(object, key, value) {
     let target = object;
     let changed = false;
-
-    // Convert the key to an object reference if it contains dot notation
     if (key.indexOf('.') !== -1) {
         const parts = key.split('.');
         key = parts.pop();
@@ -419,35 +424,37 @@ global.setProperty = function (object, key, value) {
             return o[i];
         }, object);
     }
-
-    // Update the target
     if (target[key] !== value) {
         changed = true;
         target[key] = value;
     }
-
-    // Return changed status
     return changed;
-};
+}
 
-// Foundry's implementation of expandObject
-global.expandObject = function (obj, _d = 0) {
+function _expandObject(obj, _d = 0) {
     const expanded = {};
     if (_d > 10) throw new Error('Maximum depth exceeded');
     for (let [k, v] of Object.entries(obj)) {
-        if (v instanceof Object && !Array.isArray(v)) v = global.expandObject(v, _d + 1);
-        global.setProperty(expanded, k, v);
+        if (v instanceof Object && !Array.isArray(v)) v = _expandObject(v, _d + 1);
+        _setProperty(expanded, k, v);
     }
     return expanded;
-};
+}
 
-// Foundry's implementation of duplicate
-global.duplicate = function (original) {
-    return JSON.parse(JSON.stringify(original));
-};
+function _deepClone(original) {
+    if (typeof original !== 'object' || original === null) return original;
+    if (original instanceof Date) return new Date(original);
+    if (original instanceof Array) return original.map(item => _deepClone(item));
+    if (original instanceof Set) return new Set([...original].map(item => _deepClone(item)));
+    if (original instanceof Map) return new Map([...original].map(([k, v]) => [_deepClone(k), _deepClone(v)]));
+    const clone = {};
+    for (const [k, v] of Object.entries(original)) {
+        clone[k] = _deepClone(v);
+    }
+    return clone;
+}
 
-// Foundry's implementation of mergeObject
-global.mergeObject = function (
+function _mergeObject(
     original,
     other = {},
     {
@@ -466,90 +473,74 @@ global.mergeObject = function (
     }
     const depth = _d + 1;
 
-    // Maybe copy the original data at depth 0
-    if (!inplace && _d === 0) original = global.duplicate(original);
+    if (!inplace && _d === 0) original = _deepClone(original);
 
-    // Enforce object expansion at depth 0
-    if (_d === 0 && Object.keys(original).some((k) => /\./.test(k))) { original = global.expandObject(original); }
-    if (_d === 0 && Object.keys(other).some((k) => /\./.test(k))) { other = global.expandObject(other); }
+    if (_d === 0 && Object.keys(original).some((k) => /\./.test(k))) { original = _expandObject(original); }
+    if (_d === 0 && Object.keys(other).some((k) => /\./.test(k))) { other = _expandObject(other); }
 
-    // Iterate over the other object
     for (let [k, v] of Object.entries(other)) {
-        const tv = global.getType(v);
+        const tv = _getType(v);
 
-        // Prepare to delete
         let toDelete = false;
         if (k.startsWith('-=')) {
             k = k.slice(2);
             toDelete = v === null;
         }
 
-        // Get the existing object
         let x = original[k];
         let has = Object.prototype.hasOwnProperty.call(original, k);
-        let tx = global.getType(x);
+        let tx = _getType(x);
 
-        // Ensure that inner objects exist
         if (!has && tv === 'Object') {
             x = original[k] = {};
             has = true;
             tx = 'Object';
         }
 
-        // Case 1 - Key exists
         if (has) {
-            // 1.1 - Recursively merge an inner object
             if (tv === 'Object' && tx === 'Object' && recursive) {
-                global.mergeObject(
-                    x,
-                    v,
-                    {
-                        insertKeys,
-                        insertValues,
-                        overwrite,
-                        inplace: true,
-                        enforceTypes,
-                    },
-                    depth
-                );
-
-                // 1.2 - Remove an existing key
+                _mergeObject(x, v, { insertKeys, insertValues, overwrite, inplace: true, enforceTypes }, depth);
             } else if (toDelete) {
                 delete original[k];
-
-                // 1.3 - Overwrite existing value
             } else if (overwrite) {
                 if (tx && tv !== tx && enforceTypes) {
                     throw new Error('Mismatched data types encountered during object merge.');
                 }
                 original[k] = v;
-
-                // 1.4 - Insert new value
             } else if (x === undefined && insertValues) {
                 original[k] = v;
             }
-
-            // Case 2 - Key does not exist
         } else if (!toDelete) {
             const canInsert = (depth === 1 && insertKeys) || (depth > 1 && insertValues);
             if (canInsert) original[k] = v;
         }
     }
 
-    // Return the object for use
     return original;
-};
-
-global.renderTemplate = async function (template, data) {};
+}
 
 /**
- * Foundry namespaced APIs (V13+)
+ * Foundry v14 namespaced APIs
  */
 global.foundry = {
     applications: {
         handlebars: {
             renderTemplate: async function (template, data) { }
+        },
+        api: {
+            DialogV2: {
+                confirm: jest.fn().mockResolvedValue(true),
+                wait: jest.fn().mockResolvedValue(null),
+                prompt: jest.fn().mockResolvedValue(null),
+            }
         }
+    },
+    utils: {
+        deepClone: _deepClone,
+        getType: _getType,
+        setProperty: _setProperty,
+        expandObject: _expandObject,
+        mergeObject: _mergeObject,
     }
 };
 

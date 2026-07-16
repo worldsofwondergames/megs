@@ -23,9 +23,13 @@ export const test = base.extend({
         await use(workerPage);
         await workerPage.evaluate(() => {
             Object.values(ui.windows).forEach(w => w.close());
+            for (const d of document.querySelectorAll('dialog[open]')) {
+                d.close();
+            }
         }).catch(() => {});
         await workerPage.waitForFunction(
-            () => Object.keys(ui.windows).length === 0,
+            () => Object.keys(ui.windows).length === 0
+                && !document.querySelector('dialog[open]'),
             null,
             { timeout: 5000 }
         ).catch(() => {});

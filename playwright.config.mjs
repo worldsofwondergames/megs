@@ -19,6 +19,7 @@ export default defineConfig({
         screenshot: 'only-on-failure',
         actionTimeout: 10_000,
         navigationTimeout: 15_000,
+        viewport: { width: 1920, height: 1080 },
     },
     globalSetup: './e2e/fixtures/global-setup.mjs',
     projects: [

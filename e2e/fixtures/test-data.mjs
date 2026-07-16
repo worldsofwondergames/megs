@@ -225,13 +225,21 @@ export async function closeAllWindows(page) {
         for (const w of Object.values(ui.windows)) {
             try { await w.close({ force: true }); } catch { /* mid-render close can throw */ }
         }
+        for (const d of document.querySelectorAll('dialog[open]')) {
+            d.close();
+        }
     });
     await forceCloseAll();
     try {
-        await page.waitForFunction(() => Object.keys(ui.windows).length === 0, null, { timeout: 5000 });
+        await page.waitForFunction(
+            () => Object.keys(ui.windows).length === 0 && !document.querySelector('dialog[open]'),
+            null, { timeout: 5000 }
+        );
     } catch {
-        // A window re-rendered while closing; one retry settles it
         await forceCloseAll();
-        await page.waitForFunction(() => Object.keys(ui.windows).length === 0, null, { timeout: 5000 });
+        await page.waitForFunction(
+            () => Object.keys(ui.windows).length === 0 && !document.querySelector('dialog[open]'),
+            null, { timeout: 5000 }
+        );
     }
 }

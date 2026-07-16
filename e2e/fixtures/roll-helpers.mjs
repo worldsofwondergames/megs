@@ -8,7 +8,7 @@
 }
 
 export async function waitForRollDialog(page) {
-    await page.waitForSelector('.dialog .megs-dialog #actionValue', { timeout: 5000 });
+    await page.waitForSelector('dialog.dialog[open] .megs-dialog #actionValue, .dialog .megs-dialog #actionValue', { timeout: 10000 });
 }
 
 export async function getRollDialogValues(page) {
@@ -22,26 +22,40 @@ export async function getRollDialogValues(page) {
     });
 }
 
+async function clickDialogFooterButton(page, actions, fallbackText) {
+    const selectors = actions.map(a => `dialog.dialog[open] footer button[data-action="${a}"]`).join(', ');
+    const btn = page.locator(selectors).first();
+    if (await btn.count()) {
+        await btn.click({ timeout: 3000 });
+    } else {
+        await page.evaluate((text) => {
+            for (const b of document.querySelectorAll('.dialog button')) {
+                if (b.textContent.includes(text)) { b.click(); return; }
+            }
+        }, fallbackText);
+    }
+}
+
+function dialogClosedCheck(selector) {
+    return () => {
+        const el = document.querySelector(selector);
+        if (!el) return true;
+        const dlg = el.closest('dialog');
+        return dlg && !dlg.open;
+    };
+}
+
 export async function closeRollDialog(page) {
-    await page.evaluate(() => {
-        for (const btn of document.querySelectorAll('.dialog button')) {
-            if (btn.textContent.includes('Close')) { btn.click(); return; }
-        }
-    });
+    await clickDialogFooterButton(page, ['close'], 'Close');
     await page.waitForFunction(
-        () => !document.querySelector('.dialog .megs-dialog #actionValue'),
+        dialogClosedCheck('.dialog .megs-dialog #actionValue'),
         null,
         { timeout: 5000 }
     );
 }
 
 export async function submitRollDialog(page, beforeCount) {
-    await page.evaluate(() => {
-        for (const btn of document.querySelectorAll('.dialog button')) {
-            const text = btn.textContent.trim();
-            if (text === 'Roll' || text === 'Submit') { btn.click(); return; }
-        }
-    });
+    await clickRollDialogSubmit(page);
     await page.waitForFunction(
         (before) => document.querySelectorAll('.chat-log .chat-message').length > before,
         beforeCount,
@@ -69,21 +83,23 @@ export async function selectPickerOptionAndRoll(page, index) {
     await page.evaluate((idx) => {
         const radios = document.querySelectorAll('.dialog .megs-dialog input[name="selectedOption"]');
         if (radios[idx]) radios[idx].checked = true;
+        const dialog = document.querySelector('dialog.dialog, .dialog');
+        const rollBtn = dialog?.querySelector('button[data-action="roll"]');
+        if (rollBtn) {
+            const form = rollBtn.closest('form');
+            if (form && rollBtn.type === 'submit') { form.requestSubmit(rollBtn); return; }
+        }
+        for (const btn of dialog.querySelectorAll('button')) {
+            if (btn.textContent.trim().includes('Roll')) { btn.click(); return; }
+        }
     }, index);
-    await page.click('.dialog button:has-text("Roll")');
     await page.waitForSelector('.dialog .megs-dialog #actionValue', { timeout: 5000 });
 }
 
 export async function cancelPickerDialog(page) {
-    await page.evaluate(() => {
-        for (const btn of document.querySelectorAll('.dialog button')) {
-            if (btn.textContent.includes('Close')) { btn.click(); return; }
-        }
-        const x = document.querySelector('.dialog .header-button.close');
-        if (x) x.click();
-    });
+    await clickDialogFooterButton(page, ['cancel', 'close'], 'Close');
     await page.waitForFunction(
-        () => !document.querySelector('.dialog .megs-dialog input[name="selectedOption"]'),
+        dialogClosedCheck('.dialog .megs-dialog input[name="selectedOption"]'),
         null,
         { timeout: 5000 }
     );
@@ -162,6 +178,12 @@ export async function fillRollDialog(page, { av, ev, ov, rv, maneuver, resultShi
 /** Click Submit in the roll dialog without waiting for a chat message. */
 export async function clickRollDialogSubmit(page) {
     await page.evaluate(() => {
+        const dialog = document.querySelector('dialog.dialog, .dialog');
+        const submitBtn = dialog?.querySelector('button[data-action="submit"]');
+        if (submitBtn) {
+            const form = submitBtn.closest('form');
+            if (form && submitBtn.type === 'submit') { form.requestSubmit(submitBtn); return; }
+        }
         for (const btn of document.querySelectorAll('.dialog button')) {
             const text = btn.textContent.trim();
             if (text === 'Roll' || text === 'Submit') { btn.click(); return; }
@@ -175,21 +197,27 @@ export async function clickRollDialogSubmit(page) {
  * Waits for the dialog to appear, then clicks Yes or No.
  */
 export async function answerDoublesPrompt(page, continueRolling) {
-    // Answered dialogs are tagged with data-e2e-answered so consecutive
-    // prompts are not confused with a prior dialog that is still closing.
     await page.waitForFunction(
-        () => [...document.querySelectorAll('.dialog')].some(d =>
+        () => [...document.querySelectorAll('dialog.dialog, .dialog')].some(d =>
             !d.dataset.e2eAnswered &&
-            [...d.querySelectorAll('.window-title, h4')].some(el => el.textContent.includes('Continue Rolling'))),
+            [...d.querySelectorAll('.window-title, .window-header h1, h4')].some(el => el.textContent.includes('Continue Rolling'))),
         null,
         { timeout: 10000 }
     );
     await page.evaluate((yes) => {
-        const dialog = [...document.querySelectorAll('.dialog')].find(d =>
+        const dialog = [...document.querySelectorAll('dialog.dialog, .dialog')].find(d =>
             !d.dataset.e2eAnswered &&
-            [...d.querySelectorAll('.window-title, h4')].some(el => el.textContent.includes('Continue Rolling')));
+            [...d.querySelectorAll('.window-title, .window-header h1, h4')].some(el => el.textContent.includes('Continue Rolling')));
         if (!dialog) throw new Error('Doubles confirm dialog not found');
         dialog.dataset.e2eAnswered = '1';
+        const action = yes ? 'yes' : 'no';
+        const actionBtn = dialog.querySelector(`button[data-action="${action}"]`);
+        if (actionBtn) {
+            const form = actionBtn.closest('form');
+            if (form && actionBtn.type === 'submit') { form.requestSubmit(actionBtn); return; }
+            actionBtn.click();
+            return;
+        }
         const label = yes ? 'Yes' : 'No';
         for (const btn of dialog.querySelectorAll('button')) {
             if (btn.textContent.trim().includes(label)) { btn.click(); return; }

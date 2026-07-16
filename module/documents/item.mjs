@@ -1,6 +1,7 @@
 import { MEGS } from '../helpers/config.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs';
 import { Utils } from '../utils.js';
+import { showGadgetRollPicker } from '../helpers/gadget-picker.mjs';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -1366,38 +1367,7 @@ export class MEGSItem extends Item {
     }
 
     async _showGadgetPicker(rollOptions) {
-        const options = rollOptions.map((opt, idx) => ({
-            ...opt,
-            checked: idx === 0,
-        }));
-        const dialogHtml = await foundry.applications.handlebars.renderTemplate(
-            'systems/megs/templates/dialogs/gadgetRollPicker.hbs',
-            { options }
-        );
-
-        return new Promise((resolve) => {
-            new Dialog({
-                title: `${this.name} — ${game.i18n.localize('MEGS.GadgetRoll')}`,
-                content: dialogHtml,
-                buttons: {
-                    cancel: {
-                        label: game.i18n.localize('MEGS.Close'),
-                        callback: () => resolve(null),
-                    },
-                    roll: {
-                        label: game.i18n.localize('MEGS.Roll'),
-                        callback: (html) => {
-                            const idx = Number.parseInt(
-                                html[0].querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
-                            );
-                            resolve(rollOptions[idx]);
-                        },
-                    },
-                },
-                default: 'roll',
-                close: () => resolve(null),
-            }, { classes: ['megs', 'dialog'] }).render(true);
-        });
+        return showGadgetRollPicker(this.name, rollOptions);
     }
 
     _resolveGadgetOption(selected, actor) {

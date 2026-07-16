@@ -22,42 +22,40 @@ export async function getRollDialogValues(page) {
     });
 }
 
-export async function closeRollDialog(page) {
-    const closeBtn = page.locator('dialog.dialog[open] footer button[data-action="close"]').first();
-    if (await closeBtn.count()) {
-        await closeBtn.click({ timeout: 3000 });
+async function clickDialogFooterButton(page, actions, fallbackText) {
+    const selectors = actions.map(a => `dialog.dialog[open] footer button[data-action="${a}"]`).join(', ');
+    const btn = page.locator(selectors).first();
+    if (await btn.count()) {
+        await btn.click({ timeout: 3000 });
     } else {
-        await page.evaluate(() => {
-            for (const btn of document.querySelectorAll('.dialog button')) {
-                if (btn.textContent.includes('Close')) { btn.click(); return; }
+        await page.evaluate((text) => {
+            for (const b of document.querySelectorAll('.dialog button')) {
+                if (b.textContent.includes(text)) { b.click(); return; }
             }
-        });
+        }, fallbackText);
     }
+}
+
+function dialogClosedCheck(selector) {
+    return () => {
+        const el = document.querySelector(selector);
+        if (!el) return true;
+        const dlg = el.closest('dialog');
+        return dlg && !dlg.open;
+    };
+}
+
+export async function closeRollDialog(page) {
+    await clickDialogFooterButton(page, ['close'], 'Close');
     await page.waitForFunction(
-        () => {
-            const el = document.querySelector('.dialog .megs-dialog #actionValue');
-            if (!el) return true;
-            const dlg = el.closest('dialog');
-            return dlg && !dlg.open;
-        },
+        dialogClosedCheck('.dialog .megs-dialog #actionValue'),
         null,
         { timeout: 5000 }
     );
 }
 
 export async function submitRollDialog(page, beforeCount) {
-    await page.evaluate(() => {
-        const dialog = document.querySelector('dialog.dialog, .dialog');
-        const submitBtn = dialog?.querySelector('button[data-action="submit"]');
-        if (submitBtn) {
-            const form = submitBtn.closest('form');
-            if (form && submitBtn.type === 'submit') { form.requestSubmit(submitBtn); return; }
-        }
-        for (const btn of document.querySelectorAll('.dialog button')) {
-            const text = btn.textContent.trim();
-            if (text === 'Roll' || text === 'Submit') { btn.click(); return; }
-        }
-    });
+    await clickRollDialogSubmit(page);
     await page.waitForFunction(
         (before) => document.querySelectorAll('.chat-log .chat-message').length > before,
         beforeCount,
@@ -99,23 +97,9 @@ export async function selectPickerOptionAndRoll(page, index) {
 }
 
 export async function cancelPickerDialog(page) {
-    const cancelBtn = page.locator('dialog.dialog[open] footer button[data-action="cancel"], dialog.dialog[open] footer button[data-action="close"]').first();
-    if (await cancelBtn.count()) {
-        await cancelBtn.click({ timeout: 3000 });
-    } else {
-        await page.evaluate(() => {
-            for (const btn of document.querySelectorAll('.dialog button')) {
-                if (btn.textContent.includes('Close')) { btn.click(); return; }
-            }
-        });
-    }
+    await clickDialogFooterButton(page, ['cancel', 'close'], 'Close');
     await page.waitForFunction(
-        () => {
-            const el = document.querySelector('.dialog .megs-dialog input[name="selectedOption"]');
-            if (!el) return true;
-            const dlg = el.closest('dialog');
-            return dlg && !dlg.open;
-        },
+        dialogClosedCheck('.dialog .megs-dialog input[name="selectedOption"]'),
         null,
         { timeout: 5000 }
     );

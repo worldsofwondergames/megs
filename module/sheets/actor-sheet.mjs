@@ -1371,7 +1371,7 @@ export class MEGSActorSheet extends ActorSheet {
 
     _changeEditHeaderLink(sheetHeaderLinks) {
         const found = sheetHeaderLinks.find((element) => element.label === 'Sheet');
-        found.icon = 'fas fa-file';
+        if (found) found.icon = 'fas fa-file';
     }
 
     /** @override **/

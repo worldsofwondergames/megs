@@ -8,7 +8,7 @@
 }
 
 export async function waitForRollDialog(page) {
-    await page.waitForSelector('.dialog .megs-dialog #actionValue', { timeout: 5000 });
+    await page.waitForSelector('dialog.dialog[open] .megs-dialog #actionValue, .dialog .megs-dialog #actionValue', { timeout: 10000 });
 }
 
 export async function getRollDialogValues(page) {
@@ -99,21 +99,23 @@ export async function selectPickerOptionAndRoll(page, index) {
 }
 
 export async function cancelPickerDialog(page) {
-    await page.evaluate(() => {
-        const dialog = document.querySelector('dialog.dialog, .dialog');
-        const cancelBtn = dialog?.querySelector('button[data-action="cancel"], button[data-action="close"]');
-        if (cancelBtn) {
-            const form = cancelBtn.closest('form');
-            if (form && cancelBtn.type === 'submit') { form.requestSubmit(cancelBtn); return; }
-            cancelBtn.click();
-            return;
-        }
-        for (const btn of document.querySelectorAll('.dialog button')) {
-            if (btn.textContent.includes('Close')) { btn.click(); return; }
-        }
-    });
+    const cancelBtn = page.locator('dialog.dialog[open] footer button[data-action="cancel"], dialog.dialog[open] footer button[data-action="close"]').first();
+    if (await cancelBtn.count()) {
+        await cancelBtn.click({ timeout: 3000 });
+    } else {
+        await page.evaluate(() => {
+            for (const btn of document.querySelectorAll('.dialog button')) {
+                if (btn.textContent.includes('Close')) { btn.click(); return; }
+            }
+        });
+    }
     await page.waitForFunction(
-        () => !document.querySelector('.dialog .megs-dialog input[name="selectedOption"]'),
+        () => {
+            const el = document.querySelector('.dialog .megs-dialog input[name="selectedOption"]');
+            if (!el) return true;
+            const dlg = el.closest('dialog');
+            return dlg && !dlg.open;
+        },
         null,
         { timeout: 5000 }
     );

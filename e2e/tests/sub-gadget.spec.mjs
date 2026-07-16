@@ -134,8 +134,8 @@ test.describe('Sub-gadget display and controls (#78)', () => {
 
             await page.waitForFunction(
                 (id) => !document.querySelector(`.sub-gadget-row[data-item-id="${id}"]`),
-                { timeout: 5000 },
-                result.subGadgetId
+                result.subGadgetId,
+                { timeout: 10000 }
             );
 
             subRow = await page.$(`.sub-gadget-row[data-item-id="${result.subGadgetId}"]`);
@@ -277,8 +277,8 @@ test.describe('Sub-gadget display and controls (#78)', () => {
 
             await page.waitForFunction(
                 (id) => !document.querySelector(`.sub-gadget-row[data-item-id="${id}"]`),
-                { timeout: 5000 },
-                result.subGadgetId
+                result.subGadgetId,
+                { timeout: 10000 }
             );
 
             // Should no longer be a sub-gadget row

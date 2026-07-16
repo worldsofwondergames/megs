@@ -97,82 +97,23 @@ export class MegsTableRolls {
         // Manually enter OV and RV for target
         if (game.user.targets.size === 0) {
             console.info('Showing roll dialog from MegsTableRolls_handleRoll() without a target');
-            const template = 'systems/megs/templates/dialogs/rollDialog.hbs';
-            const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
-            const data = {
-                valueOrAps: this.valueOrAps,
-                maxHpToSpend: maxHpToSpend,
-                isTargeted: false,
-                combatManeuvers: CONFIG.combatManeuvers,
-                actionValue: this.actionValue,
-                opposingValue: this.opposingValue,
-                effectValue: this.effectValue,
-                resistanceValue: this.resistanceValue,
-                isUnskilled: this.isUnskilled,
-            };
-            const dialogHtml = await this._renderTemplate(template, data);
-
-            const response = await foundry.applications.api.DialogV2.wait({
-                window: { title: label },
-                classes: ['megs', 'dialog'],
-                content: dialogHtml,
-                buttons: [
-                    {
-                        action: 'submit',
-                        label: game.i18n.localize('MEGS.Submit'),
-                        default: true,
-                        callback: (event, button, dialog) => {
-                            return this._processOpposingValuesEntry(
-                                button.form
-                            );
-                        },
-                    },
-                    {
-                        action: 'close',
-                        label: game.i18n.localize('MEGS.Close'),
-                    },
-                ],
-                rejectClose: false,
-            });
-            if (response) {
-                this.actionValue = response.actionValue;
-                this.effectValue = response.effectValue;
-                this.opposingValue = response.opposingValue;
-                this.resistanceValue = response.resistanceValue;
-                this.isUnskilled = response.isUnskilled;
-                await this._handleRolls(
-                    currentHeroPoints,
-                    maxHpToSpend,
-                    response.hpSpentAV,
-                    response.hpSpentEV,
-                    response.hpSpentOV,
-                    response.hpSpentRV,
-                    response.combatManeuver,
-                    response.resultColumnShifts,
-                    response.isUnskilled
-                );
-            }
+            await this._showRollDialogAndExecute(label, currentHeroPoints, false);
         } else if (game.user.targets.size > 1) {
             ui.notifications.warn(game.i18n.localize('MEGS.ErrorMessages.OnlyOneTarget'));
         } else {
             // use target token for OV and RV values
-            await this._handleTargetedRolls(label);
+            console.info('Showing roll dialog from MegsTableRolls._handleTargetedRolls()');
+            await this._showRollDialogAndExecute(this.label, currentHeroPoints, true);
         }
     }
 
-    /**
-     *
-     * @param {*} currentHeroPoints
-     */
-    async _handleTargetedRolls(currentHeroPoints) {
-        console.info('Showing roll dialog from MegsTableRolls._handleTargetedRolls()');
-
+    async _showRollDialogAndExecute(title, currentHeroPoints, isTargeted) {
         const template = 'systems/megs/templates/dialogs/rollDialog.hbs';
         const maxHpToSpend = Math.min(currentHeroPoints, this.valueOrAps);
         const data = {
             valueOrAps: this.valueOrAps,
             maxHpToSpend: maxHpToSpend,
-            isTargeted: true,
+            isTargeted,
             combatManeuvers: CONFIG.combatManeuvers,
             actionValue: this.actionValue,
             opposingValue: this.opposingValue,
@@ -183,7 +124,7 @@ export class MegsTableRolls {
         const dialogHtml = await this._renderTemplate(template, data);
 
         const response = await foundry.applications.api.DialogV2.wait({
-            window: { title: this.label },
+            window: { title },
             classes: ['megs', 'dialog'],
             content: dialogHtml,
             buttons: [
@@ -192,9 +133,7 @@ export class MegsTableRolls {
                     label: game.i18n.localize('MEGS.Submit'),
                     default: true,
                     callback: (event, button, dialog) => {
-                        return this._processOpposingValuesEntry(
-                            button.form
-                        );
+                        return this._processOpposingValuesEntry(button.form);
                     },
                 },
                 {

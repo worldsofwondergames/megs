@@ -1195,7 +1195,7 @@ export class MEGSActorSheet extends ActorSheet {
                     default: true,
                     callback: (event, button, dialog) => {
                         const idx = Number.parseInt(
-                            dialog.querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
+                            button.form.querySelector('input[name="selectedOption"]:checked')?.value ?? '0'
                         );
                         return rollOptions[idx];
                     },

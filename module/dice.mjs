@@ -123,7 +123,7 @@ export class MegsTableRolls {
                         default: true,
                         callback: (event, button, dialog) => {
                             return this._processOpposingValuesEntry(
-                                dialog.querySelector('form')
+                                button.form
                             );
                         },
                     },
@@ -193,7 +193,7 @@ export class MegsTableRolls {
                     default: true,
                     callback: (event, button, dialog) => {
                         return this._processOpposingValuesEntry(
-                            dialog.querySelector('form')
+                            button.form
                         );
                     },
                 },

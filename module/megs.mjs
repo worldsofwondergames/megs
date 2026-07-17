@@ -184,6 +184,11 @@ Hooks.once('init', function () {
     registerSystemSettings();
 });
 
+Hooks.once('setup', function () {
+    delete game.model.Actor.pet;
+    delete CONFIG.Actor.typeLabels.pet;
+});
+
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */

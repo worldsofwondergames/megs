@@ -185,9 +185,8 @@ Hooks.once('init', function () {
 });
 
 Hooks.once('setup', function () {
-    const types = game.documentTypes.Actor;
-    const idx = types.indexOf('pet');
-    if (idx !== -1) types.splice(idx, 1);
+    delete game.model.Actor.pet;
+    delete CONFIG.Actor.typeLabels.pet;
 });
 
 /* -------------------------------------------- */

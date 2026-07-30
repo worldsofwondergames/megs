@@ -3,6 +3,12 @@ name: Publish to Foundry
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish (e.g. v1.0.0)"
+        required: true
+        type: string
 
 jobs:
   publish:
@@ -12,4 +18,4 @@ jobs:
         uses: cs96and/FoundryVTT-release-package@v1
         with:
           package-token: ${{ secrets.FOUNDRY_PACKAGE_TOKEN }}
-          manifest-url: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/system.json
+          manifest-url: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name || inputs.tag }}/system.json

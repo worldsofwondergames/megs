@@ -16,7 +16,7 @@
     "media": [
         {
             "type": "setup",
-            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/main/system.json",
+            "url": "https://raw.githubusercontent.com/worldsofwondergames/megs/fix/url-sync-skip-tags/system.json",
             "thumbnail": "systems/megs/assets/images/megs-logo-world-background.jpg"
         }
     ],
@@ -119,8 +119,8 @@
         }
     ],
     "socket": false,
-    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/main/system.json",
-    "download": "https://github.com/worldsofwondergames/megs/zipball/main",
+    "manifest": "https://raw.githubusercontent.com/worldsofwondergames/megs/fix/url-sync-skip-tags/system.json",
+    "download": "https://github.com/worldsofwondergames/megs/zipball/fix/url-sync-skip-tags",
     "background": "systems/megs/assets/images/megs-logo-world-background.jpg",
     "grid": {
         "distance": 5,

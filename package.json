@@ -11,7 +11,7 @@
     "browserslist": [
         "last 3 versions"
     ],
-    "description": "Unofficial Multversal Exponential Game System (MEGS) RPG Support for Foundry VTT",
+    "description": "Unofficial Multiversal Exponential Game System (MEGS) RPG Support for Foundry VTT",
     "devDependencies": {
         "@babel/preset-env": "^7.23.2",
         "@playwright/test": "^1.61.1",

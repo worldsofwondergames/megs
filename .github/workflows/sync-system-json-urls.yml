@@ -2,6 +2,7 @@ name: Sync system.json URLs
 
 on:
   push:
+    branches: ['**']
 
 permissions:
   contents: write

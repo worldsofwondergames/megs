@@ -2,7 +2,6 @@ name: Sync system.json URLs
 
 on:
   push:
-    branches-ignore: [main]
 
 permissions:
   contents: write

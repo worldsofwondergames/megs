@@ -14,7 +14,7 @@ It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
 This is a fan-created implementation of the Mayfair Exponential Gaming System, whose core mechanics were used in games such as DC Heroes, Underground, and Blood of Heroes. The core mechanics of the DC Heroes / Underground / Blood of Heroes games were dubbed "MEGS" by its fans, short for ["Mayfair Eponential Gaming System."](https://en.wikipedia.org/wiki/Mayfair_Exponential_Game_System) This was an informal name, never trademarked.
 
-The current version (1.0.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
+The current version (1.0.1) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
 
 It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get to version 1.0.0.
 
@@ -48,7 +48,7 @@ To use compendium items:
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 1.0.0**.
+Do I ever! MEGS for Foundry is currently sitting at **version 1.0.1**.
 
 (Note that everything below is subject to change.)
 

@@ -1,6 +1,24 @@
 # CHANGELOG
 
-## 1.0.1
+## 1.1.0
+
+### Foundry VTT v14 Compatibility
+
+- Upgraded system compatibility to Foundry VTT v14 (issue #230)
+- Migrated all dialogs from Dialog V1 to DialogV2
+- Fixed v14 runtime errors: data preparation, header buttons, viewport handling
+- Updated E2E test suite for DialogV2 timing and teardown
+
+### Enhancements
+
+- Hidden Pet actor type from create menu until sheet is implemented (issue #263)
+
+### Code Quality
+
+- Deduplicated roll dialog code and fixed SonarCloud issues
+- Fixed SonarCloud blockers: cognitive complexity, `isNaN`, SCSS scoping
+
+## 1.0.1 (July 14, 2026)
 
 ### Enhancements
 

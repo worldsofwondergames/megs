@@ -17,21 +17,22 @@ export class MEGSActor extends Actor {
     async _getSkills() {
         const skillsJson = await _loadData('systems/megs/assets/data/skills.json');
 
-        const skills = [];
-        const subskills = [];
+        const allItems = [];
+        const skillIdByName = {};
         for (const i of skillsJson) {
             i.img = i.img
                 ? 'systems/megs/assets/images/icons/skillls/' + i.img
                 : 'systems/megs/assets/images/icons/skillls/skill.png';
             const item = { ...new MEGSItem(i) };
             delete item.system.subskills;
-            delete item._id;
             delete item.effects;
-            skills.push(item);
+            item._id = foundry.utils.randomID();
+            skillIdByName[i.name] = item._id;
+            allItems.push(item);
 
             if (i.system.subskills) {
                 for (const j of i.system.subskills) {
-                    const subskillObj = {
+                    allItems.push({
                         name: j.name,
                         type: 'subskill',
                         img: j.img
@@ -42,29 +43,18 @@ export class MEGSActor extends Actor {
                             totalCost: 0,
                             factorCost: 0,
                             aps: 0,
-                            parent: '',
+                            parent: skillIdByName[i.name],
                             type: j.type,
                             linkedSkill: i.name,
                             useUnskilled: j.useUnskilled,
                             isTrained: true,
                         },
-                    };
-                    subskills.push(subskillObj);
+                    });
                 }
             }
         }
 
-        this.updateSource({ items: skills });
-
-        const actorSkills = {};
-        this.items.forEach((skill) => {
-            actorSkills[skill.name] = skill._id;
-        });
-
-        for (const i of subskills) {
-            i.system.parent = actorSkills[i.system.linkedSkill];
-        }
-        this.updateSource({ items: subskills });
+        this.updateSource({ items: allItems });
     }
 
     /** @override */
@@ -86,8 +76,7 @@ export class MEGSActor extends Actor {
 
     /** @override */
     prepareBaseData() {
-        // Data modifications in this step occur before processing embedded
-        // documents or derived data.
+        super.prepareBaseData();
 
         // Ensure attributes exist and have valid values (for actors created before template updates)
         if (!this.system.attributes) {

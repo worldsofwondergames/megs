@@ -321,6 +321,11 @@ test.describe('Gadget Sheet Rolling (#13)', () => {
             await queueDice(page, [6, 3]);
 
             await openGadgetSheet(page, actorId, gadgetId);
+            await page.waitForFunction(
+                () => !document.querySelector('dialog[open]'),
+                null,
+                { timeout: 5000 }
+            ).catch(() => {});
             const beforeCount = await getChatMessageCount(page);
 
             await clickGadgetSheetRollButton(page);

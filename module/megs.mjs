@@ -153,11 +153,6 @@ Hooks.once('init', function () {
             console.error('[MEGS] Error loading wealth:', error);
         });
 
-    // Active Effects are never copied to the Actor,
-    // but will still apply to the Actor from within the Item
-    // if the transfer property on the Active Effect is true.
-    CONFIG.ActiveEffect.legacyTransferral = false;
-
     CONFIG.reliabilityScores = [0, 2, 3, 5, 7, 9, 11];
 
     // Register sheet application classes
@@ -187,6 +182,11 @@ Hooks.once('init', function () {
     preloadHandlebarsTemplates();
 
     registerSystemSettings();
+});
+
+Hooks.once('setup', function () {
+    delete game.model.Actor.pet;
+    delete CONFIG.Actor.typeLabels.pet;
 });
 
 /* -------------------------------------------- */

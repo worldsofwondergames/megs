@@ -1477,7 +1477,8 @@ details summary.no-arrow {
   background-color: #fff;
   font-family: "Roboto", sans-serif;
 }
-.megs.dialog .dialog-buttons {
+.megs.dialog .dialog-buttons,
+.megs.dialog .form-footer {
   position: sticky;
   bottom: 0;
   background-color: #ddebf6;
@@ -1485,7 +1486,8 @@ details summary.no-arrow {
   padding: 10px;
   z-index: 10;
 }
-.megs.dialog .dialog-buttons button {
+.megs.dialog .dialog-buttons button,
+.megs.dialog .form-footer button {
   background-color: #1f5079;
   color: #fff;
   border: 2px solid #1f5079;
@@ -1497,11 +1499,13 @@ details summary.no-arrow {
   cursor: pointer;
   transition: all 0.2s;
 }
-.megs.dialog .dialog-buttons button:hover {
+.megs.dialog .dialog-buttons button:hover,
+.megs.dialog .form-footer button:hover {
   background-color: #5fa2d9;
   border-color: #5fa2d9;
 }
-.megs.dialog .dialog-buttons button:active {
+.megs.dialog .dialog-buttons button:active,
+.megs.dialog .form-footer button:active {
   background-color: #153550; /* stylelint-disable-line scss/no-global-function-names */
 }
 
@@ -1590,6 +1594,8 @@ details summary.no-arrow {
   padding: 8px 4px;
   font-size: 14px;
   outline: none;
+  background-color: #fff;
+  color: #1f5079;
 }
 .megs-dialog .quantity .input-box::-webkit-inner-spin-button, .megs-dialog .quantity .input-box::-webkit-outer-spin-button {
   -webkit-appearance: none;

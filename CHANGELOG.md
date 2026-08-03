@@ -18,6 +18,16 @@
 - Deduplicated roll dialog code and fixed SonarCloud issues
 - Fixed SonarCloud blockers: cognitive complexity, `isNaN`, SCSS scoping
 
+### Test Infrastructure
+
+- Fixed DialogV2 teardown: dialogs are ApplicationV2 and live in `foundry.applications.instances`, not `ui.windows`, so closing the `<dialog>` element directly left the app registered and a stale element in the DOM for later tests
+- Scoped every E2E dialog lookup to the open dialog and identified it by its own content instead of DOM position; `footer` scoping added because the window header X also carries `data-action="close"`
+- Removed match-by-text fallbacks from dialog helpers so a renamed `data-action` fails instead of silently passing
+- E2E helpers now assert a dialog is present before waiting for it to close; waiting for absence alone passed instantly when a selector matched nothing
+- Test teardown no longer swallows errors, so leaked dialog state fails the test that caused it
+- `globalSetup` waits for `/api/status` to report an idle world before and after login, so a leftover browser holding the single Gamemaster seat fails fast with a clear message instead of a silent 60s timeout on the first test
+- Removed four dead spec files outside `testDir` that never ran
+
 ## 1.0.1 (July 14, 2026)
 
 ### Enhancements

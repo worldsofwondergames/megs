@@ -38,3 +38,11 @@ e2e/debug-*.png
 
 # Claude Code
 .claude/
+
+# Screenshots — attach to PRs/issues, never commit
+/*.png
+docs/screenshots/
+.playwright-mcp/
+
+# Working notes and plan files
+docs/superpowers/

@@ -46,13 +46,13 @@ Hooks.once('init', function () {
 
     Hooks.on('renderChatMessage', (message, html) => {
         const { scene: sceneId, token: tokenId, actor: actorId } = message.speaker;
-        const actor = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.actor
-            ?? game.actors?.get(actorId);
+        const actor = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.actor ??
+            game.actors?.get(actorId);
         if (!actor) return;
 
-        const tokenImg = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.texture.src
-            ?? actor.prototypeToken?.texture?.src
-            ?? actor.img;
+        const tokenImg = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.texture.src ??
+            actor.prototypeToken?.texture?.src ??
+            actor.img;
         if (!tokenImg) return;
 
         const header = html[0]?.querySelector?.('.message-header') ?? html.querySelector?.('.message-header');
@@ -61,8 +61,8 @@ Hooks.once('init', function () {
         const sender = header.querySelector('.message-sender');
         if (!sender || sender.querySelector('.megs-chat-avatar')) return;
 
-        const tokenName = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.name
-            ?? actor.prototypeToken?.name;
+        const tokenName = game.scenes?.get(sceneId)?.tokens.get(tokenId)?.name ??
+            actor.prototypeToken?.name;
         if (tokenName && tokenName !== actor.name) {
             sender.textContent = sender.textContent.replace(actor.name, tokenName);
         }
@@ -153,11 +153,6 @@ Hooks.once('init', function () {
             console.error('[MEGS] Error loading wealth:', error);
         });
 
-    // Active Effects are never copied to the Actor,
-    // but will still apply to the Actor from within the Item
-    // if the transfer property on the Active Effect is true.
-    CONFIG.ActiveEffect.legacyTransferral = false;
-
     CONFIG.reliabilityScores = [0, 2, 3, 5, 7, 9, 11];
 
     // Register sheet application classes
@@ -187,6 +182,11 @@ Hooks.once('init', function () {
     preloadHandlebarsTemplates();
 
     registerSystemSettings();
+});
+
+Hooks.once('setup', function () {
+    delete game.model.Actor.pet;
+    delete CONFIG.Actor.typeLabels.pet;
 });
 
 /* -------------------------------------------- */

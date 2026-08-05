@@ -222,16 +222,30 @@ export async function openItemSheet(page, actorId, itemId) {
 
 export async function closeAllWindows(page) {
     const forceCloseAll = () => page.evaluate(async () => {
+        // DialogV2 is an ApplicationV2, so it is absent from ui.windows and must be
+        // closed through foundry.applications.instances. Closing the native <dialog>
+        // element instead skips the V2 teardown and leaves the element in the DOM.
+        // Core UI shares that registry; only <dialog>-rooted apps are ours to close.
+        for (const app of [...foundry.applications.instances.values()]) {
+            if (app.element?.tagName !== 'DIALOG') continue;
+            try { await app.close(); } catch { /* mid-render close can throw */ }
+        }
         for (const w of Object.values(ui.windows)) {
             try { await w.close({ force: true }); } catch { /* mid-render close can throw */ }
         }
     });
+    const settled = () => page.waitForFunction(
+        () => ![...foundry.applications.instances.values()]
+            .some(a => a.element?.tagName === 'DIALOG')
+            && Object.keys(ui.windows).length === 0
+            && !document.querySelector('dialog[open]'),
+        null, { timeout: 5000 }
+    );
     await forceCloseAll();
     try {
-        await page.waitForFunction(() => Object.keys(ui.windows).length === 0, null, { timeout: 5000 });
+        await settled();
     } catch {
-        // A window re-rendered while closing; one retry settles it
         await forceCloseAll();
-        await page.waitForFunction(() => Object.keys(ui.windows).length === 0, null, { timeout: 5000 });
+        await settled();
     }
 }

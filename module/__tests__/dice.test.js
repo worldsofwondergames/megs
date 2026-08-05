@@ -1,4 +1,4 @@
-import { HandleRollDialog, NoDialog, YesDialog } from '../__mocks__/foundry.mjs';
+import { HandleRollDialogV2, NoDialogV2, YesDialogV2 } from '../__mocks__/foundry.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs';
 
 import { jest } from '@jest/globals';
@@ -50,7 +50,7 @@ test('_handleRoll warns when more than one target is selected', async () => {
 test.todo('_handleTargetedRolls shows dialog with pre-filled values');
 
 test('_handleRolls should return 0 result APs for simplest fail path', () => {
-    global.Dialog = HandleRollDialog;
+    global.foundry.applications.api.DialogV2 = HandleRollDialogV2;
 
     const values = {
         label: 'Test',
@@ -83,7 +83,7 @@ test('_handleRolls should return 0 result APs for simplest fail path', () => {
 });
 
 // test('_handleRolls should return 1 result APs for simplest happy path', () => {
-//     global.Dialog = HandleRollDialog;
+//     global.foundry.applications.api.DialogV2 = HandleRollDialogV2;
 
 //     const values = {
 //         label: 'Test',
@@ -154,7 +154,7 @@ test('_rollDice should return if dice do not match', () => {
 });
 
 test('_rollDice should roll again if have matching dice on first roll and elect to roll again', () => {
-    global.Dialog = YesDialog;
+    global.foundry.applications.api.DialogV2 = YesDialogV2;
     const values = {
         label: 'Test',
         type: 'attribute',
@@ -191,7 +191,7 @@ test('_rollDice should roll again if have matching dice on first roll and elect 
 });
 
 test('_rollDice should roll again if have matching dice on first and second rolls and user elects to roll again both times', () => {
-    global.Dialog = YesDialog;
+    global.foundry.applications.api.DialogV2 = YesDialogV2;
     const values = {
         label: 'Test',
         type: 'attribute',
@@ -228,7 +228,7 @@ test('_rollDice should roll again if have matching dice on first and second roll
 });
 
 test('_rollDice should not roll again if have matching dice on first roll and user elects not to roll again', () => {
-    global.Dialog = NoDialog;
+    global.foundry.applications.api.DialogV2 = NoDialogV2;
     const values = {
         label: 'Test',
         type: 'attribute',
@@ -310,7 +310,7 @@ test('_rollDice should extract dice from initialRoll with terms structure', () =
 });
 
 test('_rollDice should show DSN for each pair when doubles are rolled', async () => {
-    global.Dialog = YesDialog;
+    global.foundry.applications.api.DialogV2 = YesDialogV2;
     const showForRollMock = jest.fn().mockResolvedValue(undefined);
     global.game.dice3d = { showForRoll: showForRollMock };
 
@@ -395,7 +395,7 @@ test('_rollDice should not call DSN showForRoll when no doubles', async () => {
 /*
 TODO fix
 test('_rollDice should not roll again if have matching dice on first roll and user elects not to roll again', () => {
-    global.Dialog = NoDialog;
+    global.foundry.applications.api.DialogV2 = NoDialogV2;
     const values = {
         label: 'Test',
         type: 'attribute',

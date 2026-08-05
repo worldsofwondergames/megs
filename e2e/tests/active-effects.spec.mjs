@@ -25,7 +25,7 @@ test.describe('Active Effects (#226 cat 10)', () => {
                 const actor = game.actors.get(id);
                 const [created] = await actor.createEmbeddedDocuments('ActiveEffect', [{
                     name: 'Blessing',
-                    icon: 'icons/svg/aura.svg',
+                    img: 'icons/svg/aura.svg',
                     changes: [{ key: 'system.attributes.str.value', mode: 2, value: '2' }],
                 }]);
                 return { id: created.id, name: created.name, count: actor.effects.size };
@@ -45,7 +45,7 @@ test.describe('Active Effects (#226 cat 10)', () => {
             const states = await page.evaluate(async (id) => {
                 const actor = game.actors.get(id);
                 const [effect] = await actor.createEmbeddedDocuments('ActiveEffect', [{
-                    name: 'Slow', icon: 'icons/svg/anchor.svg',
+                    name: 'Slow', img: 'icons/svg/anchor.svg',
                 }]);
                 const initial = effect.disabled;
                 await effect.update({ disabled: true });
@@ -69,11 +69,14 @@ test.describe('Active Effects (#226 cat 10)', () => {
             actorId = await createHeroActor(page, prefixName('AE_Categories'));
             const categories = await page.evaluate(async (id) => {
                 const actor = game.actors.get(id);
-                const [temporary, passive, inactive] = await actor.createEmbeddedDocuments('ActiveEffect', [
-                    { name: 'Stunned', icon: 'icons/svg/daze.svg', duration: { rounds: 2 } },
-                    { name: 'Tough', icon: 'icons/svg/shield.svg' },
-                    { name: 'Dormant', icon: 'icons/svg/sleep.svg', disabled: true },
+                const effects = await actor.createEmbeddedDocuments('ActiveEffect', [
+                    { name: 'Stunned', img: 'icons/svg/daze.svg', duration: { rounds: 2 } },
+                    { name: 'Tough', img: 'icons/svg/shield.svg' },
+                    { name: 'Dormant', img: 'icons/svg/sleep.svg', disabled: true },
                 ]);
+                const temporary = effects.find(e => e.name === 'Stunned');
+                const passive = effects.find(e => e.name === 'Tough');
+                const inactive = effects.find(e => e.name === 'Dormant');
                 return {
                     temporaryIsTemporary: temporary.isTemporary,
                     passiveIsTemporary: passive.isTemporary,
@@ -96,7 +99,7 @@ test.describe('Active Effects (#226 cat 10)', () => {
             const result = await page.evaluate(async (id) => {
                 const actor = game.actors.get(id);
                 const [effect] = await actor.createEmbeddedDocuments('ActiveEffect', [{
-                    name: 'Doomed', icon: 'icons/svg/skull.svg',
+                    name: 'Doomed', img: 'icons/svg/skull.svg',
                 }]);
                 const beforeDelete = actor.effects.size;
                 await effect.delete();

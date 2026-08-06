@@ -1,3 +1,5 @@
+import { activateDialogControls } from './helpers/dialog-controls.mjs';
+
 export const ShowResultCall = Object.freeze({
     FAILURE: 0,
     ALL_RESULT: 1,
@@ -113,6 +115,7 @@ export class MegsTableRolls {
         const data = {
             valueOrAps: this.valueOrAps,
             maxHpToSpend: maxHpToSpend,
+            currentHeroPoints,
             isTargeted,
             combatManeuvers: CONFIG.combatManeuvers,
             actionValue: this.actionValue,
@@ -127,6 +130,9 @@ export class MegsTableRolls {
             window: { title },
             classes: ['megs', 'dialog'],
             content: dialogHtml,
+            // DialogV2 sanitizes string content, so the dialog's own controls have
+            // to be wired here rather than by inline handlers in the template.
+            render: (event, dialog) => activateDialogControls(dialog.element),
             buttons: [
                 {
                     action: 'submit',

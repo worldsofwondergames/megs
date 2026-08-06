@@ -1247,15 +1247,16 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
     const value = args.value && !isNaN(args.value) ? args.value : '0';
     const tabindex = args.tabindex ? 'tablindex="' + args.tabindex + '"' : '';
 
+    // No inline onClick, and type="button" rather than the default submit: this
+    // partial also renders inside DialogV2, whose content is run through
+    // foundry.utils.cleanHTML(). That strips on* attributes, leaving a bare submit
+    // button that closes the dialog instead of stepping the value. Behaviour is
+    // attached by activateStepperControls() via data-control="stepper".
     return (
         '<div class="quantity ' +
         classes +
-        '">' +
-        '<button class="minus" aria-label="Decrease" onClick="' +
-        args.id +
-        'Input.value = parseInt(' +
-        args.id +
-        'Input.value) - 1">&minus;</button>' +
+        '" data-control="stepper">' +
+        '<button type="button" class="minus" data-step="-1" aria-label="Decrease">&minus;</button>' +
         '<input id="' +
         args.id +
         'Input" name="system.' +
@@ -1270,11 +1271,7 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
         '" data-dtype="Number"' +
         tabindex +
         '>' +
-        '<button class="plus" aria-label="Increase" onClick="' +
-        args.id +
-        'Input.value = parseInt(' +
-        args.id +
-        'Input.value)+ 1 ">&plus;</button>' +
+        '<button type="button" class="plus" data-step="1" aria-label="Increase">&plus;</button>' +
         '</div>'
     );
 });

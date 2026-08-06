@@ -3,6 +3,7 @@ import { MEGSItem } from '../documents/item.mjs';
 import { MEGS } from '../helpers/config.mjs';
 import { MegsTableRolls, RollValues } from '../dice.mjs';
 import { Utils } from '../utils.js';
+import { activateStepperControls } from '../helpers/dialog-controls.mjs';
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -253,6 +254,10 @@ export class MEGSItemSheet extends ItemSheet {
     /** @override */
     activateListeners(html) {
         super.activateListeners(html);
+
+        // The plusMinusInput partial renders both here and inside DialogV2, so it
+        // carries no inline handlers and is wired up explicitly instead.
+        activateStepperControls(html[0] ?? html);
 
         if (this._settingsTabActive) {
             html.find('.tab[data-tab="settings"]').addClass('active');

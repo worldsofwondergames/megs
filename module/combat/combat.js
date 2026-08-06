@@ -1,4 +1,5 @@
 import { MEGS } from '../helpers/config.mjs';
+import { activateDialogControls } from '../helpers/dialog-controls.mjs';
 
 // eslint-disable-next-line no-undef
 export default class MEGSCombat extends Combat {
@@ -164,6 +165,9 @@ export default class MEGSCombat extends Combat {
             window: { title: label },
             classes: ['megs', 'dialog'],
             content: dialogHtml,
+            // DialogV2 sanitizes string content, so the slider readout has to be
+            // wired here rather than by an inline handler in the template.
+            render: (event, dialog) => activateDialogControls(dialog.element),
             buttons: [
                 {
                     action: 'roll',

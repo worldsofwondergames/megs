@@ -1542,6 +1542,14 @@ details summary.no-arrow {
   background: #5fa2d9;
   margin-bottom: 10px;
 }
+.megs-dialog .hero-points-available {
+  margin: 0 0 10px 0;
+  font-size: 13px;
+}
+.megs-dialog .hero-points-available .hint {
+  font-style: italic;
+  opacity: 0.75;
+}
 .megs-dialog .flexrow {
   display: flex;
   align-items: center;
@@ -1788,5 +1796,3 @@ li.chat-message .tooltip .tooltiptext .init-table .value {
   font-weight: bold;
   white-space: nowrap;
 }
-
-/*# sourceMappingURL=megs.css.map */

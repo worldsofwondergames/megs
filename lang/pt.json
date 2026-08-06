@@ -90,6 +90,8 @@
         "HasTraits": "Possui traços?",
         "HeroPoints": "Pontos Heróicos",
         "HeroPointOptions": "Opções de pontos heróicos",
+        "HeroPointsAvailable": "Pontos Heróicos disponíveis",
+        "NoHeroPointsToSpend": "nenhum para gastar nesta rolagem",
         "HPSpent": "Gasto de PH (Pontos heroicos)",
         "HideZeroRankSkills": "Ocultar habilidades de classificação zero?",
         "InitialBonus": "Bônus inicial",

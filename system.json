@@ -22,7 +22,7 @@
     ],
     "version": "1.1.0",
     "compatibility": {
-        "minimum": 14,
+        "minimum": "14.359",
         "verified": "14.365"
     },
     "esmodules": [

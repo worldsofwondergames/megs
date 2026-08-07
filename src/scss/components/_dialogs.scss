@@ -92,6 +92,16 @@
         }
     }
 
+    .hero-points-available {
+        margin: 0 0 10px 0;
+        font-size: 13px;
+
+        .hint {
+            font-style: italic;
+            opacity: 0.75;
+        }
+    }
+
     .flexrow {
         display: flex;
         align-items: center;

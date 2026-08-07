@@ -14,6 +14,7 @@ import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
 import MEGSCombatant from './combat/combatant.js';
 import { MegsRoll, MegsTableRolls, RollValues } from './dice.mjs';
+import { Utils } from './utils.js';
 
 // Turn on hooks logging for debugging
 // CONFIG.debug.hooks = true;
@@ -25,10 +26,20 @@ import { MegsRoll, MegsTableRolls, RollValues } from './dice.mjs';
 Hooks.once('init', function () {
     // Add utility classes to the global game object so that they're more easily
     // accessible in global contexts.
+    //
+    // RollValues and MegsTableRolls are part of this surface deliberately: they
+    // are what an outside integration needs in order to make an attribute roll
+    // go through the system's own roll path -- hero point dialog, doubles
+    // prompt, column shifts and chat formatting included -- instead of
+    // reimplementing it. Treat the shape of this object as a public API and do
+    // not change it without a version bump. See issue #156.
     game.megs = {
         MEGSActor,
         MEGSItem,
         rollItemMacro,
+        RollValues,
+        MegsTableRolls,
+        Utils,
     };
 
     // Add custom constants for configuration.

@@ -13,6 +13,8 @@
 ### Enhancements
 
 - Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
+- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
+- `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
 
 ### Test Infrastructure
 

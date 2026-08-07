@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.1.1
+
+### Enhancements
+
+- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
+
 ## 1.1.0
 
 ### Foundry VTT v14 Compatibility

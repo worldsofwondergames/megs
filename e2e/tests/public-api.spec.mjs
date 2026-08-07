@@ -47,10 +47,12 @@ test.describe('game.megs public API (#156)', () => {
             'MEGSItem',
             'MegsTableRolls',
             'RollValues',
+            'Utils',
             'rollItemMacro',
         ]);
         expect(api.types.RollValues).toBe('function');
         expect(api.types.MegsTableRolls).toBe('function');
+        expect(api.types.Utils).toBe('function');
     });
 
     test('an outside caller can drive a full MEGS roll through game.megs', async ({ page }) => {

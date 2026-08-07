@@ -26,6 +26,7 @@ describe('game.megs public API (#156)', () => {
         const body = assignment[1];
         expect(body).toMatch(/\bRollValues\b/);
         expect(body).toMatch(/\bMegsTableRolls\b/);
+        expect(body).toMatch(/\bUtils\b/);
         // The pre-existing surface must not be dropped while adding to it.
         expect(body).toMatch(/\bMEGSActor\b/);
         expect(body).toMatch(/\bMEGSItem\b/);

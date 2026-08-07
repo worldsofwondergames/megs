@@ -14,6 +14,7 @@ import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
 import MEGSCombatant from './combat/combatant.js';
 import { MegsRoll, MegsTableRolls, RollValues } from './dice.mjs';
+import { Utils } from './utils.js';
 
 // Turn on hooks logging for debugging
 // CONFIG.debug.hooks = true;
@@ -38,6 +39,7 @@ Hooks.once('init', function () {
         rollItemMacro,
         RollValues,
         MegsTableRolls,
+        Utils,
     };
 
     // Add custom constants for configuration.

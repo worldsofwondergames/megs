@@ -1238,7 +1238,9 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
         '<div class="quantity ' +
         classes +
         '" data-control="stepper">' +
-        '<button type="button" class="minus" data-step="-1" aria-label="Decrease">&minus;</button>' +
+        '<button type="button" class="minus" data-step="-1" aria-label="' +
+        Handlebars.escapeExpression(game.i18n.localize('MEGS.Decrease')) +
+        '">&minus;</button>' +
         '<input id="' +
         args.id +
         'Input" name="system.' +
@@ -1253,7 +1255,9 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
         '" data-dtype="Number"' +
         tabindex +
         '>' +
-        '<button type="button" class="plus" data-step="1" aria-label="Increase">&plus;</button>' +
+        '<button type="button" class="plus" data-step="1" aria-label="' +
+        Handlebars.escapeExpression(game.i18n.localize('MEGS.Increase')) +
+        '">&plus;</button>' +
         '</div>'
     );
 });
@@ -1481,9 +1485,7 @@ function rollItemMacro(uuid) {
     const actor = game.actors.get(actorId);
     const item = actor ? actor.items.find((i) => i.uuid === uuid) : null;
     if (!item) {
-        return ui.notifications.warn(
-            `Could not find item with UUID ${uuid}. You may need to delete and recreate this macro.`
-        );
+        return ui.notifications.warn(game.i18n.format('MEGS.MacroItemNotFound', { uuid }));
     }
 
     // Trigger the item roll

@@ -25,8 +25,15 @@ export async function onManageActiveEffect(event, owner) {
         return effect.sheet.render(true);
     case 'delete': {
         const confirmed = await foundry.applications.api.DialogV2.confirm({
-            window: { title: `Delete Active Effect: ${effect.name}` },
-            content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
+            window: {
+                title: game.i18n.format('MEGS.DeleteActiveEffectTitle', { name: effect.name }),
+            },
+            content:
+                '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>' +
+                game.i18n.localize('MEGS.AreYouSure') +
+                '</strong> ' +
+                game.i18n.localize('MEGS.ConfirmDeleteWarning') +
+                '</p>',
             classes: ['megs', 'dialog'],
             rejectClose: false,
             no: { default: true },

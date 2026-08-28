@@ -482,14 +482,26 @@ export class MEGSItemSheet extends ItemSheet {
                 const item = this.object.parent.items.get(itemId);
                 if (item) {
                     itemName = item.name;
-                    itemType = item.type;
+                    itemType = game.i18n.localize(`TYPES.Item.${item.type}`);
                 }
             }
 
-            const typeDisplay = typeof itemType === 'string' ? itemType.charAt(0).toUpperCase() + itemType.slice(1) : 'Item';
+            const typeDisplay = typeof itemType === 'string' && itemType
+                ? itemType
+                : game.i18n.localize('MEGS.Item');
             const confirmed = await foundry.applications.api.DialogV2.confirm({
-                window: { title: `Delete ${typeDisplay}: ${itemName}` },
-                content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
+                window: {
+                    title: game.i18n.format('MEGS.DeleteTypeTitle', {
+                        type: typeDisplay,
+                        name: itemName,
+                    }),
+                },
+                content:
+                    '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>' +
+                    game.i18n.localize('MEGS.AreYouSure') +
+                    '</strong> ' +
+                    game.i18n.localize('MEGS.ConfirmDeleteWarning') +
+                    '</p>',
                 classes: ['megs', 'dialog'],
                 rejectClose: false,
                 no: { default: true },
@@ -1405,7 +1417,7 @@ export class MEGSItemSheet extends ItemSheet {
         // For subskills on standalone skills, we can't use embedded items
         // Just show a message that skill must be on an actor
         if (itemData.type === MEGS.itemTypes.subskill) {
-            ui.notifications.warn('Subskills can only be added to skills on characters.');
+            ui.notifications.warn(game.i18n.localize('MEGS.SubskillsOnlyOnCharacterSkills'));
             return;
         }
 

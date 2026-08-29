@@ -5,7 +5,7 @@
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
         <div class="header-fields">
             <h1 class="charname">
-                <input name="name" type="text" value="{{actor.name}}" placeholder="Character Name" />
+                <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'MEGS.CharacterName'}}" />
             </h1>
 
             {{!-- Hero Point Budget Display --}}
@@ -61,33 +61,33 @@
             {{!-- Row 1: DEX, STR, BODY --}}
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Dexterity - Agility and coordination">DEX</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Dex'}}">DEX</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(dexInput.value) > 0) { dexInput.value = parseInt(dexInput.value) - 1; dexInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(dexInput.value) > 0) { dexInput.value = parseInt(dexInput.value) - 1; dexInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="dexInput" name="system.attributes.dex.value" type="number" class="input-box" value="{{system.attributes.dex.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="dexInput.value = parseInt(dexInput.value) + 1; dexInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="dexInput.value = parseInt(dexInput.value) + 1; dexInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.dex.value 7}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Strength - Lifting ability and muscular power">STR</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Str'}}">STR</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(strInput.value) > 0) { strInput.value = parseInt(strInput.value) - 1; strInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(strInput.value) > 0) { strInput.value = parseInt(strInput.value) - 1; strInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="strInput" name="system.attributes.str.value" type="number" class="input-box" value="{{system.attributes.str.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="strInput.value = parseInt(strInput.value) + 1; strInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="strInput.value = parseInt(strInput.value) + 1; strInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.str.value 6}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Body - Physical durability and resistance to damage">BODY</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Body'}}">BODY</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(bodyInput.value) > 0) { bodyInput.value = parseInt(bodyInput.value) - 1; bodyInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(bodyInput.value) > 0) { bodyInput.value = parseInt(bodyInput.value) - 1; bodyInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="bodyInput" name="system.attributes.body.value" type="number" class="input-box" value="{{system.attributes.body.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="bodyInput.value = parseInt(bodyInput.value) + 1; bodyInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="bodyInput.value = parseInt(bodyInput.value) + 1; bodyInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.body.value 6}} HP</span>
@@ -98,33 +98,33 @@
             {{!-- Row 2: INT, WILL, MIND --}}
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Intelligence - Knowledge, reasoning, and memory">INT</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Int'}}">INT</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(intInput.value) > 0) { intInput.value = parseInt(intInput.value) - 1; intInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(intInput.value) > 0) { intInput.value = parseInt(intInput.value) - 1; intInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="intInput" name="system.attributes.int.value" type="number" class="input-box" value="{{system.attributes.int.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="intInput.value = parseInt(intInput.value) + 1; intInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="intInput.value = parseInt(intInput.value) + 1; intInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.int.value 7}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Willpower - Determination and mental toughness">WILL</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Will'}}">WILL</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(willInput.value) > 0) { willInput.value = parseInt(willInput.value) - 1; willInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(willInput.value) > 0) { willInput.value = parseInt(willInput.value) - 1; willInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="willInput" name="system.attributes.will.value" type="number" class="input-box" value="{{system.attributes.will.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="willInput.value = parseInt(willInput.value) + 1; willInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="willInput.value = parseInt(willInput.value) + 1; willInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.will.value 6}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Mind - Mental resistance and psychic defense">MIND</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Mind'}}">MIND</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(mindInput.value) > 0) { mindInput.value = parseInt(mindInput.value) - 1; mindInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(mindInput.value) > 0) { mindInput.value = parseInt(mindInput.value) - 1; mindInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="mindInput" name="system.attributes.mind.value" type="number" class="input-box" value="{{system.attributes.mind.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="mindInput.value = parseInt(mindInput.value) + 1; mindInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="mindInput.value = parseInt(mindInput.value) + 1; mindInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.mind.value 6}} HP</span>
@@ -135,33 +135,33 @@
             {{!-- Row 3: INFL, AURA, SPIRIT --}}
             <section class="attributes grid grid-3col attributeRow">
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Influence - Charisma, personality, and presence">INFL</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Infl'}}">INFL</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(inflInput.value) > 0) { inflInput.value = parseInt(inflInput.value) - 1; inflInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(inflInput.value) > 0) { inflInput.value = parseInt(inflInput.value) - 1; inflInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="inflInput" name="system.attributes.infl.value" type="number" class="input-box" value="{{system.attributes.infl.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="inflInput.value = parseInt(inflInput.value) + 1; inflInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="inflInput.value = parseInt(inflInput.value) + 1; inflInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.infl.value 7}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Aura - Interpersonal resonance and magical effects">AURA</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Aura'}}">AURA</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(auraInput.value) > 0) { auraInput.value = parseInt(auraInput.value) - 1; auraInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(auraInput.value) > 0) { auraInput.value = parseInt(auraInput.value) - 1; auraInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="auraInput" name="system.attributes.aura.value" type="number" class="input-box" value="{{system.attributes.aura.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="auraInput.value = parseInt(auraInput.value) + 1; auraInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="auraInput.value = parseInt(auraInput.value) + 1; auraInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.aura.value 6}} HP</span>
                     </div>
                 </div>
                 <div class="attribute flex-group-center">
-                    <label class="resource-label flexlarge align-left" title="Spirit - Spiritual strength and mystical resistance">SPIRIT</label>
+                    <label class="resource-label flexlarge align-left" title="{{localize 'MEGS.AttributeTooltip.Spirit'}}">SPIRIT</label>
                     <div class="quantity attribute-input">
-                        <button class="minus" aria-label="Decrease" onClick="if (parseInt(spiritInput.value) > 0) { spiritInput.value = parseInt(spiritInput.value) - 1; spiritInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
+                        <button class="minus" aria-label="{{localize 'MEGS.Decrease'}}" onClick="if (parseInt(spiritInput.value) > 0) { spiritInput.value = parseInt(spiritInput.value) - 1; spiritInput.dispatchEvent(new Event('change', {bubbles: true})); }">&minus;</button>
                         <input id="spiritInput" name="system.attributes.spirit.value" type="number" class="input-box" value="{{system.attributes.spirit.value}}" min="0" max="60" data-dtype="Number" />
-                        <button class="plus" aria-label="Increase" onClick="spiritInput.value = parseInt(spiritInput.value) + 1; spiritInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
+                        <button class="plus" aria-label="{{localize 'MEGS.Increase'}}" onClick="spiritInput.value = parseInt(spiritInput.value) + 1; spiritInput.dispatchEvent(new Event('change', {bubbles: true}));">&plus;</button>
                     </div>
                     <div class="attribute-cost">
                         <span class="cost-value">{{getAttributeCost system.attributes.spirit.value 6}} HP</span>
@@ -208,16 +208,16 @@
                         </div>
                         <div class='item-aps {{#if (isLinkedPowerMismatch item ../actor)}}link-mismatch{{/if}}'>
                             <div class="quantity skill-input">
-                                <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+                                <button class="ap-minus" aria-label="{{localize 'MEGS.Decrease'}}" data-item-id="{{item._id}}">&minus;</button>
                                 <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-                                <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+                                <button class="ap-plus" aria-label="{{localize 'MEGS.Increase'}}" data-item-id="{{item._id}}">&plus;</button>
                             </div>
                         </div>
                         <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
                             {{item.system.totalCost}}
                         </div>
                         <div class='item-controls'>
-                            <a class='item-control item-delete' title='Delete {{item.name}}'>
+                            <a class='item-control item-delete' title='{{localize "MEGS.DeleteNamed" name=item.name}}'>
                                 <i class='fas fa-trash'></i>
                             </a>
                         </div>
@@ -236,7 +236,7 @@
                             <div class='item-aps'></div>
                             <div class='item-total-cost'></div>
                             <div class='item-controls'>
-                                <a class='item-control item-delete' title='Delete {{modifier.name}}'>
+                                <a class='item-control item-delete' title='{{localize "MEGS.DeleteNamed" name=modifier.name}}'>
                                     <i class='fas fa-trash'></i>
                                 </a>
                             </div>
@@ -287,9 +287,9 @@
                         </div>
                         <div class='item-aps {{#if (isLinkedSkillMismatch item ../actor)}}link-mismatch{{/if}}'>
                             <div class="quantity skill-input">
-                                <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+                                <button class="ap-minus" aria-label="{{localize 'MEGS.Decrease'}}" data-item-id="{{item._id}}">&minus;</button>
                                 <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-                                <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+                                <button class="ap-plus" aria-label="{{localize 'MEGS.Increase'}}" data-item-id="{{item._id}}">&plus;</button>
                             </div>
                         </div>
                         <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
@@ -349,7 +349,7 @@
                                     {{item.system.totalCost}}
                                 </div>
                                 <div class='item-controls'>
-                                    <a class='item-control item-delete' title='Delete {{item.name}}'>
+                                    <a class='item-control item-delete' title='{{localize "MEGS.DeleteNamed" name=item.name}}'>
                                         <i class='fas fa-trash'></i>
                                     </a>
                                 </div>
@@ -379,7 +379,7 @@
                                     {{item.system.totalCost}}
                                 </div>
                                 <div class='item-controls'>
-                                    <a class='item-control item-delete' title='Delete {{item.name}}'>
+                                    <a class='item-control item-delete' title='{{localize "MEGS.DeleteNamed" name=item.name}}'>
                                         <i class='fas fa-trash'></i>
                                     </a>
                                 </div>
@@ -418,7 +418,7 @@
                             {{item.system.totalCost}}
                         </div>
                         <div class='item-controls'>
-                            <a class='item-control item-delete' title='Delete {{item.name}}'>
+                            <a class='item-control item-delete' title='{{localize "MEGS.DeleteNamed" name=item.name}}'>
                                 <i class='fas fa-trash'></i>
                             </a>
                         </div>

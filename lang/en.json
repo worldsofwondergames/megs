@@ -11,6 +11,17 @@
             "Aura": { "long": "Aura", "abbr": "aura" },
             "Spirit": { "long": "Spirit", "abbr": "spirit" }
         },
+        "AttributeTooltip": {
+            "Dex": "Dexterity - Agility and coordination",
+            "Str": "Strength - Lifting ability and muscular power",
+            "Body": "Body - Physical durability and resistance to damage",
+            "Int": "Intelligence - Knowledge, reasoning, and memory",
+            "Will": "Willpower - Determination and mental toughness",
+            "Mind": "Mind - Mental resistance and psychic defense",
+            "Infl": "Influence - Charisma, personality, and presence",
+            "Aura": "Aura - Interpersonal resonance and magical effects",
+            "Spirit": "Spirit - Spiritual strength and mystical resistance"
+        },
         "SheetLabels": {
             "Actor": "MEGS Actor Sheet",
             "CharacterBuilder": "MEGS Character Builder",
@@ -200,7 +211,28 @@
         "HasActionValueAndEffectValue": "Has Action Value & Effect Value",
         "OnlyBonusesAndLimitationsCanBeDropped": "Only Bonuses and Limitations can be dropped onto Powers.",
         "ModifiersOnlyForOwnedGadgets": "Modifiers can only be added to powers on gadgets owned by a character.",
-        "StackableQuantityIncreased": "{name} quantity increased to {quantity}"
+        "StackableQuantityIncreased": "{name} quantity increased to {quantity}",
+        "Increase": "Increase",
+        "Decrease": "Decrease",
+        "CharacterName": "Character Name",
+        "DeleteNamed": "Delete {name}",
+        "EditNamed": "Edit {name}",
+        "RollNamed": "Roll {name}",
+        "RollUnskilled": "Roll Unskilled",
+        "UnskilledLabel": "Unskilled",
+        "AreYouSure": "Are You Sure?",
+        "ConfirmDeleteWarning": "This item will be permanently deleted and cannot be recovered.",
+        "DeleteActiveEffectTitle": "Delete Active Effect: {name}",
+        "DeleteTypeTitle": "Delete {type}: {name}",
+        "MacroItemNotFound": "Could not find item with UUID {uuid}. You may need to delete and recreate this macro.",
+        "ItemMovedToPower": "{name} moved to power.",
+        "ItemAddedToPower": "{name} added to power.",
+        "ItemAttachedToPower": "{name} attached to power.",
+        "SubskillsOnlyOnCharacterSkills": "Subskills can only be added to skills on characters.",
+        "New": "New {type}",
+        "ActiveEffect": "Active Effect",
+        "Trait": "Trait",
+        "Power": "Power"
     },
 
     "TYPES": {

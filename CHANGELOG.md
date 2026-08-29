@@ -2,6 +2,13 @@
 
 ## 1.1.1
 
+### Localization
+
+- User-facing English text that was written straight into templates and modules now comes from the localization files, so it changes with the client language (issue #279). This covers the `aria-label` on every `+`/`-` button, the attribute tooltips on the character creator and gadget builder, the roll and delete tooltips, the character name placeholder, the delete confirmation dialogs, and every `ui.notifications` message
+- Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
+- Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
+- Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
+
 ### Bug Fixes
 
 - Fixed roll dialog controls broken by Foundry v14 (issue #275). v14 runs DialogV2 string content through `foundry.utils.cleanHTML()`, which strips inline `on*` handlers, so:
@@ -20,6 +27,7 @@
 
 - Added E2E coverage that clicks the roll dialog's `+`/`-` buttons and drags its sliders through real pointer input; the previous specs set `.value` directly, which could not see this class of failure
 - Added unit tests for increment/decrement bounds handling
+- Added unit tests that read the shipped templates and modules and fail if English text reappears in an `aria-label`, `title`, `alt`, or `placeholder`, in a notification, or in a dialog title, and that check every `MEGS` key a template or module asks for is defined in both dictionaries (issue #279)
 
 ## 1.1.0
 

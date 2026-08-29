@@ -748,10 +748,17 @@ export class MEGSActorSheet extends ActorSheet {
 
         if (!item) return;
 
-        const type = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+        const type = game.i18n.localize(`TYPES.Item.${item.type}`);
         const confirmed = await foundry.applications.api.DialogV2.confirm({
-            window: { title: `Delete ${type}: ${item.name}` },
-            content: '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>Are You Sure?</strong> This item will be permanently deleted and cannot be recovered.</p>',
+            window: {
+                title: game.i18n.format('MEGS.DeleteTypeTitle', { type, name: item.name }),
+            },
+            content:
+                '<p style="font-family: Helvetica, Arial, sans-serif;"><strong>' +
+                game.i18n.localize('MEGS.AreYouSure') +
+                '</strong> ' +
+                game.i18n.localize('MEGS.ConfirmDeleteWarning') +
+                '</p>',
             classes: ['megs', 'dialog'],
             rejectClose: false,
             no: { default: true },
@@ -926,7 +933,7 @@ export class MEGSActorSheet extends ActorSheet {
 
         // Validate item type - only bonuses and limitations can be dropped
         if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
-            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            ui.notifications.warn(game.i18n.localize('MEGS.OnlyBonusesAndLimitationsCanBeDropped'));
             return;
         }
 
@@ -942,14 +949,14 @@ export class MEGSActorSheet extends ActorSheet {
             }
 
             await droppedItem.update({ 'system.parent': powerId });
-            ui.notifications.info(`${droppedItem.name} moved to power.`);
+            ui.notifications.info(game.i18n.format('MEGS.ItemMovedToPower', { name: droppedItem.name }));
         } else {
             // Item is from sidebar/compendium - create it with parent set
             const itemData = droppedItem.toObject();
             itemData.system.parent = powerId;
 
             await this.actor.createEmbeddedDocuments('Item', [itemData]);
-            ui.notifications.info(`${droppedItem.name} added to power.`);
+            ui.notifications.info(game.i18n.format('MEGS.ItemAddedToPower', { name: droppedItem.name }));
         }
     }
 

@@ -26,9 +26,9 @@
                         {{item.system.aps}}
                     {{else}}
                         <div class="quantity skill-input">
-                            <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
+                            <button class="ap-minus" aria-label="{{localize 'MEGS.Decrease'}}" data-item-id="{{item._id}}">&minus;</button>
                             <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-                            <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
+                            <button class="ap-plus" aria-label="{{localize 'MEGS.Increase'}}" data-item-id="{{item._id}}">&plus;</button>
                         </div>
                     {{/if}}
                 {{else}}
@@ -38,8 +38,8 @@
             <div class='item-controls'>
                 {{#unless item.system.aps}}
                     {{#if (compare item.system.useUnskilled '===' 'true')}}
-                        <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} (Unskilled){{/if}}' data-label="{{item.name}}" data-roll="1d10 + 1d10" {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}} {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}} data-type="skill" data-link="{{item.system.link}}" {{#if (compare item.system.aps '===' 0)}}data-unskilled="true" {{/if}}>
-                            <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" alt="Roll Unskilled" />
+                        <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} ({{localize "MEGS.UnskilledLabel"}}){{/if}}' data-label="{{item.name}}" data-roll="1d10 + 1d10" {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}} {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}} data-type="skill" data-link="{{item.system.link}}" {{#if (compare item.system.aps '===' 0)}}data-unskilled="true" {{/if}}>
+                            <img src="/systems/megs/assets/images/icons/d10grey-2.png" class="svg-icon" alt="{{localize 'MEGS.RollUnskilled'}}" />
                         </a>
                     {{/if}}
                     {{#unless (compare item.system.useUnskilled '===' 'true')}}
@@ -47,13 +47,13 @@
                     {{/unless}}
                 {{/unless}}
                 {{#if item.system.aps}}
-                    <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} ({{localize "MEGS.Unskilled"}}){{/if}}' data-label="{{item.name}}" data-roll="1d10 + 1d10" {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}} {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}} data-type="skill" data-link="{{item.system.link}}" {{#if (compare item.system.aps '===' 0)}}data-unskilled="true" {{/if}}>
-                        <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="Roll" />
+                    <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} ({{localize "MEGS.UnskilledLabel"}}){{/if}}' data-label="{{item.name}}" data-roll="1d10 + 1d10" {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}} {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}} data-type="skill" data-link="{{item.system.link}}" {{#if (compare item.system.aps '===' 0)}}data-unskilled="true" {{/if}}>
+                        <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="{{localize 'MEGS.Roll'}}" />
                     </a>
                 {{/if}}
                 {{#unless item.isFromLinkedGadget}}
                     <a class='item-control item-edit' title='{{localize "MEGS.Edit" type=item.name}}'>
-                        <img src="/systems/megs/assets/images/icons/edit.png" class="svg-icon" alt="{{localize " MEGS.Edit" type=item.name}}" />
+                        <img src="/systems/megs/assets/images/icons/edit.png" class="svg-icon" alt="{{localize 'MEGS.EditNamed' name=item.name}}" />
                     </a>
                     {{#if ../flags.megs.edit-mode}}
                         {{#if ../allowSkillDeletion}}

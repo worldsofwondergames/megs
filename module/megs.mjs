@@ -14,6 +14,7 @@ import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
 import MEGSCombatant from './combat/combatant.js';
 import { MegsRoll, MegsTableRolls, RollValues } from './dice.mjs';
+import { Utils } from './utils.js';
 
 // Turn on hooks logging for debugging
 // CONFIG.debug.hooks = true;
@@ -25,10 +26,20 @@ import { MegsRoll, MegsTableRolls, RollValues } from './dice.mjs';
 Hooks.once('init', function () {
     // Add utility classes to the global game object so that they're more easily
     // accessible in global contexts.
+    //
+    // RollValues and MegsTableRolls are part of this surface deliberately: they
+    // are what an outside integration needs in order to make an attribute roll
+    // go through the system's own roll path -- hero point dialog, doubles
+    // prompt, column shifts and chat formatting included -- instead of
+    // reimplementing it. Treat the shape of this object as a public API and do
+    // not change it without a version bump. See issue #156.
     game.megs = {
         MEGSActor,
         MEGSItem,
         rollItemMacro,
+        RollValues,
+        MegsTableRolls,
+        Utils,
     };
 
     // Add custom constants for configuration.
@@ -1247,15 +1258,16 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
     const value = args.value && !isNaN(args.value) ? args.value : '0';
     const tabindex = args.tabindex ? 'tablindex="' + args.tabindex + '"' : '';
 
+    // No inline onClick, and type="button" rather than the default submit: this
+    // partial also renders inside DialogV2, whose content is run through
+    // foundry.utils.cleanHTML(). That strips on* attributes, leaving a bare submit
+    // button that closes the dialog instead of stepping the value. Behaviour is
+    // attached by activateStepperControls() via data-control="stepper".
     return (
         '<div class="quantity ' +
         classes +
-        '">' +
-        '<button class="minus" aria-label="Decrease" onClick="' +
-        args.id +
-        'Input.value = parseInt(' +
-        args.id +
-        'Input.value) - 1">&minus;</button>' +
+        '" data-control="stepper">' +
+        '<button type="button" class="minus" data-step="-1" aria-label="Decrease">&minus;</button>' +
         '<input id="' +
         args.id +
         'Input" name="system.' +
@@ -1270,11 +1282,7 @@ Handlebars.registerPartial('plusMinusInput', function (args) {
         '" data-dtype="Number"' +
         tabindex +
         '>' +
-        '<button class="plus" aria-label="Increase" onClick="' +
-        args.id +
-        'Input.value = parseInt(' +
-        args.id +
-        'Input.value)+ 1 ">&plus;</button>' +
+        '<button type="button" class="plus" data-step="1" aria-label="Increase">&plus;</button>' +
         '</div>'
     );
 });

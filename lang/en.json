@@ -90,6 +90,8 @@
         "HasSkills": "Has skills?",
         "HasTraits": "Has traits?",
         "HeroPointOptions": "Hero Point options",
+        "HeroPointsAvailable": "Hero Points available",
+        "NoHeroPointsToSpend": "none to spend on this roll",
         "HideZeroRankSkills": "Hide Zero Rank Skills?",
         "IsArmor": "Is armor?",
         "IsALocation": "Is a location?",

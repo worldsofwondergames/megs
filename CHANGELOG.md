@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## 1.1.1
+
+### Bug Fixes
+
+- Fixed roll dialog controls broken by Foundry v14 (issue #275). v14 runs DialogV2 string content through `foundry.utils.cleanHTML()`, which strips inline `on*` handlers, so:
+    - The `-`/`+` buttons beside Action, Effect, Opposing and Resistance Value had become plain submit buttons — clicking one closed the dialog and discarded the roll instead of changing the value
+    - The number beside each Hero Point slider never moved off 0, even though the hero points were being applied to the roll
+    - The initiative dialog's Hero Point slider readout was dead for the same reason
+- Increment/decrement buttons now respect the field's own minimum and maximum instead of stepping past them
+
+### Enhancements
+
+- Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
+- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
+- `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
+
+### Test Infrastructure
+
+- Added E2E coverage that clicks the roll dialog's `+`/`-` buttons and drags its sliders through real pointer input; the previous specs set `.value` directly, which could not see this class of failure
+- Added unit tests for increment/decrement bounds handling
+
 ## 1.1.0
 
 ### Foundry VTT v14 Compatibility

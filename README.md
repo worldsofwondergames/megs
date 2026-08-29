@@ -14,9 +14,7 @@ It's a mouthful, is what it is. Let's go with "MEGS for Foundry."
 
 This is a fan-created implementation of the Mayfair Exponential Gaming System, whose core mechanics were used in games such as DC Heroes, Underground, and Blood of Heroes. The core mechanics of the DC Heroes / Underground / Blood of Heroes games were dubbed "MEGS" by its fans, short for ["Mayfair Eponential Gaming System."](https://en.wikipedia.org/wiki/Mayfair_Exponential_Game_System) This was an informal name, never trademarked.
 
-The current version (1.1.0) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
-
-It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get to version 1.0.0.
+The current version (1.1.1) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
 
 ### Are there any changes to this ruleset unique to MEGS for Foundry?
 
@@ -26,25 +24,6 @@ There are a few because of technical and/or design constraints of the platform:
 - Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
 - Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
 - Vehicles should be created as both Items and Actors. For now, Locations are Actors. More on this as we approach 1.0.
-
-### What's included in MEGS for Foundry?
-
-MEGS for Foundry includes five compendium packs that auto-load with every new world:
-
-- **Powers** (168 items) - Standard MEGS powers with base costs and factor costs
-- **Advantages** (34 items) - Character advantages and perks
-- **Drawbacks** (38 items) - Character drawbacks and complications
-- **Bonuses** (4 items) - Power bonuses and positive modifiers
-- **Limitations** (10 items) - Power limitations and negative modifiers
-
-These packs provide a starting library of game items extracted from DC Heroes 3rd Edition content. Descriptions are intentionally omitted to keep the system lightweight - refer to your MEGS rulebook for full details on each item.
-
-To use compendium items:
-1. Open the Compendium sidebar (book icon)
-2. Expand "MEGS Item Repository"
-3. Open the desired compendium pack (Powers, Advantages, etc.)
-4. Drag items to character sheets
-5. Customize as needed for your character
 
 ### Do you have future plans?
 
@@ -56,9 +35,9 @@ Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=i
 
 **YouTube demo videos** are planned by the beginning of February 2026 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
 
-Then... **version 1.1.0**, by August 1, 2026. Incorporating any feedback I've gotten and:
+Then... **version 1.2.0**, by December 1, 2026. Incorporating any feedback I've gotten and:
 
-- Integration with third-party modules like Dice So Nice (buggy right now) and Token Action HUD.
+- A tutorial "solitaire" adventure.
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
 And then after the rush, I rest for a very, very long time.

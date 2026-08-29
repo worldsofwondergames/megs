@@ -23,11 +23,11 @@ There are a few because of technical and/or design constraints of the platform:
 - Advantages and Drawbacks are grouped as "Traits" for ease of reference.
 - Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
 - Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
-- Vehicles should be created as both Items and Actors. For now, Locations are Actors. More on this as we approach 1.0.
+- Vehicles should be created as both Items and Actors. For now, Locations are Actors.
 
 ### Do you have future plans?
 
-Do I ever! MEGS for Foundry is currently sitting at **version 1.1.0**.
+Do I ever! MEGS for Foundry is currently sitting at **version 1.1.1**.
 
 (Note that everything below is subject to change.)
 

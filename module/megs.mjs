@@ -226,7 +226,7 @@ Handlebars.registerHelper('getAPCost', function (aps, factorCost) {
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-    return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
+    return Utils.isTrue(str) ? game.i18n.localize('Yes') : game.i18n.localize('No');
 });
 
 Handlebars.registerHelper('isTrue', function (value) {
@@ -276,7 +276,7 @@ Handlebars.registerHelper('compare', function (v1, operator, v2, options) {
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-    return str === 'true' ? 'Yes' : 'No';
+    return Utils.isTrue(str) ? 'Yes' : 'No';
 });
 
 /* -------------------------------------------- */
@@ -323,7 +323,7 @@ Handlebars.registerHelper('getSkillDisplayName', function (skill) {
     let displayName = skill.name;
 
     // Add asterisk for linked skills
-    if (skill.system.isLinked === 'true') {
+    if (Utils.isTrue(skill.system.isLinked)) {
         displayName += '*';
     }
     return displayName;
@@ -338,7 +338,7 @@ Handlebars.registerHelper('getAttributeText', function (key, labels) {
 
 Handlebars.registerHelper('getPowerDisplayName', function (power) {
     let displayName = power.name;
-    if (power.system.isLinked === 'true') {
+    if (Utils.isTrue(power.system.isLinked)) {
         displayName += '*';
     }
     return displayName;

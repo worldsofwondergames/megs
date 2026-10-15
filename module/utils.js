@@ -2,6 +2,17 @@ import { MEGS } from './helpers/config.mjs';
 
 export class Utils {
     /**
+     * True for the boolean true or the string 'true'. Item sheets save Yes/No selects
+     * as strings, while the builder sheets' checkboxes save booleans.
+     * @param {*} value
+     * @returns {boolean}
+     * @public
+     */
+    static isTrue(value) {
+        return value === true || value === 'true';
+    }
+
+    /**
      *
      * @param key
      * @param targetActor

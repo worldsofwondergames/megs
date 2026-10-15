@@ -153,6 +153,87 @@ describe('Gadget Cost Calculation', () => {
     });
 });
 
+describe('Gadget cost with modified child powers (issue #287)', () => {
+    // BODY 4 APs @ FC (6-2=4) = 12 HP with R# 9.
+    // Power: Base Cost 10, 5 APs. 5 APs costs 12/16/20/24 HP at FC 3/4/5/6.
+    const makeGadget = (childItems) => {
+        const gadget = new MEGSItem({
+            _id: 'gadget1',
+            name: 'Test Gadget',
+            type: 'gadget',
+            system: {
+                attributes: { body: { value: 4, factorCost: 6 } },
+                reliability: 5,
+                canBeTakenAway: true
+            }
+        });
+        gadget.parent = { items: childItems };
+        gadget.prepareDerivedData();
+        return gadget;
+    };
+    const power = (extra = {}) => ({
+        _id: 'power1',
+        id: 'power1',
+        type: 'power',
+        system: { parent: 'gadget1', aps: 5, factorCost: 5, baseCost: 10, ...extra }
+    });
+    const modifier = (type, parent, factorCostMod) => ({
+        _id: `${type}-${parent}-${factorCostMod}`,
+        type,
+        system: { parent, factorCostMod }
+    });
+
+    test('unmodified power counts at its own Factor Cost', () => {
+        // 12 + (10 + 20) = 42, ceil(42 / 4) = 11
+        expect(makeGadget([power()]).system.totalCost).toBe(11);
+    });
+
+    test('a limitation on the power lowers the gadget cost', () => {
+        // FC 5 - 1 = 4: 12 + (10 + 16) = 38, ceil(38 / 4) = 10
+        const gadget = makeGadget([power(), modifier('limitation', 'power1', -1)]);
+        expect(gadget.system.totalCost).toBe(10);
+    });
+
+    test('a bonus on the power raises the gadget cost', () => {
+        // FC 5 + 1 = 6: 12 + (10 + 24) = 46, ceil(46 / 4) = 12
+        const gadget = makeGadget([power(), modifier('bonus', 'power1', 1)]);
+        expect(gadget.system.totalCost).toBe(12);
+    });
+
+    test('a limitation on some other power does not change the gadget cost', () => {
+        const gadget = makeGadget([power(), modifier('limitation', 'other-power', -1)]);
+        expect(gadget.system.totalCost).toBe(11);
+    });
+
+    test('a limitation stacks with the linking reduction', () => {
+        // FC 5 - 1 - 2 = 2: 5 APs @ FC 2 = 8. 12 + (10 + 8) = 30, ceil(30 / 4) = 8
+        const gadget = makeGadget([power({ isLinked: true }), modifier('limitation', 'power1', -1)]);
+        expect(gadget.system.totalCost).toBe(8);
+    });
+
+    test('an untrained subskill lowers the cost of a skill on the gadget', () => {
+        // FC 5 - 1 untrained = 4: 12 + 16 = 28, ceil(28 / 4) = 7
+        const skill = {
+            _id: 'skill1',
+            id: 'skill1',
+            type: 'skill',
+            system: { parent: 'gadget1', aps: 5, factorCost: 5, baseCost: 0 }
+        };
+        const gadget = makeGadget([
+            skill,
+            { _id: 'sub1', type: 'subskill', system: { parent: 'skill1', isTrained: true } },
+            { _id: 'sub2', type: 'subskill', system: { parent: 'skill1', isTrained: false } }
+        ]);
+        expect(gadget.system.totalCost).toBe(7);
+    });
+
+    test('gadget cost and gadget point budget use the same power cost', () => {
+        const gadget = makeGadget([power(), modifier('limitation', 'power1', -1)]);
+        // 10 + 16 before the gadget bonus
+        expect(gadget.system.gadgetPointBudget.powersCost).toBe(26);
+    });
+});
+
 describe('Reliability Number Conversion', () => {
     test('converts index 0 to R# 0 (+3 to FC)', () => {
         const gadget = new MEGSItem({

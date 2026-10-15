@@ -168,7 +168,7 @@
                         <div class='item-controls grid-span-1'>
                             {{#if subskill.isRollable}}
                                 <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{subskill.name}}
-              {{#if isUnskilled}}Unskilled{{/if}}
+              {{#if isUnskilled}}{{localize "MEGS.UnskilledLabel"}}{{/if}}
               ' data-label="{{subskill.name}}" data-roll="1d10 + 1d10" data-value="{{subskill.effectiveAPs}}" data-type="subskill" {{#if subskill.isUnskilled}} data-unskilled="true" {{/if}}>
                                     {{#if (compare subskill.system.type '===' 'auto')}}
                                         <img src="/systems/megs/assets/images/icons/d10grey.svg" class="svg-icon" />

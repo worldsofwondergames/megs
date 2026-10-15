@@ -1,7 +1,7 @@
 <!-- TODO not being used -- the live partial is registered in module/megs.mjs. -->
 <!-- Behaviour is attached by activateStepperControls(); see module/helpers/dialog-controls.mjs. -->
 <div class='quantity {{classes}}' data-control='stepper'>
-    <button type='button' class='minus' data-step='-1' aria-label='Decrease'>&minus;</button>
+    <button type='button' class='minus' data-step='-1' aria-label='{{localize "MEGS.Decrease"}}'>&minus;</button>
     <input id='{{id}}Input' name='system.{{id}}' type='number' class='input-box' value='{{value}}' min='{{min}}' max='{{max}}' data-dtype='Number' />
-    <button type='button' class='plus' data-step='1' aria-label='Increase'>&plus;</button>
+    <button type='button' class='plus' data-step='1' aria-label='{{localize "MEGS.Increase"}}'>&plus;</button>
 </div>

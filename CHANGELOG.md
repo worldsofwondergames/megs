@@ -5,6 +5,7 @@
 ### Localization
 
 - User-facing English text that was written straight into templates and modules now comes from the localization files, so it changes with the client language (issue #279). This covers the `aria-label` on every `+`/`-` button, the attribute tooltips on the character creator and gadget builder, the roll and delete tooltips, the character name placeholder, the delete confirmation dialogs, and every `ui.notifications` message
+- The HP cost tooltips on the Character Builder, gadget sheet and Gadget Builder, the omni-gadget range names, and the AV, EV, Range, Ammo and R# labels in a gadget's description now come from the localization files (issue #281). The HP unit and the ÷4 or ÷2 gadget bonus are part of each translated string, so a translator can place them.
 - Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
 - Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
 - Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
@@ -30,6 +31,7 @@
 
 ### Test Infrastructure
 
+- Extended the localization unit tests to the cost tooltip helpers and omni-gadget ranges in `megs.mjs`, and added E2E coverage that swaps in marked translations and checks they reach the rendered tooltips and gadget descriptions (issue #281)
 - Added E2E coverage that measures the rendered dice on the Powers tab and the size of every control icon on the Powers, Skills and Gadgets tabs (issue #283)
 - Added E2E coverage for the linked APs warning on the Character Builder and the regular actor sheet in edit and view mode (issue #286)
 - Added E2E coverage that ticks Linked in the character builder and checks the regular actor sheet and item sheet (issue #282)

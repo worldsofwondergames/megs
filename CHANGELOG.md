@@ -45,7 +45,7 @@
 - Added unit tests for the Reliability Number on gadget powers and skills, including the Factor Cost limits of 1 and 10 and unowned gadgets, and E2E coverage that changes a gadget's R# and checks the gadget and character costs (issue #294)
 - Added E2E coverage for Role Playing Notes: view and edit mode on hero, villain and NPC sheets, (None) when empty, saving through the editor, and no field on location sheets (issue #285)
 
-## 1.1.0
+## 1.1.0 (August 28, 2026)
 
 ### Foundry VTT v14 Compatibility
 

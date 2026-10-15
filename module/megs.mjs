@@ -9,6 +9,7 @@ import { MEGSGadgetBuilderSheet } from './sheets/gadget-builder-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { MEGS } from './helpers/config.mjs';
+import { applyBarBrawlDefaults } from './helpers/barbrawl-defaults.mjs';
 
 import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
@@ -1364,6 +1365,9 @@ Hooks.once('ready', async function () {
     if (game.settings.get('megs', 'debugLogging')) {
         await _verifyCompendiumPacks();
     }
+
+    // Issue #290: give Bar Brawl MEGS bars when it is enabled and has no defaults yet
+    await applyBarBrawlDefaults(game);
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {

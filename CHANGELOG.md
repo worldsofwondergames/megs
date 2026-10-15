@@ -2,13 +2,14 @@
 
 ## 1.1.1
 
-### Localization
+### Enhancements
 
-- User-facing English text that was written straight into templates and modules now comes from the localization files, so it changes with the client language (issue #279). This covers the `aria-label` on every `+`/`-` button, the attribute tooltips on the character creator and gadget builder, the roll and delete tooltips, the character name placeholder, the delete confirmation dialogs, and every `ui.notifications` message
-- The HP cost tooltips on the Character Builder, gadget sheet and Gadget Builder, the omni-gadget range names, and the AV, EV, Range, Ammo and R# labels in a gadget's description now come from the localization files (issue #281). The HP unit and the ÷4 or ÷2 gadget bonus are part of each translated string, so a translator can place them.
-- Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
-- Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
-- Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
+- Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
+- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
+- `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
+- Hero, villain and NPC sheets have a Role Playing Notes field below Biography on the Description tab, edited with the same rich-text editor. In edit mode the Biography and Role Playing Notes editors each start at 15em tall instead of Biography filling the whole tab. Locations, pets and vehicles have no Role Playing Notes (issue #285)
+- When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
+- An equipped gadget's italicized Attributes now replace the character's own for rolls when they are higher, as the rules allow for italicized gadget Attributes. Gadgets have a new Is Equipped? setting, off by default, so existing gadgets change nothing until equipped. Attribute rolls, OV/RV lookups, power AV/EV/OV/RV sources and unskilled skills use the replaced values. The actor sheet still shows the character's own Attribute, with an info icon naming the gadget and its value. Current BODY, MIND and SPIRIT keep the character's own maximums (issue #210)
 
 ### Bug Fixes
 
@@ -23,13 +24,13 @@
 - The blue die on rollable powers, skills and gadgets now uses `d10blue.svg`, the same drawing as the gray die on auto powers, instead of a PNG that filled its whole box and looked stretched next to it. Icons in a crowded row of item controls, such as the Powers tab's die, edit and delete links, no longer shrink below their 20px width (issue #283)
 - A gadget's Reliability Number now changes the Factor Cost of its powers and skills, as the rules require for every Ability on the gadget. Before, only its attributes, AV, EV and Range were adjusted, so a gadget made only of powers cost the same at every R#. An R# 0 gadget's powers now cost more and an R# 7 or higher gadget's powers cost less (issue #294)
 
-### Enhancements
+### Localization
 
-- Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
-- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
-- `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
-- Hero, villain and NPC sheets have a Role Playing Notes field below Biography on the Description tab, edited with the same rich-text editor. In edit mode the Biography and Role Playing Notes editors each start at 15em tall instead of Biography filling the whole tab. Locations, pets and vehicles have no Role Playing Notes (issue #285)
-- When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
+- User-facing English text that was written straight into templates and modules now comes from the localization files, so it changes with the client language (issue #279). This covers the `aria-label` on every `+`/`-` button, the attribute tooltips on the character creator and gadget builder, the roll and delete tooltips, the character name placeholder, the delete confirmation dialogs, and every `ui.notifications` message
+- The HP cost tooltips on the Character Builder, gadget sheet and Gadget Builder, the omni-gadget range names, and the AV, EV, Range, Ammo and R# labels in a gadget's description now come from the localization files (issue #281). The HP unit and the ÷4 or ÷2 gadget bonus are part of each translated string, so a translator can place them.
+- Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
+- Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
+- Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
 
 ### Test Infrastructure
 
@@ -44,6 +45,7 @@
 - Added unit tests that read the shipped templates and modules and fail if English text reappears in an `aria-label`, `title`, `alt`, or `placeholder`, in a notification, or in a dialog title, and that check every `MEGS` key a template or module asks for is defined in both dictionaries (issue #279)
 - Added unit tests for the Reliability Number on gadget powers and skills, including the Factor Cost limits of 1 and 10 and unowned gadgets, and E2E coverage that changes a gadget's R# and checks the gadget and character costs (issue #294)
 - Added E2E coverage for Role Playing Notes: view and edit mode on hero, villain and NPC sheets, (None) when empty, saving through the editor, and no field on location sheets (issue #285)
+- Added unit tests for equipped gadget Attributes (equipped and not, higher and lower, italicized and not, several gadgets, the item sheet's string value) and the roll helpers that read them, and E2E coverage for the Equipped select, the attribute icon and an attribute roll's starting values (issue #210)
 
 ## 1.1.0 (August 28, 2026)
 

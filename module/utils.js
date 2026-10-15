@@ -33,6 +33,18 @@ export class Utils {
     }
 
     /**
+     * The value of an Attribute for rolls: the character's own, or an equipped gadget's
+     * italicized Attribute when that is higher (issue #210).
+     * @param {Actor} actor
+     * @param {string} key - Attribute key such as 'dex'
+     * @returns {number}
+     * @public
+     */
+    static getAttributeValue(actor, key) {
+        return actor?.system?.effectiveAttributes?.[key] ?? actor?.system?.attributes?.[key]?.value ?? 0;
+    }
+
+    /**
      *
      * @param key
      * @param targetActor
@@ -42,17 +54,17 @@ export class Utils {
     static getOpposingValue(key, targetActor) {
         let opposingValue;
         if (key === MEGS.attributeAbbreviations.str || key === MEGS.attributeAbbreviations.dex) {
-            opposingValue = targetActor.system.attributes.dex.value;
+            opposingValue = Utils.getAttributeValue(targetActor, 'dex');
         } else if (
             key === MEGS.attributeAbbreviations.will ||
             key === MEGS.attributeAbbreviations.int
         ) {
-            opposingValue = targetActor.system.attributes.int.value;
+            opposingValue = Utils.getAttributeValue(targetActor, 'int');
         } else if (
             key === MEGS.attributeAbbreviations.aura ||
             key === MEGS.attributeAbbreviations.infl
         ) {
-            opposingValue = targetActor.system.attributes.infl.value;
+            opposingValue = Utils.getAttributeValue(targetActor, 'infl');
         } else {
             ui.notifications.error(
                 "Utils.getOpposingValue(): Invalid attribute selection '" + key + "'"
@@ -72,17 +84,17 @@ export class Utils {
     static getResistanceValue(key, targetActor) {
         let resistanceValue;
         if (key === MEGS.attributeAbbreviations.str || key === MEGS.attributeAbbreviations.dex) {
-            resistanceValue = targetActor.system.attributes.body.value;
+            resistanceValue = Utils.getAttributeValue(targetActor, 'body');
         } else if (
             key === MEGS.attributeAbbreviations.will ||
             key === MEGS.attributeAbbreviations.int
         ) {
-            resistanceValue = targetActor.system.attributes.mind.value;
+            resistanceValue = Utils.getAttributeValue(targetActor, 'mind');
         } else if (
             key === MEGS.attributeAbbreviations.aura ||
             key === MEGS.attributeAbbreviations.infl
         ) {
-            resistanceValue = targetActor.system.attributes.spirit.value;
+            resistanceValue = Utils.getAttributeValue(targetActor, 'spirit');
         } else {
             ui.notifications.error(
                 "Utils.getResistanceValue(): Invalid attribute selection '" + key + "'"
@@ -102,11 +114,11 @@ export class Utils {
     static getEffectValue(key, actor) {
         let effectValue;
         if (key === MEGS.attributeAbbreviations.dex) {
-            effectValue = actor.system.attributes.str.value;
+            effectValue = Utils.getAttributeValue(actor, 'str');
         } else if (key === MEGS.attributeAbbreviations.int) {
-            effectValue = actor.system.attributes.will.value;
+            effectValue = Utils.getAttributeValue(actor, 'will');
         } else if (key === MEGS.attributeAbbreviations.infl) {
-            effectValue = actor.system.attributes.aura.value;
+            effectValue = Utils.getAttributeValue(actor, 'aura');
         } else {
             ui.notifications.error(
                 "Utils.getEffectValue(): Invalid attribute selection '" + key + "'"
@@ -124,10 +136,10 @@ export class Utils {
         if (parts.length === 2) {
             const [type, attr] = parts;
             if (type === 'char' && actor) {
-                return actor.system.attributes[attr]?.value || 0;
+                return Utils.getAttributeValue(actor, attr);
             }
             if (type === 'target' && targetActor) {
-                return targetActor.system.attributes[attr]?.value || 0;
+                return Utils.getAttributeValue(targetActor, attr);
             }
         }
         return 0;

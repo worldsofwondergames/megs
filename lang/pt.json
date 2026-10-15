@@ -116,6 +116,7 @@
         "IsAWeapon": "Está uma arma?",
         "IsBroken": "Está quebrado?",
         "IsCarried": "Está sendo tranportado?",
+        "IsEquipped": "Está equipado?",
         "IsLinked": "Está vinculado?",
         "Abbr": {
             "AV": "VA",
@@ -235,6 +236,7 @@
         "ModifiersOnlyForOwnedGadgets": "Modificadores só podem ser adicionados a poderes em equipamentos pertencentes a um personagem.",
         "StackableQuantityIncreased": "{name} quantidade aumentou para {quantity}",
         "AlwaysSubstitute": "Sempre Substituir (Itálico)",
+        "AttributeOverride": "{gadget} substitui este valor por {value} nas rolagens",
         "SelectGadgetAbility": "Selecione a Habilidade para Rolar",
         "GadgetRoll": "Jogada de Equipamento",
         "AVSource": "Fonte do Valor de Ação",

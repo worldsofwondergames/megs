@@ -526,7 +526,7 @@ export class MEGSActorSheet extends ActorSheet {
         case MEGS.itemTypes.skill:
             i.subskills = [];
             i.unskilled = i.system.aps === 0;
-            i.linkedAPs = i.unskilled ? this.object.system.attributes[i.system.link].value : 0;
+            i.linkedAPs = i.unskilled ? Utils.getAttributeValue(this.object, i.system.link) : 0;
             skills.push(i);
             break;
         case MEGS.itemTypes.advantage:
@@ -1114,7 +1114,10 @@ export class MEGSActorSheet extends ActorSheet {
             }
         }
 
-        const actionValue = Number.parseInt(dataset.value);
+        // An attribute roll uses the value after any equipped gadget's italicized Attribute (issue #210)
+        const actionValue = dataset.type === MEGS.rollTypes.attribute
+            ? Utils.getAttributeValue(this.actor, dataset.key)
+            : Number.parseInt(dataset.value);
         let opposingValue = 0;
         let resistanceValue = 0;
 
@@ -1126,7 +1129,7 @@ export class MEGSActorSheet extends ActorSheet {
                 attrKey = dataset.link;
             }
             if (attrKey) {
-                opposingValue = targetActor.system.attributes[attrKey].value;
+                opposingValue = Utils.getAttributeValue(targetActor, attrKey);
                 resistanceValue = Utils.getResistanceValue(attrKey, targetActor);
             } else if (dataset.type === MEGS.itemTypes.skill) {
                 console.error('No linked attribute for ' + dataset.name);

@@ -17,6 +17,9 @@
         {{else}}
             <div>{{attribute.value}}</div>
         {{/if}}
+        {{#with (lookup ../system.attributeOverrides key) as |override|}}
+            <i class="fas fa-circle-info attribute-override-icon" title="{{localize 'MEGS.AttributeOverride' gadget=override.gadget value=override.value}}"></i>
+        {{/with}}
     </div>
     {{#if (isDivisor 3 (sum @index 1))}}
         </section>

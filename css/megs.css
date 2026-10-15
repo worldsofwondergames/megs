@@ -865,6 +865,11 @@ details summary.no-arrow {
   cursor: pointer;
   white-space: pre-line;
 }
+.megs .attribute .attribute-override-icon {
+  margin-left: 4px;
+  color: #5fa2d9;
+  cursor: help;
+}
 .megs .resource-label {
   font-weight: 500;
 }

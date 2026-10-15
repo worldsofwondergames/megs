@@ -18,6 +18,7 @@
 - Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
 - `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
 - `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
+- When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
 
 ### Test Infrastructure
 
@@ -26,6 +27,7 @@
 - `E2E_USER` and `E2E_OTHER_SESSIONS` let the E2E suite log in as its own GM user while someone else is connected as Gamemaster
 - Added E2E coverage that clicks the roll dialog's `+`/`-` buttons and drags its sliders through real pointer input; the previous specs set `.value` directly, which could not see this class of failure
 - Added unit tests for increment/decrement bounds handling
+- Added unit tests for the Bar Brawl defaults: Bar Brawl enabled, disabled and not installed, existing defaults, and a non-active GM (issue #290)
 
 ## 1.1.0
 

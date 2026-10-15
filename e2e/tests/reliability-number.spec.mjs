@@ -3,6 +3,7 @@ import {
     prefixName,
     createHeroActor,
     addGadgetToActor,
+    addPowerToActor,
     deleteActor,
     openActorSheet,
     openItemSheet,
@@ -131,6 +132,49 @@ test.describe('Gadget Reliability Number (#8)', () => {
                 return gadget.system.totalCost;
             }, { actorId, gadgetId });
             expect(costAtR0).toBe(23);
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+
+    test('Changing reliability changes the cost of a power on the gadget (#294)', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('Reliability_Power'));
+            const gadgetId = await addGadgetToActor(page, actorId, {
+                name: 'Power Only Gadget',
+                reliability: 3, // R#5, modifier 0
+            });
+            await addPowerToActor(page, actorId, {
+                name: 'Test Power',
+                aps: 5,
+                baseCost: 10,
+                factorCost: 5,
+                parent: gadgetId,
+            });
+
+            const readCosts = () => page.evaluate(({ actorId, gadgetId }) => {
+                const actor = game.actors.get(actorId);
+                actor.prepareData();
+                return {
+                    gadget: actor.items.get(gadgetId).system.totalCost,
+                    actor: actor.system.heroPointBudget.totalSpent,
+                };
+            }, { actorId, gadgetId });
+
+            // Power 5 APs @ FC 5 = 20, + Base Cost 10 = 30; ÷4 => 8
+            const atR5 = await readCosts();
+            expect(atR5.gadget).toBe(8);
+
+            await page.evaluate(({ actorId, gadgetId }) =>
+                game.actors.get(actorId).items.get(gadgetId).update({ 'system.reliability': 0 }),
+            { actorId, gadgetId });
+
+            // R#0 adds +3: 5 APs @ FC 8 = 32, + 10 = 42; ÷4 => 11, and the character pays 3 more
+            const atR0 = await readCosts();
+            expect(atR0.gadget).toBe(11);
+            expect(atR0.actor - atR5.actor).toBe(3);
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

@@ -21,6 +21,7 @@
 - A power or skill marked Linked in the character builder now shows as linked on the regular actor sheet: its name gets the asterisk, its item sheet shows Is Linked: Yes, and a linked skill's APs lock to the attribute. The builder saves Linked as a boolean and these checks accepted only the string the item sheet saves. Yes/No fields such as Can Be Taken Away also now read Yes for a boolean true (issue #282)
 - A linked Power or Skill whose APs differ from its linked Attribute now shows a red AP value, a warning icon, and a tooltip such as "Linked to Dexterity (7) but rated 6 APs" on the Character Builder and the regular actor sheet. The Character Builder flagged the mismatch before, but the AP input kept its own color, so the warning was invisible (issue #286)
 - The blue die on rollable powers, skills and gadgets now uses `d10blue.svg`, the same drawing as the gray die on auto powers, instead of a PNG that filled its whole box and looked stretched next to it. Icons in a crowded row of item controls, such as the Powers tab's die, edit and delete links, no longer shrink below their 20px width (issue #283)
+- A gadget's Reliability Number now changes the Factor Cost of its powers and skills, as the rules require for every Ability on the gadget. Before, only its attributes, AV, EV and Range were adjusted, so a gadget made only of powers cost the same at every R#. An R# 0 gadget's powers now cost more and an R# 7 or higher gadget's powers cost less (issue #294)
 
 ### Enhancements
 
@@ -40,6 +41,7 @@
 - Added unit tests for increment/decrement bounds handling
 - Added unit tests for the Bar Brawl defaults: Bar Brawl enabled, disabled and not installed, existing defaults, and a non-active GM (issue #290)
 - Added unit tests that read the shipped templates and modules and fail if English text reappears in an `aria-label`, `title`, `alt`, or `placeholder`, in a notification, or in a dialog title, and that check every `MEGS` key a template or module asks for is defined in both dictionaries (issue #279)
+- Added unit tests for the Reliability Number on gadget powers and skills, including the Factor Cost limits of 1 and 10 and unowned gadgets, and E2E coverage that changes a gadget's R# and checks the gadget and character costs (issue #294)
 
 ## 1.1.0
 

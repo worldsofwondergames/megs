@@ -27,9 +27,9 @@
             <div class='item-aps'>
                 {{#if ../flags.megs.edit-mode}}
                     <div class="quantity skill-input">
-                        <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&minus;</button>
+                        <button class="ap-minus" aria-label="{{localize 'MEGS.Decrease'}}" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&minus;</button>
                         <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
-                        <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&plus;</button>
+                        <button class="ap-plus" aria-label="{{localize 'MEGS.Increase'}}" data-item-id="{{item._id}}" data-is-virtual="{{item.isVirtual}}">&plus;</button>
                     </div>
                 {{else}}
                     {{item.system.aps}}

@@ -100,11 +100,12 @@ MEGS.advantages = {
     LIGHTNING_REFLEXES: 'Lightning Reflexes',
 };
 
+// Localization keys; getGadgetDescription localizes them.
 MEGS.omniRanges = {
-    A: 'Physical Attributes',
-    B: 'Mental Attributes',
-    C: 'Physical and Mental Powers',
-    D: 'Italicized Attributes',
+    A: 'MEGS.PhysicalAttributes',
+    B: 'MEGS.MentalAttributes',
+    C: 'MEGS.PhysicalAndMentalPowers',
+    D: 'MEGS.ItalicizedAttributes',
 };
 
 MEGS.yesNoOptions = {

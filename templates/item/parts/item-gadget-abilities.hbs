@@ -70,7 +70,7 @@
                         {{#if flags.megs.edit-mode}}
                             <div class="quantity attribute-input">
                                 <button class="minus"
-                                    aria-label="Decrease"
+                                    aria-label="{{localize 'MEGS.Decrease'}}"
                                     onClick="rangeInput.value = parseInt(rangeInput.value) - 1">&minus;</button>
                                 <input id="rangeInput"
                                     type="text"
@@ -79,7 +79,7 @@
                                     value="{{system.weapon.range}}"
                                     data-dtype="number" />
                                 <button class="plus"
-                                    aria-label="Increase"
+                                    aria-label="{{localize 'MEGS.Increase'}}"
                                     onClick="rangeInput.value = parseInt(rangeInput.value) + 1">&plus;</button>
                             </div>
                         {{else}}
@@ -96,7 +96,7 @@
                         {{#if flags.megs.edit-mode}}
                             <div class="quantity attribute-input">
                                 <button class="minus"
-                                    aria-label="Decrease"
+                                    aria-label="{{localize 'MEGS.Decrease'}}"
                                     onClick="ammoInput.value = parseInt(ammoInput.value) - 1">&minus;</button>
                                 <input id="ammoInput"
                                     type="text"
@@ -105,7 +105,7 @@
                                     value="{{system.weapon.ammo}}"
                                     data-dtype="number" />
                                 <button class="plus"
-                                    aria-label="Increase"
+                                    aria-label="{{localize 'MEGS.Increase'}}"
                                     onClick="ammoInput.value = parseInt(ammoInput.value) + 1">&plus;</button>
                             </div>
                         {{else}}

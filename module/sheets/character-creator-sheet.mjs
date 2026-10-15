@@ -254,7 +254,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
 
         // Only allow Bonuses and Limitations
         if (droppedItem.type !== 'bonus' && droppedItem.type !== 'limitation') {
-            ui.notifications.warn('Only Bonuses and Limitations can be dropped onto Powers.');
+            ui.notifications.warn(game.i18n.localize('MEGS.OnlyBonusesAndLimitationsCanBeDropped'));
             return;
         }
 
@@ -265,7 +265,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
         // Create the item on the actor
         await this.actor.createEmbeddedDocuments('Item', [itemData]);
 
-        ui.notifications.info(`${droppedItem.name} attached to power.`);
+        ui.notifications.info(game.i18n.format('MEGS.ItemAttachedToPower', { name: droppedItem.name }));
         this.render(false);
     }
 

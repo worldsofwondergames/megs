@@ -34,6 +34,7 @@
                 {{else}}
                     {{item.system.aps}}
                 {{/if}}
+                {{#if (isLinkedSkillMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
             </div>
             <div class='item-controls'>
                 {{#unless item.system.aps}}

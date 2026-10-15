@@ -212,6 +212,7 @@
                                 <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
                                 <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
                             </div>
+                            {{#if (isLinkedPowerMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
                         </div>
                         <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
                             {{item.system.totalCost}}
@@ -291,6 +292,7 @@
                                 <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
                                 <button class="ap-plus" aria-label="Increase" data-item-id="{{item._id}}">&plus;</button>
                             </div>
+                            {{#if (isLinkedSkillMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
                         </div>
                         <div class='item-total-cost total-cost-calculated' title='{{getTotalCostTooltip item ../items}}'>
                             {{getSkillTotalCost item ../items}}

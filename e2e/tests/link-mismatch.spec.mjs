@@ -45,11 +45,13 @@ test.describe('Linked APs mismatch warning (#286)', () => {
         await expect(cell).toHaveCount(1);
         return cell.evaluate((el) => {
             const value = el.querySelector('input') ?? el;
+            const icon = el.querySelector('.link-mismatch-icon');
             return {
                 mismatch: el.classList.contains('link-mismatch'),
                 title: el.getAttribute('title'),
                 color: getComputedStyle(value).color,
                 hasInput: !!el.querySelector('input'),
+                iconColor: icon && icon.getBoundingClientRect().width > 0 ? getComputedStyle(icon).color : null,
             };
         });
     }
@@ -75,11 +77,11 @@ test.describe('Linked APs mismatch warning (#286)', () => {
 
                 await openSheet(page, actorId, { ...sheet, tab: 'powers' });
                 const power = await apCell(page, 'powers', hero.powerId);
-                expect(power).toEqual({ mismatch: true, title: tooltip, color: RED, hasInput: sheet.input });
+                expect(power).toEqual({ mismatch: true, title: tooltip, color: RED, hasInput: sheet.input, iconColor: RED });
 
                 await page.click('.sheet.actor .tabs .item[data-tab="skills"]');
                 const skill = await apCell(page, 'skills', hero.skillId);
-                expect(skill).toEqual({ mismatch: true, title: tooltip, color: RED, hasInput: sheet.input });
+                expect(skill).toEqual({ mismatch: true, title: tooltip, color: RED, hasInput: sheet.input, iconColor: RED });
             } finally {
                 await closeAllWindows(page);
                 if (actorId) await deleteActor(page, actorId);
@@ -98,6 +100,7 @@ test.describe('Linked APs mismatch warning (#286)', () => {
                 expect(power.mismatch).toBe(false);
                 expect(power.title).toBe('');
                 expect(power.color).not.toBe(RED);
+                expect(power.iconColor).toBeNull();
             } finally {
                 await closeAllWindows(page);
                 if (actorId) await deleteActor(page, actorId);

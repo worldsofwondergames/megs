@@ -1365,6 +1365,16 @@ details summary.no-arrow {
 .megs .link-mismatch input {
   color: #d32f2f;
 }
+.megs .item-aps.link-mismatch {
+  position: relative;
+}
+.megs .link-mismatch-icon {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-right: 4px;
+  transform: translateY(-50%);
+}
 .megs .wealth-summary {
   margin-bottom: 10px;
 }

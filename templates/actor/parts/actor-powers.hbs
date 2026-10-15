@@ -43,6 +43,7 @@
                 {{else}}
                     {{item.system.aps}}
                 {{/if}}
+                {{#if (isLinkedPowerMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
             </div>
             {{#if showHeroPointCosts}}
                 <div class='item-total-cost'>

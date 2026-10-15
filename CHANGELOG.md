@@ -11,7 +11,7 @@
 - Increment/decrement buttons now respect the field's own minimum and maximum instead of stepping past them
 - A gadget's cost now includes the bonuses and limitations on its powers and the untrained subskills on its skills, so a Power Restriction on a gadget power lowers the character's Hero Point total. The gadget cost and the gadget point budget now share one Factor Cost calculation (issue #287)
 - A power or skill marked Linked in the character builder now shows as linked on the regular actor sheet: its name gets the asterisk, its item sheet shows Is Linked: Yes, and a linked skill's APs lock to the attribute. The builder saves Linked as a boolean and these checks accepted only the string the item sheet saves. Yes/No fields such as Can Be Taken Away also now read Yes for a boolean true (issue #282)
-- A linked Power or Skill whose APs differ from its linked Attribute now shows a red AP value and a tooltip such as "Linked to Dexterity (7) but rated 6 APs" on the Character Builder and the regular actor sheet. The Character Builder flagged the mismatch before, but the AP input kept its own color, so the warning was invisible (issue #286)
+- A linked Power or Skill whose APs differ from its linked Attribute now shows a red AP value, a warning icon, and a tooltip such as "Linked to Dexterity (7) but rated 6 APs" on the Character Builder and the regular actor sheet. The Character Builder flagged the mismatch before, but the AP input kept its own color, so the warning was invisible (issue #286)
 
 ### Enhancements
 

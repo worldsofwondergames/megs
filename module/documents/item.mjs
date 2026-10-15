@@ -627,15 +627,17 @@ export class MEGSItem extends Item {
     }
 
     /**
-     * Effective Factor Cost of a power or skill owned by this gadget: bonuses and
-     * limitations on a power, untrained subskills on a skill, and the linking reduction
+     * Effective Factor Cost of a power or skill owned by this gadget: the gadget's
+     * Reliability Number, bonuses and limitations on a power, untrained subskills on a
+     * skill, and the linking reduction
      * @param {Item} item - Child power or skill
      * @param {Collection|Array} items - All items on the owning actor
-     * @returns {number} Effective Factor Cost, minimum 1
+     * @returns {number} Effective Factor Cost, from 1 to 10
      * @private
      */
     _getChildEffectiveFC(item, items) {
-        let effectiveFC = item.system.factorCost;
+        // Issue #294: the R# modifies the Factor Cost of every Ability on the gadget
+        let effectiveFC = item.system.factorCost + this._getGadgetReliabilityModifier();
 
         if (item.type === MEGS.itemTypes.power) {
             const modifiers = items.filter(i =>
@@ -655,7 +657,18 @@ export class MEGSItem extends Item {
         if (this._toBoolean(item.system.isLinked)) {
             effectiveFC = Math.max(1, effectiveFC - 2);
         }
-        return Math.max(1, effectiveFC);
+        return Math.min(10, Math.max(1, effectiveFC));
+    }
+
+    /**
+     * Factor Cost modifier from this gadget's Reliability Number
+     * @returns {number} +3 for R# 0 down to -3 for R# 11
+     * @private
+     */
+    _getGadgetReliabilityModifier() {
+        const reliabilityIndex = this.system.reliability ?? 3;
+        const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+        return this._getReliabilityModifier(reliability);
     }
 
     /**
@@ -878,12 +891,15 @@ export class MEGSItem extends Item {
             if (aps === 0) continue;
 
             const baseCost = powerBaseCosts[powerName] || 0;
-            let fc = powerFactorCosts[powerName] || 0;
+            const baseFC = powerFactorCosts[powerName] || 0;
+            let fc = baseFC + this._getGadgetReliabilityModifier();
             const isLinked = powerIsLinked[powerName];
 
             if (this._toBoolean(isLinked)) {
                 fc = Math.max(1, fc - 2);
             }
+            // A missing Factor Cost stays 0 (no cost) rather than becoming the R# modifier
+            fc = baseFC ? Math.min(10, Math.max(1, fc)) : 0;
 
             const apCost = MEGS.getAPCost(aps, fc) || 0;
             totalCost += baseCost + apCost;
@@ -906,7 +922,9 @@ export class MEGSItem extends Item {
             if (aps === 0) continue;
 
             const baseCost = skillBaseCosts[skillName] || 0;
-            const fc = skillFactorCosts[skillName] || 0;
+            const baseFC = skillFactorCosts[skillName] || 0;
+            // A missing Factor Cost stays 0 (no cost) rather than becoming the R# modifier
+            const fc = baseFC ? Math.min(10, Math.max(1, baseFC + this._getGadgetReliabilityModifier())) : 0;
 
             const apCost = MEGS.getAPCost(aps, fc) || 0;
             totalCost += baseCost + apCost;

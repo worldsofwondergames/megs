@@ -27,6 +27,7 @@
 - Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
 - `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
 - `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
+- Hero, villain and NPC sheets have a Role Playing Notes field below Biography on the Description tab, edited with the same rich-text editor. In edit mode the Biography and Role Playing Notes editors each start at 15em tall instead of Biography filling the whole tab. Locations, pets and vehicles have no Role Playing Notes (issue #285)
 - When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
 
 ### Test Infrastructure
@@ -40,6 +41,7 @@
 - Added unit tests for increment/decrement bounds handling
 - Added unit tests for the Bar Brawl defaults: Bar Brawl enabled, disabled and not installed, existing defaults, and a non-active GM (issue #290)
 - Added unit tests that read the shipped templates and modules and fail if English text reappears in an `aria-label`, `title`, `alt`, or `placeholder`, in a notification, or in a dialog title, and that check every `MEGS` key a template or module asks for is defined in both dictionaries (issue #279)
+- Added E2E coverage for Role Playing Notes: view and edit mode on hero, villain and NPC sheets, (None) when empty, saving through the editor, and no field on location sheets (issue #285)
 
 ## 1.1.0
 

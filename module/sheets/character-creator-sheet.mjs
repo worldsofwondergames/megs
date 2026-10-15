@@ -117,6 +117,16 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             context.enrichedBiography = '';
         }
 
+        // Issue #285: Role Playing Notes exist only on actor types with the identity template
+        context.hasRolePlayingNotes = Object.hasOwn(context.system, 'rolePlayingNotes');
+        context.enrichedRolePlayingNotes = context.system.rolePlayingNotes
+            ? await foundry.applications.ux.TextEditor.enrichHTML(context.system.rolePlayingNotes, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.actor
+            })
+            : '';
+
         return context;
     }
 

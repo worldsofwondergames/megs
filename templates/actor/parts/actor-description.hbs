@@ -101,3 +101,30 @@
         </div>
     </section>
 {{/if}}
+
+{{#if hasRolePlayingNotes}}
+    {{#if flags.megs.edit-mode}}
+        <label for='system.rolePlayingNotes' class='resource-label flexlarge align-left role-playing-notes-label' data-label='{{system.rolePlayingNotes}}'>{{localize 'MEGS.RolePlayingNotes'}}</label>
+        {{editor
+            system.rolePlayingNotes
+            target='system.rolePlayingNotes'
+            rollData=rollData
+            button=true
+            owner=owner
+            editable=editable
+        }}
+    {{else}}
+        <section class='grid-1col description-item role-playing-notes'>
+            <div class='flex-group-left'>
+                <label for='system.rolePlayingNotes' class='resource-label flexlarge align-left' data-label='{{system.rolePlayingNotes}}'>{{localize 'MEGS.RolePlayingNotes'}}</label>
+                <div class='indentLeft'>
+                    {{#if enrichedRolePlayingNotes}}
+                        {{{enrichedRolePlayingNotes}}}
+                    {{else}}
+                        ({{localize 'MEGS.None'}})
+                    {{/if}}
+                </div>
+            </div>
+        </section>
+    {{/if}}
+{{/if}}

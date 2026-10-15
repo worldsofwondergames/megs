@@ -8,6 +8,13 @@ End-to-end tests for the MEGS Foundry VTT game system using [Playwright](https:/
 - Foundry VTT running at `http://localhost:30000` with a MEGS world loaded
 - A Gamemaster user configured in the world
 
+To run while you are logged in as Gamemaster, give the tests their own GM user and set
+`E2E_USER` to its name and `E2E_OTHER_SESSIONS` to the number of other people connected:
+
+```bash
+E2E_USER=Tester E2E_OTHER_SESSIONS=1 npx playwright test --config=playwright.config.mjs
+```
+
 ## Setup
 
 ```bash

@@ -20,6 +20,8 @@
 
 ### Test Infrastructure
 
+- Added E2E coverage that ticks Linked in the character builder and checks the regular actor sheet and item sheet (issue #282)
+- `E2E_USER` and `E2E_OTHER_SESSIONS` let the E2E suite log in as its own GM user while someone else is connected as Gamemaster
 - Added E2E coverage that clicks the roll dialog's `+`/`-` buttons and drags its sliders through real pointer input; the previous specs set `.value` directly, which could not see this class of failure
 - Added unit tests for increment/decrement bounds handling
 

@@ -332,6 +332,25 @@
     font-weight: bold;
 }
 
+// The AP value is an <input> in edit mode, which does not inherit color.
+.link-mismatch input {
+    color: #d32f2f;
+}
+
+.item-aps.link-mismatch {
+    position: relative;
+}
+
+// Sits just left of the AP cell so it neither moves the AP stepper out of line
+// with the other rows nor covers its + button.
+.link-mismatch-icon {
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-right: 4px;
+    transform: translateY(-50%);
+}
+
 /*------------------------------------------------------------------------*/
 /* Character Creator - Wealth Tab
 /*------------------------------------------------------------------------*/

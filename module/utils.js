@@ -13,6 +13,26 @@ export class Utils {
     }
 
     /**
+     * A linked Power or Skill must have the same APs as its linked Attribute.
+     * @param {Item} item - Power or Skill
+     * @param {Actor} actor - Owner whose Attribute the item is linked to
+     * @returns {{link: string, attributeValue: number, aps: number}|null} The mismatch, or null when
+     *   the item is unlinked, has no Attribute to compare with, or matches it
+     * @public
+     */
+    static getLinkMismatch(item, actor) {
+        if (!Utils.isTrue(item?.system?.isLinked)) return null;
+        const link = item.system.link;
+        const attribute = actor?.system?.attributes?.[link];
+        if (!attribute) return null;
+
+        const attributeValue = attribute.value || 0;
+        const aps = item.system.aps || 0;
+        if (attributeValue === aps) return null;
+        return { link, attributeValue, aps };
+    }
+
+    /**
      *
      * @param key
      * @param targetActor

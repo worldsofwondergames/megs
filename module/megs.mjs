@@ -345,51 +345,21 @@ Handlebars.registerHelper('getPowerDisplayName', function (power) {
 });
 
 Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
-    // Check if power is linked
-    if (!power.system.isLinked || power.system.isLinked === false || power.system.isLinked === 'false') {
-        return false;
-    }
-
-    // Check if link is valid
-    const link = power.system.link;
-    if (!link || link === 'none' || link === 'special' || link === '') {
-        return false;
-    }
-
-    // Get the linked attribute value from the actor
-    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
-        return false;
-    }
-
-    const attributeValue = actor.system.attributes[link].value || 0;
-    const powerAPs = power.system.aps || 0;
-
-    // Return true if there's a mismatch
-    return attributeValue !== powerAPs;
+    return Utils.getLinkMismatch(power, actor) !== null;
 });
 
 Handlebars.registerHelper('isLinkedSkillMismatch', function (skill, actor) {
-    // Check if skill is linked
-    if (!skill.system.isLinked || skill.system.isLinked === false || skill.system.isLinked === 'false') {
-        return false;
-    }
+    return Utils.getLinkMismatch(skill, actor) !== null;
+});
 
-    // Check if link is valid
-    const link = skill.system.link;
-    if (!link || link === 'none' || link === 'special' || link === '') {
-        return false;
-    }
-
-    // Get the linked attribute value from the actor
-    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
-        return false;
-    }
-
-    const attributeValue = actor.system.attributes[link].value || 0;
-    const skillAPs = skill.system.aps || 0;
-
-    // Return true if there's a mismatch
-    return attributeValue !== skillAPs;
+Handlebars.registerHelper('linkMismatchTooltip', function (item, actor) {
+    const mismatch = Utils.getLinkMismatch(item, actor);
+    if (!mismatch) return '';
+    return game.i18n.format('MEGS.LinkMismatch', {
+        attribute: game.i18n.localize(MEGS.attributes[mismatch.link]),
+        value: mismatch.attributeValue,
+        aps: mismatch.aps,
+    });
 });
 
 Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {

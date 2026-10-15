@@ -33,7 +33,7 @@
                     {{getPowerDisplayName item}}
                 </a>
             </div>
-            <div class='item-aps'>
+            <div class='item-aps {{#if (isLinkedPowerMismatch item ../actor)}}link-mismatch{{/if}}' title='{{linkMismatchTooltip item ../actor}}'>
                 {{#if ../flags.megs.edit-mode}}
                     <div class="quantity skill-input">
                         <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
@@ -43,6 +43,7 @@
                 {{else}}
                     {{item.system.aps}}
                 {{/if}}
+                {{#if (isLinkedPowerMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
             </div>
             {{#if showHeroPointCosts}}
                 <div class='item-total-cost'>

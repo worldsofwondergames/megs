@@ -107,6 +107,7 @@
         "IsBroken": "Is Broken?",
         "IsCarried": "Is Carried?",
         "IsLinked": "Is Linked?",
+        "LinkMismatch": "Linked to {attribute} ({value}) but rated {aps} APs",
         "IsOmniGadget": "Is Omni-Gadget?",
         "IsStackable": "Is Stackable?",
         "ItalicizedAttributesText": " Italicized Attributes (An Omni-Gadget allowing Italicized Attributes must also have the ability to mimic Attributes - A and/or B).",

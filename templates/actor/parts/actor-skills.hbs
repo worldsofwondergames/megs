@@ -20,7 +20,7 @@
                     {{getSkillDisplayName item}}
                 </a>
             </div>
-            <div class='item-aps'>
+            <div class='item-aps {{#if (isLinkedSkillMismatch item ../actor)}}link-mismatch{{/if}}' title='{{linkMismatchTooltip item ../actor}}'>
                 {{#if ../flags.megs.edit-mode}}
                     {{#if item.isFromLinkedGadget}}
                         {{item.system.aps}}
@@ -34,6 +34,7 @@
                 {{else}}
                     {{item.system.aps}}
                 {{/if}}
+                {{#if (isLinkedSkillMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
             </div>
             <div class='item-controls'>
                 {{#unless item.system.aps}}

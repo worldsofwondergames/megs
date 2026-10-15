@@ -623,3 +623,10 @@ details[open] summary.item-summary {
     cursor: pointer;
     white-space: pre-line;
 }
+
+// Issue #210: marks an Attribute an equipped gadget replaces for rolls
+.attribute .attribute-override-icon {
+    margin-left: 4px;
+    color: $c-mediumblue;
+    cursor: help;
+}

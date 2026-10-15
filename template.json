@@ -389,6 +389,7 @@
             "reliability": 0,
             "isBroken": false,
             "isCarried": true,
+            "isEquipped": false,
             "canBeTakenAway": true,
             "hasHardenedDefenses": false,
             "creationBudget": {

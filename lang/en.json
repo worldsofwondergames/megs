@@ -57,6 +57,7 @@
         "Advantages": "Advantages",
         "AlterEgo": "Alter Ego",
         "AlwaysSubstitute": "Always Substitute (Italicized)",
+        "AttributeOverride": "{gadget} replaces this with {value} for rolls",
         "Ammo": "Ammo",
         "APs": "APs",
         "Attributes": "Attributes",
@@ -118,6 +119,7 @@
         "InitiativeBonus": "Initiative Bonus",
         "IsBroken": "Is Broken?",
         "IsCarried": "Is Carried?",
+        "IsEquipped": "Is Equipped?",
         "IsLinked": "Is Linked?",
         "Abbr": {
             "AV": "AV",

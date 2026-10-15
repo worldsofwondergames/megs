@@ -133,6 +133,23 @@
             </div>
 
             <div class="gadget-property flex-group-center">
+                <label for="system.isEquipped"
+                    class="resource-label flexlarge align-left"
+                    data-label="{{localize 'MEGS.IsEquipped'}}">{{localize 'MEGS.IsEquipped'}}</label>
+                <div>
+                    {{#if flags.megs.edit-mode}}
+                        <select class="resource-select"
+                            name="system.isEquipped"
+                            data-type="String">
+                            {{selectOptions system.yesNoOptions selected=system.isEquipped localize=true}}
+                        </select>
+                    {{else}}
+                        {{trueFalseToYesNo system.isEquipped}}
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="gadget-property flex-group-center">
                 <label for="system.canBeTakenAway"
                     class="resource-label flexlarge align-left"
                     data-label="{{localize 'MEGS.CanBeTakenAway'}}">{{localize 'MEGS.CanBeTakenAway'}}</label>

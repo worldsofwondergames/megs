@@ -3,6 +3,8 @@ import {
     prefixName,
     createHeroActor,
     addPowerToActor,
+    addSkillToActor,
+    addGadgetToActor,
     deleteActor,
     openActorSheet,
     closeAllWindows,
@@ -73,4 +75,50 @@ test.describe('Die icon shape (#283)', () => {
             if (actorId) await deleteActor(page, actorId);
         }
     });
+
+    /** Every icon image in the tab's control columns, with its rendered size. */
+    async function controlIcons(page, tab) {
+        const rows = page.locator(`.sheet.actor .tab.${tab} .item-row .item-controls`);
+        await expect(rows.first()).toBeVisible();
+        return rows.evaluateAll(columns => columns.flatMap(column => [...column.querySelectorAll('img.svg-icon')]
+            .map((img) => {
+                const r = img.getBoundingClientRect();
+                return { src: img.getAttribute('src').split('/').pop(), width: r.width, height: r.height };
+            })));
+    }
+
+    for (const editMode of [false, true]) {
+        test(`control icons keep their 20px size (edit mode ${editMode})`, async ({ page }) => {
+            let actorId;
+            try {
+                actorId = await createHeroActor(page, prefixName('DieWidth'));
+                await addPowerToActor(page, actorId, {
+                    name: 'Flight', aps: 6, baseCost: 10, factorCost: 1, link: 'dex', type: 'auto',
+                });
+                await addPowerToActor(page, actorId, {
+                    name: 'Energy Blast', aps: 8, baseCost: 15, factorCost: 3, link: 'str', type: 'dice',
+                });
+                await addSkillToActor(page, actorId, { name: 'Acrobatics', aps: 5, factorCost: 6, link: 'dex' });
+                await addGadgetToActor(page, actorId, { name: 'Blaster', av: 5, ev: 5 });
+                await page.evaluate(async ({ id, editMode }) => {
+                    await game.actors.get(id).setFlag('megs', 'edit-mode', editMode);
+                }, { id: actorId, editMode });
+
+                await openActorSheet(page, actorId, 'powers');
+                const icons = [...await controlIcons(page, 'powers')];
+                for (const tab of ['skills', 'gadgets']) {
+                    await page.click(`.sheet.actor .tabs .item[data-tab="${tab}"]`);
+                    icons.push(...await controlIcons(page, tab));
+                }
+
+                expect(icons.filter(i => i.src.startsWith('d10blue')).length).toBeGreaterThanOrEqual(3);
+                for (const icon of icons) {
+                    expect(icon).toEqual({ src: icon.src, width: 20, height: 20 });
+                }
+            } finally {
+                await closeAllWindows(page);
+                if (actorId) await deleteActor(page, actorId);
+            }
+        });
+    }
 });

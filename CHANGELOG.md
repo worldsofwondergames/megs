@@ -9,6 +9,7 @@
     - The number beside each Hero Point slider never moved off 0, even though the hero points were being applied to the roll
     - The initiative dialog's Hero Point slider readout was dead for the same reason
 - Increment/decrement buttons now respect the field's own minimum and maximum instead of stepping past them
+- A gadget's cost now includes the bonuses and limitations on its powers and the untrained subskills on its skills, so a Power Restriction on a gadget power lowers the character's Hero Point total. The gadget cost and the gadget point budget now share one Factor Cost calculation (issue #287)
 
 ### Enhancements
 

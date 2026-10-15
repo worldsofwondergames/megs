@@ -33,9 +33,7 @@ Do I ever! MEGS for Foundry is currently sitting at **version 1.1.1**.
 
 Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues).
 
-**YouTube demo videos** are planned by the beginning of February 2026 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
-
-Then... **version 1.2.0**, by December 1, 2026. Incorporating any feedback I've gotten and:
+Next up is **version 1.2.0**, by December 1, 2026. Incorporating any feedback I've gotten and:
 
 - A tutorial "solitaire" adventure.
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)

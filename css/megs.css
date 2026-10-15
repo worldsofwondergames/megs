@@ -1362,6 +1362,9 @@ details summary.no-arrow {
   color: #d32f2f;
   font-weight: bold;
 }
+.megs .link-mismatch input {
+  color: #d32f2f;
+}
 .megs .wealth-summary {
   margin-bottom: 10px;
 }

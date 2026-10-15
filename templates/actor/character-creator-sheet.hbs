@@ -206,7 +206,7 @@
                         <div class='item-factor-cost factor-cost-calculated' title='{{getFactorCostTooltip item ../items}}'>
                             {{getEffectiveFactorCost item ../items}}
                         </div>
-                        <div class='item-aps {{#if (isLinkedPowerMismatch item ../actor)}}link-mismatch{{/if}}'>
+                        <div class='item-aps {{#if (isLinkedPowerMismatch item ../actor)}}link-mismatch{{/if}}' title='{{linkMismatchTooltip item ../actor}}'>
                             <div class="quantity skill-input">
                                 <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
                                 <input id="power-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />
@@ -285,7 +285,7 @@
                         <div class='item-factor-cost factor-cost-calculated' title='{{getSkillFactorCostTooltip item ../items}}'>
                             {{getSkillEffectiveFactorCost item ../items}}
                         </div>
-                        <div class='item-aps {{#if (isLinkedSkillMismatch item ../actor)}}link-mismatch{{/if}}'>
+                        <div class='item-aps {{#if (isLinkedSkillMismatch item ../actor)}}link-mismatch{{/if}}' title='{{linkMismatchTooltip item ../actor}}'>
                             <div class="quantity skill-input">
                                 <button class="ap-minus" aria-label="Decrease" data-item-id="{{item._id}}">&minus;</button>
                                 <input id="skill-aps-{{item._id}}" name="system.aps" type="number" class="input-box" value="{{item.system.aps}}" min="0" data-dtype="Number" readonly />

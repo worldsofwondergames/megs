@@ -116,6 +116,7 @@
         "IsBroken": "Está quebrado?",
         "IsCarried": "Está sendo tranportado?",
         "IsLinked": "Está vinculado?",
+        "LinkMismatch": "Vinculado a {attribute} ({value}), mas com {aps} Pontos de Atributo",
         "IsOmniGadget": "Está Omni-Equipamento?",
         "IsStackable": "É Empilhável?",
         "ItalicizedAttributesText": "Atributos em Itálico (Um Omni-Gadget que permite Atributos em Itálico também deve ter a capacidade de imitar Atributos - A e/ou B).",

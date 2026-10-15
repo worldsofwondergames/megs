@@ -4,6 +4,7 @@
         "templates": {
             "identity": {
                 "biography": "",
+                "rolePlayingNotes": "",
                 "wealth": 0,
                 "wealthYear": 1990,
                 "wealthAdjustForInflation": false,

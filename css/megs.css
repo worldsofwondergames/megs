@@ -255,7 +255,8 @@
   color: #1f5079;
   padding: 10px 5px 0 5px;
 }
-.megs div.biography label.biography-label {
+.megs div.biography label.biography-label,
+.megs div.biography label.role-playing-notes-label {
   font-size: 22px;
 }
 .megs div.biography div.editor {
@@ -541,6 +542,12 @@ details summary.no-arrow {
 .megs .sheet-body .tab,
 .megs .sheet-body .tab .editor {
   height: 100%;
+}
+.megs .sheet-body .tab.biography .editor {
+  height: auto;
+}
+.megs .sheet-body .tab.biography .editor .editor-content {
+  min-height: 15em;
 }
 .megs .tox .tox-editor-container {
   background: #fff;

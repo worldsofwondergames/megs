@@ -153,26 +153,7 @@ export class MEGSActorSheet extends ActorSheet {
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
         context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
 
-        // Enrich biography text for proper display of links and other enriched content
-        if (context.system.biography) {
-            context.enrichedBiography = await foundry.applications.ux.TextEditor.enrichHTML(context.system.biography, {
-                async: true,
-                secrets: this.document.isOwner,
-                relativeTo: this.actor
-            });
-        } else {
-            context.enrichedBiography = '';
-        }
-
-        // Issue #285: Role Playing Notes exist only on actor types with the identity template
-        context.hasRolePlayingNotes = Object.hasOwn(context.system, 'rolePlayingNotes');
-        context.enrichedRolePlayingNotes = context.system.rolePlayingNotes
-            ? await foundry.applications.ux.TextEditor.enrichHTML(context.system.rolePlayingNotes, {
-                async: true,
-                secrets: this.document.isOwner,
-                relativeTo: this.actor
-            })
-            : '';
+        await this._prepareDescriptionText(context);
 
         return context;
     }
@@ -567,6 +548,25 @@ export class MEGSActorSheet extends ActorSheet {
         i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
         i.rollable = i.rollOptions.length > 0;
         i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
+    }
+
+    /**
+     * Enrich the Description tab's rich-text fields (Biography and, issue #285, Role Playing Notes)
+     * so links and other enriched content display in view mode.
+     * @param {object} context - The sheet render context
+     */
+    async _prepareDescriptionText(context) {
+        const enrich = (html) => html
+            ? foundry.applications.ux.TextEditor.enrichHTML(html, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.actor
+            })
+            : '';
+        context.enrichedBiography = await enrich(context.system.biography);
+        // Role Playing Notes exist only on actor types with the identity template
+        context.hasRolePlayingNotes = Object.hasOwn(context.system, 'rolePlayingNotes');
+        context.enrichedRolePlayingNotes = await enrich(context.system.rolePlayingNotes);
     }
 
     /** @override */

@@ -106,26 +106,7 @@ export class MEGSCharacterBuilderSheet extends MEGSActorSheet {
             }
         }
 
-        // Enrich biography text for proper display of links and other enriched content
-        if (context.system.biography) {
-            context.enrichedBiography = await foundry.applications.ux.TextEditor.enrichHTML(context.system.biography, {
-                async: true,
-                secrets: this.document.isOwner,
-                relativeTo: this.actor
-            });
-        } else {
-            context.enrichedBiography = '';
-        }
-
-        // Issue #285: Role Playing Notes exist only on actor types with the identity template
-        context.hasRolePlayingNotes = Object.hasOwn(context.system, 'rolePlayingNotes');
-        context.enrichedRolePlayingNotes = context.system.rolePlayingNotes
-            ? await foundry.applications.ux.TextEditor.enrichHTML(context.system.rolePlayingNotes, {
-                async: true,
-                secrets: this.document.isOwner,
-                relativeTo: this.actor
-            })
-            : '';
+        await this._prepareDescriptionText(context);
 
         return context;
     }

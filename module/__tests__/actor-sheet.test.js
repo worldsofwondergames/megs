@@ -326,3 +326,52 @@ describe('_findStackableMatch', () => {
         expect(sheet._findStackableMatch(dropped, '', null)).toBeUndefined();
     });
 });
+
+describe('_prepareDescriptionText (issue #285)', () => {
+    let enrichHTML;
+    beforeEach(() => {
+        enrichHTML = jest.fn(async (html) => `enriched:${html}`);
+        foundry.applications.ux = { TextEditor: { enrichHTML } };
+    });
+    afterEach(() => {
+        delete foundry.applications.ux;
+    });
+
+    const makeSheet = () => {
+        const sheet = new MEGSActorSheet({ isOwner: true, _stats: { compendiumSource: false }, setFlag: () => {} });
+        sheet.document = mockDocument({ isOwner: true });
+        return sheet;
+    };
+
+    test('enriches Biography and Role Playing Notes with the actor as context', async () => {
+        const sheet = makeSheet();
+        const context = { system: { biography: '<p>Bio</p>', rolePlayingNotes: '<p>Notes</p>' } };
+        await sheet._prepareDescriptionText(context);
+
+        expect(context.enrichedBiography).toBe('enriched:<p>Bio</p>');
+        expect(context.enrichedRolePlayingNotes).toBe('enriched:<p>Notes</p>');
+        expect(context.hasRolePlayingNotes).toBe(true);
+        expect(enrichHTML).toHaveBeenCalledWith('<p>Notes</p>', expect.objectContaining({ secrets: true, relativeTo: sheet.actor }));
+    });
+
+    test('empty fields stay empty and are not enriched', async () => {
+        const sheet = makeSheet();
+        const context = { system: { biography: '', rolePlayingNotes: '' } };
+        await sheet._prepareDescriptionText(context);
+
+        expect(context.enrichedBiography).toBe('');
+        expect(context.enrichedRolePlayingNotes).toBe('');
+        expect(context.hasRolePlayingNotes).toBe(true);
+        expect(enrichHTML).not.toHaveBeenCalled();
+    });
+
+    test('an actor type without the field has no Role Playing Notes', async () => {
+        const sheet = makeSheet();
+        const context = { system: { biography: '<p>Bio</p>' } };
+        await sheet._prepareDescriptionText(context);
+
+        expect(context.hasRolePlayingNotes).toBe(false);
+        expect(context.enrichedRolePlayingNotes).toBe('');
+        expect(context.enrichedBiography).toBe('enriched:<p>Bio</p>');
+    });
+});

@@ -37,7 +37,7 @@ MEGS for Foundry includes five compendium packs that auto-load with every new wo
 - **Bonuses** (4 items) - Power bonuses and positive modifiers
 - **Limitations** (10 items) - Power limitations and negative modifiers
 
-These packs provide a starting library of game items extracted from DC Heroes 3rd Edition content. Descriptions are intentionally omitted to keep the system lightweight - refer to your MEGS rulebook for full details on each item.
+These packs provide a starting library of game items. Descriptions are intentionally omitted to keep the system lightweight and IP-free - refer to your rulebook for full details on each item.
 
 To use compendium items:
 1. Open the Compendium sidebar (book icon)
@@ -54,11 +54,9 @@ Do I ever! MEGS for Foundry is currently sitting at **version 1.1.1**.
 
 Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Aworldsofwondergames%2F4).
 
-**YouTube demo videos** are planned by the beginning of February 2026 to demonstrate how to use the system for those unfamiliar with Foundry VTT and/or MEGS.
+Next up is **version 1.2.0**, by December 1, 2026. Incorporating any feedback I've gotten and:
 
-Then... **version 1.1.0**, by August 1, 2026. Incorporating any feedback I've gotten and:
-
-- Integration with third-party modules like Dice So Nice (buggy right now) and Token Action HUD.
+- A tutorial "solitaire" adventure.
 - Probably a look-and-feel overhaul since the current UI is pretty generic (I'm a programmer, not a designer)
 
 And then after the rush, I rest for a very, very long time.

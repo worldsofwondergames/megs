@@ -1,6 +1,6 @@
 # MEGS System
 
-![Foundry v13](https://img.shields.io/badge/foundry-v13-green)
+![Foundry v14](https://img.shields.io/badge/foundry-v14-green)
 
 ![Mutiversal Exponential Gaming System](https://github.com/worldsofwondergames/megs/blob/main/assets/images/megs-logo-multiversal.jpg?raw=true)
 
@@ -16,8 +16,6 @@ This is a fan-created implementation of the Mayfair Exponential Gaming System, w
 
 The current version (1.1.1) of MEGS for Foundry has basic character sheets, some die rolling, outcome resolution, and a generic skill tree. It allows you to create heroes, villains, NPCs, powers, gadgets, character traits, power modifications, etc. It's very much a skeleton for running games featuring any superheroes (or villains; I don't discriminate) you want using MEGS at a level similar to DC Heroes 3rd Edition or Blood of Heroes - if you enter your own Powers, Advantages, Drawbacks, Bonuses, Limitations, etc.
 
-It's also a work in progress. I basically tackled it on a whim to teach myself to code the Foundry framework. I will try very hard to make any changes backward compatible so that you can use any characters or items you create after later versions, but... not promising anything until we get to version 1.0.0.
-
 ### Are there any changes to this ruleset unique to MEGS for Foundry?
 
 There are a few because of technical and/or design constraints of the platform:
@@ -25,26 +23,7 @@ There are a few because of technical and/or design constraints of the platform:
 - Advantages and Drawbacks are grouped as "Traits" for ease of reference.
 - Bonuses and Limitations are grouped as "Modifiers" for ease of reference.
 - Certain Powers from other products (ex: Mystic Link from DCH3E) will need to be modeled as Advantages rather than Powers because the current model doesn't allow piggybacking Powers on top of each other.
-- Vehicles should be created as both Items and Actors. For now, Locations are Actors. More on this as we approach 1.0.
-
-### What's included in MEGS for Foundry?
-
-MEGS for Foundry includes five compendium packs that auto-load with every new world:
-
-- **Powers** (168 items) - Standard MEGS powers with base costs and factor costs
-- **Advantages** (34 items) - Character advantages and perks
-- **Drawbacks** (38 items) - Character drawbacks and complications
-- **Bonuses** (4 items) - Power bonuses and positive modifiers
-- **Limitations** (10 items) - Power limitations and negative modifiers
-
-These packs provide a starting library of game items. Descriptions are intentionally omitted to keep the system lightweight and IP-free - refer to your rulebook for full details on each item.
-
-To use compendium items:
-1. Open the Compendium sidebar (book icon)
-2. Expand "MEGS Item Repository"
-3. Open the desired compendium pack (Powers, Advantages, etc.)
-4. Drag items to character sheets
-5. Customize as needed for your character
+- Vehicles should be created as both Items and Actors. For now, Locations are Actors.
 
 ### Do you have future plans?
 
@@ -52,7 +31,7 @@ Do I ever! MEGS for Foundry is currently sitting at **version 1.1.1**.
 
 (Note that everything below is subject to change.)
 
-Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues?q=is%3Aopen%20is%3Aissue%20project%3Aworldsofwondergames%2F4).
+Issues are tracked [here](https://github.com/worldsofwondergames/megs/issues).
 
 Next up is **version 1.2.0**, by December 1, 2026. Incorporating any feedback I've gotten and:
 

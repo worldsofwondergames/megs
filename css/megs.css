@@ -311,6 +311,7 @@ body.game .app h4.window-title {
 .svg-icon {
   height: 20px;
   width: 20px;
+  max-width: none;
   border: none;
 }
 

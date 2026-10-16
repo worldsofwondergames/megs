@@ -77,11 +77,25 @@ test('_calculateInitiativeBonus returns correct value', () => {
     };
     actor.items = [
         { name: 'Superspeed', system: { aps: 5 } },
-        { name: 'Martial Artist', system: { aps: 0 } },
+        { name: 'Martial Artist', system: { aps: 3 } },
         { name: 'Lightning Reflexes', system: { aps: 0 } },
     ];
     // Should be 2+3+4+5+2+2 = 18
     expect(actor._calculateInitiativeBonus()).toBe(18);
+});
+
+test('_calculateInitiativeBonus gives no Martial Artist bonus at 0 APs (issue #307)', () => {
+    const actor = new MEGSActor();
+    actor.system = {
+        attributes: {
+            dex: { value: 5 },
+            int: { value: 3 },
+            infl: { value: 2 },
+        },
+    };
+    // Every new actor has every skill at 0 APs
+    actor.items = [{ name: 'Martial Artist', system: { aps: 0 } }];
+    expect(actor._calculateInitiativeBonus()).toBe(10);
 });
 
 describe('Character Budget Calculations', () => {

@@ -419,9 +419,9 @@ export class MEGSActor extends Actor {
 
         // calculate initiativeBonus
         let initiativeBonus =
-            this.system.attributes.dex.value +
-            this.system.attributes.int.value +
-            this.system.attributes.infl.value;
+            Utils.getAttributeValue(this, 'dex') +
+            Utils.getAttributeValue(this, 'int') +
+            Utils.getAttributeValue(this, 'infl');
 
         // Superspeed adds APs of their power
         if (this._hasAbility(this.items, MEGS.powers.SUPERSPEED)) {

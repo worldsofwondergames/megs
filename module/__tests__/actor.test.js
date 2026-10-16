@@ -368,3 +368,33 @@ describe('Equipped gadget Attributes replace the character\'s for rolls (issue #
         expect(Utils.getResistanceValue('int', actor)).toBe(10);
     });
 });
+
+describe('Initiative uses equipped gadgets\' italicized Attributes (issue #306)', () => {
+    // The default test actor has DEX 9, INT 12 and INFL 10
+    const prepare = (isEquipped) => {
+        const actor = new MEGSActor();
+        actor.items = [{
+            name: 'Battlesuit',
+            type: MEGS.itemTypes.gadget,
+            system: {
+                isEquipped,
+                attributes: {
+                    dex: { value: 11, alwaysSubstitute: true },
+                    infl: { value: 14, alwaysSubstitute: true },
+                },
+            },
+        }];
+        actor._prepareEffectiveAttributes();
+        return actor;
+    };
+
+    test('an equipped gadget raises the Initiative Bonus', () => {
+        // 11 + 12 + 14
+        expect(prepare(true)._calculateInitiativeBonus()).toBe(37);
+    });
+
+    test('an unequipped gadget leaves the Initiative Bonus alone', () => {
+        // 9 + 12 + 10
+        expect(prepare(false)._calculateInitiativeBonus()).toBe(31);
+    });
+});

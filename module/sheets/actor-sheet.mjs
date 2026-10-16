@@ -314,12 +314,19 @@ export class MEGSActorSheet extends ActorSheet {
     _calculateInitiativeBonusWithText(context) {
         const parts = [];
 
-        // Base attributes
-        const dex = context.document.system.attributes.dex.value;
-        const int = context.document.system.attributes.int.value;
-        const infl = context.document.system.attributes.infl.value;
-        parts.push(`DEX ${dex} + INT ${int} + INFL ${infl}`);
-        let initiativeBonus = dex + int + infl;
+        // Base attributes, using an equipped gadget's italicized value where it is higher
+        const actor = context.document;
+        const overrides = actor.system.attributeOverrides ?? {};
+        const describe = (key) => {
+            const value = Utils.getAttributeValue(actor, key);
+            const gadget = overrides[key]?.gadget;
+            return gadget ? `${key.toUpperCase()} ${value} (${gadget})` : `${key.toUpperCase()} ${value}`;
+        };
+        parts.push(['dex', 'int', 'infl'].map(describe).join(' + '));
+        let initiativeBonus =
+            Utils.getAttributeValue(actor, 'dex') +
+            Utils.getAttributeValue(actor, 'int') +
+            Utils.getAttributeValue(actor, 'infl');
 
         // Superspeed adds APs of their power
         if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {

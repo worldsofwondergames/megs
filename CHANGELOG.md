@@ -10,6 +10,7 @@
 - Hero, villain and NPC sheets have a Role Playing Notes field below Biography on the Description tab, edited with the same rich-text editor. In edit mode the Biography and Role Playing Notes editors each start at 15em tall instead of Biography filling the whole tab. Locations, pets and vehicles have no Role Playing Notes (issue #285)
 - When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
 - An equipped gadget's italicized Attributes now replace the character's own for rolls when they are higher, as the rules allow for italicized gadget Attributes. Gadgets have a new Is Equipped? setting, off by default, so existing gadgets change nothing until equipped. Attribute rolls, OV/RV lookups, power AV/EV/OV/RV sources and unskilled skills use the replaced values. The actor sheet still shows the character's own Attribute, with an info icon naming the gadget and its value. Current BODY, MIND and SPIRIT keep the character's own maximums (issue #210)
+- The Initiative Bonus on the sheet and in combat now uses an equipped gadget's italicized DEX, INT and INFL when they are higher, and the sheet's Initiative tooltip names the gadget (issue #306)
 
 ### Bug Fixes
 
@@ -23,6 +24,7 @@
 - A linked Power or Skill whose APs differ from its linked Attribute now shows a red AP value, a warning icon, and a tooltip such as "Linked to Dexterity (7) but rated 6 APs" on the Character Builder and the regular actor sheet. The Character Builder flagged the mismatch before, but the AP input kept its own color, so the warning was invisible (issue #286)
 - The blue die on rollable powers, skills and gadgets now uses `d10blue.svg`, the same drawing as the gray die on auto powers, instead of a PNG that filled its whole box and looked stretched next to it. Icons in a crowded row of item controls, such as the Powers tab's die, edit and delete links, no longer shrink below their 20px width (issue #283)
 - A gadget's Reliability Number now changes the Factor Cost of its powers and skills, as the rules require for every Ability on the gadget. Before, only its attributes, AV, EV and Range were adjusted, so a gadget made only of powers cost the same at every R#. An R# 0 gadget's powers now cost more and an R# 7 or higher gadget's powers cost less (issue #294)
+- The combat tracker no longer adds the Martial Artist +2 to every character's Initiative. Every actor has the skill at 0 APs, so the bonus now requires APs above 0, as the actor sheet already did (issue #307)
 
 ### Localization
 
@@ -46,6 +48,8 @@
 - Added unit tests for the Reliability Number on gadget powers and skills, including the Factor Cost limits of 1 and 10 and unowned gadgets, and E2E coverage that changes a gadget's R# and checks the gadget and character costs (issue #294)
 - Added E2E coverage for Role Playing Notes: view and edit mode on hero, villain and NPC sheets, (None) when empty, saving through the editor, and no field on location sheets (issue #285)
 - Added unit tests for equipped gadget Attributes (equipped and not, higher and lower, italicized and not, several gadgets, the item sheet's string value) and the roll helpers that read them, and E2E coverage for the Equipped select, the attribute icon and an attribute roll's starting values (issue #210)
+- Added unit tests for the Initiative Bonus and its tooltip with an equipped and an unequipped gadget, and an E2E test that checks the sheet and the combat value before and after equipping (issue #306)
+- Added a unit test that a 0-AP Martial Artist gives no Initiative bonus, and changed the existing Initiative unit test to give Martial Artist APs (issue #307)
 
 ## 1.1.0 (August 28, 2026)
 

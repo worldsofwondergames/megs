@@ -419,9 +419,9 @@ export class MEGSActor extends Actor {
 
         // calculate initiativeBonus
         let initiativeBonus =
-            this.system.attributes.dex.value +
-            this.system.attributes.int.value +
-            this.system.attributes.infl.value;
+            Utils.getAttributeValue(this, 'dex') +
+            Utils.getAttributeValue(this, 'int') +
+            Utils.getAttributeValue(this, 'infl');
 
         // Superspeed adds APs of their power
         if (this._hasAbility(this.items, MEGS.powers.SUPERSPEED)) {
@@ -429,8 +429,8 @@ export class MEGSActor extends Actor {
             initiativeBonus = initiativeBonus + aps;
         }
 
-        // Martial artist gives a +2
-        if (this._hasAbility(this.items, MEGS.skills.MARTIAL_ARTIST)) {
+        // Martial artist gives a +2, but only when the skill has APs (every actor has it at 0)
+        if (this._getAbilityAPs(this.items, MEGS.skills.MARTIAL_ARTIST) > 0) {
             initiativeBonus = initiativeBonus + 2;
         }
 

@@ -14,13 +14,13 @@ import { waitForRollDialog, getRollDialogValues, closeRollDialog } from '../fixt
  * Issue #210: an equipped gadget's italicized Attribute replaces the character's own
  * for rolls when it is higher. The hero from createHeroActor has DEX 5, STR 4, BODY 4.
  */
-test.describe('Equipped gadget Attributes (#210)', () => {
-    async function setEquipped(page, actorId, gadgetId, value) {
-        await page.evaluate(async ({ actorId, gadgetId, value }) => {
-            await game.actors.get(actorId).items.get(gadgetId).update({ 'system.isEquipped': value });
-        }, { actorId, gadgetId, value });
-    }
+async function setEquipped(page, actorId, gadgetId, value) {
+    await page.evaluate(async ({ actorId, gadgetId, value }) => {
+        await game.actors.get(actorId).items.get(gadgetId).update({ 'system.isEquipped': value });
+    }, { actorId, gadgetId, value });
+}
 
+test.describe('Equipped gadget Attributes (#210)', () => {
     /** The info icon on an Attribute of the open actor sheet, or null. */
     async function readOverrideIcon(page, key) {
         return page.evaluate((key) => {
@@ -118,6 +118,49 @@ test.describe('Equipped gadget Attributes (#210)', () => {
 
             await setEquipped(page, actorId, gadgetId, true);
             expect(await rollDex()).toEqual({ actionValue: 8, effectValue: 9 });
+        } finally {
+            await closeAllWindows(page);
+            if (actorId) await deleteActor(page, actorId);
+        }
+    });
+});
+
+/**
+ * Issue #306: Initiative (DEX + INT + INFL) uses an equipped gadget's italicized
+ * Attributes. The hero from createHeroActor has DEX 5, INT 3, INFL 2.
+ */
+test.describe('Initiative with an equipped gadget (#306)', () => {
+    /** The Initiative Bonus and its tooltip on the open actor sheet, plus the value combat uses. */
+    async function readInitiative(page, actorId) {
+        return page.evaluate((id) => {
+            const el = document.querySelector('.sheet.actor .initiative .tooltip');
+            return {
+                shown: el ? el.childNodes[0].textContent.trim() : null,
+                tooltip: el?.querySelector('.tooltiptext')?.textContent.trim() ?? null,
+                combat: game.actors.get(id)._calculateInitiativeBonus(),
+            };
+        }, actorId);
+    }
+
+    test('equipping a gadget with italicized DEX raises the Initiative Bonus on the sheet and in combat', async ({ page }) => {
+        let actorId;
+        try {
+            actorId = await createHeroActor(page, prefixName('Override_Initiative'));
+            const gadgetId = await addGadgetToActor(page, actorId, {
+                name: 'Battlesuit', reliability: 3, attrs: { dex: 8, dexItalic: true },
+            });
+
+            await openActorSheet(page, actorId, 'abilities');
+            expect(await readInitiative(page, actorId)).toEqual({
+                shown: '10', tooltip: 'DEX 5 + INT 3 + INFL 2', combat: 10,
+            });
+            await closeAllWindows(page);
+
+            await setEquipped(page, actorId, gadgetId, true);
+            await openActorSheet(page, actorId, 'abilities');
+            expect(await readInitiative(page, actorId)).toEqual({
+                shown: '13', tooltip: 'DEX 8 (Battlesuit) + INT 3 + INFL 2', combat: 13,
+            });
         } finally {
             await closeAllWindows(page);
             if (actorId) await deleteActor(page, actorId);

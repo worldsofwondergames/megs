@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.1.1
+## 1.1.1 (October 18, 2026)
 
 ### Enhancements
 

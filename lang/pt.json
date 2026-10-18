@@ -267,7 +267,18 @@
         "New": "Novo {type}",
         "ActiveEffect": "Efeito Ativo",
         "Trait": "Traço",
-        "Power": "Poder"
+        "Power": "Poder",
+        "Welcome": {
+            "Speaker": "MEGS para Foundry VTT",
+            "LogoAlt": "Logotipo do Multiversal Exponential Gaming System",
+            "Intro": "Bem-vindo ao Multiversal Exponential Gaming System para Foundry VTT!",
+            "IssuesHeading": "Relatar Problemas",
+            "IssuesText": "Se encontrar um bug ou quiser um novo recurso, abra uma issue no GitHub.",
+            "IssuesButton": "Rastreador de Issues",
+            "SupportHeading": "Apoie o MEGS",
+            "SupportText": "Você pode apoiar o desenvolvimento deste sistema no Ko-fi.",
+            "SupportButton": "Ko-fi"
+        }
     },
 
     "TYPES": {

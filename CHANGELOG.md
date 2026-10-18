@@ -11,6 +11,7 @@
 - When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
 - An equipped gadget's italicized Attributes now replace the character's own for rolls when they are higher, as the rules allow for italicized gadget Attributes. Gadgets have a new Is Equipped? setting, off by default, so existing gadgets change nothing until equipped. Attribute rolls, OV/RV lookups, power AV/EV/OV/RV sources and unskilled skills use the replaced values. The actor sheet still shows the character's own Attribute, with an info icon naming the gadget and its value. Current BODY, MIND and SPIRIT keep the character's own maximums (issue #210)
 - The Initiative Bonus on the sheet and in combat now uses an equipped gadget's italicized DEX, INT and INFL when they are higher, and the sheet's Initiative tooltip names the gadget (issue #306)
+- The first time a user opens a MEGS world, the system whispers them a welcome chat card with buttons for the GitHub issue tracker and the Ko-fi page. The card has no sender, recipient, time or delete icon in its header; it can still be deleted from its right-click menu. A user flag records that the card was posted, so each user sees it once (issue #309)
 
 ### Bug Fixes
 
@@ -33,6 +34,7 @@
 - Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
 - Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
 - Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
+- The welcome chat card text is in `lang/en.json` and `lang/pt.json` (issue #309)
 
 ### Test Infrastructure
 
@@ -50,6 +52,7 @@
 - Added unit tests for equipped gadget Attributes (equipped and not, higher and lower, italicized and not, several gadgets, the item sheet's string value) and the roll helpers that read them, and E2E coverage for the Equipped select, the attribute icon and an attribute roll's starting values (issue #210)
 - Added unit tests for the Initiative Bonus and its tooltip with an equipped and an unequipped gadget, and an E2E test that checks the sheet and the combat value before and after equipping (issue #306)
 - Added a unit test that a 0-AP Martial Artist gives no Initiative bonus, and changed the existing Initiative unit test to give Martial Artist APs (issue #307)
+- Added unit tests that check a user without the flag gets the welcome chat card and the flag, a user with it gets nothing, a failed post leaves the flag unset, and each button links to its URL. Added an E2E test that clears the flag, reloads the world, checks the rendered card, its links, its hidden header and that its buttons have no underline, and reloads again to confirm no second card (issue #309)
 
 ## 1.1.0 (August 28, 2026)
 

@@ -10,6 +10,7 @@ import { MEGSGadgetBuilderSheet } from './sheets/gadget-builder-sheet.mjs';
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { MEGS } from './helpers/config.mjs';
 import { applyBarBrawlDefaults } from './helpers/barbrawl-defaults.mjs';
+import { showWelcomeMessage } from './helpers/welcome-message.mjs';
 
 import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
@@ -1357,6 +1358,9 @@ Hooks.once('ready', async function () {
 
     // Issue #290: give Bar Brawl MEGS bars when it is enabled and has no defaults yet
     await applyBarBrawlDefaults(game);
+
+    // Issue #309: whisper each user the issue tracker and Ko-fi links once
+    await showWelcomeMessage(game, { renderTemplate: foundry.applications.handlebars.renderTemplate, ChatMessage });
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {

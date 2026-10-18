@@ -193,3 +193,52 @@ li.chat-message {
         }
     }
 }
+
+/* Welcome card (issue #309) */
+.megs-welcome-message {
+    color: $c-darkblue;
+
+    .megs-welcome-logo {
+        border: 0;
+        display: block;
+        margin: 0 auto 6px;
+        max-width: 100%;
+    }
+
+    .megs-welcome-section {
+        border-top: 1px solid $c-darkblue;
+        margin-top: 6px;
+        padding-top: 4px;
+
+        h3 {
+            font-size: 1.1em;
+            margin: 0 0 2px;
+            padding-bottom: 0;
+        }
+
+        p {
+            margin: 0 0 4px;
+        }
+    }
+
+    .megs-welcome-button {
+        background-color: $c-darkblue;
+        border-radius: 3px;
+        color: $c-white;
+        display: block;
+        padding: 4px;
+        text-align: center;
+        text-decoration: none;
+
+        &:hover {
+            background-color: $c-red;
+            text-decoration: none;
+            text-shadow: none;
+        }
+    }
+}
+
+// The welcome card needs no sender, recipient, timestamp or delete icon.
+li.chat-message:has(.megs-welcome-message) .message-header {
+    display: none;
+}

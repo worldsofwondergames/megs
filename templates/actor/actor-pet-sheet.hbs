@@ -1,0 +1,56 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    {{> "systems/megs/templates/actor/parts/actor-header.hbs"}}
+
+    {{!-- Sheet Tab Navigation: pets have no gadgets or description --}}
+    <nav class='sheet-tabs tabs' data-group='primary'>
+        <a class='item' data-tab='abilities'>{{localize 'MEGS.Abilities'}}</a>
+        <a class='item' data-tab='powers'>{{localize 'MEGS.Powers'}}</a>
+        <a class='item' data-tab='skills'>{{localize 'MEGS.Skills'}}</a>
+        <a class='item' data-tab='traits'>{{localize 'MEGS.Traits'}}</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Abilities Tab --}}
+        <div class="tab abilities" data-group="primary" data-tab="abilities">
+
+            <div class="resources grid grid-3col pet-owner">
+                <div class="resource flex-group-center">
+                    <label for="system.ownerId" class="resource-label">{{localize 'MEGS.Owner'}}</label>
+                    <div>
+                        {{#if flags.megs.edit-mode}}
+                            <select class="resource-select" name="system.ownerId" data-type="String">
+                                <option value="">{{localize 'MEGS.None'}}</option>
+                                {{selectOptions characters selected=system.ownerId}}
+                            </select>
+                        {{else}}
+                            {{getVehicleOwnerName system.ownerId characters}}
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+            {{> "systems/megs/templates/actor/parts/actor-attributes.hbs"}}
+
+        </div>
+
+        {{!-- Owned Powers Tab --}}
+        <div class="tab powers" data-group="primary" data-tab="powers">
+            {{> "systems/megs/templates/actor/parts/actor-powers.hbs"}}
+        </div>
+
+        {{!-- Owned Skills Tab --}}
+        <div class="tab skills" data-group="primary" data-tab="skills">
+            {{> "systems/megs/templates/actor/parts/actor-skills.hbs"}}
+        </div>
+
+        {{!-- Traits Tab --}}
+        <div class="tab traits" data-group="primary" data-tab="traits">
+            {{> "systems/megs/templates/actor/parts/actor-traits.hbs"}}
+        </div>
+
+    </section>
+</form>

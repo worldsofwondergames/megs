@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.2.0
+
+### Enhancements
+
+- Pet actors have a sheet. It has Abilities, Powers, Skills and Traits tabs and an Owner select listing the world's heroes, villains and NPCs; pets have no initiative, gadgets or description. Before, opening a pet failed with ENOENT because `actor-pet-sheet.hbs` did not exist, and 1.1.0 hid Pet from the Create Actor menu. Pet is offered there again (issue #248)
+
+### Test Infrastructure
+
+- Added a unit test for the pet Owner choices and E2E coverage that creates a pet, opens its sheet, checks its tabs, powers and attributes, and saves an owner (issue #248)
+
 ## 1.1.1
 
 ### Enhancements

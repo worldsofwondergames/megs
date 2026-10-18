@@ -406,3 +406,24 @@ describe('_calculateInitiativeBonusWithText (issue #306)', () => {
         expect(text).toBe('DEX 5 + INT 3 + INFL 2');
     });
 });
+
+describe('_getPetOwnerChoices (#248)', () => {
+    const originalGame = globalThis.game;
+    afterEach(() => { globalThis.game = originalGame; });
+
+    test('lists heroes, villains and NPCs by name, sorted, and leaves out other actor types', () => {
+        const actors = [
+            { _id: 'h1', name: 'Zeta Hero', type: 'hero' },
+            { _id: 'v1', name: 'Beta Villain', type: 'villain' },
+            { _id: 'n1', name: 'Alpha NPC', type: 'npc' },
+            { _id: 'p1', name: 'Some Pet', type: 'pet' },
+            { _id: 'c1', name: 'Some Car', type: 'vehicle' },
+            { _id: 'l1', name: 'Some Base', type: 'location' },
+        ];
+        globalThis.game = { ...originalGame, actors };
+        const sheet = new MEGSActorSheet(mockDocument(), {});
+
+        const choices = sheet._getPetOwnerChoices();
+        expect(Object.entries(choices)).toEqual([['n1', 'Alpha NPC'], ['v1', 'Beta Villain'], ['h1', 'Zeta Hero']]);
+    });
+});

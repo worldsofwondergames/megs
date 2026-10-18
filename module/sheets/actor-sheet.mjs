@@ -88,6 +88,14 @@ export class MEGSActorSheet extends ActorSheet {
             this._prepareInitiative(context);
         }
 
+        // Issue #248: a pet has attributes, powers, skills, traits and an owner, but no
+        // initiative, gadgets or identity.
+        if (actorData.type === MEGS.characterTypes.pet) {
+            this._prepareItems(context);
+            this._prepareCharacterData(context);
+            context.characters = this._getPetOwnerChoices();
+        }
+
         if (
             actorData.type === MEGS.characterTypes.vehicle ||
             actorData.type === MEGS.characterTypes.location
@@ -211,6 +219,21 @@ export class MEGSActorSheet extends ActorSheet {
                 context[propertyName] = this._sortArray(context[propertyName]);
             }
         }
+    }
+
+    /**
+     * Heroes, villains and NPCs who can own a pet, keyed by actor ID and sorted by name.
+     * @returns {Object<string, string>}
+     */
+    _getPetOwnerChoices() {
+        const ownerTypes = [MEGS.characterTypes.hero, MEGS.characterTypes.villain, MEGS.characterTypes.npc];
+        const choices = {};
+        game.actors.forEach((element) => {
+            if (ownerTypes.includes(element.type)) {
+                choices[element._id] = element.name;
+            }
+        });
+        return this._sortArray(choices);
     }
 
     /**

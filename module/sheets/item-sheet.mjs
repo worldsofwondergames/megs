@@ -98,14 +98,14 @@ export class MEGSItemSheet extends ItemSheet {
                 // if no APs, use linked attribute value as effective and flag as unskilled
                 context.isUnskilled = true;
                 if (actor) {
-                    context.effectiveAPs = actor.system.attributes[context.system.link].value;
+                    context.effectiveAPs = Utils.getAttributeValue(actor, context.system.link);
                 } else {
                     // no actor attached; should not display
                     context.effectiveAPs = 0;
                 }
             }
 
-            if (actor && context.system.isLinked === 'true') {
+            if (actor && Utils.isTrue(context.system.isLinked)) {
                 context.minAPs = actor.system.attributes[context.system.link].value;
                 context.maxAPs = actor.system.attributes[context.system.link].value;
             } else {
@@ -138,7 +138,7 @@ export class MEGSItemSheet extends ItemSheet {
                         context.skillHasRanks = true;
                     } else {
                         // if no APs for parent, fall back to linked attribute for rolling
-                        context.effectiveAPs = actor.system.attributes[skill.system.link].value;
+                        context.effectiveAPs = Utils.getAttributeValue(actor, skill.system.link);
                         context.isUnskilled = true;
                     }
                 } else {
@@ -841,8 +841,7 @@ export class MEGSItemSheet extends ItemSheet {
                                     // unskilled
                                     i.isUnskilled = true;
                                     const actor = context.document.parent;
-                                    i.effectiveAPs =
-                                        actor.system.attributes[context.item.system.link].value;
+                                    i.effectiveAPs = Utils.getAttributeValue(actor, context.item.system.link);
                                 } else {
                                     i.isUnskilled = false;
                                     i.effectiveAPs = context.item.system.aps;

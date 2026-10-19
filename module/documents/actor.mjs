@@ -1,5 +1,6 @@
 import { MEGS } from '../helpers/config.mjs';
 import { MEGSItem } from './item.mjs';
+import { Utils } from '../utils.js';
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -129,11 +130,43 @@ export class MEGSActor extends Actor {
      * available both inside and outside of character sheets (such as if an actor
      * is queried and has a roll executed directly from it).
      */
+    /**
+     * Issue #210: an equipped gadget's italicized Attribute replaces the character's own for
+     * rolls when it is higher. The 3E rules let the user substitute it "in all situations" and
+     * say a Gadget's Abilities never add to the user's. Current BODY, MIND and SPIRIT keep
+     * their maximums from the character's own Attributes, as the rules say for armor.
+     *
+     * Sets `system.effectiveAttributes` (key -> value used for rolls) and
+     * `system.attributeOverrides` (key -> { value, gadget } for each replaced Attribute).
+     */
+    _prepareEffectiveAttributes() {
+        const effective = {};
+        const overrides = {};
+        for (const [key, attribute] of Object.entries(this.system.attributes ?? {})) {
+            effective[key] = Number(attribute?.value) || 0;
+        }
+        for (const gadget of this.items ?? []) {
+            if (gadget.type !== MEGS.itemTypes.gadget || !Utils.isTrue(gadget.system.isEquipped)) continue;
+            for (const [key, attribute] of Object.entries(gadget.system.attributes ?? {})) {
+                if (!(key in effective) || !Utils.isTrue(attribute?.alwaysSubstitute)) continue;
+                const value = Number(attribute.value) || 0;
+                if (value > effective[key]) {
+                    effective[key] = value;
+                    overrides[key] = { value, gadget: gadget.name };
+                }
+            }
+        }
+        this.system.effectiveAttributes = effective;
+        this.system.attributeOverrides = overrides;
+    }
+
     prepareDerivedData() {
         super.prepareDerivedData();
         this.system.currentBody.max = this.system.attributes.body.value;
         this.system.currentMind.max = this.system.attributes.mind.value;
         this.system.currentSpirit.max = this.system.attributes.spirit.value;
+
+        this._prepareEffectiveAttributes();
 
         // Recalculate costs for powers/skills with modifiers
         this._recalculateItemCosts();
@@ -386,9 +419,9 @@ export class MEGSActor extends Actor {
 
         // calculate initiativeBonus
         let initiativeBonus =
-            this.system.attributes.dex.value +
-            this.system.attributes.int.value +
-            this.system.attributes.infl.value;
+            Utils.getAttributeValue(this, 'dex') +
+            Utils.getAttributeValue(this, 'int') +
+            Utils.getAttributeValue(this, 'infl');
 
         // Superspeed adds APs of their power
         if (this._hasAbility(this.items, MEGS.powers.SUPERSPEED)) {
@@ -396,8 +429,8 @@ export class MEGSActor extends Actor {
             initiativeBonus = initiativeBonus + aps;
         }
 
-        // Martial artist gives a +2
-        if (this._hasAbility(this.items, MEGS.skills.MARTIAL_ARTIST)) {
+        // Martial artist gives a +2, but only when the skill has APs (every actor has it at 0)
+        if (this._getAbilityAPs(this.items, MEGS.skills.MARTIAL_ARTIST) > 0) {
             initiativeBonus = initiativeBonus + 2;
         }
 

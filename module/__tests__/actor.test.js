@@ -77,11 +77,25 @@ test('_calculateInitiativeBonus returns correct value', () => {
     };
     actor.items = [
         { name: 'Superspeed', system: { aps: 5 } },
-        { name: 'Martial Artist', system: { aps: 0 } },
+        { name: 'Martial Artist', system: { aps: 3 } },
         { name: 'Lightning Reflexes', system: { aps: 0 } },
     ];
     // Should be 2+3+4+5+2+2 = 18
     expect(actor._calculateInitiativeBonus()).toBe(18);
+});
+
+test('_calculateInitiativeBonus gives no Martial Artist bonus at 0 APs (issue #307)', () => {
+    const actor = new MEGSActor();
+    actor.system = {
+        attributes: {
+            dex: { value: 5 },
+            int: { value: 3 },
+            infl: { value: 2 },
+        },
+    };
+    // Every new actor has every skill at 0 APs
+    actor.items = [{ name: 'Martial Artist', system: { aps: 0 } }];
+    expect(actor._calculateInitiativeBonus()).toBe(10);
 });
 
 describe('Character Budget Calculations', () => {
@@ -286,5 +300,115 @@ describe('motivations', () => {
         expect(actor.system.motivations).toContain('Upholding the Good');
         expect(actor.system.motivations).toContain('Power Lust');
         expect(actor.system.motivations).toContain('Unwanted Power');
+    });
+});
+
+describe('Equipped gadget Attributes replace the character\'s for rolls (issue #210)', () => {
+    // The default test actor has DEX 9, STR 5, BODY 6, INT 12, WILL 12, MIND 10, INFL 10, AURA 8, SPIRIT 10
+    const gadget = (name, attributes, isEquipped = true) => ({
+        name,
+        type: MEGS.itemTypes.gadget,
+        system: { isEquipped, attributes },
+    });
+    const prepare = (items) => {
+        const actor = new MEGSActor();
+        actor.items = items;
+        actor._prepareEffectiveAttributes();
+        return actor;
+    };
+
+    test('with no gadgets the effective Attributes are the character\'s own', () => {
+        const actor = prepare([]);
+        expect(actor.system.effectiveAttributes).toEqual({
+            dex: 9, str: 5, body: 6, int: 12, will: 12, mind: 10, infl: 10, aura: 8, spirit: 10,
+        });
+        expect(actor.system.attributeOverrides).toEqual({});
+    });
+
+    test('an equipped gadget\'s higher italicized Attribute replaces the character\'s', () => {
+        const actor = prepare([gadget('Armor', { body: { value: 11, alwaysSubstitute: true } })]);
+        expect(actor.system.effectiveAttributes.body).toBe(11);
+        expect(actor.system.attributeOverrides).toEqual({ body: { value: 11, gadget: 'Armor' } });
+        // The stored Attribute is unchanged
+        expect(actor.system.attributes.body.value).toBe(6);
+    });
+
+    test('a gadget that is not equipped changes nothing', () => {
+        const actor = prepare([gadget('Armor', { body: { value: 11, alwaysSubstitute: true } }, false)]);
+        expect(actor.system.effectiveAttributes.body).toBe(6);
+        expect(actor.system.attributeOverrides).toEqual({});
+    });
+
+    test('a lower italicized Attribute neither replaces nor adds to the character\'s', () => {
+        const actor = prepare([gadget('Gauntlets', { str: { value: 3, alwaysSubstitute: true } })]);
+        expect(actor.system.effectiveAttributes.str).toBe(5);
+        expect(actor.system.attributeOverrides).toEqual({});
+    });
+
+    test('an Attribute that is not italicized changes nothing', () => {
+        const actor = prepare([gadget('Car', { str: { value: 10, alwaysSubstitute: false } })]);
+        expect(actor.system.effectiveAttributes.str).toBe(5);
+    });
+
+    test('with several equipped gadgets the highest value wins', () => {
+        const actor = prepare([
+            gadget('Vest', { body: { value: 8, alwaysSubstitute: true } }),
+            gadget('Battlesuit', { body: { value: 14, alwaysSubstitute: true }, str: { value: 12, alwaysSubstitute: true } }),
+            gadget('Helmet', { body: { value: 9, alwaysSubstitute: true } }),
+        ]);
+        expect(actor.system.attributeOverrides).toEqual({
+            body: { value: 14, gadget: 'Battlesuit' },
+            str: { value: 12, gadget: 'Battlesuit' },
+        });
+    });
+
+    test('the item sheet\'s string "true" counts as equipped', () => {
+        const actor = prepare([gadget('Armor', { body: { value: 11, alwaysSubstitute: true } }, 'true')]);
+        expect(actor.system.effectiveAttributes.body).toBe(11);
+    });
+
+    test('roll helpers read the effective values', async () => {
+        const { Utils } = await import('../utils.js');
+        const actor = prepare([gadget('Battlesuit', {
+            dex: { value: 11, alwaysSubstitute: true },
+            str: { value: 12, alwaysSubstitute: true },
+            body: { value: 14, alwaysSubstitute: true },
+        })]);
+        expect(Utils.getAttributeValue(actor, 'dex')).toBe(11);
+        expect(Utils.getOpposingValue('dex', actor)).toBe(11);
+        expect(Utils.getResistanceValue('dex', actor)).toBe(14);
+        expect(Utils.getEffectValue('dex', actor)).toBe(12);
+        // Attributes the gadget does not replace keep the character's value
+        expect(Utils.getResistanceValue('int', actor)).toBe(10);
+    });
+});
+
+describe('Initiative uses equipped gadgets\' italicized Attributes (issue #306)', () => {
+    // The default test actor has DEX 9, INT 12 and INFL 10
+    const prepare = (isEquipped) => {
+        const actor = new MEGSActor();
+        actor.items = [{
+            name: 'Battlesuit',
+            type: MEGS.itemTypes.gadget,
+            system: {
+                isEquipped,
+                attributes: {
+                    dex: { value: 11, alwaysSubstitute: true },
+                    infl: { value: 14, alwaysSubstitute: true },
+                },
+            },
+        }];
+        actor._prepareEffectiveAttributes();
+        return actor;
+    };
+
+    test('an equipped gadget raises the Initiative Bonus', () => {
+        // 11 + 12 + 14
+        expect(prepare(true)._calculateInitiativeBonus()).toBe(37);
+    });
+
+    test('an unequipped gadget leaves the Initiative Bonus alone', () => {
+        // 9 + 12 + 10
+        expect(prepare(false)._calculateInitiativeBonus()).toBe(31);
     });
 });

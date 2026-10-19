@@ -115,3 +115,43 @@ test('_toggleEditMode unlocks a sheet with a stored false flag', async () => {
 
     expect(doc.setFlag).toHaveBeenCalledWith('megs', 'edit-mode', true);
 });
+
+describe('linked skill APs lock (issue #282)', () => {
+    // The mock ItemSheet has no getData, so supply the base context Foundry would.
+    beforeAll(() => {
+        Object.getPrototypeOf(MEGSItemSheet.prototype).getData = async function () {
+            return { data: this.object, item: this.object, document: this.object };
+        };
+    });
+    afterAll(() => {
+        delete Object.getPrototypeOf(MEGSItemSheet.prototype).getData;
+    });
+
+    const skillSheet = (isLinked) => {
+        const actor = { system: { attributes: { dex: { value: 7 } } }, items: [] };
+        const skill = {
+            _id: 'skill1',
+            type: 'skill',
+            name: 'Acrobatics',
+            parent: actor,
+            system: { aps: 7, link: 'dex', isLinked },
+            flags: {},
+            isOwner: true,
+            getFlag: () => undefined,
+            getRollData: () => ({})
+        };
+        return new MEGSItemSheet(skill, {});
+    };
+
+    test.each([true, 'true'])('isLinked %p locks min and max APs to the attribute', async (isLinked) => {
+        const context = await skillSheet(isLinked).getData();
+        expect(context.minAPs).toBe(7);
+        expect(context.maxAPs).toBe(7);
+    });
+
+    test.each([false, 'false'])('isLinked %p leaves APs unlocked', async (isLinked) => {
+        const context = await skillSheet(isLinked).getData();
+        expect(context.minAPs).toBe('0');
+        expect(context.maxAPs).toBe(999);
+    });
+});

@@ -627,6 +627,51 @@ export class MEGSItem extends Item {
     }
 
     /**
+     * Effective Factor Cost of a power or skill owned by this gadget: the gadget's
+     * Reliability Number, bonuses and limitations on a power, untrained subskills on a
+     * skill, and the linking reduction
+     * @param {Item} item - Child power or skill
+     * @param {Collection|Array} items - All items on the owning actor
+     * @returns {number} Effective Factor Cost, from 1 to 10
+     * @private
+     */
+    _getChildEffectiveFC(item, items) {
+        // Issue #294: the R# modifies the Factor Cost of every Ability on the gadget
+        let effectiveFC = item.system.factorCost + this._getGadgetReliabilityModifier();
+
+        if (item.type === MEGS.itemTypes.power) {
+            const modifiers = items.filter(i =>
+                (i.type === MEGS.itemTypes.bonus || i.type === MEGS.itemTypes.limitation) &&
+                i.system.parent === item.id
+            );
+            for (const modifier of modifiers) {
+                effectiveFC += modifier.system.factorCostMod || 0;
+            }
+        } else if (item.type === MEGS.itemTypes.skill) {
+            const subskills = items.filter(i =>
+                i.type === MEGS.itemTypes.subskill && i.system.parent === item.id
+            );
+            effectiveFC -= subskills.filter(s => !s.system.isTrained).length;
+        }
+
+        if (this._toBoolean(item.system.isLinked)) {
+            effectiveFC = Math.max(1, effectiveFC - 2);
+        }
+        return Math.min(10, Math.max(1, effectiveFC));
+    }
+
+    /**
+     * Factor Cost modifier from this gadget's Reliability Number
+     * @returns {number} +3 for R# 0 down to -3 for R# 11
+     * @private
+     */
+    _getGadgetReliabilityModifier() {
+        const reliabilityIndex = this.system.reliability ?? 3;
+        const reliability = CONFIG.reliabilityScores?.[reliabilityIndex] ?? 5;
+        return this._getReliabilityModifier(reliability);
+    }
+
+    /**
      * Safely get AP cost with validation
      * @param {number} aps - Action Points
      * @param {number} fc - Factor Cost
@@ -753,41 +798,11 @@ export class MEGSItem extends Item {
                 if (item.system.parent === this.id) {
                     let itemCost = 0;
                     if (item.type === MEGS.itemTypes.power && item.system.aps > 0) {
-                        let effectiveFC = item.system.factorCost;
-
-                        // Add bonuses and limitations to factor cost
-                        const modifiers = this.parent.items.filter(i =>
-                            (i.type === MEGS.itemTypes.bonus || i.type === MEGS.itemTypes.limitation) &&
-                            i.system.parent === item.id
-                        );
-                        for (const modifier of modifiers) {
-                            effectiveFC += modifier.system.factorCostMod || 0;
-                        }
-
-                        if (this._toBoolean(item.system.isLinked)) {
-                            effectiveFC = Math.max(1, effectiveFC - 2);
-                        }
-                        effectiveFC = Math.max(1, effectiveFC);
-
+                        const effectiveFC = this._getChildEffectiveFC(item, this.parent.items);
                         itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         powersCost += itemCost;
                     } else if (item.type === MEGS.itemTypes.skill && item.system.aps > 0) {
-                        let effectiveFC = item.system.factorCost;
-
-                        // Check for subskills and reduce FC for untrained subskills
-                        const subskills = this.parent.items.filter(i =>
-                            i.type === MEGS.itemTypes.subskill && i.system.parent === item.id
-                        );
-                        if (subskills.length > 0) {
-                            const untrainedCount = subskills.filter(s => !s.system.isTrained).length;
-                            effectiveFC = effectiveFC - untrainedCount;
-                        }
-
-                        if (this._toBoolean(item.system.isLinked)) {
-                            effectiveFC = Math.max(1, effectiveFC - 2);
-                        }
-                        effectiveFC = Math.max(1, effectiveFC);
-
+                        const effectiveFC = this._getChildEffectiveFC(item, this.parent.items);
                         itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         skillsCost += itemCost;
                     } else if (item.type === MEGS.itemTypes.advantage) {
@@ -876,12 +891,15 @@ export class MEGSItem extends Item {
             if (aps === 0) continue;
 
             const baseCost = powerBaseCosts[powerName] || 0;
-            let fc = powerFactorCosts[powerName] || 0;
+            const baseFC = powerFactorCosts[powerName] || 0;
+            let fc = baseFC + this._getGadgetReliabilityModifier();
             const isLinked = powerIsLinked[powerName];
 
             if (this._toBoolean(isLinked)) {
                 fc = Math.max(1, fc - 2);
             }
+            // A missing Factor Cost stays 0 (no cost) rather than becoming the R# modifier
+            fc = baseFC ? Math.min(10, Math.max(1, fc)) : 0;
 
             const apCost = MEGS.getAPCost(aps, fc) || 0;
             totalCost += baseCost + apCost;
@@ -904,7 +922,9 @@ export class MEGSItem extends Item {
             if (aps === 0) continue;
 
             const baseCost = skillBaseCosts[skillName] || 0;
-            const fc = skillFactorCosts[skillName] || 0;
+            const baseFC = skillFactorCosts[skillName] || 0;
+            // A missing Factor Cost stays 0 (no cost) rather than becoming the R# modifier
+            const fc = baseFC ? Math.min(10, Math.max(1, baseFC + this._getGadgetReliabilityModifier())) : 0;
 
             const apCost = MEGS.getAPCost(aps, fc) || 0;
             totalCost += baseCost + apCost;
@@ -1062,11 +1082,7 @@ export class MEGSItem extends Item {
                                 }
                             }
 
-                            // Calculate effective FC (with linking bonus if applicable)
-                            let effectiveFC = item.system.factorCost;
-                            if (this._toBoolean(item.system.isLinked)) {
-                                effectiveFC = Math.max(1, effectiveFC - 2);
-                            }
+                            const effectiveFC = this._getChildEffectiveFC(item, this.parent.items);
                             itemCost = (item.system.baseCost || 0) + (MEGS.getAPCost(item.system.aps, effectiveFC) || 0);
                         } else if (item.type === MEGS.itemTypes.advantage || item.type === MEGS.itemTypes.drawback) {
                             // For advantages/drawbacks, use their totalCost or baseCost

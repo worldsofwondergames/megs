@@ -59,7 +59,8 @@
     }
 
     div.biography {
-        label.biography-label {
+        label.biography-label,
+        label.role-playing-notes-label {
             font-size: 22px;
         }
 
@@ -130,6 +131,8 @@ body.game .app h4.window-title {
 .svg-icon {
     height: 20px;
     width: 20px;
+    // Foundry's img max-width: 100% lets a crowded flex row squeeze the icon narrower than 20px.
+    max-width: none;
     border: none;
 }
 

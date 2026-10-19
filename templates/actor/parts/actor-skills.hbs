@@ -20,7 +20,7 @@
                     {{getSkillDisplayName item}}
                 </a>
             </div>
-            <div class='item-aps'>
+            <div class='item-aps {{#if (isLinkedSkillMismatch item ../actor)}}link-mismatch{{/if}}' title='{{linkMismatchTooltip item ../actor}}'>
                 {{#if ../flags.megs.edit-mode}}
                     {{#if item.isFromLinkedGadget}}
                         {{item.system.aps}}
@@ -34,6 +34,7 @@
                 {{else}}
                     {{item.system.aps}}
                 {{/if}}
+                {{#if (isLinkedSkillMismatch item ../actor)}}<i class='fas fa-triangle-exclamation link-mismatch-icon'></i>{{/if}}
             </div>
             <div class='item-controls'>
                 {{#unless item.system.aps}}
@@ -48,7 +49,7 @@
                 {{/unless}}
                 {{#if item.system.aps}}
                     <a class='item-control d10 rollable' title='{{localize "MEGS.Roll"}} {{item.name}} {{#if (compare item.system.aps '===' 0)}} ({{localize "MEGS.UnskilledLabel"}}){{/if}}' data-label="{{item.name}}" data-roll="1d10 + 1d10" {{#if (compare item.system.aps '!==' 0)}}data-value="{{item.system.aps}}" {{/if}} {{#unless (compare item.system.aps '!==' 0)}} data-value="{{item.linkedAPs}}" {{/unless}} data-type="skill" data-link="{{item.system.link}}" {{#if (compare item.system.aps '===' 0)}}data-unskilled="true" {{/if}}>
-                        <img src="/systems/megs/assets/images/icons/d10blue.png" class="svg-icon" alt="{{localize 'MEGS.Roll'}}" />
+                        <img src="/systems/megs/assets/images/icons/d10blue.svg" class="svg-icon" alt="{{localize 'MEGS.Roll'}}" />
                     </a>
                 {{/if}}
                 {{#unless item.isFromLinkedGadget}}

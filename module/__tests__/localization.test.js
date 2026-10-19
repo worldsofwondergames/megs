@@ -2,6 +2,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import '../__mocks__/foundry.mjs';
+import { MEGS } from '../helpers/config.mjs';
 
 /**
  * These tests read the shipped templates and modules rather than a fixture.
@@ -252,5 +254,101 @@ describe('localization keys resolve', () => {
                 return placeholders(lookup(EN, key)).join() !== placeholders(lookup(PT, key) ?? '').join();
             });
         expect(mismatched).toEqual([]);
+    });
+});
+
+/**
+ * Issue #281: the HP cost tooltips are assembled in megs.mjs from many short
+ * pieces, so the attribute and notification checks above never see them.
+ */
+describe('cost tooltips and omni-gadget ranges are localized', () => {
+    const megsSource = fs.readFileSync(path.join(ROOT, 'module', 'megs.mjs'), 'utf-8');
+
+    /** Source of a top-level function or Handlebars helper body, comments removed. */
+    function bodyFrom(contents, start) {
+        let index = contents.indexOf('{', start);
+        const open = index;
+        let depth = 0;
+        while (index < contents.length) {
+            const character = contents[index];
+            if (contents.startsWith('//', index)) {
+                index = contents.indexOf('\n', index);
+                continue;
+            }
+            if (contents.startsWith('/*', index)) {
+                index = contents.indexOf('*/', index) + 2;
+                continue;
+            }
+            if (character === "'" || character === '"' || character === '`') {
+                index = endOfLiteral(contents, index);
+            } else if (character === '{') {
+                depth += 1;
+            } else if (character === '}') {
+                depth -= 1;
+                if (depth === 0) break;
+            }
+            index += 1;
+        }
+        return contents.slice(open, index + 1)
+            .replace(/\/\*[\s\S]*?\*\//g, '')
+            .replace(/^\s*\/\/.*$/gm, '');
+    }
+
+    const tooltipBodies = [
+        ...megsSource.matchAll(/Handlebars\.registerHelper\('(\w*Tooltip|getGadgetDescription)'/g),
+        ...megsSource.matchAll(/^function (costTip|costLine|costLineHP)\(/gm),
+    ].map(match => ({ name: match[1], body: bodyFrom(megsSource, match.index) }));
+
+    /** Keys handed to costTip, including both arms of a ternary. */
+    function costTipKeys(body) {
+        return [...body.matchAll(/costTip\(([^,)]*)/g)]
+            .flatMap(match => [...match[1].matchAll(/'([^']*)'/g)].map(literal => literal[1]))
+            .filter(key => !key.includes('$'));
+    }
+
+    test('finds the tooltip helpers it checks', () => {
+        const names = tooltipBodies.map(entry => entry.name);
+        expect(names).toEqual(expect.arrayContaining([
+            'getHPSpentTooltip', 'getGadgetCostTooltip', 'getGadgetBudgetTooltip',
+            'getGadgetAdjustedCostTooltip', 'getPowerFactorCostTooltip', 'getTotalCostTooltip',
+            'getFactorCostTooltip', 'getSkillFactorCostTooltip', 'getGadgetDescription', 'costTip',
+        ]));
+    });
+
+    test('no tooltip helper builds its text from English literals', () => {
+        const offenders = [];
+        for (const { name, body } of tooltipBodies) {
+            // Keys, values compared against, settings names and console output are
+            // not text a player sees.
+            const withoutKeys = body
+                .replace(/costTip\([^,)]*/g, 'costTip(')
+                .replace(/'MEGS\.[\w.]+'/g, "''")
+                .replace(/[!=]==\s*'[^']*'/g, '')
+                .replace(/game\.settings\.\w+\([^)]*\)/g, '')
+                .replace(/console\.\w+\([^;]*\);/g, '');
+            for (const literal of stringLiterals(withoutKeys)) {
+                // The n in an escape such as \n is not a letter a translator writes.
+                if (hasHardcodedText(literal.replace(/\\./g, ''))) offenders.push(`${name}: ${literal}`);
+            }
+        }
+        expect(offenders).toEqual([]);
+    });
+
+    test('every key the tooltip helpers use is defined in both dictionaries', () => {
+        const keys = new Set();
+        for (const { body } of tooltipBodies) {
+            for (const key of costTipKeys(body)) keys.add(`MEGS.CostTooltip.${key}`);
+            for (const match of body.matchAll(/'(MEGS\.[\w.]+)'/g)) keys.add(match[1]);
+        }
+        expect(keys.size).toBeGreaterThan(20);
+        const missing = [...keys].filter(key => typeof lookup(EN, key) !== 'string' || typeof lookup(PT, key) !== 'string');
+        expect(missing).toEqual([]);
+    });
+
+    test('every omni-gadget range is a key defined in both dictionaries', () => {
+        const ranges = Object.values(MEGS.omniRanges);
+        expect(ranges).toHaveLength(4);
+        const missing = ranges.filter(key => typeof lookup(EN, key) !== 'string' || typeof lookup(PT, key) !== 'string');
+        expect(missing).toEqual([]);
     });
 });

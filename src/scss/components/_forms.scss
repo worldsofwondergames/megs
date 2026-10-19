@@ -186,6 +186,16 @@
     height: 100%;
 }
 
+// Issue #285: Biography and Role Playing Notes share the Description tab,
+// so neither editor fills the tab on its own.
+.sheet-body .tab.biography .editor {
+    height: auto;
+
+    .editor-content {
+        min-height: 15em;
+    }
+}
+
 .tox {
     .tox-editor-container {
         background: $c-white;
@@ -612,4 +622,11 @@ details[open] summary.item-summary {
 .factor-cost-tooltip {
     cursor: pointer;
     white-space: pre-line;
+}
+
+// Issue #210: marks an Attribute an equipped gadget replaces for rolls
+.attribute .attribute-override-icon {
+    margin-left: 4px;
+    color: $c-mediumblue;
+    cursor: help;
 }

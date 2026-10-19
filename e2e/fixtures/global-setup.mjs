@@ -6,8 +6,15 @@ const AUTH_FILE = './e2e/.auth/state.json';
 const WORLD_ID = 'megs-test-world';
 const STATUS_URL = 'http://localhost:30000/api/status';
 
+// Log in as a different Foundry user with E2E_USER, so the suite can run while
+// someone else holds the Gamemaster seat. E2E_OTHER_SESSIONS is how many of those
+// other sessions to expect, since /api/status only reports a count.
+const E2E_USER = process.env.E2E_USER || 'Gamemaster';
+const OTHER_SESSIONS = Number(process.env.E2E_OTHER_SESSIONS || 0);
+
 /**
- * Wait until Foundry reports the world is up and nobody is connected.
+ * Wait until Foundry reports the world is up and nobody but the expected other
+ * sessions is connected.
  *
  * Foundry allows ONE session per user, and it only frees the Gamemaster seat when
  * the socket disconnects -- which happens after browser.close() has already
@@ -22,7 +29,7 @@ async function waitForFreeSeat({ timeoutMs = 30_000, pollMs = 250 } = {}) {
         try {
             const res = await fetch(STATUS_URL);
             last = await res.json();
-            if (last.active === true && last.users === 0) return last;
+            if (last.active === true && last.users <= OTHER_SESSIONS) return last;
         } catch (err) {
             last = { error: err.message };
         }
@@ -54,9 +61,9 @@ export default async function globalSetup() {
         await page.waitForURL('**/join', { timeout: 60_000 });
     }
 
-    // Select Gamemaster and join
+    // Select the test user and join
     await page.waitForSelector('select[name="userid"]', { timeout: 60_000 });
-    await page.locator('select[name="userid"]').selectOption({ label: 'Gamemaster' });
+    await page.locator('select[name="userid"]').selectOption({ label: E2E_USER });
     await page.locator('button:has-text("Join Game Session")').click();
 
     await page.waitForFunction(

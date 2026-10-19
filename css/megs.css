@@ -255,7 +255,8 @@
   color: #1f5079;
   padding: 10px 5px 0 5px;
 }
-.megs div.biography label.biography-label {
+.megs div.biography label.biography-label,
+.megs div.biography label.role-playing-notes-label {
   font-size: 22px;
 }
 .megs div.biography div.editor {
@@ -311,6 +312,7 @@ body.game .app h4.window-title {
 .svg-icon {
   height: 20px;
   width: 20px;
+  max-width: none;
   border: none;
 }
 
@@ -540,6 +542,12 @@ details summary.no-arrow {
 .megs .sheet-body .tab,
 .megs .sheet-body .tab .editor {
   height: 100%;
+}
+.megs .sheet-body .tab.biography .editor {
+  height: auto;
+}
+.megs .sheet-body .tab.biography .editor .editor-content {
+  min-height: 15em;
 }
 .megs .tox .tox-editor-container {
   background: #fff;
@@ -856,6 +864,11 @@ details summary.no-arrow {
 .megs .factor-cost-tooltip {
   cursor: pointer;
   white-space: pre-line;
+}
+.megs .attribute .attribute-override-icon {
+  margin-left: 4px;
+  color: #5fa2d9;
+  cursor: help;
 }
 .megs .resource-label {
   font-weight: 500;
@@ -1362,6 +1375,19 @@ details summary.no-arrow {
   color: #d32f2f;
   font-weight: bold;
 }
+.megs .link-mismatch input {
+  color: #d32f2f;
+}
+.megs .item-aps.link-mismatch {
+  position: relative;
+}
+.megs .link-mismatch-icon {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-right: 4px;
+  transform: translateY(-50%);
+}
 .megs .wealth-summary {
   margin-bottom: 10px;
 }
@@ -1795,4 +1821,46 @@ li.chat-message .tooltip .tooltiptext .init-table .value {
   text-align: right;
   font-weight: bold;
   white-space: nowrap;
+}
+
+/* Welcome card (issue #309) */
+.megs-welcome-message {
+  color: #1f5079;
+}
+.megs-welcome-message .megs-welcome-logo {
+  border: 0;
+  display: block;
+  margin: 0 auto 6px;
+  max-width: 100%;
+}
+.megs-welcome-message .megs-welcome-section {
+  border-top: 1px solid #1f5079;
+  margin-top: 6px;
+  padding-top: 4px;
+}
+.megs-welcome-message .megs-welcome-section h3 {
+  font-size: 1.1em;
+  margin: 0 0 2px;
+  padding-bottom: 0;
+}
+.megs-welcome-message .megs-welcome-section p {
+  margin: 0 0 4px;
+}
+.megs-welcome-message .megs-welcome-button {
+  background-color: #1f5079;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  padding: 4px;
+  text-align: center;
+  text-decoration: none;
+}
+.megs-welcome-message .megs-welcome-button:hover {
+  background-color: #d63a28;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+li.chat-message:has(.megs-welcome-message) .message-header {
+  display: none;
 }

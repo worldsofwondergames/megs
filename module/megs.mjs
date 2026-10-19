@@ -10,6 +10,7 @@ import { MEGSGadgetBuilderSheet } from './sheets/gadget-builder-sheet.mjs';
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { MEGS } from './helpers/config.mjs';
 import { applyBarBrawlDefaults } from './helpers/barbrawl-defaults.mjs';
+import { showWelcomeMessage } from './helpers/welcome-message.mjs';
 
 import MEGSCombat from './combat/combat.js';
 import MEGSCombatTracker from './combat/combatTracker.js';
@@ -227,7 +228,7 @@ Handlebars.registerHelper('getAPCost', function (aps, factorCost) {
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-    return str === 'true' ? game.i18n.localize('Yes') : game.i18n.localize('No');
+    return Utils.isTrue(str) ? game.i18n.localize('Yes') : game.i18n.localize('No');
 });
 
 Handlebars.registerHelper('isTrue', function (value) {
@@ -277,7 +278,7 @@ Handlebars.registerHelper('compare', function (v1, operator, v2, options) {
 });
 
 Handlebars.registerHelper('trueFalseToYesNo', function (str) {
-    return str === 'true' ? 'Yes' : 'No';
+    return Utils.isTrue(str) ? 'Yes' : 'No';
 });
 
 /* -------------------------------------------- */
@@ -324,7 +325,7 @@ Handlebars.registerHelper('getSkillDisplayName', function (skill) {
     let displayName = skill.name;
 
     // Add asterisk for linked skills
-    if (skill.system.isLinked === 'true') {
+    if (Utils.isTrue(skill.system.isLinked)) {
         displayName += '*';
     }
     return displayName;
@@ -339,58 +340,28 @@ Handlebars.registerHelper('getAttributeText', function (key, labels) {
 
 Handlebars.registerHelper('getPowerDisplayName', function (power) {
     let displayName = power.name;
-    if (power.system.isLinked === 'true') {
+    if (Utils.isTrue(power.system.isLinked)) {
         displayName += '*';
     }
     return displayName;
 });
 
 Handlebars.registerHelper('isLinkedPowerMismatch', function (power, actor) {
-    // Check if power is linked
-    if (!power.system.isLinked || power.system.isLinked === false || power.system.isLinked === 'false') {
-        return false;
-    }
-
-    // Check if link is valid
-    const link = power.system.link;
-    if (!link || link === 'none' || link === 'special' || link === '') {
-        return false;
-    }
-
-    // Get the linked attribute value from the actor
-    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
-        return false;
-    }
-
-    const attributeValue = actor.system.attributes[link].value || 0;
-    const powerAPs = power.system.aps || 0;
-
-    // Return true if there's a mismatch
-    return attributeValue !== powerAPs;
+    return Utils.getLinkMismatch(power, actor) !== null;
 });
 
 Handlebars.registerHelper('isLinkedSkillMismatch', function (skill, actor) {
-    // Check if skill is linked
-    if (!skill.system.isLinked || skill.system.isLinked === false || skill.system.isLinked === 'false') {
-        return false;
-    }
+    return Utils.getLinkMismatch(skill, actor) !== null;
+});
 
-    // Check if link is valid
-    const link = skill.system.link;
-    if (!link || link === 'none' || link === 'special' || link === '') {
-        return false;
-    }
-
-    // Get the linked attribute value from the actor
-    if (!actor || !actor.system || !actor.system.attributes || !actor.system.attributes[link]) {
-        return false;
-    }
-
-    const attributeValue = actor.system.attributes[link].value || 0;
-    const skillAPs = skill.system.aps || 0;
-
-    // Return true if there's a mismatch
-    return attributeValue !== skillAPs;
+Handlebars.registerHelper('linkMismatchTooltip', function (item, actor) {
+    const mismatch = Utils.getLinkMismatch(item, actor);
+    if (!mismatch) return '';
+    return game.i18n.format('MEGS.LinkMismatch', {
+        attribute: game.i18n.localize(MEGS.attributes[mismatch.link]),
+        value: mismatch.attributeValue,
+        aps: mismatch.aps,
+    });
 });
 
 Handlebars.registerHelper('getPowerModifiers', function (powerId, items) {
@@ -648,21 +619,36 @@ Handlebars.registerHelper('getTotalSkillsCost', function (skills, items) {
     }, 0);
 });
 
+/** One cost tooltip string from MEGS.CostTooltip. */
+function costTip(key, data = {}) {
+    return game.i18n.format(`MEGS.CostTooltip.${key}`, data);
+}
+
+/** "Label: value", with the label taken from a MEGS key. */
+function costLine(labelKey, value) {
+    return costTip('Line', { label: game.i18n.localize(labelKey), value });
+}
+
+/** "Label: value HP", with the label taken from a MEGS key. */
+function costLineHP(labelKey, value) {
+    return costTip('LineHP', { label: game.i18n.localize(labelKey), value });
+}
+
 Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
     // Generate tooltip text explaining the Factor Cost calculation for skills
     const baseFc = skill.system.factorCost || 0;
-    let tooltip = `Base FC: ${baseFc}`;
+    let tooltip = costLine('MEGS.CostTooltip.BaseFC', baseFc);
     let effectiveFc = baseFc;
 
     // Check if linked
     const isLinked = skill.system.isLinked === 'true' || skill.system.isLinked === true;
     if (isLinked) {
-        tooltip += '\nLinked: -2';
+        tooltip += '\n' + costLine('MEGS.CostTooltip.Linked', -2);
         effectiveFc = Math.max(1, effectiveFc - 2);
     }
 
     if (!items) {
-        tooltip += `\nEffective FC: ${effectiveFc}`;
+        tooltip += '\n' + costLine('MEGS.CostTooltip.EffectiveFC', effectiveFc);
         return tooltip;
     }
 
@@ -674,11 +660,11 @@ Handlebars.registerHelper('getSkillFactorCostTooltip', function (skill, items) {
     ).length;
 
     if (uncheckedCount > 0) {
-        tooltip += `\nUnchecked subskills: -${uncheckedCount}`;
+        tooltip += '\n' + costLine('MEGS.CostTooltip.UncheckedSubskills', -uncheckedCount);
         effectiveFc = Math.max(1, effectiveFc - uncheckedCount);
     }
 
-    tooltip += `\nEffective FC: ${effectiveFc}`;
+    tooltip += '\n' + costLine('MEGS.CostTooltip.EffectiveFC', effectiveFc);
 
     return tooltip;
 });
@@ -735,16 +721,16 @@ Handlebars.registerHelper('getHPSpentTooltip', function (budget) {
     const gadgets = budget.gadgetsCost || 0;
     const total = budget.totalSpent || 0;
 
-    let tooltip = 'HP Spent Breakdown:\n';
-    tooltip += `Attributes: ${attrs} HP\n`;
-    tooltip += `Wealth: ${wealth} HP\n`;
-    tooltip += `Powers: ${powers} HP\n`;
-    tooltip += `Skills: ${skills} HP\n`;
-    tooltip += `Advantages: ${advantages} HP\n`;
-    tooltip += `Drawbacks: ${drawbacks} HP\n`;
-    tooltip += `Gadgets: ${gadgets} HP\n`;
+    let tooltip = costTip('Heading') + '\n';
+    tooltip += costLineHP('MEGS.Attributes', attrs) + '\n';
+    tooltip += costLineHP('MEGS.Wealth', wealth) + '\n';
+    tooltip += costLineHP('MEGS.Powers', powers) + '\n';
+    tooltip += costLineHP('MEGS.Skills', skills) + '\n';
+    tooltip += costLineHP('MEGS.Advantages', advantages) + '\n';
+    tooltip += costLineHP('MEGS.Drawbacks', drawbacks) + '\n';
+    tooltip += costLineHP('MEGS.Gadgets', gadgets) + '\n';
     tooltip += '─────────────────\n';
-    tooltip += `Total: ${total} HP`;
+    tooltip += costLineHP('MEGS.Total', total);
 
     return tooltip;
 });
@@ -776,13 +762,13 @@ Handlebars.registerHelper('getEffectiveFactorCost', function (power, items) {
 Handlebars.registerHelper('getFactorCostTooltip', function (power, items) {
     // Generate tooltip text explaining the Factor Cost calculation
     const baseFc = power.system.factorCost || 0;
-    let tooltip = `Base FC: ${baseFc}`;
+    let tooltip = costLine('MEGS.CostTooltip.BaseFC', baseFc);
     let effectiveFc = baseFc;
 
     // Check if linked
     const isLinked = power.system.isLinked === 'true' || power.system.isLinked === true;
     if (isLinked) {
-        tooltip += '\nLinked: -2';
+        tooltip += '\n' + costLine('MEGS.CostTooltip.Linked', -2);
         effectiveFc = Math.max(1, effectiveFc - 2);
     }
 
@@ -801,7 +787,7 @@ Handlebars.registerHelper('getFactorCostTooltip', function (power, items) {
     }
 
     effectiveFc = Math.max(1, effectiveFc);
-    tooltip += `\nTotal: ${effectiveFc}`;
+    tooltip += '\n' + costLine('MEGS.Total', effectiveFc);
 
     return tooltip;
 });
@@ -812,7 +798,7 @@ Handlebars.registerHelper('getTotalCostTooltip', function (power, items) {
     const aps = power.system.aps || 0;
 
     if (aps === 0) {
-        return 'Not purchased (0 APs)';
+        return costTip('NotPurchased');
     }
 
     // Calculate effective FC
@@ -837,9 +823,9 @@ Handlebars.registerHelper('getTotalCostTooltip', function (power, items) {
     // Get AP cost from chart
     const apCost = MEGS.getAPCost ? MEGS.getAPCost(aps, effectiveFc) : (effectiveFc * aps);
 
-    let tooltip = `Base Cost: ${baseCost}`;
-    tooltip += `\nAP Cost (${aps} APs @ FC ${effectiveFc}): ${apCost}`;
-    tooltip += `\nTotal: ${baseCost + apCost}`;
+    let tooltip = costLine('MEGS.CostTooltip.BaseCost', baseCost);
+    tooltip += '\n' + costTip('APCost', { aps, fc: effectiveFc, cost: apCost });
+    tooltip += '\n' + costLine('MEGS.Total', baseCost + apCost);
 
     return tooltip;
 });
@@ -855,7 +841,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         Object.keys(gadget.system.omniClasses).forEach((key) => {
             if (gadget.system.omniClasses[key] === true || gadget.system.omniClasses[key] === 'true') {
                 description += key.toUpperCase();
-                description += ' (' + MEGS.omniRanges[key.toUpperCase()] + ')';
+                description += ' (' + game.i18n.localize(MEGS.omniRanges[key.toUpperCase()]) + ')';
             }
         });
         return description;
@@ -922,13 +908,13 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         if (description) {
             description += ', ';
         }
-        description += 'AV ' + gadget.system.actionValue;
+        description += game.i18n.localize('MEGS.Abbr.AV') + ' ' + gadget.system.actionValue;
     }
     if (gadget.system.effectValue > 0) {
         if (description) {
             description += ', ';
         }
-        description += 'EV ' + gadget.system.effectValue;
+        description += game.i18n.localize('MEGS.Abbr.EV') + ' ' + gadget.system.effectValue;
     }
 
     // range
@@ -936,7 +922,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         if (description) {
             description += ', ';
         }
-        description += 'Range ' + gadget.system.weapon.range;
+        description += game.i18n.localize('MEGS.Range') + ' ' + gadget.system.weapon.range;
     }
 
     // ammo
@@ -944,7 +930,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
         if (description) {
             description += ', ';
         }
-        description += 'Ammo ' + gadget.system.weapon.ammo;
+        description += game.i18n.localize('MEGS.Ammo') + ' ' + gadget.system.weapon.ammo;
     }
 
     // reliability (don't display if R# is 0)
@@ -954,7 +940,7 @@ Handlebars.registerHelper('getGadgetDescription', function (gadget) {
             if (description) {
                 description += ', ';
             }
-            description += 'R#' + rNumber;
+            description += game.i18n.localize('MEGS.Abbr.RNumber') + rNumber;
         }
     }
 
@@ -998,7 +984,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         }
     }
     if (attributesCost > 0) {
-        tooltip += 'Attributes: ' + attributesCost + '\n';
+        tooltip += costLine('MEGS.Attributes', attributesCost) + '\n';
         totalBeforeBonus += attributesCost;
     }
 
@@ -1006,7 +992,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (systemData.actionValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const avCost = 5 + (MEGS.getAPCost(systemData.actionValue, fc) || 0);
-        tooltip += `AV: ${avCost}\n`;
+        tooltip += costLine('MEGS.Abbr.AV', avCost) + '\n';
         totalBeforeBonus += avCost;
     }
 
@@ -1014,7 +1000,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (systemData.effectValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const evCost = 5 + (MEGS.getAPCost(systemData.effectValue, fc) || 0);
-        tooltip += 'EV: ' + evCost + '\n';
+        tooltip += costLine('MEGS.Abbr.EV', evCost) + '\n';
         totalBeforeBonus += evCost;
     }
 
@@ -1023,7 +1009,7 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
     if (rangeValue > 0) {
         const fc = Math.max(1, 1 + reliabilityMod);
         const rangeCost = 5 + (MEGS.getAPCost(rangeValue, fc) || 0);
-        tooltip += 'Range: ' + rangeCost + '\n';
+        tooltip += costLine('MEGS.Range', rangeCost) + '\n';
         totalBeforeBonus += rangeCost;
     }
 
@@ -1056,19 +1042,19 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
         });
 
         if (powersCost > 0) {
-            tooltip += 'Powers: ' + powersCost + '\n';
+            tooltip += costLine('MEGS.Powers', powersCost) + '\n';
             totalBeforeBonus += powersCost;
         }
         if (skillsCost > 0) {
-            tooltip += 'Skills: ' + skillsCost + '\n';
+            tooltip += costLine('MEGS.Skills', skillsCost) + '\n';
             totalBeforeBonus += skillsCost;
         }
         if (advantagesCost > 0) {
-            tooltip += 'Advantages: ' + advantagesCost + '\n';
+            tooltip += costLine('MEGS.Advantages', advantagesCost) + '\n';
             totalBeforeBonus += advantagesCost;
         }
         if (drawbacksCost > 0) {
-            tooltip += 'Drawbacks: -' + drawbacksCost + '\n';
+            tooltip += costLine('MEGS.Drawbacks', -drawbacksCost) + '\n';
             totalBeforeBonus -= drawbacksCost;
         }
         for (const entry of subGadgetEntries) {
@@ -1079,15 +1065,15 @@ Handlebars.registerHelper('getGadgetCostTooltip', function (gadget) {
 
     // Add total before bonus
     tooltip += '---\n';
-    tooltip += 'Total before bonus: ' + totalBeforeBonus + '\n';
+    tooltip += costLine('MEGS.CostTooltip.TotalBeforeBonus', totalBeforeBonus) + '\n';
 
     // Add gadget bonus (divide by 4 if can be Taken Away, 2 if cannot)
     const gadgetBonus = systemData.canBeTakenAway ? 4 : 2;
-    tooltip += 'Gadget Bonus: ÷' + gadgetBonus + '\n';
+    tooltip += costTip('GadgetBonus', { divisor: gadgetBonus }) + '\n';
 
     // Add final cost
     const finalCost = Math.ceil(totalBeforeBonus / gadgetBonus);
-    tooltip += 'Final Cost: ' + finalCost;
+    tooltip += costLine('MEGS.CostTooltip.FinalCost', finalCost);
 
     return tooltip;
 });
@@ -1122,30 +1108,30 @@ Handlebars.registerHelper('getGadgetBudgetTooltip', function (budget) {
     const totalBeforeBonus = budget.totalBeforeBonus || 0;
     const total = budget.totalSpent || 0;
 
-    let tooltip = 'HP Spent Breakdown:\n';
-    if (attrs > 0) tooltip += `Attributes: ${attrs} HP\n`;
-    if (avEv > 0) tooltip += `AV/EV: ${avEv} HP\n`;
-    if (powers > 0) tooltip += `Powers: ${powers} HP\n`;
-    if (skills > 0) tooltip += `Skills: ${skills} HP\n`;
-    if (advantages > 0) tooltip += `Advantages: ${advantages} HP\n`;
-    if (drawbacks !== 0) tooltip += `Drawbacks: ${drawbacks} HP\n`;
+    let tooltip = costTip('Heading') + '\n';
+    if (attrs > 0) tooltip += costLineHP('MEGS.Attributes', attrs) + '\n';
+    if (avEv > 0) tooltip += costLineHP('MEGS.Abbr.AVEV', avEv) + '\n';
+    if (powers > 0) tooltip += costLineHP('MEGS.Powers', powers) + '\n';
+    if (skills > 0) tooltip += costLineHP('MEGS.Skills', skills) + '\n';
+    if (advantages > 0) tooltip += costLineHP('MEGS.Advantages', advantages) + '\n';
+    if (drawbacks !== 0) tooltip += costLineHP('MEGS.Drawbacks', drawbacks) + '\n';
     tooltip += '─────────────────\n';
-    tooltip += `Subtotal: ${totalBeforeBonus} HP\n`;
+    tooltip += costLineHP('MEGS.CostTooltip.Subtotal', totalBeforeBonus) + '\n';
     const subGadgetsCost = budget.subGadgetsCost || 0;
     const ownCost = total - subGadgetsCost;
     const gadgetBonus = totalBeforeBonus > 0 && ownCost > 0
         ? Math.round(totalBeforeBonus / ownCost)
         : 4;
-    tooltip += `Gadget Bonus: ÷${gadgetBonus}\n`;
+    tooltip += costTip('GadgetBonus', { divisor: gadgetBonus }) + '\n';
     if (budget.subGadgetEntries) {
         for (const entry of budget.subGadgetEntries) {
             if (entry.cost !== 0) {
-                tooltip += `${entry.name}: +${entry.cost} HP\n`;
+                tooltip += costTip('LineHP', { label: entry.name, value: `+${entry.cost}` }) + '\n';
             }
         }
     }
     tooltip += '─────────────────\n';
-    tooltip += `Total: ${total} HP`;
+    tooltip += costLineHP('MEGS.Total', total);
 
     return tooltip;
 });
@@ -1171,9 +1157,13 @@ Handlebars.registerHelper('getGadgetAdjustedCostTooltip', function (rawCost, can
 
     const divisor = (canBeTakenAway === true || canBeTakenAway === 'true') ? 4 : 2;
     const adjustedCost = Math.ceil(cost / divisor);
-    const takenAwayText = divisor === 4 ? 'Can Be Taken Away (÷4)' : 'Cannot Be Taken Away (÷2)';
+    const takenAwayText = costTip(divisor === 4 ? 'CanBeTakenAway' : 'CannotBeTakenAway', { divisor });
 
-    return `Raw Cost: ${cost} HP\n${takenAwayText}\nAdjusted: ${adjustedCost} HP`;
+    return [
+        costLineHP('MEGS.CostTooltip.RawCost', cost),
+        takenAwayText,
+        costLineHP('MEGS.CostTooltip.Adjusted', adjustedCost),
+    ].join('\n');
 });
 
 Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {
@@ -1184,25 +1174,25 @@ Handlebars.registerHelper('getPowerFactorCostTooltip', function (power) {
 
     // Base Factor Cost
     const baseFactor = systemData.factorCost || 0;
-    tooltip += 'Base Factor Cost: ' + baseFactor + '\n';
+    tooltip += costLine('MEGS.CostTooltip.BaseFactorCost', baseFactor) + '\n';
 
     // Bonuses
     const bonusMod = systemData.bonusMod || 0;
     if (bonusMod !== 0) {
-        tooltip += 'Bonuses: ' + (bonusMod > 0 ? '+' : '') + bonusMod + '\n';
+        tooltip += costLine('MEGS.CostTooltip.Bonuses', (bonusMod > 0 ? '+' : '') + bonusMod) + '\n';
     }
 
     // Limitations
     const limitationMod = systemData.limitationMod || 0;
     if (limitationMod !== 0) {
-        tooltip += 'Limitations: ' + (limitationMod > 0 ? '+' : '') + limitationMod + '\n';
+        tooltip += costLine('MEGS.CostTooltip.Limitations', (limitationMod > 0 ? '+' : '') + limitationMod) + '\n';
     }
 
     // Show calculation if there are modifiers
     if (bonusMod !== 0 || limitationMod !== 0) {
         tooltip += '---\n';
         const effectiveFactor = systemData.effectiveFactorCost || baseFactor;
-        tooltip += 'Effective Factor Cost: ' + effectiveFactor;
+        tooltip += costLine('MEGS.CostTooltip.EffectiveFactorCost', effectiveFactor);
     }
 
     return tooltip;
@@ -1368,6 +1358,9 @@ Hooks.once('ready', async function () {
 
     // Issue #290: give Bar Brawl MEGS bars when it is enabled and has no defaults yet
     await applyBarBrawlDefaults(game);
+
+    // Issue #309: whisper each user the issue tracker and Ko-fi links once
+    await showWelcomeMessage(game, { renderTemplate: foundry.applications.handlebars.renderTemplate, ChatMessage });
 
     // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
     Hooks.on('hotbarDrop', (bar, data, slot) => {

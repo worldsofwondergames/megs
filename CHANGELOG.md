@@ -1,13 +1,17 @@
 # CHANGELOG
 
-## 1.1.1
+## 1.1.1 (October 18, 2026)
 
-### Localization
+### Enhancements
 
-- User-facing English text that was written straight into templates and modules now comes from the localization files, so it changes with the client language (issue #279). This covers the `aria-label` on every `+`/`-` button, the attribute tooltips on the character creator and gadget builder, the roll and delete tooltips, the character name placeholder, the delete confirmation dialogs, and every `ui.notifications` message
-- Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
-- Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
-- Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
+- Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
+- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
+- `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
+- Hero, villain and NPC sheets have a Role Playing Notes field below Biography on the Description tab, edited with the same rich-text editor. In edit mode the Biography and Role Playing Notes editors each start at 15em tall instead of Biography filling the whole tab. Locations, pets and vehicles have no Role Playing Notes (issue #285)
+- When Bar Brawl is enabled and the world has no Bar Brawl defaults, the system sets Current BODY, MIND and SPIRIT bars for heroes, villains and NPCs. Owners always see them; other players see a hero's bars but not a villain's or NPC's. Worlds without Bar Brawl, or with their own Bar Brawl defaults, are unchanged (issue #290)
+- An equipped gadget's italicized Attributes now replace the character's own for rolls when they are higher, as the rules allow for italicized gadget Attributes. Gadgets have a new Is Equipped? setting, off by default, so existing gadgets change nothing until equipped. Attribute rolls, OV/RV lookups, power AV/EV/OV/RV sources and unskilled skills use the replaced values. The actor sheet still shows the character's own Attribute, with an info icon naming the gadget and its value. Current BODY, MIND and SPIRIT keep the character's own maximums (issue #210)
+- The Initiative Bonus on the sheet and in combat now uses an equipped gadget's italicized DEX, INT and INFL when they are higher, and the sheet's Initiative tooltip names the gadget (issue #306)
+- The first time a user opens a MEGS world, the system whispers them a welcome chat card with buttons for the GitHub issue tracker and the Ko-fi page. The card has no sender, recipient, time or delete icon in its header; it can still be deleted from its right-click menu. A user flag records that the card was posted, so each user sees it once (issue #309)
 
 ### Bug Fixes
 
@@ -16,20 +20,41 @@
     - The number beside each Hero Point slider never moved off 0, even though the hero points were being applied to the roll
     - The initiative dialog's Hero Point slider readout was dead for the same reason
 - Increment/decrement buttons now respect the field's own minimum and maximum instead of stepping past them
+- A gadget's cost now includes the bonuses and limitations on its powers and the untrained subskills on its skills, so a Power Restriction on a gadget power lowers the character's Hero Point total. The gadget cost and the gadget point budget now share one Factor Cost calculation (issue #287)
+- A power or skill marked Linked in the character builder now shows as linked on the regular actor sheet: its name gets the asterisk, its item sheet shows Is Linked: Yes, and a linked skill's APs lock to the attribute. The builder saves Linked as a boolean and these checks accepted only the string the item sheet saves. Yes/No fields such as Can Be Taken Away also now read Yes for a boolean true (issue #282)
+- A linked Power or Skill whose APs differ from its linked Attribute now shows a red AP value, a warning icon, and a tooltip such as "Linked to Dexterity (7) but rated 6 APs" on the Character Builder and the regular actor sheet. The Character Builder flagged the mismatch before, but the AP input kept its own color, so the warning was invisible (issue #286)
+- The blue die on rollable powers, skills and gadgets now uses `d10blue.svg`, the same drawing as the gray die on auto powers, instead of a PNG that filled its whole box and looked stretched next to it. Icons in a crowded row of item controls, such as the Powers tab's die, edit and delete links, no longer shrink below their 20px width (issue #283)
+- A gadget's Reliability Number now changes the Factor Cost of its powers and skills, as the rules require for every Ability on the gadget. Before, only its attributes, AV, EV and Range were adjusted, so a gadget made only of powers cost the same at every R#. An R# 0 gadget's powers now cost more and an R# 7 or higher gadget's powers cost less (issue #294)
+- The combat tracker no longer adds the Martial Artist +2 to every character's Initiative. Every actor has the skill at 0 APs, so the bonus now requires APs above 0, as the actor sheet already did (issue #307)
 
-### Enhancements
+### Localization
 
-- Roll dialog now shows how many Hero Points the character has, and says so explicitly when there are none to spend
-- `game.megs` now also exposes `RollValues` and `MegsTableRolls`, so an external module can make a roll go through the system's own roll path rather than reimplementing it (groundwork for issue #156)
-- `game.megs` also exposes `Utils`, so an integration can ask the system whether a gadget has anything to roll instead of restating the rule (issue #156)
+- User-facing English text that was written straight into templates and modules now comes from the localization files, so it changes with the client language (issue #279). This covers the `aria-label` on every `+`/`-` button, the attribute tooltips on the character creator and gadget builder, the roll and delete tooltips, the character name placeholder, the delete confirmation dialogs, and every `ui.notifications` message
+- The HP cost tooltips on the Character Builder, gadget sheet and Gadget Builder, the omni-gadget range names, and the AV, EV, Range, Ammo and R# labels in a gadget's description now come from the localization files (issue #281). The HP unit and the ÷4 or ÷2 gadget bonus are part of each translated string, so a translator can place them.
+- Fixed three `{{localize}}` calls written with mismatched quotes that rendered the key itself instead of the text: the Hero Points label on the actor sheet, the skill edit icon's `alt`, and an "Unskilled" roll tooltip
+- Added the four `MEGS` keys that `effects.mjs` and `item-sheet.mjs` asked for but no dictionary defined, so new active effects and the trait and power delete prompts were showing a raw key
+- Added Portuguese for the 11 keys that only existed in English; `lang/en.json` and `lang/pt.json` now define the same keys
+- The welcome chat card text is in `lang/en.json` and `lang/pt.json` (issue #309)
 
 ### Test Infrastructure
 
+- Extended the localization unit tests to the cost tooltip helpers and omni-gadget ranges in `megs.mjs`, and added E2E coverage that swaps in marked translations and checks they reach the rendered tooltips and gadget descriptions (issue #281)
+- Added E2E coverage that measures the rendered dice on the Powers tab and the size of every control icon on the Powers, Skills and Gadgets tabs (issue #283)
+- Added E2E coverage for the linked APs warning on the Character Builder and the regular actor sheet in edit and view mode (issue #286)
+- Added E2E coverage that ticks Linked in the character builder and checks the regular actor sheet and item sheet (issue #282)
+- `E2E_USER` and `E2E_OTHER_SESSIONS` let the E2E suite log in as its own GM user while someone else is connected as Gamemaster
 - Added E2E coverage that clicks the roll dialog's `+`/`-` buttons and drags its sliders through real pointer input; the previous specs set `.value` directly, which could not see this class of failure
 - Added unit tests for increment/decrement bounds handling
+- Added unit tests for the Bar Brawl defaults: Bar Brawl enabled, disabled and not installed, existing defaults, and a non-active GM (issue #290)
 - Added unit tests that read the shipped templates and modules and fail if English text reappears in an `aria-label`, `title`, `alt`, or `placeholder`, in a notification, or in a dialog title, and that check every `MEGS` key a template or module asks for is defined in both dictionaries (issue #279)
+- Added unit tests for the Reliability Number on gadget powers and skills, including the Factor Cost limits of 1 and 10 and unowned gadgets, and E2E coverage that changes a gadget's R# and checks the gadget and character costs (issue #294)
+- Added E2E coverage for Role Playing Notes: view and edit mode on hero, villain and NPC sheets, (None) when empty, saving through the editor, and no field on location sheets (issue #285)
+- Added unit tests for equipped gadget Attributes (equipped and not, higher and lower, italicized and not, several gadgets, the item sheet's string value) and the roll helpers that read them, and E2E coverage for the Equipped select, the attribute icon and an attribute roll's starting values (issue #210)
+- Added unit tests for the Initiative Bonus and its tooltip with an equipped and an unequipped gadget, and an E2E test that checks the sheet and the combat value before and after equipping (issue #306)
+- Added a unit test that a 0-AP Martial Artist gives no Initiative bonus, and changed the existing Initiative unit test to give Martial Artist APs (issue #307)
+- Added unit tests that check a user without the flag gets the welcome chat card and the flag, a user with it gets nothing, a failed post leaves the flag unset, and each button links to its URL. Added an E2E test that clears the flag, reloads the world, checks the rendered card, its links, its hidden header and that its buttons have no underline, and reloads again to confirm no second card (issue #309)
 
-## 1.1.0
+## 1.1.0 (August 28, 2026)
 
 ### Foundry VTT v14 Compatibility
 

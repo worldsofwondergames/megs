@@ -241,10 +241,12 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
             const isLinked = powerIsLinked[powerName] || false;
             const link = powerLinks[powerName] || '';
 
-            let effectiveFC = factorCost;
+            // Issue #294: the gadget's R# modifies its powers' Factor Costs too
+            let effectiveFC = factorCost + this.item._getGadgetReliabilityModifier();
             if (isLinked === 'true' || isLinked === true) {
                 effectiveFC = Math.max(1, effectiveFC - 2);
             }
+            effectiveFC = factorCost ? Math.min(10, Math.max(1, effectiveFC)) : 0;
 
             const apCost = MEGS.getAPCost(aps, effectiveFC) || 0;
             const totalCost = baseCost + apCost;
@@ -280,7 +282,8 @@ export class MEGSGadgetBuilderSheet extends MEGSItemSheet {
         for (const [skillName, aps] of Object.entries(skillData)) {
             const baseCost = skillBaseCosts[skillName] || 0;
             const factorCost = skillFactorCosts[skillName] || 2; // Default to 2 if not set
-            const apCost = MEGS.getAPCost(aps, factorCost) || 0;
+            const effectiveFC = Math.min(10, Math.max(1, factorCost + this.item._getGadgetReliabilityModifier()));
+            const apCost = MEGS.getAPCost(aps, effectiveFC) || 0;
             const totalCost = baseCost + apCost;
 
             skills.push({

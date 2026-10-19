@@ -153,16 +153,7 @@ export class MEGSActorSheet extends ActorSheet {
         context.showHeroPointCosts = game.settings.get('megs', 'showHeroPointCosts');
         context.allowSkillDeletion = game.settings.get('megs', 'allowSkillDeletion');
 
-        // Enrich biography text for proper display of links and other enriched content
-        if (context.system.biography) {
-            context.enrichedBiography = await foundry.applications.ux.TextEditor.enrichHTML(context.system.biography, {
-                async: true,
-                secrets: this.document.isOwner,
-                relativeTo: this.actor
-            });
-        } else {
-            context.enrichedBiography = '';
-        }
+        await this._prepareDescriptionText(context);
 
         return context;
     }
@@ -323,12 +314,19 @@ export class MEGSActorSheet extends ActorSheet {
     _calculateInitiativeBonusWithText(context) {
         const parts = [];
 
-        // Base attributes
-        const dex = context.document.system.attributes.dex.value;
-        const int = context.document.system.attributes.int.value;
-        const infl = context.document.system.attributes.infl.value;
-        parts.push(`DEX ${dex} + INT ${int} + INFL ${infl}`);
-        let initiativeBonus = dex + int + infl;
+        // Base attributes, using an equipped gadget's italicized value where it is higher
+        const actor = context.document;
+        const overrides = actor.system.attributeOverrides ?? {};
+        const describe = (key) => {
+            const value = Utils.getAttributeValue(actor, key);
+            const gadget = overrides[key]?.gadget;
+            return gadget ? `${key.toUpperCase()} ${value} (${gadget})` : `${key.toUpperCase()} ${value}`;
+        };
+        parts.push(['dex', 'int', 'infl'].map(describe).join(' + '));
+        let initiativeBonus =
+            Utils.getAttributeValue(actor, 'dex') +
+            Utils.getAttributeValue(actor, 'int') +
+            Utils.getAttributeValue(actor, 'infl');
 
         // Superspeed adds APs of their power
         if (this._hasAbility(context.powers, MEGS.powers.SUPERSPEED)) {
@@ -535,7 +533,7 @@ export class MEGSActorSheet extends ActorSheet {
         case MEGS.itemTypes.skill:
             i.subskills = [];
             i.unskilled = i.system.aps === 0;
-            i.linkedAPs = i.unskilled ? this.object.system.attributes[i.system.link].value : 0;
+            i.linkedAPs = i.unskilled ? Utils.getAttributeValue(this.object, i.system.link) : 0;
             skills.push(i);
             break;
         case MEGS.itemTypes.advantage:
@@ -557,6 +555,25 @@ export class MEGSActorSheet extends ActorSheet {
         i.rollOptions = Utils.getGadgetRollOptions(i, this.actor);
         i.rollable = i.rollOptions.length > 0;
         i.rollTooltip = Utils.getGadgetRollTooltip(i.rollOptions);
+    }
+
+    /**
+     * Enrich the Description tab's rich-text fields (Biography and, issue #285, Role Playing Notes)
+     * so links and other enriched content display in view mode.
+     * @param {object} context - The sheet render context
+     */
+    async _prepareDescriptionText(context) {
+        const enrich = (html) => html
+            ? foundry.applications.ux.TextEditor.enrichHTML(html, {
+                async: true,
+                secrets: this.document.isOwner,
+                relativeTo: this.actor
+            })
+            : '';
+        context.enrichedBiography = await enrich(context.system.biography);
+        // Role Playing Notes exist only on actor types with the identity template
+        context.hasRolePlayingNotes = Object.hasOwn(context.system, 'rolePlayingNotes');
+        context.enrichedRolePlayingNotes = await enrich(context.system.rolePlayingNotes);
     }
 
     /** @override */
@@ -1104,7 +1121,10 @@ export class MEGSActorSheet extends ActorSheet {
             }
         }
 
-        const actionValue = Number.parseInt(dataset.value);
+        // An attribute roll uses the value after any equipped gadget's italicized Attribute (issue #210)
+        const actionValue = dataset.type === MEGS.rollTypes.attribute
+            ? Utils.getAttributeValue(this.actor, dataset.key)
+            : Number.parseInt(dataset.value);
         let opposingValue = 0;
         let resistanceValue = 0;
 
@@ -1116,7 +1136,7 @@ export class MEGSActorSheet extends ActorSheet {
                 attrKey = dataset.link;
             }
             if (attrKey) {
-                opposingValue = targetActor.system.attributes[attrKey].value;
+                opposingValue = Utils.getAttributeValue(targetActor, attrKey);
                 resistanceValue = Utils.getResistanceValue(attrKey, targetActor);
             } else if (dataset.type === MEGS.itemTypes.skill) {
                 console.error('No linked attribute for ' + dataset.name);
